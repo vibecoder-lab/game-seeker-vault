@@ -97,3 +97,12 @@ Desktop.ini
 *.tar.gz
 *.zip
 *.rar
+
+
+# ========================================
+# Local & Temporary files
+# ========================================
+
+.claude/
+.wrangler/
+docs/tmp/
