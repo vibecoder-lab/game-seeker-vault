@@ -1,0 +1,99 @@
+# ========================================
+# Project-specific
+# ========================================
+
+# Cloudflare configuration (contains secrets)
+wrangler.jsonc
+
+# Data pipeline outputs
+updater/data/
+updater/log/
+
+# Generated data files
+**/games*.json
+**/id-map.json
+
+
+# ========================================
+# Languages & Frameworks
+# ========================================
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+venv/
+.Python
+
+
+# ========================================
+# Build outputs
+# ========================================
+
+build/
+dist/
+*.tsbuildinfo
+
+
+# ========================================
+# Environment & Secrets
+# ========================================
+
+.env
+.env.local
+.envrc
+
+
+# ========================================
+# Logs & Temporary files
+# ========================================
+
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+
+# ========================================
+# IDEs & Editors
+# ========================================
+
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+
+# ========================================
+# Operating Systems
+# ========================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+
+# ========================================
+# Archives (GitHub Actions artifacts)
+# ========================================
+
+*.tar
+*.tar.gz
+*.zip
+*.rar

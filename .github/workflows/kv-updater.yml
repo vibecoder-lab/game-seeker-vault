@@ -1,0 +1,35 @@
+name: Update KV Data
+
+on:
+  schedule:
+    # Run daily at 2:10 AM JST (17:10 UTC previous day)
+    - cron: '10 17 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-kv:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r updater/requirements.txt
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Run KV updater
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          KV_NAMESPACE_ID: ${{ secrets.KV_NAMESPACE_ID }}
+        run: |
+          python updater/main.py
