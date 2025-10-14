@@ -1,107 +1,7 @@
-<!doctype html>
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Game Seeker Vault - Find fun & cheap games on Steam</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <style>
-      .steam-blue-bg { background-color: #4668FF; }
-      .steam-blue-text { color: #4668FF; }
-      .steam-blue-lighter { color: #6B8AFF; }
-      input[type="range"].steam-blue::-webkit-slider-thumb {
-        background-color: #4668FF;
-      }
-      input[type="range"].steam-blue::-moz-range-thumb {
-        background-color: #4668FF;
-      }
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './index.css'
 
-      /* Transition for theme changes */
-      * {
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      /* Add transform for elements with hover animation */
-      img.transition-all {
-        transition: left 0.3s ease-in-out, background-color 0.3s ease, color 0.3s ease;
-      }
-
-      .transition-transform {
-        transition: transform 0.3s ease-in-out, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      /* Modal fade animation */
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      @keyframes fadeOut {
-        from {
-          opacity: 1;
-        }
-        to {
-          opacity: 0;
-        }
-      }
-
-      .modal-fade-in {
-        animation: fadeIn 0.1s ease-out;
-      }
-
-      .modal-fade-out {
-        animation: fadeOut 0.1s ease-out;
-      }
-
-      @keyframes slideUp {
-        from {
-          transform: translateY(100%);
-        }
-        to {
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes slideDown {
-        from {
-          transform: translateY(0);
-        }
-        to {
-          transform: translateY(100%);
-        }
-      }
-
-      .bottom-sheet-slide-in {
-        animation: slideUp 0.3s ease-out;
-      }
-
-      .bottom-sheet-slide-out {
-        animation: slideDown 0.3s ease-out;
-      }
-
-      @keyframes sparkle-fade {
-        0% {
-          opacity: 1;
-          transform: translate(-50%, -50%) rotate(var(--sparkle-angle)) translateY(0px) scale(1);
-        }
-        100% {
-          opacity: 0;
-          transform: translate(-50%, -50%) rotate(var(--sparkle-angle)) translateY(-50px) scale(0.5);
-        }
-      }
-    </style>
-  </head>
-  <body class="bg-gray-50">
-    <div id="root"></div>
-
-    <script type="text/babel" data-presets="env,react">
       // Default settings
       const DEFAULT_SETTINGS = {
         removePriceLimit: false,        // Raise price limit to 20,000 yen
@@ -1358,7 +1258,6 @@
         'Simulation': 'シミュレーション',
         'Casual': 'カジュアル',
         'Indie': 'インディー',
-        'Free To Play': 'Free To Play',
         'Sports': 'スポーツ',
         'Racing': 'レーシング',
         'Massively Multiplayer': 'MMO',
@@ -4819,8 +4718,12 @@
         );
       }
 
-      const root = ReactDOM.createRoot(document.getElementById('root'));
-      root.render(<SteamPriceFilter />);
-    </script>
-  </body>
-</html>
+
+
+function App() {
+  return <SteamPriceFilter />
+}
+
+export default App
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />)

@@ -1,19 +1,25 @@
 export async function onRequest(context): Promise<Response> {
 	const { request } = context;
 
-	// Allowed origins
-	const allowedOrigins = [
-		'https://gameseekervault.pages.dev',
-		'http://localhost:8788',
-		'http://localhost:3000',
-	];
-
+	// Check if origin is allowed
 	const origin = request.headers.get('Origin');
-	const allowedOrigin = allowedOrigins.find(allowed => origin === allowed) || allowedOrigins[0];
+	const referer = request.headers.get('Referer');
+
+	const isAllowedOrigin = (url: string | null): boolean => {
+		if (!url) return false;
+		return (
+			url === 'https://gameseekervault.pages.dev' ||
+			url.includes('.gameseekervault.pages.dev') ||
+			url.startsWith('http://localhost:') ||
+			url.startsWith('http://127.0.0.1:')
+		);
+	};
+
+	const isAllowed = isAllowedOrigin(origin) || isAllowedOrigin(referer);
 
 	// CORS headers
 	const corsHeaders = {
-		'Access-Control-Allow-Origin': allowedOrigin,
+		'Access-Control-Allow-Origin': origin || 'https://gameseekervault.pages.dev',
 		'Access-Control-Allow-Methods': 'GET, OPTIONS',
 		'Access-Control-Allow-Headers': 'Content-Type',
 	};
@@ -23,13 +29,7 @@ export async function onRequest(context): Promise<Response> {
 		return new Response(null, { headers: corsHeaders });
 	}
 
-	// Referer check: only allow access from permitted origins
-	const referer = request.headers.get('Referer');
-
-	const isAllowed = allowedOrigins.some(allowed =>
-		origin?.startsWith(allowed) || referer?.startsWith(allowed)
-	);
-
+	// Reject unauthorized origins
 	if (!isAllowed) {
 		return new Response('Forbidden', {
 			status: 403,
