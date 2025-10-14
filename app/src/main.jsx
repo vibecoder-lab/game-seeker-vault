@@ -14,6 +14,9 @@ import { REVIEW_SCORE_MAPPING } from './constants/reviews.js'
 import { formatDateTime, normalizeGenres, translateReviewScore, formatReleaseDate, checkJapaneseSupport, cleanLanguageText, truncateByWidth, yen, unique } from './utils/format.js'
 import { linkFor, appIdFromUrl, steamCapsuleUrl } from './utils/steam.js'
 
+// Import database
+import { dbHelper, initDB } from './db/index.js'
+
       function GameCard({ g, theme, priceMode, favoriteData, onToggleFavorite, settings }) {
         const [isHovered, setIsHovered] = React.useState(false);
         const [shiftPressed, setShiftPressed] = React.useState(false);
