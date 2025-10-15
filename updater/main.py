@@ -61,22 +61,40 @@ def print_mapping_report(mapping_result):
 
     mapped = mapping_result.get('mapped', [])
     failed = mapping_result.get('failed', [])
+    skipped_existing = mapping_result.get('skipped_existing', [])
+    skipped_multiple = mapping_result.get('skipped_multiple', [])
 
     print(f"{'='*60}")
-    print("=== Auto-mapping Results ===")
+    print("Auto-mapping Results")
     print(f"{'='*60}\n")
     print(f"Success: {len(mapped)} items")
-    print(f"Failed: {len(failed)} items\n")
+    print(f"Skipped (Already exists): {len(skipped_existing)} items")
+    print(f"Skipped (Multiple matches): {len(skipped_multiple)} items")
+    print(f"Failed: {len(failed)} items")
 
     if mapped:
-        print("--- Successfully Mapped ---")
+        print(f"\n--- Successfully Mapped ({len(mapped)}) ---")
         for item in mapped:
             itad_info = f", ITAD ID: {item['itadId']}" if item.get('itadId') else ", ITAD ID: None"
-            print(f"  • App ID: {item['appid']}, Score: {item['score']}{itad_info}")
+            print(f"  • {item['name']} (App ID: {item['appid']}, Score: {item['score']}){itad_info}")
+
+    if skipped_existing:
+        print(f"\n--- Skipped - Already Exists ({len(skipped_existing)}) ---")
+        for item in skipped_existing:
+            print(f"  • {item['title']} → {item['name']} (App ID: {item['appid']})")
+
+    if skipped_multiple:
+        print(f"\n--- Skipped - Multiple Matches ({len(skipped_multiple)}) ---")
+        for item in skipped_multiple:
+            print(f"  • {item['title']}")
+            for match in item['matches']:
+                print(f"    - {match['name']} (App ID: {match['appid']})")
 
     if failed:
-        print(f"\n--- Mapping Failed ---")
-        print(f"  {len(failed)} titles could not be mapped")
+        print(f"\n--- Mapping Failed ({len(failed)}) ---")
+        for title in failed:
+            print(f"  • {title}")
+        print(f"\nNote: Mapping failures won't block KV updates")
 
     print(f"\n{'='*60}\n")
 
@@ -86,30 +104,38 @@ def print_rebuild_report(result):
     rebuilt_games = result['rebuilt_games']
     failed_games = result['failed_games']
     missing_data = result['missing_data']
+    mapping_result = result.get('mapping_result')
 
     print(f"\n{'='*60}")
-    print(f"Rebuild Complete")
+    print(f"Data Fetch Results")
     print(f"{'='*60}")
     print(f"Success: {len(rebuilt_games)} items")
     print(f"Failed: {len(failed_games)} items")
 
     if failed_games:
-        print(f"\n【Failed Games】")
+        print(f"\n【Data Fetch Failures】")
         for failed in failed_games:
             print(f"  - App ID: {failed['app_id']}, Reason: {failed['reason']}")
 
+    if mapping_result and mapping_result.get('failed'):
+        failed_mappings = mapping_result['failed']
+        print(f"\n【Mapping Failures】")
+        print(f"Failed to map {len(failed_mappings)} titles:")
+        for title in failed_mappings:
+            print(f"  - {title}")
+
     if missing_data:
         print(f"\n{'='*60}")
-        print(f"【Data Retrieval Failures】")
+        print(f"【Partial Data Retrieval】")
         print(f"{'='*60}")
-        print(f"Failed count: {len(missing_data)} items\n")
+        print(f"Games with missing optional data: {len(missing_data)} items\n")
         for item in missing_data:
             print(f"  - App ID: {item['app_id']}")
             print(f"    Missing data: {item['missing']}")
             print()
 
 
-def save_and_backup(rebuilt_games, failed_games, kv_helper):
+def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_only, kv_helper):
     """Save rebuilt data and save to KV"""
     import shutil
     import datetime
@@ -121,9 +147,16 @@ def save_and_backup(rebuilt_games, failed_games, kv_helper):
         json.dump(rebuilt_games, f, ensure_ascii=False, indent=2)
     logger.info(f"Saved to {output_file}")
 
-    # Save to KV/local only on success
-    if len(failed_games) == 0 and len(rebuilt_games) > 0:
+    # Update KV/local if we have data and no data fetch failures
+    # Note: Mapping failures don't block KV updates
+    should_update = len(rebuilt_games) > 0 and len(failed_games) == 0
+
+    if should_update:
         try:
+            # Save id-map first (atomic update with games-data)
+            kv_helper.put_id_map(id_map)
+            logger.info(f"Saved id-map to KV ({len(id_map)} items)")
+
             # Save games-data
             kv_helper.put_games_data(rebuilt_games)
 
@@ -136,23 +169,50 @@ def save_and_backup(rebuilt_games, failed_games, kv_helper):
                     backups_dir.mkdir(parents=True, exist_ok=True)
                     shutil.copy2(input_file, backup_file)
                     print(f"\n{'='*60}")
+                    print(f"✓ KV Update Success")
+                    print(f"{'='*60}")
                     print(f"Backup created: {backup_file}")
-                    print(f"✓ Updated {input_file}")
+                    print(f"Updated: {input_file}")
+                    print(f"Updated games count: {len(rebuilt_games)}")
+
+                    # Display newly added games in --new-only mode
+                    if new_only and len(newly_added_games) > 0:
+                        print(f"\nNewly Added Games ({len(newly_added_games)}):")
+                        for game in newly_added_games:
+                            print(f"  • {game['title']} (App ID: {game['id']})")
+
                     print(f"{'='*60}")
             else:
                 print(f"\n{'='*60}")
-                print(f"✓ Saved games-data to KV")
+                print(f"✓ KV Update Success")
+                print(f"{'='*60}")
+                print(f"Updated games-data to KV")
+                print(f"Updated games count: {len(rebuilt_games)}")
+
+                # Display newly added games in --new-only mode
+                if new_only and len(newly_added_games) > 0:
+                    print(f"\nNewly Added Games ({len(newly_added_games)}):")
+                    for game in newly_added_games:
+                        print(f"  • {game['title']} (App ID: {game['id']})")
+
                 print(f"{'='*60}")
         except Exception as e:
-            print(f"\n✗ Data save error: {e}")
-            print(f"  {output_file} was created successfully")
+            print(f"\n{'='*60}")
+            print(f"✗ KV Update Failed")
+            print(f"{'='*60}")
+            print(f"Error: {e}")
+            print(f"Temporary file saved: {output_file}")
+            print(f"{'='*60}")
     else:
         print(f"\n{'='*60}")
+        print(f"✗ KV Update Skipped")
+        print(f"{'='*60}")
         if len(failed_games) > 0:
-            print(f"⚠ Data not updated due to failed games")
-        else:
-            print(f"⚠ Data not updated (no rebuilt games)")
-        print(f"  Please check manually: {output_file}")
+            print(f"Reason: {len(failed_games)} game(s) failed data fetch")
+            print(f"Failed App IDs: {', '.join([str(f['app_id']) for f in failed_games])}")
+        elif len(rebuilt_games) == 0:
+            print(f"Reason: No games to update")
+        print(f"Temporary file saved: {output_file}")
         print(f"{'='*60}")
 
 
@@ -221,6 +281,9 @@ def main():
     save_and_backup(
         rebuilt_games=result['rebuilt_games'],
         failed_games=result['failed_games'],
+        id_map=result['id_map'],
+        newly_added_games=result.get('newly_added_games', []),
+        new_only=new_only,
         kv_helper=kv_helper
     )
 

@@ -74,9 +74,17 @@ class GameDataBuilder:
         return int(similarity * SCORE_SIMILARITY_MULTIPLIER)
 
     def find_best_match(self, title, game_id_list):
-        """Find best matching App ID"""
+        """Find best matching App ID
+
+        Returns:
+            dict or None: Match result with keys:
+                - 'match': single candidate dict if unique match found
+                - 'multiple': list of candidates if multiple exact matches found
+                - None if no match found
+        """
         candidates = []
 
+        # Collect all candidates - check entire list
         for app in game_id_list:
             app_name = app.get('name', '')
             app_id = app.get('appid')
@@ -96,18 +104,26 @@ class GameDataBuilder:
                     'score': score
                 })
 
-        candidates.sort(key=lambda x: x['score'], reverse=True)
-
         if not candidates:
             return None
 
-        # Auto-accept if score is high enough
+        # Sort by score
+        candidates.sort(key=lambda x: x['score'], reverse=True)
+
+        # Check for multiple exact matches (score 100)
+        exact_matches = [c for c in candidates if c['score'] == SCORE_EXACT_MATCH]
+
+        if len(exact_matches) > 1:
+            # Multiple exact matches found - ambiguous
+            return {'multiple': exact_matches}
+
+        # Single best match
         if candidates[0]['score'] >= SCORE_AUTO_ACCEPT_THRESHOLD:
-            return candidates[0]
+            return {'match': candidates[0]}
 
         # For scores between CANDIDATE_THRESHOLD and AUTO_ACCEPT_THRESHOLD,
         # automatically select highest score (non-interactive)
-        return candidates[0]
+        return {'match': candidates[0]}
 
     def build_id_map_from_titles(self, title_list_path='data/refs/game_title_list.txt', existing_id_map=None):
         """Build id-map from game-title-list.txt
@@ -157,53 +173,81 @@ class GameDataBuilder:
         existing_ids = {item['id'] for item in existing_id_map}
         mapped = []
         failed = []
+        skipped_existing = []
+        skipped_multiple = []
 
         for title in title_list:
-            logger.info(f"Processing title count: {len(title_list)}")
+            logger.info(f"Processing title: {title}")
 
             # Find best match
-            match = self.find_best_match(title, game_id_list)
+            match_result = self.find_best_match(title, game_id_list)
 
-            if match:
-                app_id = str(match['appid'])
-
-                if app_id in existing_ids:
-                    logger.info(f"  → Skipped (already exists: App ID {app_id})")
-                    continue
-
-                # Get ITAD ID
-                itad_id = None
-                if self.itad_client:
-                    logger.info(f"  → Fetching ITAD ID (App ID: {app_id})...")
-                    itad_id = self.itad_client.get_itad_id_from_steam_appid(app_id)
-                    if itad_id:
-                        logger.info(f"  ✓ ITAD ID fetch success: {itad_id}")
-                    else:
-                        logger.warning(f"  ✗ ITAD ID fetch failed (App ID: {app_id})")
-
-                # Add to id-map
-                new_entry = {'id': app_id}
-                if itad_id:
-                    new_entry['itadId'] = itad_id
-
-                existing_id_map.append(new_entry)
-                existing_ids.add(app_id)
-
-                mapped.append({
-                    'appid': app_id,
-                    'name': match['name'],
-                    'score': match['score'],
-                    'itadId': itad_id
-                })
-
-                logger.info(f"  ✓ Mapping success: App ID {app_id}, Score: {match['score']}")
-            else:
+            if match_result is None:
+                # No match found
                 failed.append(title)
                 logger.warning(f"  ✗ Mapping failed: No candidates found")
+                continue
 
-        logger.info(f"Auto-mapping result: Success {len(mapped)} items, Failed {len(failed)} items")
+            if 'multiple' in match_result:
+                # Multiple exact matches found - ambiguous
+                multiple_matches = match_result['multiple']
+                logger.warning(f"  ✗ Multiple exact matches found for '{title}':")
+                for m in multiple_matches:
+                    logger.warning(f"    - App ID: {m['appid']}, Name: {m['name']}")
+                skipped_multiple.append({
+                    'title': title,
+                    'matches': [{'appid': m['appid'], 'name': m['name']} for m in multiple_matches]
+                })
+                continue
 
-        return existing_id_map, {'mapped': mapped, 'failed': failed}
+            # Single match found
+            match = match_result['match']
+            app_id = str(match['appid'])
+
+            if app_id in existing_ids:
+                logger.info(f"  → Skipped (already exists: App ID {app_id})")
+                skipped_existing.append({
+                    'title': title,
+                    'appid': app_id,
+                    'name': match['name']
+                })
+                continue
+
+            # Get ITAD ID
+            itad_id = None
+            if self.itad_client:
+                logger.info(f"  → Fetching ITAD ID (App ID: {app_id})...")
+                itad_id = self.itad_client.get_itad_id_from_steam_appid(app_id)
+                if itad_id:
+                    logger.info(f"  ✓ ITAD ID fetch success: {itad_id}")
+                else:
+                    logger.warning(f"  ✗ ITAD ID fetch failed (App ID: {app_id})")
+
+            # Add to id-map
+            new_entry = {'id': app_id}
+            if itad_id:
+                new_entry['itadId'] = itad_id
+
+            existing_id_map.append(new_entry)
+            existing_ids.add(app_id)
+
+            mapped.append({
+                'appid': app_id,
+                'name': match['name'],
+                'score': match['score'],
+                'itadId': itad_id
+            })
+
+            logger.info(f"  ✓ Mapping success: App ID {app_id}, Score: {match['score']}")
+
+        logger.info(f"Auto-mapping result: Success {len(mapped)} items, Failed {len(failed)} items, Skipped (existing): {len(skipped_existing)} items, Skipped (multiple): {len(skipped_multiple)} items")
+
+        return existing_id_map, {
+            'mapped': mapped,
+            'failed': failed,
+            'skipped_existing': skipped_existing,
+            'skipped_multiple': skipped_multiple
+        }
 
     def rebuild_games_data(self, new_only=False, regions=None, kv_helper=None):
         """Build games.json
@@ -242,8 +286,8 @@ class GameDataBuilder:
                 existing_id_map=id_map
             )
 
-            # 3. Save id-map
-            kv_helper.put_id_map(id_map)
+            # 3. Don't save id-map yet - will save after successful games-data update
+            logger.info("id-map updated (not saved to KV yet)")
 
             # 4. Get newly added IDs
             if mapping_result and mapping_result.get('mapped'):
@@ -381,21 +425,32 @@ class GameDataBuilder:
             existing_ids = {game['id'] for game in existing_games}
             new_game_ids = {game['id'] for game in rebuilt_games}
 
+            # Track newly added games
+            newly_added_games = []
+
             # Existing data + new data (skip duplicates)
             final_games = existing_games.copy()
             for new_game in rebuilt_games:
                 if new_game['id'] not in existing_ids:
                     final_games.append(new_game)
+                    # Record actually added games
+                    newly_added_games.append({
+                        'id': new_game['id'],
+                        'title': new_game['title']
+                    })
                 else:
                     logger.info(f"  → Skipped (already exists: App ID {new_game['id']})")
 
-            logger.info(f"Merge result: Existing {len(existing_games)} items + New {len(rebuilt_games)} items = Total {len(final_games)} items")
+            logger.info(f"Merge result: Existing {len(existing_games)} items + New {len(newly_added_games)} items = Total {len(final_games)} items")
             rebuilt_games = final_games
+        else:
+            newly_added_games = []
 
         return {
             'rebuilt_games': rebuilt_games,
             'failed_games': failed_games,
             'missing_data': missing_data,
             'mapping_result': mapping_result,
-            'id_map': id_map
+            'id_map': id_map,
+            'newly_added_games': newly_added_games
         }
