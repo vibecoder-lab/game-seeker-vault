@@ -476,6 +476,11 @@ import { Header } from './components/Header.jsx'
           }, 100);
         };
 
+        // Filter handlers with startTransition for better responsiveness
+        const handleFilterChange = (setter) => (value) => {
+          React.startTransition(() => setter(value));
+        };
+
         const sorted = React.useMemo(() => {
           const arr = [...filtered];
           arr.sort((a,b) => {
@@ -496,6 +501,9 @@ import { Header } from './components/Header.jsx'
           });
           return arr;
         }, [filtered, priceOf, sortOrder]);
+
+        // Defer the rendering of game list to improve filter checkbox responsiveness
+        const deferredSorted = React.useDeferredValue(sorted);
 
         return (
           <>
@@ -610,7 +618,7 @@ import { Header } from './components/Header.jsx'
                   <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
                     <div className="flex gap-2 min-w-max pb-2">
                       <button
-                        onClick={() => setOnlySale(!onlySale)}
+                        onClick={() => handleFilterChange(setOnlySale)(!onlySale)}
                         className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
                           onlySale
                             ? currentTheme === 'steam'
@@ -622,7 +630,7 @@ import { Header } from './components/Header.jsx'
                         {t('filter.onlySale', currentLocale)}
                       </button>
                       <button
-                        onClick={() => setOnlyOverwhelming(!onlyOverwhelming)}
+                        onClick={() => handleFilterChange(setOnlyOverwhelming)(!onlyOverwhelming)}
                         className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
                           onlyOverwhelming
                             ? currentTheme === 'steam'
@@ -634,7 +642,7 @@ import { Header } from './components/Header.jsx'
                         {t('filter.onlyOverwhelming', currentLocale)}
                       </button>
                       <button
-                        onClick={() => setOnlyJP(!onlyJP)}
+                        onClick={() => handleFilterChange(setOnlyJP)(!onlyJP)}
                         className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
                           onlyJP
                             ? currentTheme === 'steam'
@@ -646,7 +654,7 @@ import { Header } from './components/Header.jsx'
                         {t('filter.onlyJapanese', currentLocale)}
                       </button>
                       <button
-                        onClick={() => setOnlyMac(!onlyMac)}
+                        onClick={() => handleFilterChange(setOnlyMac)(!onlyMac)}
                         className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
                           onlyMac
                             ? currentTheme === 'steam'
@@ -676,30 +684,32 @@ import { Header } from './components/Header.jsx'
                           e.preventDefault();
                           const isShiftClick = e.shiftKey;
 
-                          setSelectedGenres(prev => {
-                            const currentlyIncluded = prev.include.includes(g);
-                            const currentlyExcluded = prev.exclude.includes(g);
+                          React.startTransition(() => {
+                            setSelectedGenres(prev => {
+                              const currentlyIncluded = prev.include.includes(g);
+                              const currentlyExcluded = prev.exclude.includes(g);
 
-                            if (isShiftClick) {
-                              // Shift+click: toggle exclude
-                              if (currentlyExcluded) {
-                                return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                              if (isShiftClick) {
+                                // Shift+click: toggle exclude
+                                if (currentlyExcluded) {
+                                  return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                                } else {
+                                  return {
+                                    include: prev.include.filter(x => x !== g),
+                                    exclude: [...prev.exclude, g]
+                                  };
+                                }
                               } else {
-                                return {
-                                  include: prev.include.filter(x => x !== g),
-                                  exclude: [...prev.exclude, g]
-                                };
+                                // Normal click: if excluded, remove from exclude (don't add to include)
+                                if (currentlyExcluded) {
+                                  return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                                } else if (currentlyIncluded) {
+                                  return { ...prev, include: prev.include.filter(x => x !== g) };
+                                } else {
+                                  return { ...prev, include: [...prev.include, g] };
+                                }
                               }
-                            } else {
-                              // Normal click: if excluded, remove from exclude (don't add to include)
-                              if (currentlyExcluded) {
-                                return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
-                              } else if (currentlyIncluded) {
-                                return { ...prev, include: prev.include.filter(x => x !== g) };
-                              } else {
-                                return { ...prev, include: [...prev.include, g] };
-                              }
-                            }
+                            });
                           });
                         };
 
@@ -744,19 +754,19 @@ import { Header } from './components/Header.jsx'
                   <div className="text-sm font-semibold mb-3">{t('filter.title', currentLocale)}</div>
                   <div className="flex items-center gap-4 flex-wrap mb-6">
                     <div className="flex items-center gap-1">
-                      <input id="saleOnly" type="checkbox" checked={onlySale} onChange={(e)=>setOnlySale(e.target.checked)} className="h-4 w-4 flex-shrink-0" />
+                      <input id="saleOnly" type="checkbox" checked={onlySale} onChange={(e)=>handleFilterChange(setOnlySale)(e.target.checked)} className="h-4 w-4 flex-shrink-0" />
                       <label htmlFor="saleOnly" className="text-sm whitespace-nowrap">{t('filter.onlySale', currentLocale)}</label>
                     </div>
                     <div className="flex items-center gap-1">
-                      <input id="overwhelmingOnly" type="checkbox" checked={onlyOverwhelming} onChange={(e)=>setOnlyOverwhelming(e.target.checked)} className="h-4 w-4 flex-shrink-0" />
+                      <input id="overwhelmingOnly" type="checkbox" checked={onlyOverwhelming} onChange={(e)=>handleFilterChange(setOnlyOverwhelming)(e.target.checked)} className="h-4 w-4 flex-shrink-0" />
                       <label htmlFor="overwhelmingOnly" className="text-sm whitespace-nowrap">{t('filter.onlyOverwhelming', currentLocale)}</label>
                     </div>
                     <div className="flex items-center gap-1">
-                      <input id="jpOnly" type="checkbox" checked={onlyJP} onChange={(e)=>setOnlyJP(e.target.checked)} className="h-4 w-4 flex-shrink-0" />
+                      <input id="jpOnly" type="checkbox" checked={onlyJP} onChange={(e)=>handleFilterChange(setOnlyJP)(e.target.checked)} className="h-4 w-4 flex-shrink-0" />
                       <label htmlFor="jpOnly" className="text-sm whitespace-nowrap">{t('filter.onlyJapanese', currentLocale)}</label>
                     </div>
                     <div className="flex items-center gap-1">
-                      <input id="macOnly" type="checkbox" checked={onlyMac} onChange={(e)=>setOnlyMac(e.target.checked)} className="h-4 w-4 flex-shrink-0" />
+                      <input id="macOnly" type="checkbox" checked={onlyMac} onChange={(e)=>handleFilterChange(setOnlyMac)(e.target.checked)} className="h-4 w-4 flex-shrink-0" />
                       <label htmlFor="macOnly" className="text-sm whitespace-nowrap">{t('filter.onlyMac', currentLocale)}</label>
                     </div>
                   </div>
@@ -767,22 +777,22 @@ import { Header } from './components/Header.jsx'
                         <span>{t('filter.priceMin', currentLocale)} {formatPrice(minPrice, currentLocale)}</span>
                         <span>{t('filter.priceMax', currentLocale)} {formatPrice(maxPrice, currentLocale)}</span>
                       </div>
-                      <input type="range" min={0} max={settings?.removePriceLimit ? 20000 : 3000} step={100} value={minPrice} onChange={(e)=>setMinPrice(Math.min(Number(e.target.value), maxPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
-                      <input type="range" min={0} max={settings?.removePriceLimit ? 20000 : 3000} step={100} value={maxPrice} onChange={(e)=>setMaxPrice(Math.max(Number(e.target.value), minPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
+                      <input type="range" min={0} max={settings?.removePriceLimit ? 20000 : 3000} step={100} value={minPrice} onChange={(e)=>handleFilterChange(setMinPrice)(Math.min(Number(e.target.value), maxPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
+                      <input type="range" min={0} max={settings?.removePriceLimit ? 20000 : 3000} step={100} value={maxPrice} onChange={(e)=>handleFilterChange(setMaxPrice)(Math.max(Number(e.target.value), minPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
                       <div className="mt-4 space-y-3">
                         <div>
                           <div className="text-sm font-semibold">{t('filter.priceMode.title', currentLocale)}</div>
                           <div className={`mt-2 inline-flex flex-wrap rounded-xl ${theme.buttonBg} p-1 gap-1`}>
-                            <button onClick={()=>setPriceMode('current')} className={`px-3 py-1 rounded-lg text-sm ${priceMode==='current'?theme.buttonActive:''}`}>
+                            <button onClick={()=>handleFilterChange(setPriceMode)('current')} className={`px-3 py-1 rounded-lg text-sm ${priceMode==='current'?theme.buttonActive:''}`}>
                               {t('filter.priceCurrent', currentLocale)}
                             </button>
-                            <button onClick={()=>setPriceMode('normal')} className={`px-3 py-1 rounded-lg text-sm ${priceMode==='normal'?theme.buttonActive:''}`}>
+                            <button onClick={()=>handleFilterChange(setPriceMode)('normal')} className={`px-3 py-1 rounded-lg text-sm ${priceMode==='normal'?theme.buttonActive:''}`}>
                               {t('filter.priceNormal', currentLocale)}
                             </button>
-                            <button onClick={()=>setPriceMode('lowest')} className={`px-3 py-1 rounded-lg text-sm ${priceMode==='lowest'?theme.buttonActive:''}`}>
+                            <button onClick={()=>handleFilterChange(setPriceMode)('lowest')} className={`px-3 py-1 rounded-lg text-sm ${priceMode==='lowest'?theme.buttonActive:''}`}>
                               {t('filter.priceLowest', currentLocale)}
                             </button>
-                            <button onClick={()=>setPriceMode('discount')} className={`px-3 py-1 rounded-lg text-sm ${priceMode==='discount'?theme.buttonActive:''}`}>
+                            <button onClick={()=>handleFilterChange(setPriceMode)('discount')} className={`px-3 py-1 rounded-lg text-sm ${priceMode==='discount'?theme.buttonActive:''}`}>
                               {t('filter.priceDiscount', currentLocale)}
                             </button>
                           </div>
@@ -790,8 +800,8 @@ import { Header } from './components/Header.jsx'
                         <div>
                           <div className="text-sm font-semibold">{t('filter.sortOrder', currentLocale)}</div>
                           <div className={`mt-2 inline-flex rounded-xl ${theme.buttonBg} p-1`}>
-                            <button onClick={()=>setSortOrder('asc')} className={`px-3 py-1 rounded-lg text-sm ${sortOrder==='asc'?theme.buttonActive:''}`}>{t('filter.sortAsc', currentLocale)}</button>
-                            <button onClick={()=>setSortOrder('desc')} className={`px-3 py-1 rounded-lg text-sm ${sortOrder==='desc'?theme.buttonActive:''}`}>{t('filter.sortDesc', currentLocale)}</button>
+                            <button onClick={()=>handleFilterChange(setSortOrder)('asc')} className={`px-3 py-1 rounded-lg text-sm ${sortOrder==='asc'?theme.buttonActive:''}`}>{t('filter.sortAsc', currentLocale)}</button>
+                            <button onClick={()=>handleFilterChange(setSortOrder)('desc')} className={`px-3 py-1 rounded-lg text-sm ${sortOrder==='desc'?theme.buttonActive:''}`}>{t('filter.sortDesc', currentLocale)}</button>
                           </div>
                         </div>
                       </div>
@@ -812,30 +822,32 @@ import { Header } from './components/Header.jsx'
                         e.preventDefault();
                         const isShiftClick = e.shiftKey;
 
-                        setSelectedGenres(prev => {
-                          const currentlyIncluded = prev.include.includes(g);
-                          const currentlyExcluded = prev.exclude.includes(g);
+                        React.startTransition(() => {
+                          setSelectedGenres(prev => {
+                            const currentlyIncluded = prev.include.includes(g);
+                            const currentlyExcluded = prev.exclude.includes(g);
 
-                          if (isShiftClick) {
-                            // Shift+click: toggle exclude
-                            if (currentlyExcluded) {
-                              return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                            if (isShiftClick) {
+                              // Shift+click: toggle exclude
+                              if (currentlyExcluded) {
+                                return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                              } else {
+                                return {
+                                  include: prev.include.filter(x => x !== g),
+                                  exclude: [...prev.exclude, g]
+                                };
+                              }
                             } else {
-                              return {
-                                include: prev.include.filter(x => x !== g),
-                                exclude: [...prev.exclude, g]
-                              };
+                              // Normal click: if excluded, remove from exclude (don't add to include)
+                              if (currentlyExcluded) {
+                                return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                              } else if (currentlyIncluded) {
+                                return { ...prev, include: prev.include.filter(x => x !== g) };
+                              } else {
+                                return { ...prev, include: [...prev.include, g] };
+                              }
                             }
-                          } else {
-                            // Normal click: if excluded, remove from exclude (don't add to include)
-                            if (currentlyExcluded) {
-                              return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
-                            } else if (currentlyIncluded) {
-                              return { ...prev, include: prev.include.filter(x => x !== g) };
-                            } else {
-                              return { ...prev, include: [...prev.include, g] };
-                            }
-                          }
+                          });
                         });
                       };
 
@@ -881,30 +893,32 @@ import { Header } from './components/Header.jsx'
                             e.preventDefault();
                             const isShiftClick = e.shiftKey;
 
-                            setSelectedGenres(prev => {
-                              const currentlyIncluded = prev.include.includes(g);
-                              const currentlyExcluded = prev.exclude.includes(g);
+                            React.startTransition(() => {
+                              setSelectedGenres(prev => {
+                                const currentlyIncluded = prev.include.includes(g);
+                                const currentlyExcluded = prev.exclude.includes(g);
 
-                              if (isShiftClick) {
-                                // Shift+click: toggle exclude
-                                if (currentlyExcluded) {
-                                  return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                                if (isShiftClick) {
+                                  // Shift+click: toggle exclude
+                                  if (currentlyExcluded) {
+                                    return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                                  } else {
+                                    return {
+                                      include: prev.include.filter(x => x !== g),
+                                      exclude: [...prev.exclude, g]
+                                    };
+                                  }
                                 } else {
-                                  return {
-                                    include: prev.include.filter(x => x !== g),
-                                    exclude: [...prev.exclude, g]
-                                  };
+                                  // Normal click: if excluded, remove from exclude (don't add to include)
+                                  if (currentlyExcluded) {
+                                    return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                                  } else if (currentlyIncluded) {
+                                    return { ...prev, include: prev.include.filter(x => x !== g) };
+                                  } else {
+                                    return { ...prev, include: [...prev.include, g] };
+                                  }
                                 }
-                              } else {
-                                // Normal click: if excluded, remove from exclude (don't add to include)
-                                if (currentlyExcluded) {
-                                  return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
-                                } else if (currentlyIncluded) {
-                                  return { ...prev, include: prev.include.filter(x => x !== g) };
-                                } else {
-                                  return { ...prev, include: [...prev.include, g] };
-                                }
-                              }
+                              });
                             });
                           };
 
@@ -1024,12 +1038,12 @@ import { Header } from './components/Header.jsx'
               </section>
 
               <div className={`mb-4 text-sm ${theme.subText}`}>
-                {t('search.resultsCount', currentLocale).replace('{count}', sorted.length)}
+                {t('search.resultsCount', currentLocale).replace('{count}', deferredSorted.length)}
               </div>
 
               <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {!loading && sorted.length === 0 && (<div className={`text-sm ${theme.subText}`}>{t('search.noResults', currentLocale)}</div>)}
-                {sorted.map((g) => (
+                {!loading && deferredSorted.length === 0 && (<div className={`text-sm ${theme.subText}`}>{t('search.noResults', currentLocale)}</div>)}
+                {deferredSorted.map((g) => (
                   <GameCard key={g.id} g={g} theme={theme} priceMode={priceMode} favoriteData={collectionMap[g.id]} onToggleFavorite={handleToggleFavorite} settings={settings} />
                 ))}
               </section>

@@ -15,6 +15,14 @@ export function MobileGenreModal({
   const isLongPressRef = React.useRef(false);
   const touchStartPosRef = React.useRef({ x: 0, y: 0 });
 
+  // Local state for immediate visual feedback
+  const [localSelectedGenres, setLocalSelectedGenres] = React.useState(selectedGenres);
+
+  // Sync local state when parent state changes
+  React.useEffect(() => {
+    setLocalSelectedGenres(selectedGenres);
+  }, [selectedGenres]);
+
   const handleTouchStart = () => (e) => {
     const touch = e.touches[0];
     touchStartPosRef.current = { x: touch.clientX, y: touch.clientY };
@@ -46,7 +54,8 @@ export function MobileGenreModal({
     const isLongPress = isLongPressRef.current;
     isLongPressRef.current = false;
 
-    setSelectedGenres(prev => {
+    // Update local state immediately for instant visual feedback
+    setLocalSelectedGenres(prev => {
       const currentlyIncluded = prev.include.includes(g);
       const currentlyExcluded = prev.exclude.includes(g);
 
@@ -70,6 +79,35 @@ export function MobileGenreModal({
           return { ...prev, include: [...prev.include, g] };
         }
       }
+    });
+
+    // Update parent state in transition (non-urgent, for actual filtering)
+    React.startTransition(() => {
+      setSelectedGenres(prev => {
+        const currentlyIncluded = prev.include.includes(g);
+        const currentlyExcluded = prev.exclude.includes(g);
+
+        if (isLongPress) {
+          // Long press: toggle exclude
+          if (currentlyExcluded) {
+            return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+          } else {
+            return {
+              include: prev.include.filter(x => x !== g),
+              exclude: [...prev.exclude, g]
+            };
+          }
+        } else {
+          // Normal tap: if excluded, remove from exclude (don't add to include)
+          if (currentlyExcluded) {
+            return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+          } else if (currentlyIncluded) {
+            return { ...prev, include: prev.include.filter(x => x !== g) };
+          } else {
+            return { ...prev, include: [...prev.include, g] };
+          }
+        }
+      });
     });
   };
 
@@ -114,8 +152,8 @@ export function MobileGenreModal({
             {allGenres.genres.map((g) => {
               const translatedGenre = translateGenre(g, currentLocale);
               const displayName = truncateByWidth(translatedGenre, 15);
-              const isIncluded = selectedGenres.include.includes(g);
-              const isExcluded = selectedGenres.exclude.includes(g);
+              const isIncluded = localSelectedGenres.include.includes(g);
+              const isExcluded = localSelectedGenres.exclude.includes(g);
 
               return (
                 <div
@@ -157,8 +195,8 @@ export function MobileGenreModal({
               {allGenres.otherTags.map((g) => {
                 const translatedGenre = translateGenre(g, currentLocale);
                 const displayName = truncateByWidth(translatedGenre, 15);
-                const isIncluded = selectedGenres.include.includes(g);
-                const isExcluded = selectedGenres.exclude.includes(g);
+                const isIncluded = localSelectedGenres.include.includes(g);
+                const isExcluded = localSelectedGenres.exclude.includes(g);
 
                 return (
                   <div

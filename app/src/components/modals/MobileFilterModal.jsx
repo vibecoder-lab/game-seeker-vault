@@ -29,6 +29,67 @@ export function MobileFilterModal({
   setSortOrder,
   settings
 }) {
+  // Local state for immediate visual feedback
+  const [localOnlySale, setLocalOnlySale] = React.useState(onlySale);
+  const [localOnlyJP, setLocalOnlyJP] = React.useState(onlyJP);
+  const [localOnlyOverwhelming, setLocalOnlyOverwhelming] = React.useState(onlyOverwhelming);
+  const [localOnlyMac, setLocalOnlyMac] = React.useState(onlyMac);
+  const [localMinPrice, setLocalMinPrice] = React.useState(minPrice);
+  const [localMaxPrice, setLocalMaxPrice] = React.useState(maxPrice);
+  const [localPriceMode, setLocalPriceMode] = React.useState(priceMode);
+  const [localSortOrder, setLocalSortOrder] = React.useState(sortOrder);
+
+  // Sync local state with parent
+  React.useEffect(() => { setLocalOnlySale(onlySale); }, [onlySale]);
+  React.useEffect(() => { setLocalOnlyJP(onlyJP); }, [onlyJP]);
+  React.useEffect(() => { setLocalOnlyOverwhelming(onlyOverwhelming); }, [onlyOverwhelming]);
+  React.useEffect(() => { setLocalOnlyMac(onlyMac); }, [onlyMac]);
+  React.useEffect(() => { setLocalMinPrice(minPrice); }, [minPrice]);
+  React.useEffect(() => { setLocalMaxPrice(maxPrice); }, [maxPrice]);
+  React.useEffect(() => { setLocalPriceMode(priceMode); }, [priceMode]);
+  React.useEffect(() => { setLocalSortOrder(sortOrder); }, [sortOrder]);
+
+  // Handlers with immediate local update + deferred parent update
+  const handleSaleChange = (checked) => {
+    setLocalOnlySale(checked);
+    React.startTransition(() => setOnlySale(checked));
+  };
+
+  const handleJPChange = (checked) => {
+    setLocalOnlyJP(checked);
+    React.startTransition(() => setOnlyJP(checked));
+  };
+
+  const handleOverwhelmingChange = (checked) => {
+    setLocalOnlyOverwhelming(checked);
+    React.startTransition(() => setOnlyOverwhelming(checked));
+  };
+
+  const handleMacChange = (checked) => {
+    setLocalOnlyMac(checked);
+    React.startTransition(() => setOnlyMac(checked));
+  };
+
+  const handleMinPriceChange = (value) => {
+    setLocalMinPrice(value);
+    React.startTransition(() => setMinPrice(value));
+  };
+
+  const handleMaxPriceChange = (value) => {
+    setLocalMaxPrice(value);
+    React.startTransition(() => setMaxPrice(value));
+  };
+
+  const handlePriceModeChange = (mode) => {
+    setLocalPriceMode(mode);
+    React.startTransition(() => setPriceMode(mode));
+  };
+
+  const handleSortOrderChange = (order) => {
+    setLocalSortOrder(order);
+    React.startTransition(() => setSortOrder(order));
+  };
+
   return (
     <div className={isClosing ? 'modal-fade-out' : 'modal-fade-in'} style={{
       position: 'fixed',
@@ -99,19 +160,19 @@ export function MobileFilterModal({
           <div className="text-sm font-semibold mb-2">{t('filter.conditions', currentLocale)}</div>
           <div className="grid grid-cols-2 gap-3">
             <div className="flex items-center gap-2">
-              <input id="modal-saleOnly" type="checkbox" checked={onlySale} onChange={(e)=>setOnlySale(e.target.checked)} className="h-4 w-4" />
+              <input id="modal-saleOnly" type="checkbox" checked={localOnlySale} onChange={(e)=>handleSaleChange(e.target.checked)} className="h-4 w-4" />
               <label htmlFor="modal-saleOnly" className="text-sm">{t('filter.onlySale', currentLocale)}</label>
             </div>
             <div className="flex items-center gap-2">
-              <input id="modal-overwhelmingOnly" type="checkbox" checked={onlyOverwhelming} onChange={(e)=>setOnlyOverwhelming(e.target.checked)} className="h-4 w-4" />
+              <input id="modal-overwhelmingOnly" type="checkbox" checked={localOnlyOverwhelming} onChange={(e)=>handleOverwhelmingChange(e.target.checked)} className="h-4 w-4" />
               <label htmlFor="modal-overwhelmingOnly" className="text-sm">{t('filter.onlyOverwhelming', currentLocale)}</label>
             </div>
             <div className="flex items-center gap-2">
-              <input id="modal-jpOnly" type="checkbox" checked={onlyJP} onChange={(e)=>setOnlyJP(e.target.checked)} className="h-4 w-4" />
+              <input id="modal-jpOnly" type="checkbox" checked={localOnlyJP} onChange={(e)=>handleJPChange(e.target.checked)} className="h-4 w-4" />
               <label htmlFor="modal-jpOnly" className="text-sm">{t('filter.onlyJapanese', currentLocale)}</label>
             </div>
             <div className="flex items-center gap-2">
-              <input id="modal-macOnly" type="checkbox" checked={onlyMac} onChange={(e)=>setOnlyMac(e.target.checked)} className="h-4 w-4" />
+              <input id="modal-macOnly" type="checkbox" checked={localOnlyMac} onChange={(e)=>handleMacChange(e.target.checked)} className="h-4 w-4" />
               <label htmlFor="modal-macOnly" className="text-sm">{t('filter.onlyMac', currentLocale)}</label>
             </div>
           </div>
@@ -121,27 +182,27 @@ export function MobileFilterModal({
           <div className="text-sm font-semibold mb-2">{t('filter.price.title', currentLocale)}</div>
           <div className="space-y-2">
             <div className={`flex items-center justify-between text-sm ${theme.subText}`}>
-              <span>{t('filter.priceMin', currentLocale)} {formatPrice(minPrice, currentLocale)}</span>
-              <span>{t('filter.priceMax', currentLocale)} {formatPrice(maxPrice, currentLocale)}</span>
+              <span>{t('filter.priceMin', currentLocale)} {formatPrice(localMinPrice, currentLocale)}</span>
+              <span>{t('filter.priceMax', currentLocale)} {formatPrice(localMaxPrice, currentLocale)}</span>
             </div>
-            <input type="range" min={0} max={settings?.removePriceLimit ? 20000 : 3000} step={100} value={minPrice} onChange={(e)=>setMinPrice(Math.min(Number(e.target.value), maxPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
-            <input type="range" min={0} max={settings?.removePriceLimit ? 20000 : 3000} step={100} value={maxPrice} onChange={(e)=>setMaxPrice(Math.max(Number(e.target.value), minPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
+            <input type="range" min={0} max={settings?.removePriceLimit ? 20000 : 3000} step={100} value={localMinPrice} onChange={(e)=>handleMinPriceChange(Math.min(Number(e.target.value), localMaxPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
+            <input type="range" min={0} max={settings?.removePriceLimit ? 20000 : 3000} step={100} value={localMaxPrice} onChange={(e)=>handleMaxPriceChange(Math.max(Number(e.target.value), localMinPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
           </div>
         </div>
 
         <div>
           <div className="text-sm font-semibold mb-2">{t('filter.priceMode.title', currentLocale)}</div>
           <div className={`inline-flex flex-wrap rounded-xl ${theme.buttonBg} p-1 gap-1 w-full`}>
-            <button onClick={()=>setPriceMode('current')} className={`px-3 py-1.5 rounded-lg text-xs flex-1 ${priceMode==='current'?theme.buttonActive:''}`}>
+            <button onClick={()=>handlePriceModeChange('current')} className={`px-3 py-1.5 rounded-lg text-xs flex-1 ${localPriceMode==='current'?theme.buttonActive:''}`}>
               {t('filter.priceCurrent', currentLocale)}
             </button>
-            <button onClick={()=>setPriceMode('normal')} className={`px-3 py-1.5 rounded-lg text-xs flex-1 ${priceMode==='normal'?theme.buttonActive:''}`}>
+            <button onClick={()=>handlePriceModeChange('normal')} className={`px-3 py-1.5 rounded-lg text-xs flex-1 ${localPriceMode==='normal'?theme.buttonActive:''}`}>
               {t('filter.priceNormal', currentLocale)}
             </button>
-            <button onClick={()=>setPriceMode('lowest')} className={`px-3 py-1.5 rounded-lg text-xs flex-1 ${priceMode==='lowest'?theme.buttonActive:''}`}>
+            <button onClick={()=>handlePriceModeChange('lowest')} className={`px-3 py-1.5 rounded-lg text-xs flex-1 ${localPriceMode==='lowest'?theme.buttonActive:''}`}>
               {t('filter.priceLowest', currentLocale)}
             </button>
-            <button onClick={()=>setPriceMode('discount')} className={`px-3 py-1.5 rounded-lg text-xs flex-1 ${priceMode==='discount'?theme.buttonActive:''}`}>
+            <button onClick={()=>handlePriceModeChange('discount')} className={`px-3 py-1.5 rounded-lg text-xs flex-1 ${localPriceMode==='discount'?theme.buttonActive:''}`}>
               {t('filter.priceDiscount', currentLocale)}
             </button>
           </div>
@@ -150,8 +211,8 @@ export function MobileFilterModal({
         <div>
           <div className="text-sm font-semibold mb-2">{t('filter.sortOrder', currentLocale)}</div>
           <div className={`inline-flex rounded-xl ${theme.buttonBg} p-1 w-full`}>
-            <button onClick={()=>setSortOrder('asc')} className={`px-3 py-1.5 rounded-lg text-sm flex-1 ${sortOrder==='asc'?theme.buttonActive:''}`}>{t('filter.sortAsc', currentLocale)}</button>
-            <button onClick={()=>setSortOrder('desc')} className={`px-3 py-1.5 rounded-lg text-sm flex-1 ${sortOrder==='desc'?theme.buttonActive:''}`}>{t('filter.sortDesc', currentLocale)}</button>
+            <button onClick={()=>handleSortOrderChange('asc')} className={`px-3 py-1.5 rounded-lg text-sm flex-1 ${localSortOrder==='asc'?theme.buttonActive:''}`}>{t('filter.sortAsc', currentLocale)}</button>
+            <button onClick={()=>handleSortOrderChange('desc')} className={`px-3 py-1.5 rounded-lg text-sm flex-1 ${localSortOrder==='desc'?theme.buttonActive:''}`}>{t('filter.sortDesc', currentLocale)}</button>
           </div>
         </div>
 
