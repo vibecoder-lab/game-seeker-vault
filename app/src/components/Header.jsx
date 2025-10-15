@@ -54,50 +54,6 @@ export function Header({
           </div>
         </div>
 
-        <div className="md:hidden flex items-center gap-2">
-          <button
-            onClick={() => {
-              if (showMobileFilterModal) {
-                handleCloseMobileFilterModal();
-              } else {
-                setShowMobileFilterModal(true);
-              }
-            }}
-            className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all ${showMobileFilterModal ? (currentTheme === 'steam' ? 'steam-blue-bg text-white' : `${theme.text}`) : `${theme.buttonBg}`}`}
-            style={showMobileFilterModal && currentTheme !== 'steam' ? {backgroundColor: 'currentColor', transition: 'background-color 0.1s ease, color 0.1s ease'} : {transition: 'background-color 0.1s ease, color 0.1s ease'}}
-            title={t('filter.title', currentLocale)}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transition-colors duration-100" viewBox="0 0 24 24" fill="currentColor" style={showMobileFilterModal && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569'} : {}}>
-              <path d="M3 3C2.45 3 2 3.45 2 4C2 4.28 2.11 4.53 2.29 4.71L9 11.41V21C9 21.55 9.45 22 10 22C10.28 22 10.53 21.89 10.71 21.71L13.71 18.71C13.89 18.53 14 18.28 14 18V11.41L20.71 4.71C20.89 4.53 21 4.28 21 4C21 3.45 20.55 3 20 3H3Z"/>
-            </svg>
-          </button>
-          <button
-            onClick={() => {
-              if (showMobileGenreModal) {
-                handleCloseMobileGenreModal();
-              } else {
-                setShowMobileGenreModal(true);
-              }
-            }}
-            className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all ${showMobileGenreModal ? (currentTheme === 'steam' ? 'steam-blue-bg text-white' : `${theme.text}`) : `${theme.buttonBg}`}`}
-            style={showMobileGenreModal && currentTheme !== 'steam' ? {backgroundColor: 'currentColor', transition: 'background-color 0.1s ease, color 0.1s ease'} : {transition: 'background-color 0.1s ease, color 0.1s ease'}}
-            title={t('filter.genre', currentLocale)}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transition-colors duration-100" viewBox="0 0 24 24" fill="currentColor" style={showMobileGenreModal && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569'} : {}}>
-              <path d="M21.41 11.58L12.41 2.58C12.05 2.22 11.55 2 11 2H4C2.9 2 2 2.9 2 4V11C2 11.55 2.22 12.05 2.59 12.42L11.59 21.42C11.95 21.78 12.45 22 13 22C13.55 22 14.05 21.78 14.41 21.41L21.41 14.41C21.78 14.05 22 13.55 22 13C22 12.45 21.77 11.94 21.41 11.58ZM5.5 7C4.67 7 4 6.33 4 5.5C4 4.67 4.67 4 5.5 4C6.33 4 7 4.67 7 5.5C7 6.33 6.33 7 5.5 7Z"/>
-            </svg>
-          </button>
-          <button
-            onClick={() => setShowHelpModal(true)}
-            className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all relative ${showHelpModal ? (currentTheme === 'steam' ? 'steam-blue-bg text-white' : `${theme.text}`) : `${theme.buttonBg}`}`}
-            style={showHelpModal && currentTheme !== 'steam' ? {backgroundColor: 'currentColor', transition: 'background-color 0.1s ease, color 0.1s ease'} : {transition: 'background-color 0.1s ease, color 0.1s ease'}}
-            title={t('header.help.tooltip', currentLocale)}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transition-colors duration-100" viewBox="0 0 24 24" fill="currentColor" style={showHelpModal && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569'} : {}}>
-              <path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A8.237 8.237 0 016 18.75c1.995 0 3.823.707 5.25 1.886V4.533zM12.75 20.636A8.214 8.214 0 0118 18.75c.966 0 1.89.166 2.75.47a.75.75 0 001-.708V4.262a.75.75 0 00-.5-.707A9.735 9.735 0 0018 3a9.707 9.707 0 00-5.25 1.533v16.103z" />
-            </svg>
-          </button>
-        </div>
 
         <div className="hidden md:flex items-center gap-3">
           <div className="relative" onMouseLeave={() => setShowFolderDropdown(false)}>
