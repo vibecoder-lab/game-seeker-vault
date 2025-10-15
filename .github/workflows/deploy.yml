@@ -33,7 +33,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            wrangler pages deploy --cwd app --branch=main
+            wrangler pages deploy dist --project-name=gameseekervault --branch=main --cwd app
           else
-            wrangler pages deploy --cwd app --branch=${{ github.ref_name }}
+            wrangler pages deploy dist --project-name=gameseekervault --branch=${{ github.ref_name }} --cwd app
           fi

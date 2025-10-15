@@ -11,15 +11,47 @@ export function MobileGenreModal({
   selectedGenres,
   setSelectedGenres
 }) {
-  const handleGenreClick = (g) => (e) => {
+  const longPressTimerRef = React.useRef(null);
+  const isLongPressRef = React.useRef(false);
+  const touchStartPosRef = React.useRef({ x: 0, y: 0 });
+
+  const handleTouchStart = () => (e) => {
+    const touch = e.touches[0];
+    touchStartPosRef.current = { x: touch.clientX, y: touch.clientY };
+    isLongPressRef.current = false;
+
+    longPressTimerRef.current = setTimeout(() => {
+      isLongPressRef.current = true;
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+    }, 500);
+  };
+
+  const handleTouchMove = (e) => {
+    const touch = e.touches[0];
+    const deltaX = Math.abs(touch.clientX - touchStartPosRef.current.x);
+    const deltaY = Math.abs(touch.clientY - touchStartPosRef.current.y);
+
+    if (deltaX > 10 || deltaY > 10) {
+      clearTimeout(longPressTimerRef.current);
+      isLongPressRef.current = false;
+    }
+  };
+
+  const handleTouchEnd = (g) => (e) => {
     e.preventDefault();
-    const isLongPress = e.type === 'contextmenu';
+    clearTimeout(longPressTimerRef.current);
+
+    const isLongPress = isLongPressRef.current;
+    isLongPressRef.current = false;
 
     setSelectedGenres(prev => {
       const currentlyIncluded = prev.include.includes(g);
       const currentlyExcluded = prev.exclude.includes(g);
 
       if (isLongPress) {
+        // Long press: toggle exclude
         if (currentlyExcluded) {
           return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
         } else {
@@ -29,16 +61,25 @@ export function MobileGenreModal({
           };
         }
       } else {
-        if (currentlyIncluded) {
+        // Normal tap: if excluded, remove from exclude (don't add to include)
+        if (currentlyExcluded) {
+          return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+        } else if (currentlyIncluded) {
           return { ...prev, include: prev.include.filter(x => x !== g) };
         } else {
-          return {
-            exclude: prev.exclude.filter(x => x !== g),
-            include: [...prev.include, g]
-          };
+          return { ...prev, include: [...prev.include, g] };
         }
       }
     });
+  };
+
+  const handleTouchCancel = () => {
+    clearTimeout(longPressTimerRef.current);
+    isLongPressRef.current = false;
+  };
+
+  const handleContextMenu = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -77,7 +118,15 @@ export function MobileGenreModal({
               const isExcluded = selectedGenres.exclude.includes(g);
 
               return (
-                <div key={g} className="flex items-center gap-2 text-sm cursor-pointer select-none" onClick={handleGenreClick(g)} onContextMenu={handleGenreClick(g)}>
+                <div
+                  key={g}
+                  className="flex items-center gap-2 text-sm cursor-pointer touch-enabled"
+                  onTouchStart={handleTouchStart()}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd(g)}
+                  onTouchCancel={handleTouchCancel}
+                  onContextMenu={handleContextMenu}
+                >
                   <div className="relative w-4 h-4 flex-shrink-0">
                     {isExcluded ? (
                       <svg className={`w-4 h-4 ${theme.saleText}`} viewBox="0 0 16 16" fill="currentColor">
@@ -112,7 +161,15 @@ export function MobileGenreModal({
                 const isExcluded = selectedGenres.exclude.includes(g);
 
                 return (
-                  <div key={g} className="flex items-center gap-2 text-sm cursor-pointer select-none" onClick={handleGenreClick(g)} onContextMenu={handleGenreClick(g)}>
+                  <div
+                    key={g}
+                    className="flex items-center gap-2 text-sm cursor-pointer touch-enabled"
+                    onTouchStart={handleTouchStart()}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd(g)}
+                    onTouchCancel={handleTouchCancel}
+                    onContextMenu={handleContextMenu}
+                  >
                     <div className="relative w-4 h-4 flex-shrink-0">
                       {isExcluded ? (
                         <svg className={`w-4 h-4 ${theme.saleText}`} viewBox="0 0 16 16" fill="currentColor">

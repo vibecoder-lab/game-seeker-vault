@@ -681,6 +681,7 @@ import { Header } from './components/Header.jsx'
                             const currentlyExcluded = prev.exclude.includes(g);
 
                             if (isShiftClick) {
+                              // Shift+click: toggle exclude
                               if (currentlyExcluded) {
                                 return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
                               } else {
@@ -690,13 +691,13 @@ import { Header } from './components/Header.jsx'
                                 };
                               }
                             } else {
-                              if (currentlyIncluded) {
+                              // Normal click: if excluded, remove from exclude (don't add to include)
+                              if (currentlyExcluded) {
+                                return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                              } else if (currentlyIncluded) {
                                 return { ...prev, include: prev.include.filter(x => x !== g) };
                               } else {
-                                return {
-                                  exclude: prev.exclude.filter(x => x !== g),
-                                  include: [...prev.include, g]
-                                };
+                                return { ...prev, include: [...prev.include, g] };
                               }
                             }
                           });
@@ -816,28 +817,23 @@ import { Header } from './components/Header.jsx'
                           const currentlyExcluded = prev.exclude.includes(g);
 
                           if (isShiftClick) {
-                            // Shift+click: exclude mode
+                            // Shift+click: toggle exclude
                             if (currentlyExcluded) {
-                              // Already excluded - remove
                               return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
                             } else {
-                              // Exclude from include, or new exclusion
                               return {
                                 include: prev.include.filter(x => x !== g),
                                 exclude: [...prev.exclude, g]
                               };
                             }
                           } else {
-                            // Normal click: include mode
-                            if (currentlyIncluded) {
-                              // Already included - remove
+                            // Normal click: if excluded, remove from exclude (don't add to include)
+                            if (currentlyExcluded) {
+                              return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                            } else if (currentlyIncluded) {
                               return { ...prev, include: prev.include.filter(x => x !== g) };
                             } else {
-                              // Include from exclude, or new inclusion
-                              return {
-                                include: [...prev.include, g],
-                                exclude: prev.exclude.filter(x => x !== g)
-                              };
+                              return { ...prev, include: [...prev.include, g] };
                             }
                           }
                         });
@@ -890,28 +886,23 @@ import { Header } from './components/Header.jsx'
                               const currentlyExcluded = prev.exclude.includes(g);
 
                               if (isShiftClick) {
-                                // Shift+click: exclude mode
+                                // Shift+click: toggle exclude
                                 if (currentlyExcluded) {
-                                  // Already excluded - remove
                                   return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
                                 } else {
-                                  // Exclude from include, or new exclusion
                                   return {
                                     include: prev.include.filter(x => x !== g),
                                     exclude: [...prev.exclude, g]
                                   };
                                 }
                               } else {
-                                // Normal click: include mode
-                                if (currentlyIncluded) {
-                                  // Already included - remove
+                                // Normal click: if excluded, remove from exclude (don't add to include)
+                                if (currentlyExcluded) {
+                                  return { ...prev, exclude: prev.exclude.filter(x => x !== g) };
+                                } else if (currentlyIncluded) {
                                   return { ...prev, include: prev.include.filter(x => x !== g) };
                                 } else {
-                                  // Include from exclude, or new inclusion
-                                  return {
-                                    include: [...prev.include, g],
-                                    exclude: prev.exclude.filter(x => x !== g)
-                                  };
+                                  return { ...prev, include: [...prev.include, g] };
                                 }
                               }
                             });
