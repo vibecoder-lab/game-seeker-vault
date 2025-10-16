@@ -355,9 +355,8 @@ import { Header } from './components/Header.jsx'
           const discountPercent = g.prices?.JP?.discountPercent || null;
 
           // Lowest price: prioritize new format (lowest.JP), check old format (lowestYen) for backward compatibility
-          const lowestJP = g.lowest?.JP !== undefined && g.lowest?.JP !== '-' ? g.lowest.JP : (g.lowestYen || null);
-          // If lowest price is unavailable, prioritize sale price, otherwise use normal price
-          const lowest = lowestJP || salePrice || normal;
+          const lowestJP = g.lowest?.JP !== undefined ? g.lowest.JP : (g.lowestYen || '-');
+          const lowest = lowestJP;
 
           const genres = Array.isArray(g.genres) ? g.genres : [];
 
