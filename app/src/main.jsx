@@ -29,6 +29,7 @@ import { Header } from './components/Header.jsx'
 
       function SteamPriceFilter({ initialData = null }) {
         const [rawGames, setRawGames] = React.useState(initialData ?? []);
+        const [metaData, setMetaData] = React.useState(null);
         const [loading, setLoading] = React.useState(!initialData);
         const [selectedGenres, setSelectedGenres] = React.useState({ include: [], exclude: [] });
         const [onlyJP, setOnlyJP] = React.useState(false);
@@ -179,7 +180,11 @@ import { Header } from './components/Header.jsx'
                 : '/api/games-data';
               const res = await fetch(url, { cache: 'no-store' });
               const data = await res.json();
-              setRawGames(Array.isArray(data) ? data : []);
+              // Support new structure with meta block
+              const games = (data && typeof data === 'object' && 'games' in data) ? data.games : (Array.isArray(data) ? data : []);
+              const meta = (data && typeof data === 'object' && 'meta' in data) ? data.meta : null;
+              setRawGames(games);
+              setMetaData(meta);
             } catch (e) { setRawGames([]); } finally { setLoading(false); }
           })();
         }, [initialData]);
@@ -1036,8 +1041,20 @@ import { Header } from './components/Header.jsx'
                 </div>
               </section>
 
-              <div className={`mb-4 text-sm ${theme.subText}`}>
-                {t('search.resultsCount', currentLocale).replace('{count}', deferredSorted.length)}
+              <div className={`mb-4 text-sm ${theme.subText} flex items-center justify-between`}>
+                <span>{t('search.resultsCount', currentLocale).replace('{count}', deferredSorted.length)}</span>
+                {metaData?.last_updated && (
+                  <span className="text-xs opacity-70">
+                    Updated: {new Date(metaData.last_updated).toLocaleString(currentLocale === 'ja' ? 'ja-JP' : 'en-US', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false
+                    })}
+                  </span>
+                )}
               </div>
 
               <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

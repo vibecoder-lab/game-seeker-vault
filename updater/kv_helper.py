@@ -157,7 +157,12 @@ class KVHelper:
             if file_path.exists():
                 logger.info(f"Local file mode: Reading games-data from {local_file_path}")
                 with open(file_path, 'r', encoding='utf-8') as f:
-                    return json.load(f)
+                    data = json.load(f)
+                    # Support new structure with meta block
+                    if isinstance(data, dict) and 'games' in data:
+                        return data['games']
+                    # Backward compatibility: return entire data if old structure
+                    return data
             else:
                 logger.warning(f"Local file mode: {local_file_path} not found. Returning empty list")
                 return []
@@ -172,6 +177,11 @@ class KVHelper:
                     check=True
                 )
                 data = json.loads(result.stdout)
+                # Support new structure with meta block
+                if isinstance(data, dict) and 'games' in data:
+                    logger.info(f"KV mode: Fetched games-data from KV ({len(data['games'])} items)")
+                    return data['games']
+                # Backward compatibility: return entire data if old structure
                 logger.info(f"KV mode: Fetched games-data from KV ({len(data)} items)")
                 return data
             except subprocess.CalledProcessError as e:
@@ -188,12 +198,24 @@ class KVHelper:
             games_data: games data list to save
             local_file_path: File path for local mode
         """
+        import datetime
+        import uuid
+
+        # Add meta block
+        output_data = {
+            "meta": {
+                "last_updated": datetime.datetime.now(datetime.UTC).replace(tzinfo=None).isoformat(timespec="seconds") + "Z",
+                "build_id": str(uuid.uuid4())
+            },
+            "games": games_data
+        }
+
         if self.is_local_mode():
             # Local file mode: save to file
             file_path = Path(local_file_path)
             file_path.parent.mkdir(parents=True, exist_ok=True)
             with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(games_data, f, ensure_ascii=False, indent=2)
+                json.dump(output_data, f, ensure_ascii=False, indent=2)
             logger.info(f"Local file mode: Saved games-data to {local_file_path} ({len(games_data)} items)")
         else:
             # KV mode: save to KV
@@ -201,7 +223,7 @@ class KVHelper:
                 # Write to temporary file
                 temp_file = Path(TEMP_DIR) / TEMP_GAMES_FILE
                 with open(temp_file, 'w', encoding='utf-8') as f:
-                    json.dump(games_data, f, ensure_ascii=False, indent=2)
+                    json.dump(output_data, f, ensure_ascii=False, indent=2)
 
                 logger.info(f"KV mode: Saving games-data to KV... ({len(games_data)} items)")
                 subprocess.run(
