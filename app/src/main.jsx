@@ -62,6 +62,12 @@ import { Header } from './components/Header.jsx'
         const [selectedFolderId, setSelectedFolderId] = React.useState(null);
         const [collectionMap, setCollectionMap] = React.useState({});
         const [targetFolderId, setTargetFolderId] = React.useState(null);
+        const targetFolderIdRef = React.useRef(null);
+
+        React.useEffect(() => {
+          targetFolderIdRef.current = targetFolderId;
+        }, [targetFolderId]);
+
         const [showFolderDropdown, setShowFolderDropdown] = React.useState(false);
         const [clearButtonPressed, setClearButtonPressed] = React.useState(false);
         const [forceUpdate, setForceUpdate] = React.useState(0);
@@ -322,6 +328,11 @@ import { Header } from './components/Header.jsx'
         }, [folders]);
 
         const handleToggleFavorite = async (game) => {
+          // Wait for folders to be initialized
+          if (folders.length === 0) {
+            return;
+          }
+
           const existing = await dbHelper.getFavoriteByGameId(game.id);
           if (existing) {
             if (existing.deleted) {
@@ -341,15 +352,17 @@ import { Header } from './components/Header.jsx'
               });
             }
           } else {
-            const targetFolder = folders.find(f => f.id === targetFolderId) || folders[0];
-            if (targetFolder) {
-              const newFavId = await dbHelper.addFavorite(targetFolder.id, game.id);
-              // Add to collectionMap
-              setCollectionMap(prev => ({
-                ...prev,
-                [game.id]: { id: newFavId, folderId: targetFolder.id, gameId: game.id, deleted: false }
-              }));
+            const currentTargetFolderId = targetFolderIdRef.current;
+            const targetFolder = folders.find(f => f.id === currentTargetFolderId);
+            if (!targetFolder) {
+              return;
             }
+            const newFavId = await dbHelper.addFavorite(targetFolder.id, game.id);
+            // Add to collectionMap
+            setCollectionMap(prev => ({
+              ...prev,
+              [game.id]: { id: newFavId, folderId: targetFolder.id, gameId: game.id, deleted: false }
+            }));
           }
         };
 

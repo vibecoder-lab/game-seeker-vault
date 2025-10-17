@@ -66,12 +66,44 @@ export async function updateFavoriteFolder(favoriteId, newFolderId) {
     const req = store.get(favoriteId);
     req.onsuccess = () => resolve(req.result);
   });
+
+  const oldSortOrder = fav.sortOrder;
+  const oldFolderId = fav.folderId;
+
+  // Get game count in destination folder and set sortOrder to the end
+  const index = store.index('folderId');
+  const destFolderGames = await new Promise((resolve) => {
+    const request = index.getAll(newFolderId);
+    request.onsuccess = () => resolve(request.result);
+  });
+
+  const activeGamesInDest = destFolderGames.filter(item => !item.deleted);
   fav.folderId = newFolderId;
+  fav.sortOrder = activeGamesInDest.length + 1;
+
   await new Promise((resolve, reject) => {
     const request = store.put(fav);
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
+
+  // Decrement sortOrder for games after the moved game in the source folder
+  const sourceFolderGames = await new Promise((resolve) => {
+    const request = index.getAll(oldFolderId);
+    request.onsuccess = () => resolve(request.result);
+  });
+
+  for (const item of sourceFolderGames) {
+    if (item.id !== favoriteId && !item.deleted && typeof item.sortOrder === 'number' && item.sortOrder > oldSortOrder) {
+      item.sortOrder -= 1;
+      await new Promise((resolve, reject) => {
+        const request = store.put(item);
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    }
+  }
+
   db.close();
 }
 
@@ -170,7 +202,7 @@ export async function restoreFromTrash(favoriteId) {
     request.onsuccess = () => resolve(request.result);
   });
 
-  const activeGames = allInFolder.filter(item => item.id !== favoriteId && !item.deleted);
+  const activeGames = allInFolder.filter(item => !item.deleted);
   fav.sortOrder = activeGames.length + 1;
 
   await new Promise((resolve, reject) => {
