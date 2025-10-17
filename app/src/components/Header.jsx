@@ -1,6 +1,7 @@
 import React from 'react';
 import { t, currentLocale, setLocale } from '../i18n/index.js';
 import { dbHelper } from '../db/index.js';
+import { getLocalizedFolderName } from '../utils/format.js';
 
 export function Header({
   theme,
@@ -66,7 +67,7 @@ export function Header({
                 <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
               </svg>
               <span className="max-w-[160px] truncate">
-                {folders.find(f => f.id === targetFolderId)?.name || t('header.folder.label', currentLocale)}
+                {getLocalizedFolderName(folders.find(f => f.id === targetFolderId)?.name, currentLocale) || t('header.folder.label', currentLocale)}
               </span>
             </button>
             {showFolderDropdown && (
@@ -80,7 +81,7 @@ export function Header({
                     }}
                     className={`block w-full text-left px-4 py-2 text-sm whitespace-nowrap ${targetFolderId === folder.id ? theme.folderSelected : theme.modalHover}`}
                   >
-                    {folder.name}
+                    {getLocalizedFolderName(folder.name, currentLocale)}
                   </button>
                 ))}
               </div>

@@ -1041,17 +1041,14 @@ import { Header } from './components/Header.jsx'
                 </div>
               </section>
 
-              <div className={`mb-4 text-sm ${theme.subText} flex items-center justify-between`}>
+              <div className={`mb-4 text-sm ${theme.subText} flex items-center justify-between gap-2`}>
                 <span>{t('search.resultsCount', currentLocale).replace('{count}', deferredSorted.length)}</span>
                 {metaData?.last_updated && (
-                  <span className="text-xs opacity-70">
-                    Updated: {new Date(metaData.last_updated).toLocaleString(currentLocale === 'ja' ? 'ja-JP' : 'en-US', {
+                  <span className="text-xs opacity-70 whitespace-nowrap">
+                    Updated: {new Date(metaData.last_updated).toLocaleDateString(currentLocale === 'ja' ? 'ja-JP' : 'en-US', {
                       year: 'numeric',
                       month: '2-digit',
-                      day: '2-digit',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      hour12: false
+                      day: '2-digit'
                     })}
                   </span>
                 )}
@@ -1060,7 +1057,7 @@ import { Header } from './components/Header.jsx'
               <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {!loading && deferredSorted.length === 0 && (<div className={`text-sm ${theme.subText}`}>{t('search.noResults', currentLocale)}</div>)}
                 {deferredSorted.map((g) => (
-                  <GameCard key={g.id} g={g} theme={theme} priceMode={priceMode} favoriteData={collectionMap[g.id]} onToggleFavorite={handleToggleFavorite} settings={settings} />
+                  <GameCard key={g.id} g={g} theme={theme} priceMode={priceMode} favoriteData={collectionMap[g.id]} onToggleFavorite={handleToggleFavorite} settings={settings} locale={currentLocale} />
                 ))}
               </section>
             </div>

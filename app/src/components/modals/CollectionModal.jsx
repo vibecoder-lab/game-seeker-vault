@@ -1,6 +1,6 @@
 import React from 'react';
 import { t, currentLocale, formatPrice } from '../../i18n/index.js';
-import { yen, formatDateTime, truncateByWidth } from '../../utils/format.js';
+import { yen, formatDateTime, truncateByWidth, normalizeGenres, checkJapaneseSupport, cleanLanguageText, translateReviewScore, formatReleaseDate, getLocalizedFolderName } from '../../utils/format.js';
 import { steamCapsuleUrl, linkFor } from '../../utils/steam.js';
 import { dbHelper } from '../../db/index.js';
 
@@ -310,7 +310,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                 <span className={`block w-full h-full rounded-full ${theme.saleBg}`}></span>
                               )}
                             </span>
-                            <span className="flex-1 text-xs min-w-0">{folder.name}</span>
+                            <span className="flex-1 text-xs min-w-0">{getLocalizedFolderName(folder.name, currentLocale)}</span>
                           </div>
                           <div className="flex items-center gap-1 transition-transform duration-300 group-hover:translate-x-0 translate-x-[60px]">
                             <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
@@ -318,7 +318,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setEditingFolderId(folder.id);
-                                setEditingFolderName(folder.name);
+                                setEditingFolderName(getLocalizedFolderName(folder.name, currentLocale));
                               }}
                               className={`p-1 rounded ${theme.text} ${theme.iconHover}`}
                               title={t('button.rename', currentLocale)}
@@ -379,7 +379,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
               <div className="flex-1 flex flex-col">
                 <div className={`px-4 py-3 border-b ${theme.border} flex items-center justify-between h-[46px]`}>
                   <h2 className="text-base font-bold">
-                    {selectedFolderId === TRASH_FOLDER_ID ? t('collection.trash', currentLocale) : (folders.find(f => f.id === selectedFolderId)?.name || t('collection.title', currentLocale))}
+                    {selectedFolderId === TRASH_FOLDER_ID ? t('collection.trash', currentLocale) : (getLocalizedFolderName(folders.find(f => f.id === selectedFolderId)?.name, currentLocale) || t('collection.title', currentLocale))}
                   </h2>
                   <div className="flex items-center gap-2 mr-20">
                       <button
@@ -556,7 +556,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                       }}
                                       className={`block w-full text-left px-3 py-2 text-sm ${theme.modalHover} whitespace-nowrap`}
                                     >
-                                      {f.name}
+                                      {getLocalizedFolderName(f.name, currentLocale)}
                                     </button>
                                   ))}
                                 </div>

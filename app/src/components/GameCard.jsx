@@ -3,7 +3,7 @@ import { t, currentLocale, formatPrice, formatDate } from '../i18n/index.js';
 import { normalizeGenres, formatReleaseDate, checkJapaneseSupport, cleanLanguageText, translateReviewScore, yen } from '../utils/format.js';
 import { steamCapsuleUrl, linkFor } from '../utils/steam.js';
 
-function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite, settings }) {
+function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite, settings, locale }) {
   const [isHovered, setIsHovered] = React.useState(false);
   const [shiftPressed, setShiftPressed] = React.useState(false);
   const [starHovered, setStarHovered] = React.useState(false);
@@ -310,7 +310,8 @@ export const GameCard = React.memo(GameCardComponent, (prevProps, nextProps) => 
     prevProps.theme === nextProps.theme &&
     prevProps.favoriteData?.folderId === nextProps.favoriteData?.folderId &&
     prevProps.favoriteData?.deleted === nextProps.favoriteData?.deleted &&
-    prevProps.settings === nextProps.settings
+    prevProps.settings === nextProps.settings &&
+    prevProps.locale === nextProps.locale
   );
 });
 

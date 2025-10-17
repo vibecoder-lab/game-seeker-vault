@@ -205,7 +205,13 @@ class KVHelper:
         output_data = {
             "meta": {
                 "last_updated": datetime.datetime.now(datetime.UTC).replace(tzinfo=None).isoformat(timespec="seconds") + "Z",
-                "build_id": str(uuid.uuid4())
+                "data_version": "1.0.0",
+                "source": {
+                    "steam": True,
+                    "itad": True
+                },
+                "build_id": str(uuid.uuid4()),
+                "record_count": len(games_data)
             },
             "games": games_data
         }

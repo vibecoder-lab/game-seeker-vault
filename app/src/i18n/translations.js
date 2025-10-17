@@ -124,7 +124,7 @@ const translations = {
     'search.placeholder': 'Search by title...',
     'search.clear': 'Clear',
     'search.noResults': 'No games found',
-    'search.resultsCount': '{count} games found',
+    'search.resultsCount': '{count} games',
 
     // Buttons
     'button.close': 'Close',
@@ -470,7 +470,7 @@ const translations = {
     'search.placeholder': 'タイトルで検索...',
     'search.clear': 'クリア',
     'search.noResults': 'ゲームが見つかりません',
-    'search.resultsCount': '{count}件のゲームが見つかりました',
+    'search.resultsCount': '{count}件',
 
     // Buttons
     'button.close': '閉じる',

@@ -113,27 +113,31 @@ class ITADClient:
 
             game_data = data[0] if isinstance(data, list) else data
 
-            # Fetch historical low (all time historical low)
-            # Structure: historyLow.all.amount
-            history_low = game_data.get('historyLow', {})
-            all_time_low = history_low.get('all', {})
+            # Fetch Steam-only historical low from deals array
+            # Steam shop ID is 61, use storeLow.amount for historical low
+            deals = game_data.get('deals', [])
+            steam_store_low = None
 
-            if all_time_low:
-                amount = all_time_low.get('amount')
-                currency = all_time_low.get('currency', 'USD')
+            for deal in deals:
+                shop = deal.get('shop', {})
+                if shop.get('id') == 61:  # Steam shop ID
+                    store_low = deal.get('storeLow', {})
+                    amount = store_low.get('amount')
+                    currency = store_low.get('currency', 'USD')
 
-                if amount:
-                    # Currency check (warning only, return data anyway)
-                    if currency != expected_currency:
-                        logger.warning(f"ITAD: Currency mismatch expected {expected_currency}, got {currency} (ID: {itad_id}, region: {region})")
+                    if amount:
+                        # Currency check (warning only, return data anyway)
+                        if currency != expected_currency:
+                            logger.warning(f"ITAD: Currency mismatch expected {expected_currency}, got {currency} (ID: {itad_id}, region: {region})")
 
-                    logger.info(f"ITAD: Historical low fetch success {currency} {amount} (ID: {itad_id}, region: {region})")
-                    return int(amount)
-                else:
-                    logger.warning(f"ITAD: No amount data (ID: {itad_id}, region: {region})")
-                    return None
+                        steam_store_low = int(amount)
+                        logger.info(f"ITAD: Steam historical low fetch success (ID: {itad_id}, region: {region})")
+                        break
+
+            if steam_store_low:
+                return steam_store_low
             else:
-                logger.warning(f"ITAD: No historical low data (ID: {itad_id}, region: {region})")
+                logger.warning(f"ITAD: No Steam historical low data (ID: {itad_id}, region: {region})")
                 return None
 
         except Exception as e:

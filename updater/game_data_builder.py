@@ -390,7 +390,7 @@ class GameDataBuilder:
                         historical_low = self.itad_client.get_historical_low(itad_id, region=region)
                         if historical_low:
                             lowest_prices[region] = historical_low
-                            logger.info(f"  ✓ ITAD historical low ({region}): {historical_low}")
+                            logger.info(f"  ✓ ITAD historical low fetch success ({region})")
                         else:
                             lowest_prices[region] = '-'
                             logger.warning(f"  ⚠ ITAD historical low fetch failed ({region}) (App ID: {app_id})")
@@ -413,8 +413,7 @@ class GameDataBuilder:
                 logger.warning(f"  ⚠ No ITAD ID (App ID: {app_id})")
 
             rebuilt_games.append(new_game)
-            price_info = ', '.join([f"{r}: {p.get('currency', 'N/A')} {p.get('price', 0)}" for r, p in steam_data['prices'].items()])
-            logger.info(f"  ✓ Success (App ID: {app_id}) - {price_info}")
+            logger.info(f"  ✓ Success (App ID: {app_id})")
 
             # Rate limiting protection
             time.sleep(random.uniform(1.0, 1.5))
