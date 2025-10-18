@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 """
-Script to rebuild games.json from scratch (async version)
+Script to rebuild games.json from scratch
 Fetches all data from Steam API and IsThereAnyDeal API
 
 Usage:
-  python3 updater/main.py [ITAD_API_KEY] [--new-only] [--regions JP,US,UK,EU] [--kv] [--concurrency 5]
+  python3 updater/main.py [ITAD_API_KEY] [--new-only] [--regions JP,US,UK,EU] [--kv]
 
 Options:
   --new-only: Add new titles + fetch data only for new additions
   --regions: Regions to fetch prices for (default: JP)
     Example: --regions JP,US,UK,EU
   --kv: Use KV in local environment (for testing)
-  --concurrency: Maximum number of games to process concurrently (default: 5)
 
 Environment detection:
   - Github Actions environment: Automatically uses KV
@@ -19,12 +18,10 @@ Environment detection:
   - With --kv option: Uses KV even in local environment
 """
 
-import asyncio
 import json
 import sys
 import logging
 import os
-import time
 from pathlib import Path
 from game_data_builder import GameDataBuilder
 from kv_helper import KVHelper
@@ -102,7 +99,7 @@ def print_mapping_report(mapping_result):
     print(f"\n{'='*60}\n")
 
 
-def print_rebuild_report(result, elapsed_time):
+def print_rebuild_report(result):
     """Display rebuild result report"""
     rebuilt_games = result['rebuilt_games']
     failed_games = result['failed_games']
@@ -114,7 +111,6 @@ def print_rebuild_report(result, elapsed_time):
     print(f"{'='*60}")
     print(f"Success: {len(rebuilt_games)} items")
     print(f"Failed: {len(failed_games)} items")
-    print(f"Total execution time: {elapsed_time:.2f} seconds")
 
     if failed_games:
         print(f"\n【Data Fetch Failures】")
@@ -143,6 +139,7 @@ def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_
     """Save rebuilt data and save to KV"""
     import shutil
     import datetime
+    from pathlib import Path
 
     # Save to local file (tmp directory)
     output_file = tmp_dir / 'games_rebuilt.json'
@@ -219,14 +216,13 @@ def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_
         print(f"{'='*60}")
 
 
-async def main():
-    """Main entry point (async version)"""
+def main():
+    """Main entry point"""
     # Parse command line arguments
     itad_key = None
     new_only = False
     use_kv_option = False
     regions = DEFAULT_REGIONS.copy()
-    max_concurrency = 5
 
     i = 1
     while i < len(sys.argv):
@@ -238,10 +234,6 @@ async def main():
         elif arg == '--regions':
             if i + 1 < len(sys.argv):
                 regions = sys.argv[i + 1].split(',')
-                i += 1
-        elif arg == '--concurrency':
-            if i + 1 < len(sys.argv):
-                max_concurrency = int(sys.argv[i + 1])
                 i += 1
         else:
             itad_key = arg
@@ -271,25 +263,19 @@ async def main():
     # Initialize GameDataBuilder
     builder = GameDataBuilder(itad_api_key=itad_key)
 
-    # Record start time
-    start_time = time.time()
-
-    # Build game data (async)
-    result = await builder.rebuild_games_data(
+    # Build game data
+    result = builder.rebuild_games_data(
         new_only=new_only,
         regions=regions,
         kv_helper=kv_helper
     )
-
-    # Calculate elapsed time
-    elapsed_time = time.time() - start_time
 
     # Display mapping results
     if result.get('mapping_result'):
         print_mapping_report(result['mapping_result'])
 
     # Display rebuild results
-    print_rebuild_report(result, elapsed_time)
+    print_rebuild_report(result)
 
     # Save
     save_and_backup(
@@ -303,4 +289,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
