@@ -805,7 +805,7 @@ function SteamPriceFilter({ initialData = null }) {
                 placeholder={t("search.placeholder", currentLocale)}
                 value={searchTitle}
                 onChange={(e) => setSearchTitle(e.target.value)}
-                className={`${theme.cardBg} ${theme.text} ${theme.border} border rounded-lg px-3 py-2 pr-10 text-sm w-full focus:outline-none focus:ring-2 ${currentTheme === "steam" ? "focus:ring-[#4668FF]" : "focus:ring-blue-500"}`}
+                className={`${theme.cardBg} ${theme.text} ${theme.border} border rounded-lg px-3 py-2 pr-10 text-base w-full focus:outline-none focus:ring-2 ${currentTheme === "steam" ? "focus:ring-[#4668FF]" : "focus:ring-blue-500"}`}
               />
               {searchTitle && (
                 <button
@@ -883,6 +883,43 @@ function SteamPriceFilter({ initialData = null }) {
                   >
                     {t("filter.onlyMac", currentLocale)}
                   </button>
+                  {allGenres.otherTags.map((g) => {
+                    const translatedGenre = translateGenre(g, currentLocale);
+                    const isIncluded = selectedGenres.include.includes(g);
+
+                    return (
+                      <button
+                        key={g}
+                        onClick={() => {
+                          React.startTransition(() => {
+                            setSelectedGenres((prev) => {
+                              const currentlyIncluded = prev.include.includes(g);
+                              if (currentlyIncluded) {
+                                return {
+                                  ...prev,
+                                  include: prev.include.filter((x) => x !== g),
+                                };
+                              } else {
+                                return {
+                                  ...prev,
+                                  include: [...prev.include, g],
+                                };
+                              }
+                            });
+                          });
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
+                          isIncluded
+                            ? currentTheme === "steam"
+                              ? "steam-blue-bg text-white"
+                              : "bg-blue-500 text-white"
+                            : `${theme.tagBg} ${theme.tagText}`
+                        }`}
+                      >
+                        {translatedGenre}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -1688,44 +1725,45 @@ function SteamPriceFilter({ initialData = null }) {
                 </div>
               </button>
 
-              {/* Settings button */}
+              {/* Clear filters button */}
               <button
-                onClick={() => setShowSettingsModal(true)}
-                className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all relative ${showSettingsModal ? (currentTheme === "steam" ? "steam-blue-bg text-white" : `${theme.text}`) : `${theme.buttonBg}`}`}
-                style={
-                  showSettingsModal && currentTheme !== "steam"
-                    ? {
-                        backgroundColor: "currentColor",
-                        transition:
-                          "background-color 0.1s ease, color 0.1s ease",
-                      }
-                    : {
-                        transition:
-                          "background-color 0.1s ease, color 0.1s ease",
-                      }
-                }
-                title={t("header.settings.tooltip", currentLocale)}
+                onMouseDown={() => {
+                  setClearButtonPressed(true);
+                  setTimeout(() => setClearButtonPressed(false), 100);
+                }}
+                onClick={() => {
+                  setOnlySale(false);
+                  setOnlyOverwhelming(false);
+                  setOnlyJP(false);
+                  setOnlyMac(false);
+                  setSelectedGenres({ include: [], exclude: [] });
+                  setSelectedTags([]);
+                  setMinPrice(0);
+                  setMaxPrice(settings?.removePriceLimit ? 20000 : 3000);
+                  setPriceMode("current");
+                  setSortOrder("asc");
+                  setSelectedYear("all");
+                  setSearchTitle("");
+                }}
+                className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all ${clearButtonPressed ? theme.buttonActive : theme.buttonBg}`}
+                title={t("filter.clearTooltip", currentLocale)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 transition-colors duration-100"
-                  viewBox="0 0 24 24"
+                  className="h-5 w-5"
+                  viewBox="0 0 100 100"
                   fill="currentColor"
-                  style={
-                    showSettingsModal && currentTheme !== "steam"
-                      ? {
-                          color: theme.buttonBg.includes("bg-gray-100")
-                            ? "#f3f4f6"
-                            : "#475569",
-                        }
-                      : {}
-                  }
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 00-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 00-2.282.819l-.922 1.597a1.875 1.875 0 00.432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 000 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 00-.432 2.385l.922 1.597a1.875 1.875 0 002.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 002.28-.819l.923-1.597a1.875 1.875 0 00-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 000-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 00-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 00-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 00-1.85-1.567h-1.843zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z"
-                    clipRule="evenodd"
-                  />
+                  <defs>
+                    <mask id="eraser-clear-mask">
+                      <rect width="100" height="100" fill="white" />
+                      <rect x="38" y="20" width="4" height="60" fill="black" />
+                      <rect x="58" y="20" width="4" height="60" fill="black" />
+                    </mask>
+                  </defs>
+                  <g transform="rotate(-35 50 50)" mask="url(#eraser-clear-mask)">
+                    <rect x="20" y="10" width="60" height="80" rx="10" ry="10" />
+                  </g>
                 </svg>
               </button>
 

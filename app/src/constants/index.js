@@ -10,6 +10,7 @@ export const DEFAULT_SETTINGS = {
   useAlternativeKeys: false,       // Z/X instead of C/T
   saveTheme: false,                // Whether to save theme
   showAllTags: false,              // Show all tags (default: top 50)
+  enableScrollAnimation: true,     // Enable scroll-linked card animation on mobile
   settingsVersion: 1
 };
 

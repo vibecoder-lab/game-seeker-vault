@@ -10,8 +10,11 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
   const [starButtonHovered, setStarButtonHovered] = React.useState(false);
   const [starClicked, setStarClicked] = React.useState(null);
   const [sparkles, setSparkles] = React.useState([]);
+  const [isSticky, setIsSticky] = React.useState(false);
+  const [showDetailModal, setShowDetailModal] = React.useState(false);
   const cardRef = React.useRef(null);
   const detailRef = React.useRef(null);
+  const longPressTimer = React.useRef(null);
   const cap = steamCapsuleUrl(g);
   const genres = g.genres?.length ? normalizeGenres(g.genres) : ['(genre unknown)'];
   const isFavorite = favoriteData && !favoriteData.deleted;
@@ -53,6 +56,31 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
     };
   }, [isHovered, shiftPressed]);
 
+  // Mobile sticky behavior: show full image when card is in upper 1/3 of screen
+  React.useEffect(() => {
+    // Only apply on mobile devices
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile || !cardRef.current || !settings?.enableScrollAnimation) return;
+
+    const checkPosition = () => {
+      if (!cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const threshold = viewportHeight / 4; // 1/4 from top = 3/4 from bottom
+
+      // Show full image when card top is above the 1/4 line (3/4 from bottom)
+      setIsSticky(rect.top < threshold);
+    };
+
+    // Check on scroll
+    checkPosition();
+    window.addEventListener('scroll', checkPosition, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', checkPosition);
+    };
+  }, [settings?.enableScrollAnimation]);
+
   const handleStarClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -73,7 +101,53 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
     onToggleFavorite(g);
   };
 
+  // Mobile long-press handlers
+  const handleTouchStart = (e) => {
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile) return;
+
+    longPressTimer.current = setTimeout(() => {
+      setShowDetailModal(true);
+      // Scroll card to center of viewport
+      if (cardRef.current) {
+        const rect = cardRef.current.getBoundingClientRect();
+        const cardCenter = rect.top + rect.height / 2;
+        const viewportCenter = window.innerHeight / 2;
+        const scrollOffset = cardCenter - viewportCenter;
+        window.scrollBy({ top: scrollOffset, behavior: 'smooth' });
+      }
+    }, 500); // 500ms long press
+  };
+
+  const handleTouchEnd = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+
+  const handleTouchMove = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      setShowDetailModal(false);
+    }
+  };
+
         return (
+          <>
+          {showDetailModal && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-40"
+              onClick={handleBackdropClick}
+              style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+            />
+          )}
           <div key={g.id} className="relative group">
             <div className="absolute top-2 right-2 z-20 hidden md:block">
               <button
@@ -147,7 +221,11 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
             </div>
             <a href={linkFor(g)} target="_blank" rel="noreferrer noopener"
                ref={cardRef}
-               className={`block rounded-2xl ${theme.cardShadow} overflow-hidden`}
+               className={`block rounded-2xl ${theme.cardShadow} overflow-hidden ${showDetailModal ? 'relative z-50' : ''}`}
+               style={{
+                 WebkitTouchCallout: 'none',
+                 WebkitUserSelect: 'none'
+               }}
                onMouseEnter={(e) => {
                  setIsHovered(true);
                  setShiftPressed(e.shiftKey);
@@ -158,6 +236,20 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
                onMouseLeave={() => {
                  setIsHovered(false);
                  setShiftPressed(false);
+               }}
+               onTouchStart={handleTouchStart}
+               onTouchEnd={handleTouchEnd}
+               onTouchMove={handleTouchMove}
+               onClick={(e) => {
+                 if (showDetailModal) {
+                   e.preventDefault();
+                 }
+               }}
+               onContextMenu={(e) => {
+                 const isMobile = window.innerWidth < 768;
+                 if (isMobile) {
+                   e.preventDefault();
+                 }
                }}>
             <div className="flex h-[234px] relative overflow-hidden">
               <div className="absolute inset-0">
@@ -169,12 +261,30 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
                   className="absolute h-full object-cover block transition-all duration-300 ease-in-out"
                   style={{
                     width: '616px',
-                    left: isHovered ? '50%' : 'calc(100% - 110px)',
+                    left: (isHovered || isSticky) ? '50%' : 'calc(100% - 110px)',
                     transform: 'translateX(-50%)'
                   }}
                 />
                 <div ref={detailRef} className={`absolute inset-0 ${theme.cardBg} ${theme.text} p-4 overflow-y-auto z-20 transition-transform duration-300 ease-in-out`}
-                     style={{transform: (isHovered && shiftPressed) ? 'translateX(0)' : 'translateX(-100%)'}}>
+                     style={{
+                       transform: (isHovered && shiftPressed) || showDetailModal ? 'translateX(0)' : 'translateX(-100%)',
+                       touchAction: showDetailModal ? 'pan-y' : 'auto'
+                     }}
+                     onTouchStart={(e) => {
+                       if (showDetailModal) {
+                         e.stopPropagation();
+                       }
+                     }}
+                     onTouchMove={(e) => {
+                       if (showDetailModal) {
+                         e.stopPropagation();
+                       }
+                     }}
+                     onTouchEnd={(e) => {
+                       if (showDetailModal) {
+                         e.stopPropagation();
+                       }
+                     }}>
                   <div className={`mb-2 pb-2 border-b ${theme.border}`}>
                     <div className="text-sm">{g.title}</div>
                   </div>
@@ -236,23 +346,20 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
                 </div>
               </div>
 
-              <div className={`flex-1 p-4 flex flex-col relative z-10 transition-transform duration-300 ease-in-out ${theme.cardBg}`}
-                   style={{transform: isHovered ? 'translateX(-100%)' : 'translateX(0)'}}>
-                <h3 className={`font-semibold text-base leading-tight pr-2 ${theme.text}`}>
-                  {(() => {
-                    const spaceCount = (g.title.match(/[ 　]/g) || []).length;
-                    if (spaceCount >= 4) {
-                      return g.title.length > 26 ? g.title.substring(0, 26) + '…' : g.title;
-                    } else if (spaceCount >= 3) {
-                      return g.title.length > 21 ? g.title.substring(0, 21) + '…' : g.title;
-                    } else {
-                      return g.title.length > 30 ? g.title.substring(0, 30) + '…' : g.title;
-                    }
-                  })()}
+              <div className={`w-[calc(100%-200px)] md:flex-1 p-4 flex flex-col relative z-10 transition-transform duration-300 ease-in-out ${theme.cardBg}`}
+                   style={{transform: (isHovered || isSticky) ? 'translateX(-100%)' : 'translateX(0)'}}>
+                <h3 className={`font-semibold text-base leading-tight pr-2 overflow-hidden text-ellipsis ${theme.text}`}
+                    style={{
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      wordBreak: 'break-word'
+                    }}>
+                  {g.title}
                 </h3>
                 <div className="mt-2 flex flex-col gap-1">
                   {genres.slice(0, 3).map((tag) => (
-                    <span key={tag} className={`text-[11px] ${theme.tagBg} ${theme.tagText} px-2 py-1 rounded-full whitespace-nowrap w-fit`}>{tag}</span>
+                    <span key={tag} className={`text-[11px] ${theme.tagBg} ${theme.tagText} px-2 py-1 rounded-full whitespace-nowrap w-fit max-w-full overflow-hidden text-ellipsis block`}>{tag}</span>
                   ))}
                   {genres.length > 3 && (
                     <span className={`text-[11px] ${theme.tagBg} ${theme.tagText} px-2 py-1 rounded-full whitespace-nowrap w-fit`}>…</span>
@@ -285,7 +392,7 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
                       {g.lowestYenResolved && g.lowestYenResolved !== '-' ? `${formatPrice(g.lowestYenResolved, currentLocale)}(${t('price.lowest', currentLocale)})` : t('price.unknown', currentLocale)}
                     </div>
                     {checkJapaneseSupport(g.supportedLanguages) === t('language.supported', currentLocale) && (
-                      <div className={`text-[11px] px-2 py-0.5 rounded-full whitespace-nowrap ${theme.jpBg} ${theme.jpText}`}>
+                      <div className={`hidden md:block text-[11px] px-2 py-0.5 rounded-full whitespace-nowrap ${theme.jpBg} ${theme.jpText}`}>
                         {t('card.japanese', currentLocale)}
                       </div>
                     )}
@@ -293,10 +400,11 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
                 </div>
               </div>
 
-              <div className="w-[220px] h-full relative z-0"></div>
+              <div className="w-[200px] md:w-[220px] h-full relative z-0"></div>
             </div>
           </a>
           </div>
+          </>
         );
 }
 
