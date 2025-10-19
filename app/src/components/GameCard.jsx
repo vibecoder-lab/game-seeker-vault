@@ -86,15 +86,15 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
                   setStarHovered(false);
                   setStarButtonHovered(false);
                 }}
-                className={`p-2 transition-all ${settings?.alwaysShowStarIcon ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                className={`p-2 ${settings?.alwaysShowStarIcon ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
                 style={{
                   transform: starClicked === true ? 'scale(2)' :
                              starClicked === false ? 'scale(0.5)' :
                              starButtonHovered ? 'scale(1.1)' :
                              'scale(1)',
-                  transitionDuration: starClicked === true ? '400ms' :
-                                     starClicked === false ? '300ms' :
-                                     '300ms'
+                  transition: starClicked === true ? 'transform 400ms ease, opacity 300ms ease' :
+                             starClicked === false ? 'transform 300ms ease, opacity 300ms ease' :
+                             'transform 300ms ease, opacity 300ms ease'
                 }}
                 title={isFavorite ? t('card.removeFromFavorites', currentLocale) : t('card.addToFavorites', currentLocale)}
               >
