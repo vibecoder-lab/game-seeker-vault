@@ -4,13 +4,14 @@ Script to rebuild games.json from scratch
 Fetches all data from Steam API and IsThereAnyDeal API
 
 Usage:
-  python3 updater/main.py [ITAD_API_KEY] [--new-only] [--regions JP,US,UK,EU] [--kv]
+  python3 updater/main.py [ITAD_API_KEY] [--new-only] [--regions JP,US,UK,EU] [--kv] [--reset-prices]
 
 Options:
   --new-only: Add new titles + fetch data only for new additions
   --regions: Regions to fetch prices for (default: JP)
     Example: --regions JP,US,UK,EU
   --kv: Use KV in local environment (for testing)
+  --reset-prices: Reset all prices to 0 in games.json (for testing differential updates)
 
 Environment detection:
   - Github Actions environment: Automatically uses KV
@@ -105,11 +106,20 @@ def print_rebuild_report(result):
     failed_games = result['failed_games']
     missing_data = result['missing_data']
     mapping_result = result.get('mapping_result')
+    games_without_itad = result.get('games_without_itad', [])
+    games_with_image_fallback = result.get('games_with_image_fallback', [])
 
     print(f"\n{'='*60}")
     print(f"Data Fetch Results")
     print(f"{'='*60}")
-    print(f"Success: {len(rebuilt_games)} items")
+    success_with_itad = len(rebuilt_games) - len(games_without_itad)
+    print(f"Success with ITAD data: {success_with_itad} items")
+    if games_without_itad:
+        print(f"Success without ITAD data (Steam API only): {len(games_without_itad)} items")
+        print(f"  App IDs: {games_without_itad}")
+    if games_with_image_fallback:
+        print(f"Games using fallback image (not capsule_616x353): {len(games_with_image_fallback)} items")
+        print(f"  App IDs: {games_with_image_fallback}")
     print(f"Failed: {len(failed_games)} items")
 
     if failed_games:
@@ -216,12 +226,41 @@ def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_
         print(f"{'='*60}")
 
 
+def reset_prices_command(kv_helper):
+    """Reset all prices to 1 in games.json"""
+    logger.info("=== Reset Prices Mode ===")
+
+    # Get existing games data
+    games_data = kv_helper.get_games_data()
+    logger.info(f"Loaded {len(games_data)} games from KV/file")
+
+    # Reset all prices to 1
+    updated_count = 0
+    for game in games_data:
+        if 'deal' in game and 'JPY' in game['deal']:
+            game['deal']['JPY']['price'] = 1
+            updated_count += 1
+
+    # Save back
+    kv_helper.put_games_data(games_data)
+
+    print(f"\n{'='*60}")
+    print(f"✓ Reset Prices Complete")
+    print(f"{'='*60}")
+    print(f"Updated {updated_count} games")
+    print(f"All deal.JPY.price set to 1")
+    print(f"{'='*60}")
+
+    logger.info(f"Reset complete: {updated_count} games updated")
+
+
 def main():
     """Main entry point"""
     # Parse command line arguments
     itad_key = None
     new_only = False
     use_kv_option = False
+    reset_prices = False
     regions = DEFAULT_REGIONS.copy()
 
     i = 1
@@ -231,6 +270,8 @@ def main():
             new_only = True
         elif arg == '--kv':
             use_kv_option = True
+        elif arg == '--reset-prices':
+            reset_prices = True
         elif arg == '--regions':
             if i + 1 < len(sys.argv):
                 regions = sys.argv[i + 1].split(',')
@@ -252,6 +293,11 @@ def main():
 
     # Initialize KVHelper
     kv_helper = KVHelper(use_kv=use_kv)
+
+    # If reset-prices mode, execute and exit
+    if reset_prices:
+        reset_prices_command(kv_helper)
+        return
 
     if use_kv_option:
         logger.info(f"Environment: Local (KV mode - for testing)")

@@ -249,14 +249,14 @@ class GameDataBuilder:
             'skipped_multiple': skipped_multiple
         }
 
-    def _build_game_data_from_steam(self, app_id, steam_data, itad_id=None, itad_lowest=None):
+    def _build_game_data_from_steam(self, app_id, steam_data, itad_id=None, itad_deal=None):
         """Build game data structure from Steam API data
 
         Args:
             app_id: Steam App ID
             steam_data: Data from Steam API
             itad_id: ITAD ID (optional)
-            itad_lowest: ITAD lowest price (optional)
+            itad_deal: ITAD deal data dict with currency keys (e.g., {'JPY': {price, regular, cut, storeLow}})
 
         Returns:
             dict: Game data structure
@@ -271,7 +271,6 @@ class GameDataBuilder:
             'platforms': steam_data['platforms'],
             'developers': steam_data.get('developers', []),
             'publishers': steam_data.get('publishers', []),
-            'prices': steam_data['prices'],
             'imageUrl': steam_data.get('imageUrl', '-'),
             'releaseDate': steam_data.get('releaseDate', '-'),
             'reviewScore': steam_data.get('reviewScore', '-')
@@ -280,12 +279,12 @@ class GameDataBuilder:
         # Add ITAD data if available
         if itad_id:
             game['itadId'] = itad_id
-            if itad_lowest is not None:
-                game['lowest'] = itad_lowest
+            if itad_deal is not None:
+                game['deal'] = itad_deal
             else:
-                game['lowest'] = {'JP': '-'}
+                game['deal'] = {'JPY': {'price': '-', 'regular': '-', 'cut': 0, 'storeLow': '-'}}
         else:
-            game['lowest'] = {'JP': '-'}
+            game['deal'] = {'JPY': {'price': '-', 'regular': '-', 'cut': 0, 'storeLow': '-'}}
 
         return game
 
@@ -308,101 +307,205 @@ class GameDataBuilder:
         existing_games = kv_helper.get_games_data()
         logger.info(f"Existing games-data: {len(existing_games)} items")
 
-        # Phase 1: Fetch basic API for all games and compare prices
-        logger.info("Phase 1: Fetching basic info for all games...")
+        # Phase 1: Fetch ITAD deal data for all games and compare prices
+        logger.info("Phase 1: Fetching ITAD deal data for all games...")
         all_app_ids = [item['id'] for item in id_map]
         id_map_dict = {item['id']: item.get('itadId') for item in id_map}
         existing_games_dict = {game['id']: game for game in existing_games}
 
-        steam_basic_cache = {}
+        # Identify games with noItadData flag (need Steam API comparison)
+        games_with_no_itad_flag = set()
+        for game in existing_games:
+            deal = game.get('deal', {}).get('JPY', {})
+            if deal.get('noItadData'):
+                games_with_no_itad_flag.add(game['id'])
+
+        # Fetch ITAD deals in batch (200 items per request) - only for games without noItadData flag
+        itad_enabled_ids = [item.get('itadId') for item in id_map if item.get('itadId') and item['id'] not in games_with_no_itad_flag]
+        itad_deal_map = {}
+        if itad_enabled_ids and self.itad_client:
+            logger.info(f"  → Fetching ITAD deals for {len(itad_enabled_ids)} games (excluding {len(games_with_no_itad_flag)} noItadData games)...")
+            itad_deal_map = self.itad_client.get_batch_deals(itad_enabled_ids, region='JP')
+            logger.info(f"  → ITAD batch fetch complete: {len(itad_deal_map)} deals retrieved")
+
+            # Check if ITAD API failed completely (0 deals retrieved)
+            if len(itad_deal_map) == 0 and len(itad_enabled_ids) > 0:
+                logger.error("ITAD API failed to retrieve any deal data. Aborting differential update.")
+                raise Exception("ITAD API batch fetch returned 0 results")
+
         games_to_update = []
         games_no_change = []
+        games_without_itad = []  # Track games without ITAD data
+        games_needing_steam_comparison = []  # Games with noItadData flag that need Steam API comparison
 
+        # Compare ITAD deal data with KV data
         for i, app_id in enumerate(all_app_ids, 1):
-            logger.info(f"[{i}/{len(all_app_ids)}] Fetching basic info for App ID: {app_id}...")
-
-            # Check if game exists in KV
             existing_game = existing_games_dict.get(app_id)
             if not existing_game:
                 logger.warning(f"  ✗ App ID {app_id} exists in id-map but not in games-data, skipping...")
-                games_no_change.append(app_id)
                 continue
 
-            # Fetch basic API
-            basic_data = self.steam_client.get_game_info_from_api(app_id, regions=['JP'])
+            # Check if this game has noItadData flag
+            kv_deal = existing_game.get('deal', {}).get('JPY', {})
+            has_no_itad_flag = kv_deal.get('noItadData', False)
 
-            if not basic_data:
-                logger.warning(f"  ✗ Failed to fetch basic info for App ID {app_id}, keeping existing data")
-                games_no_change.append(app_id)
-                time.sleep(random.uniform(1.0, 1.3))
+            if has_no_itad_flag:
+                # This game needs Steam API comparison (will be done in Phase 1.5)
+                games_needing_steam_comparison.append(app_id)
+                games_without_itad.append(app_id)
                 continue
 
-            steam_basic_cache[app_id] = basic_data
+            itad_id = id_map_dict.get(app_id)
+            if not itad_id:
+                logger.warning(f"  ✗ No ITAD ID for App ID {app_id}, will fetch from Steam API only")
+                games_to_update.append((app_id, None))
+                games_without_itad.append(app_id)
+                continue
 
-            # Extract current price from Steam API
-            steam_prices_jp = basic_data.get('prices', {}).get('JP', {})
-            steam_sale_price = steam_prices_jp.get('salePrice')
-            steam_regular_price = steam_prices_jp.get('price')
-            steam_current_price = steam_sale_price if steam_sale_price is not None else steam_regular_price
+            itad_deal = itad_deal_map.get(itad_id)
+            if not itad_deal:
+                logger.warning(f"  ✗ No ITAD deal data for ITAD ID {itad_id} (App ID: {app_id}), will fetch from Steam API only")
+                games_to_update.append((app_id, itad_id))
+                games_without_itad.append(app_id)
+                continue
 
-            # Extract current price from KV
-            kv_prices_jp = existing_game.get('prices', {}).get('JP', {})
-            kv_sale_price = kv_prices_jp.get('salePrice')
-            kv_regular_price = kv_prices_jp.get('price')
-            kv_current_price = kv_sale_price if kv_sale_price is not None else kv_regular_price
+            # Check if ITAD deal has no JPY/Steam data (all values are '-')
+            if itad_deal.get('price') == '-' and itad_deal.get('regular') == '-':
+                logger.warning(f"  ✗ ITAD has no JPY/Steam data for ITAD ID {itad_id} (App ID: {app_id}), will fetch from Steam API only")
+                games_to_update.append((app_id, itad_id))
+                games_without_itad.append(app_id)
+                continue
 
-            # Compare current prices
-            if steam_current_price != kv_current_price:
-                logger.info(f"  → Price difference detected: KV={kv_current_price}, Steam={steam_current_price}")
-                itad_id = id_map_dict.get(app_id)
+            # Extract KV deal data
+            kv_price = kv_deal.get('price')
+            kv_cut = kv_deal.get('cut', 0)
+
+            # Extract ITAD deal data
+            itad_price = itad_deal.get('price')
+            itad_cut = itad_deal.get('cut', 0)
+
+            # Compare price and cut
+            if itad_price != kv_price or itad_cut != kv_cut:
+                logger.info(f"[{i}/{len(all_app_ids)}] Price/cut difference detected for App ID {app_id}: KV(price={kv_price}, cut={kv_cut}), ITAD(price={itad_price}, cut={itad_cut})")
                 games_to_update.append((app_id, itad_id))
             else:
                 games_no_change.append(app_id)
 
-            time.sleep(random.uniform(1.0, 1.3))
+        logger.info(f"Phase 1 complete: {len(games_to_update)} games to update via ITAD comparison, {len(games_needing_steam_comparison)} games need Steam API comparison, {len(games_no_change)} games unchanged")
 
-        logger.info(f"Phase 1 complete: {len(games_to_update)} games with price differences, {len(games_no_change)} games unchanged")
+        # Phase 1.5: For games with noItadData flag, fetch Steam API and compare
+        if games_needing_steam_comparison:
+            logger.info(f"Phase 1.5: Comparing Steam API data for {len(games_needing_steam_comparison)} noItadData games...")
+            for i, app_id in enumerate(games_needing_steam_comparison, 1):
+                logger.info(f"[{i}/{len(games_needing_steam_comparison)}] Fetching Steam data for App ID: {app_id}...")
 
-        # Phase 2-1: Fetch ITAD lowest prices for diff games only
-        itad_price_map = {}
-        if len(games_to_update) > 0 and self.itad_client:
-            update_itad_ids = [itad_id for app_id, itad_id in games_to_update if itad_id]
-            if update_itad_ids:
-                logger.info(f"Phase 2-1: Fetching ITAD lowest prices for {len(update_itad_ids)} games...")
-                itad_price_map = self.itad_client.get_batch_prices(update_itad_ids, region='JP')
-                logger.info(f"  → ITAD batch fetch complete: {len(itad_price_map)} prices retrieved")
+                # Fetch Steam Basic API
+                basic_data = self.steam_client.get_game_info_from_api(app_id, regions=['JP'])
+                if not basic_data:
+                    logger.warning(f"  ✗ Failed to fetch Steam data for App ID {app_id}, keeping existing data")
+                    games_no_change.append(app_id)
+                    continue
 
-        # Phase 2-2: Build game data
-        logger.info("Phase 2-2: Building game data...")
+                # Extract Steam prices
+                steam_prices = basic_data.get('prices', {}).get('JP', {})
+                steam_regular = steam_prices.get('price', 0)
+                steam_sale = steam_prices.get('salePrice')
+                steam_current = steam_sale if steam_sale is not None else steam_regular
+
+                # Extract KV prices
+                existing_game = existing_games_dict.get(app_id)
+                kv_deal = existing_game.get('deal', {}).get('JPY', {})
+                kv_price = kv_deal.get('price')
+
+                # Compare
+                if steam_current != kv_price:
+                    logger.info(f"  → Price difference detected: KV={kv_price}, Steam={steam_current}")
+                    itad_id = id_map_dict.get(app_id)
+                    games_to_update.append((app_id, itad_id))
+                else:
+                    games_no_change.append(app_id)
+
+            logger.info(f"Phase 1.5 complete: {len([g for g in games_to_update if g[0] in games_needing_steam_comparison])} noItadData games need update")
+
+        if games_without_itad:
+            logger.warning(f"  ⚠ Games without ITAD data (total): {games_without_itad}")
+
+        # Phase 2: Build game data
+        logger.info("Phase 2: Building game data...")
         rebuilt_games = []
         failed_games = []
         missing_data = []
+        games_with_image_fallback = []  # Track games using fallback image (not capsule_616x353)
 
         # For games without changes: copy KV data as-is
+        logger.info(f"  → Copying {len(games_no_change)} unchanged games from KV...")
         for app_id in games_no_change:
             existing_game = existing_games_dict.get(app_id)
             if existing_game:
                 rebuilt_games.append(existing_game)
 
-        # For games with price differences: use cached basic data (already includes image + review)
+        # For games with changes: fetch Steam Basic API + Review API
+        logger.info(f"  → Fetching Steam data for {len(games_to_update)} changed games...")
         for i, (app_id, itad_id) in enumerate(games_to_update, 1):
-            logger.info(f"[{i}/{len(games_to_update)}] Updating App ID: {app_id}...")
+            logger.info(f"[{i}/{len(games_to_update)}] Fetching Steam data for App ID: {app_id}...")
 
-            basic_data = steam_basic_cache.get(app_id)
+            # Fetch Steam Basic API (includes price, genres, languages, etc.)
+            basic_data = self.steam_client.get_game_info_from_api(app_id, regions=['JP'])
             if not basic_data:
-                logger.warning(f"  ✗ No cached basic data for App ID {app_id}")
-                failed_games.append({'app_id': app_id, 'reason': 'No cached basic data'})
+                logger.warning(f"  ✗ Failed to fetch Steam data for App ID {app_id}")
+                failed_games.append({'app_id': app_id, 'reason': 'Failed to fetch Steam data'})
                 continue
 
+            # Get ITAD deal data from Phase 1 cache, or construct from Steam data
+            itad_deal = itad_deal_map.get(itad_id) if itad_id else None
+
+            # Check if ITAD deal has no JPY/Steam data (all values are '-')
+            if itad_deal and itad_deal.get('price') == '-' and itad_deal.get('regular') == '-':
+                logger.info(f"  → ITAD has no JPY/Steam data, will construct from Steam API")
+                itad_deal = None  # Treat as no ITAD data
+
+            if itad_deal:
+                itad_deal_dict = {'JPY': itad_deal}
+            else:
+                # No ITAD data: construct deal structure from Steam API data
+                steam_prices = basic_data.get('prices', {}).get('JP', {})
+                regular_price = steam_prices.get('price', 0)
+                sale_price = steam_prices.get('salePrice')
+
+                if sale_price is not None and sale_price < regular_price:
+                    price = sale_price
+                    cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
+                else:
+                    price = regular_price
+                    cut = 0
+
+                steam_deal = {
+                    'price': price,
+                    'regular': regular_price,
+                    'cut': cut,
+                    'storeLow': '-',  # Unknown without ITAD
+                    'noItadData': True  # Flag for games without ITAD data
+                }
+                itad_deal_dict = {'JPY': steam_deal}
+                logger.info(f"  → Constructed deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
+
             # Build game data using common method
-            itad_lowest = itad_price_map.get(itad_id) if itad_id else None
-            itad_lowest_dict = {'JP': itad_lowest} if itad_lowest is not None else None
-            new_game = self._build_game_data_from_steam(app_id, basic_data, itad_id, itad_lowest_dict)
+            new_game = self._build_game_data_from_steam(app_id, basic_data, itad_id, itad_deal_dict)
+
+            # Check if image URL conversion failed (using fallback)
+            # If imageUrl doesn't contain 'capsule_616x353', it's using fallback
+            image_url = new_game.get('imageUrl', '')
+            if image_url and image_url != '-' and 'capsule_616x353' not in image_url:
+                games_with_image_fallback.append(app_id)
 
             rebuilt_games.append(new_game)
             logger.info(f"  ✓ Updated successfully (App ID: {app_id})")
 
-        logger.info(f"Phase 2-2 complete: {len(rebuilt_games)} total games ({len(games_no_change)} unchanged + {len(games_to_update)} updated)")
+        logger.info(f"Phase 2 complete: {len(rebuilt_games)} total games ({len(games_no_change)} unchanged + {len(games_to_update) - len(failed_games)} updated)")
+
+        if games_with_image_fallback:
+            logger.warning(f"  ⚠ Games using fallback image (not capsule_616x353): {len(games_with_image_fallback)} games")
+            logger.warning(f"  App IDs: {games_with_image_fallback}")
 
         return {
             'rebuilt_games': rebuilt_games,
@@ -410,7 +513,9 @@ class GameDataBuilder:
             'missing_data': missing_data,
             'mapping_result': None,
             'id_map': id_map,
-            'newly_added_games': []
+            'newly_added_games': [],
+            'games_without_itad': games_without_itad,
+            'games_with_image_fallback': games_with_image_fallback
         }
 
     def _rebuild_new_only(self, regions, kv_helper):
@@ -464,99 +569,100 @@ class GameDataBuilder:
         rebuilt_games = []
         failed_games = []
         missing_data = []
+        games_without_itad = []
+        games_with_image_fallback = []
+
+        # Batch fetch ITAD deal data for new games
+        new_itad_ids = [id_map_dict.get(app_id) for app_id in target_ids if id_map_dict.get(app_id)]
+        itad_deal_map = {}
+        if new_itad_ids and self.itad_client:
+            logger.info(f"Fetching ITAD deals for {len(new_itad_ids)} new games...")
+            itad_deal_map = self.itad_client.get_batch_deals(new_itad_ids, region='JP')
+            logger.info(f"ITAD batch fetch complete: {len(itad_deal_map)} deals retrieved")
+
+            # Check if ITAD API failed completely (0 deals retrieved)
+            if len(itad_deal_map) == 0 and len(new_itad_ids) > 0:
+                logger.error("ITAD API failed to retrieve any deal data. Aborting new-only update.")
+                raise Exception("ITAD API batch fetch returned 0 results")
 
         # Process new IDs
         for i, app_id in enumerate(target_ids, 1):
             logger.info(f"[{i}/{len(target_ids)}] Processing App ID: {app_id}...")
 
-            # Fetch latest data from Steam API
-            steam_data = self.steam_client.get_game_info_from_api(app_id, regions=regions)
+            # Fetch latest data from Steam API (Basic + Review)
+            steam_data = self.steam_client.get_game_info_from_api(app_id, regions=['JP'])
 
             if not steam_data:
                 logger.error(f"  ✗ Steam API fetch failed, skipped (App ID: {app_id})")
                 failed_games.append({'app_id': app_id, 'reason': 'Steam API fetch failed'})
-                time.sleep(1)
                 continue
 
-            # Build new game data
-            new_game = {
-                'id': app_id,
-                'title': steam_data['title'],
-                'englishTitle': steam_data['title'],
-                'genres': steam_data['genres'],
-                'supportedLanguages': steam_data['supportedLanguages'],
-                'storeUrl': steam_data['store_url'],
-                'platforms': steam_data['platforms'],
-                'developers': steam_data.get('developers', []),
-                'publishers': steam_data.get('publishers', []),
-                'prices': steam_data['prices'],
-            }
+            # Get ITAD ID and deal data, or construct from Steam data
+            itad_id = id_map_dict.get(app_id)
+            itad_deal = itad_deal_map.get(itad_id) if itad_id else None
 
-            # Image URL
-            if steam_data.get('imageUrl'):
-                new_game['imageUrl'] = steam_data['imageUrl']
+            # Check if ITAD deal has no JPY/Steam data (all values are '-')
+            if itad_deal and itad_deal.get('price') == '-' and itad_deal.get('regular') == '-':
+                logger.warning(f"  ✗ ITAD has no JPY/Steam data for App ID {app_id}, will construct from Steam API")
+                itad_deal = None  # Treat as no ITAD data
+
+            if itad_deal:
+                itad_deal_dict = {'JPY': itad_deal}
             else:
-                new_game['imageUrl'] = '-'
+                # No ITAD data: construct deal structure from Steam API data
+                steam_prices = steam_data.get('prices', {}).get('JP', {})
+                regular_price = steam_prices.get('price', 0)
+                sale_price = steam_prices.get('salePrice')
+
+                if sale_price is not None and sale_price < regular_price:
+                    price = sale_price
+                    cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
+                else:
+                    price = regular_price
+                    cut = 0
+
+                steam_deal = {
+                    'price': price,
+                    'regular': regular_price,
+                    'cut': cut,
+                    'storeLow': '-',
+                    'noItadData': True  # Flag for games without ITAD data
+                }
+                itad_deal_dict = {'JPY': steam_deal}
+                games_without_itad.append(app_id)
+                logger.info(f"  → Constructed deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
+
+            # Build game data using common method
+            new_game = self._build_game_data_from_steam(app_id, steam_data, itad_id, itad_deal_dict)
+
+            # Check if image URL conversion failed (using fallback)
+            # If imageUrl doesn't contain 'capsule_616x353', it's using fallback
+            image_url = new_game.get('imageUrl', '')
+            if image_url and image_url != '-' and 'capsule_616x353' not in image_url:
+                games_with_image_fallback.append(app_id)
+
+            # Check for missing data
+            if steam_data.get('imageUrl') is None:
                 missing_data.append({'app_id': app_id, 'missing': 'imageUrl (Steam)'})
                 logger.warning(f"  ⚠ Image URL fetch failed (App ID: {app_id})")
 
-            # Release date
-            if steam_data.get('releaseDate'):
-                new_game['releaseDate'] = steam_data['releaseDate']
-            else:
-                new_game['releaseDate'] = '-'
+            if steam_data.get('releaseDate') is None:
                 missing_data.append({'app_id': app_id, 'missing': 'releaseDate (Steam)'})
                 logger.warning(f"  ⚠ Release date fetch failed (App ID: {app_id})")
 
-            # Review score
-            if steam_data.get('reviewScore'):
-                new_game['reviewScore'] = steam_data['reviewScore']
-            else:
-                new_game['reviewScore'] = '-'
+            if steam_data.get('reviewScore') is None:
                 missing_data.append({'app_id': app_id, 'missing': 'reviewScore (Steam)'})
                 logger.warning(f"  ⚠ Review score fetch failed (App ID: {app_id})")
 
-            # Get ITAD ID
-            itad_id = id_map_dict.get(app_id)
-
-            if itad_id:
-                new_game['itadId'] = itad_id
-
-                # Fetch historical low from ITAD API
-                if self.itad_client:
-                    lowest_prices = {}
-                    for region in regions:
-                        logger.info(f"  → Fetching ITAD historical low ({region})...")
-                        historical_low = self.itad_client.get_historical_low(itad_id, region=region)
-                        if historical_low:
-                            lowest_prices[region] = historical_low
-                            logger.info(f"  ✓ ITAD historical low fetch success ({region})")
-                        else:
-                            lowest_prices[region] = '-'
-                            logger.warning(f"  ⚠ ITAD historical low fetch failed ({region}) (App ID: {app_id})")
-                            missing_data.append({'app_id': app_id, 'missing': f'lowest.{region} (ITAD)'})
-
-                        # Rate limiting protection
-                        if region != regions[-1]:
-                            time.sleep(random.uniform(1.0, 1.5))
-
-                    new_game['lowest'] = lowest_prices
-                else:
-                    # No ITAD API key
-                    lowest_prices = {region: '-' for region in regions}
-                    new_game['lowest'] = lowest_prices
-                    logger.warning(f"  ⚠ No ITAD API key (App ID: {app_id})")
-            else:
-                # No ITAD ID
-                lowest_prices = {region: '-' for region in regions}
-                new_game['lowest'] = lowest_prices
+            if not itad_id:
+                missing_data.append({'app_id': app_id, 'missing': 'itadId'})
                 logger.warning(f"  ⚠ No ITAD ID (App ID: {app_id})")
+            elif not itad_deal:
+                missing_data.append({'app_id': app_id, 'missing': 'deal.JPY (ITAD)'})
+                logger.warning(f"  ⚠ ITAD deal fetch failed (App ID: {app_id})")
 
             rebuilt_games.append(new_game)
             logger.info(f"  ✓ Success (App ID: {app_id})")
-
-            # Rate limiting protection
-            time.sleep(random.uniform(1.0, 1.5))
 
         # Merge with existing data
         logger.info("Merging existing data with new data...")
@@ -581,13 +687,20 @@ class GameDataBuilder:
         logger.info(f"Merge result: Existing {len(existing_games)} items + New {len(newly_added_games)} items = Total {len(final_games)} items")
         rebuilt_games = final_games
 
+        # Log games using fallback images
+        if games_with_image_fallback:
+            logger.warning(f"  ⚠ Games using fallback image (not capsule_616x353): {len(games_with_image_fallback)} games")
+            logger.warning(f"  App IDs: {games_with_image_fallback}")
+
         return {
             'rebuilt_games': rebuilt_games,
             'failed_games': failed_games,
             'missing_data': missing_data,
             'mapping_result': mapping_result,
             'id_map': id_map,
-            'newly_added_games': newly_added_games
+            'newly_added_games': newly_added_games,
+            'games_without_itad': games_without_itad,
+            'games_with_image_fallback': games_with_image_fallback
         }
 
     def rebuild_games_data(self, new_only=False, regions=None, kv_helper=None):

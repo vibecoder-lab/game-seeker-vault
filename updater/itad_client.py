@@ -67,6 +67,133 @@ class ITADClient:
 
         return None
 
+    def get_batch_deals(self, itad_ids, region='JP'):
+        """Fetch Steam deal information for multiple games in batch
+
+        Args:
+            itad_ids: List of ITAD game IDs (max 200)
+            region: Region code ('JP', 'US', 'UK', 'EU')
+
+        Returns:
+            dict: Map of {itad_id: {price, regular, cut, storeLow}}
+        """
+        if not self.api_key:
+            logger.warning("ITAD API key not provided")
+            return {}
+
+        if region not in REGIONS:
+            logger.error(f"ITAD: Unknown region: {region}")
+            return {}
+
+        if not itad_ids:
+            return {}
+
+        region_config = REGIONS[region]
+        country = region_config['itad_country']
+        expected_currency = region_config['currency']
+
+        try:
+            # Split into chunks of 200
+            chunk_size = 200
+            all_deals = {}
+
+            for i in range(0, len(itad_ids), chunk_size):
+                chunk = itad_ids[i:i + chunk_size]
+                logger.info(f"  → Fetching ITAD batch {i//chunk_size + 1} ({len(chunk)} items)...")
+
+                # /games/prices/v3 endpoint (POST request)
+                api_url = f"https://api.isthereanydeal.com/games/prices/v3?key={self.api_key}&country={country}"
+                payload = chunk
+
+                response = self._request_with_retry(api_url, method='post', json=payload)
+
+                if not response:
+                    logger.warning(f"ITAD: Failed to fetch batch deals for region: {region}")
+                    continue
+
+                # Rate limiting protection (wait after API request)
+                time.sleep(random.uniform(1.0, 1.3))
+
+                try:
+                    data = response.json()
+                except Exception as json_err:
+                    logger.error(f"ITAD: Failed to parse JSON response: {json_err}")
+                    logger.debug(f"Response content: {response.text[:500]}")
+                    continue
+
+                if not data:
+                    logger.warning(f"ITAD: No data returned for batch")
+                    continue
+
+                # Ensure data is a list
+                if not isinstance(data, list):
+                    logger.error(f"ITAD: Expected list response, got {type(data)}")
+                    continue
+
+                # Process each game in response
+                for game_data in data:
+                    if game_data is None:
+                        logger.warning(f"ITAD: Received None in response data")
+                        continue
+
+                    if not isinstance(game_data, dict):
+                        logger.warning(f"ITAD: Expected dict for game_data, got {type(game_data)}")
+                        continue
+
+                    game_id = game_data.get('id')
+                    if not game_id:
+                        continue
+
+                    # Fetch Steam deal (shop id = 61)
+                    deals = game_data.get('deals', [])
+                    steam_deal = None
+
+                    for deal in deals:
+                        if deal is None or not isinstance(deal, dict):
+                            continue
+
+                        shop = deal.get('shop', {})
+                        if shop and shop.get('id') == 61:  # Steam shop ID
+                            price_obj = deal.get('price') or {}
+                            regular_obj = deal.get('regular') or {}
+                            store_low_obj = deal.get('storeLow') or {}
+
+                            price = price_obj.get('amount') if isinstance(price_obj, dict) else None
+                            regular = regular_obj.get('amount') if isinstance(regular_obj, dict) else None
+                            cut = deal.get('cut', 0)
+                            store_low = store_low_obj.get('amount') if isinstance(store_low_obj, dict) else None
+
+                            # Currency check
+                            currency = price_obj.get('currency', 'USD') if isinstance(price_obj, dict) else 'USD'
+                            if currency != expected_currency:
+                                logger.warning(f"ITAD: Currency mismatch expected {expected_currency}, got {currency} (ID: {game_id}, region: {region})")
+
+                            steam_deal = {
+                                'price': price if price is not None else '-',
+                                'regular': regular if regular is not None else '-',
+                                'cut': cut,
+                                'storeLow': store_low if store_low is not None else '-'
+                            }
+                            break
+
+                    if steam_deal:
+                        all_deals[game_id] = steam_deal
+                    else:
+                        # No Steam deal found
+                        all_deals[game_id] = {
+                            'price': '-',
+                            'regular': '-',
+                            'cut': 0,
+                            'storeLow': '-'
+                        }
+
+            logger.info(f"ITAD: Batch fetch complete ({len(all_deals)}/{len(itad_ids)} games)")
+            return all_deals
+
+        except Exception as e:
+            logger.error(f"ITAD: Batch API error (region: {region}): {e}")
+            return {}
+
     def get_batch_prices(self, itad_ids, region='JP'):
         """Fetch historical low prices for multiple games in batch
 

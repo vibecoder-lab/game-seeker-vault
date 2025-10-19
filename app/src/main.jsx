@@ -367,23 +367,24 @@ import { Header } from './components/Header.jsx'
         };
 
         const games = React.useMemo(() => (rawGames || []).map((g) => {
-          // New data structure (prices.JP)
-          const normal = g.prices?.JP?.price || 0;
-          const salePrice = g.prices?.JP?.salePrice || null;
-          const discountPercent = g.prices?.JP?.discountPercent || null;
+          // New data structure (deal.JPY)
+          const deal = g.deal?.JPY || {};
+          const regular = deal.regular !== '-' && deal.regular !== undefined ? deal.regular : 0;
+          const price = deal.price !== '-' && deal.price !== undefined ? deal.price : regular;
+          const cut = deal.cut || 0;
+          const storeLow = deal.storeLow !== '-' && deal.storeLow !== undefined ? deal.storeLow : '-';
 
-          // Lowest price: prioritize new format (lowest.JP), check old format (lowestYen) for backward compatibility
-          const lowestJP = g.lowest?.JP !== undefined ? g.lowest.JP : (g.lowestYen || '-');
-          const lowest = lowestJP;
+          // Determine if on sale (price < regular and cut > 0)
+          const onSale = price < regular && cut > 0;
 
           const genres = Array.isArray(g.genres) ? g.genres : [];
 
           return {
             ...g,
-            priceYenResolved: normal,
-            salePriceYen: salePrice,
-            discountPercent: discountPercent,
-            lowestYenResolved: lowest,
+            priceYenResolved: regular,
+            salePriceYen: onSale ? price : null,
+            discountPercent: onSale ? cut : null,
+            lowestYenResolved: storeLow,
             genres
           };
         }), [rawGames]);

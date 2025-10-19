@@ -11,8 +11,8 @@ export const appIdFromUrl = (url) => {
 
 // Get Steam capsule image URL
 export const steamCapsuleUrl = (g) => {
-  // Use imageUrl if available (for new games)
-  if (g.imageUrl) return g.imageUrl;
+  // Use imageUrl if available and valid (for new games)
+  if (g.imageUrl && g.imageUrl !== '-') return g.imageUrl;
   // Otherwise generate URL the traditional way (for old games)
   const id = appIdFromUrl(g.storeUrl);
   return id ? `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${id}/capsule_616x353.jpg` : null;

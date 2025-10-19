@@ -274,7 +274,7 @@ class SteamClient:
             return ['Other']
 
     def _extract_image_url(self, app_id, app_data):
-        """Get image URL (construct capsule_616x353 URL from header_image)"""
+        """Get image URL (try URL conversion, fallback to scraping)"""
         try:
             # Get API's header_image
             header_image = app_data.get('header_image', '')
@@ -283,15 +283,61 @@ class SteamClient:
                 logger.warning(f"No header_image found for app {app_id}")
                 return None
 
-            # Convert header.jpg to capsule_616x353.jpg by URL pattern
-            # Example: .../header.jpg?t=123 -> .../capsule_616x353.jpg?t=123
+            # Step 1: Try URL conversion (header.jpg -> capsule_616x353.jpg)
+            capsule_url = None
+
+            # Pattern 1: .../header.jpg -> .../capsule_616x353.jpg
             if '/header.jpg' in header_image:
                 capsule_url = header_image.replace('/header.jpg', '/capsule_616x353.jpg')
-                logger.info(f"Constructed capsule URL for app {app_id}")
-                return capsule_url
+                logger.debug(f"Trying capsule URL (pattern 1) for app {app_id}")
+
+            # Pattern 2: .../apps/{appid}/{hash}/header_XXX.jpg -> .../apps/{appid}/capsule_616x353.jpg
+            elif '/apps/' in header_image and '/header' in header_image:
+                import re
+                match = re.match(r'(https?://[^/]+/[^/]+/[^/]+/apps/\d+)/[^/]+/(header[^?]*\.jpg)', header_image)
+                if match:
+                    base_url = match.group(1)
+                    query_params = ''
+                    if '?' in header_image:
+                        query_params = '?' + header_image.split('?')[1]
+                    capsule_url = f"{base_url}/capsule_616x353.jpg{query_params}"
+                    logger.debug(f"Trying capsule URL (pattern 2) for app {app_id}")
+
+            # Check if converted URL actually exists (HEAD request)
+            if capsule_url:
+                try:
+                    head_resp = requests.head(capsule_url, timeout=5)
+                    if head_resp.status_code == 200:
+                        logger.debug(f"Capsule URL exists for app {app_id}")
+                        return capsule_url
+                    else:
+                        logger.info(f"Capsule URL returned {head_resp.status_code} for app {app_id}, trying scraping...")
+                except Exception as head_err:
+                    logger.warning(f"HEAD request failed for app {app_id}: {head_err}, trying scraping...")
+
+            # Step 2: Scrape store page for capsule_616x353.jpg
+            store_url = f"https://store.steampowered.com/app/{app_id}/"
+            response = self._request_with_retry(store_url)
+
+            if not response:
+                logger.warning(f"Failed to fetch store page for app {app_id}, using header_image")
+                return header_image
+
+            # Rate limiting protection (wait after fetching store page)
+            time.sleep(random.uniform(1.0, 1.3))
+
+            html = response.text
+
+            # Extract capsule_616x353.jpg URL
+            pattern = r'https://[^"\']*?/apps/' + str(app_id) + r'/[^"\']*?capsule_616x353\.jpg[^"\']*'
+            matches = re.findall(pattern, html)
+
+            if matches:
+                logger.debug(f"Found capsule URL via scraping for app {app_id}")
+                return matches[0]
             else:
-                # If header_image doesn't match expected pattern, use as-is
-                logger.warning(f"Unexpected header_image format for app {app_id}, using as-is")
+                # Use header_image if capsule URL not found
+                logger.info(f"capsule_616x353 not found for app {app_id}, using header_image")
                 return header_image
 
         except Exception as e:
