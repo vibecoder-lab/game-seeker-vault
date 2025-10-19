@@ -274,42 +274,28 @@ class SteamClient:
             return ['Other']
 
     def _extract_image_url(self, app_id, app_data):
-        """Get image URL (scrape from store page)"""
+        """Get image URL (construct capsule_616x353 URL from header_image)"""
         try:
-            # First get API's header_image (for fallback)
+            # Get API's header_image
             header_image = app_data.get('header_image', '')
 
-            # Get correct capsule_616x353 URL from store page
-            store_url = f"https://store.steampowered.com/app/{app_id}/"
-            response = self._request_with_retry(store_url)
-
-            if not response:
-                logger.warning(f"Failed to fetch store page for app {app_id}")
-                return app_data.get('header_image', '')
-
-            # Rate limiting protection (wait after fetching store page)
-            time.sleep(random.uniform(1.0, 1.3))
-
-            html = response.text
-
-            # Extract capsule_616x353.jpg URL
-            pattern = r'https://[^"\']*?/apps/' + str(app_id) + r'/[^"\']*?capsule_616x353\.jpg[^"\']*'
-            matches = re.findall(pattern, html)
-
-            if matches:
-                # Use first found URL
-                return matches[0]
-            elif header_image:
-                # Use header_image if capsule URL not found
-                logger.warning(f"capsule_616x353 not found for app {app_id}, using header_image")
-                return header_image
-            else:
-                logger.warning(f"No image URL found for app {app_id}")
+            if not header_image:
+                logger.warning(f"No header_image found for app {app_id}")
                 return None
+
+            # Convert header.jpg to capsule_616x353.jpg by URL pattern
+            # Example: .../header.jpg?t=123 -> .../capsule_616x353.jpg?t=123
+            if '/header.jpg' in header_image:
+                capsule_url = header_image.replace('/header.jpg', '/capsule_616x353.jpg')
+                logger.info(f"Constructed capsule URL for app {app_id}")
+                return capsule_url
+            else:
+                # If header_image doesn't match expected pattern, use as-is
+                logger.warning(f"Unexpected header_image format for app {app_id}, using as-is")
+                return header_image
 
         except Exception as e:
             logger.error(f"Error extracting image URL for app {app_id}: {e}")
-            # Return header_image on error
             return app_data.get('header_image', None)
 
     def _extract_platforms(self, app_data):
