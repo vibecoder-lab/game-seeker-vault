@@ -88,6 +88,27 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             </div>
           )}
 
+          {/* Show All Tags */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1">
+              <div className="text-sm font-medium">{t('settings.showAllTags', currentLocale)}</div>
+              <div className={`text-xs ${theme.subText}`}>{t('settings.showAllTagsDesc', currentLocale)}</div>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+              <input
+                type="checkbox"
+                checked={settings.showAllTags}
+                onChange={async (e) => {
+                  const newSettings = { ...settings, showAllTags: e.target.checked };
+                  setSettings(newSettings);
+                  await dbHelper.saveSettings(newSettings);
+                }}
+                className="sr-only peer"
+              />
+              <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+
           {/* Permanent Delete */}
           {!isMobile && (
             <div className="flex items-center justify-between gap-3">
@@ -198,7 +219,7 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
                     }
                   }
                 }}
-                className={`w-full py-2 px-3 text-sm ${theme.saleBg} text-white rounded-lg transition-colors hover:opacity-90`}
+                className={`w-full py-2 px-3 text-sm rounded-lg transition-all duration-300 ${theme.buttonBg} ${theme.text} hover:bg-red-500 hover:text-white`}
               >
                 {t('settings.resetDataButton', currentLocale)}
               </button>

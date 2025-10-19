@@ -432,6 +432,58 @@ class ITADClient:
             logger.error(f"Error getting Steam App ID from ITAD {itad_id}: {e}")
             return None
 
+    def get_game_tags(self, itad_id):
+        """Fetch tags for a single game from ITAD API
+
+        Args:
+            itad_id: ITAD game ID
+
+        Returns:
+            list: List of tag strings, empty list if no tags or fetch fails
+        """
+        if not self.api_key:
+            logger.warning("ITAD API key not provided")
+            return []
+
+        if not itad_id:
+            return []
+
+        try:
+            # /games/info/v2 endpoint (GET request)
+            api_url = f"https://api.isthereanydeal.com/games/info/v2?key={self.api_key}&id={itad_id}"
+
+            response = self._request_with_retry(api_url, method='get')
+
+            if not response:
+                logger.warning(f"ITAD: Failed to fetch tags for ID: {itad_id}")
+                return []
+
+            # Rate limiting protection
+            time.sleep(random.uniform(1.0, 1.3))
+
+            try:
+                data = response.json()
+            except Exception as json_err:
+                logger.error(f"ITAD: Failed to parse JSON response for tags: {json_err}")
+                return []
+
+            if not data or not isinstance(data, dict):
+                logger.warning(f"ITAD: No data returned for tags (ID: {itad_id})")
+                return []
+
+            # Extract tags from response
+            tags = data.get('tags', [])
+            if not isinstance(tags, list):
+                logger.warning(f"ITAD: tags field is not a list (ID: {itad_id})")
+                return []
+
+            logger.debug(f"ITAD: Fetched {len(tags)} tags for ID: {itad_id}")
+            return tags
+
+        except Exception as e:
+            logger.error(f"ITAD: Error fetching tags for ID {itad_id}: {e}")
+            return []
+
 def test_itad_client():
     """Test ITAD API client"""
     import sys

@@ -249,7 +249,7 @@ class GameDataBuilder:
             'skipped_multiple': skipped_multiple
         }
 
-    def _build_game_data_from_steam(self, app_id, steam_data, itad_id=None, itad_deal=None):
+    def _build_game_data_from_steam(self, app_id, steam_data, itad_id=None, itad_deal=None, tags=None):
         """Build game data structure from Steam API data
 
         Args:
@@ -257,10 +257,14 @@ class GameDataBuilder:
             steam_data: Data from Steam API
             itad_id: ITAD ID (optional)
             itad_deal: ITAD deal data dict with currency keys (e.g., {'JPY': {price, regular, cut, storeLow}})
+            tags: List of tags (optional, will be truncated to top 3)
 
         Returns:
             dict: Game data structure
         """
+        # Extract top 3 tags
+        top_tags = tags[:3] if tags and isinstance(tags, list) else []
+
         game = {
             'id': app_id,
             'title': steam_data['title'],
@@ -273,7 +277,8 @@ class GameDataBuilder:
             'publishers': steam_data.get('publishers', []),
             'imageUrl': steam_data.get('imageUrl', '-'),
             'releaseDate': steam_data.get('releaseDate', '-'),
-            'reviewScore': steam_data.get('reviewScore', '-')
+            'reviewScore': steam_data.get('reviewScore', '-'),
+            'tags': top_tags
         }
 
         # Add ITAD data if available
@@ -489,8 +494,14 @@ class GameDataBuilder:
                 itad_deal_dict = {'JPY': steam_deal}
                 logger.info(f"  → Constructed deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
 
+            # Fetch tags from ITAD if available
+            tags = []
+            if itad_id and self.itad_client:
+                tags = self.itad_client.get_game_tags(itad_id)
+                logger.debug(f"  → Fetched {len(tags)} tags from ITAD for App ID {app_id}")
+
             # Build game data using common method
-            new_game = self._build_game_data_from_steam(app_id, basic_data, itad_id, itad_deal_dict)
+            new_game = self._build_game_data_from_steam(app_id, basic_data, itad_id, itad_deal_dict, tags)
 
             # Check if image URL conversion failed (using fallback)
             # If imageUrl doesn't contain 'capsule_616x353', it's using fallback
@@ -632,8 +643,14 @@ class GameDataBuilder:
                 games_without_itad.append(app_id)
                 logger.info(f"  → Constructed deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
 
+            # Fetch tags from ITAD if available
+            tags = []
+            if itad_id and self.itad_client:
+                tags = self.itad_client.get_game_tags(itad_id)
+                logger.debug(f"  → Fetched {len(tags)} tags from ITAD for App ID {app_id}")
+
             # Build game data using common method
-            new_game = self._build_game_data_from_steam(app_id, steam_data, itad_id, itad_deal_dict)
+            new_game = self._build_game_data_from_steam(app_id, steam_data, itad_id, itad_deal_dict, tags)
 
             # Check if image URL conversion failed (using fallback)
             # If imageUrl doesn't contain 'capsule_616x353', it's using fallback

@@ -9,6 +9,7 @@ export const DEFAULT_SETTINGS = {
   keyboardLayout: 'ansi',          // 'ansi' | 'iso'
   useAlternativeKeys: false,       // Z/X instead of C/T
   saveTheme: false,                // Whether to save theme
+  showAllTags: false,              // Show all tags (default: top 50)
   settingsVersion: 1
 };
 
