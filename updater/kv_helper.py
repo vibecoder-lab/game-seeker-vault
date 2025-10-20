@@ -112,15 +112,15 @@ class KVHelper:
             id_map_data: id-map list to save
             local_file_path: File path for local mode
         """
-        if self.is_local_mode():
-            # Local file mode: save to file
-            file_path = Path(local_file_path)
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(id_map_data, f, ensure_ascii=False, indent=2)
-            logger.info(f"Local file mode: Saved id-map to {local_file_path} ({len(id_map_data)} items)")
-        else:
-            # KV mode: save to KV
+        # Always save to local file (for backup and verification)
+        file_path = Path(local_file_path)
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(id_map_data, f, ensure_ascii=False, indent=2)
+        logger.info(f"Saved id-map to {local_file_path} ({len(id_map_data)} items)")
+
+        # In KV mode, also save to KV
+        if not self.is_local_mode():
             try:
                 # Write to temporary file
                 temp_file = Path(TEMP_DIR) / TEMP_ID_MAP_FILE
@@ -216,15 +216,15 @@ class KVHelper:
             "games": games_data
         }
 
-        if self.is_local_mode():
-            # Local file mode: save to file
-            file_path = Path(local_file_path)
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(output_data, f, ensure_ascii=False, indent=2)
-            logger.info(f"Local file mode: Saved games-data to {local_file_path} ({len(games_data)} items)")
-        else:
-            # KV mode: save to KV
+        # Always save to local file (for backup and verification)
+        file_path = Path(local_file_path)
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(output_data, f, ensure_ascii=False, indent=2)
+        logger.info(f"Saved games-data to {local_file_path} ({len(games_data)} items)")
+
+        # In KV mode, also save to KV
+        if not self.is_local_mode():
             try:
                 # Write to temporary file
                 temp_file = Path(TEMP_DIR) / TEMP_GAMES_FILE

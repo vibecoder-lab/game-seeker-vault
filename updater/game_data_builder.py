@@ -179,30 +179,51 @@ class GameDataBuilder:
         for title in title_list:
             logger.info(f"Processing title: {title}")
 
-            # Find best match
-            match_result = self.find_best_match(title, game_id_list)
+            # Check if title is an appid (numeric) or game title (string)
+            if title.isdigit():
+                # Direct appid
+                app_id = title
+                logger.info(f"  → Detected as App ID: {app_id}")
 
-            if match_result is None:
-                # No match found
-                failed.append(title)
-                logger.warning(f"  ✗ Mapping failed: No candidates found")
-                continue
+                # Verify appid exists in Steam API
+                app_exists = any(app['appid'] == int(app_id) for app in game_id_list)
+                if not app_exists:
+                    failed.append(title)
+                    logger.warning(f"  ✗ App ID {app_id} not found in Steam API")
+                    continue
 
-            if 'multiple' in match_result:
-                # Multiple exact matches found - ambiguous
-                multiple_matches = match_result['multiple']
-                logger.warning(f"  ✗ Multiple exact matches found for '{title}':")
-                for m in multiple_matches:
-                    logger.warning(f"    - App ID: {m['appid']}, Name: {m['name']}")
-                skipped_multiple.append({
-                    'title': title,
-                    'matches': [{'appid': m['appid'], 'name': m['name']} for m in multiple_matches]
-                })
-                continue
+                # Get game name from Steam API
+                match = next((app for app in game_id_list if app['appid'] == int(app_id)), None)
+                if not match:
+                    failed.append(title)
+                    logger.warning(f"  ✗ Failed to get game name for App ID {app_id}")
+                    continue
+            else:
+                # Game title - use existing matching logic
+                # Find best match
+                match_result = self.find_best_match(title, game_id_list)
 
-            # Single match found
-            match = match_result['match']
-            app_id = str(match['appid'])
+                if match_result is None:
+                    # No match found
+                    failed.append(title)
+                    logger.warning(f"  ✗ Mapping failed: No candidates found")
+                    continue
+
+                if 'multiple' in match_result:
+                    # Multiple exact matches found - ambiguous
+                    multiple_matches = match_result['multiple']
+                    logger.warning(f"  ✗ Multiple exact matches found for '{title}':")
+                    for m in multiple_matches:
+                        logger.warning(f"    - App ID: {m['appid']}, Name: {m['name']}")
+                    skipped_multiple.append({
+                        'title': title,
+                        'matches': [{'appid': m['appid'], 'name': m['name']} for m in multiple_matches]
+                    })
+                    continue
+
+                # Single match found
+                match = match_result['match']
+                app_id = str(match['appid'])
 
             if app_id in existing_ids:
                 logger.info(f"  → Skipped (already exists: App ID {app_id})")
@@ -231,14 +252,23 @@ class GameDataBuilder:
             existing_id_map.append(new_entry)
             existing_ids.add(app_id)
 
-            mapped.append({
+            # Build mapped result
+            mapped_entry = {
                 'appid': app_id,
                 'name': match['name'],
-                'score': match['score'],
                 'itadId': itad_id
-            })
+            }
+            # Add score if available (not available for direct appid input)
+            if 'score' in match:
+                mapped_entry['score'] = match['score']
 
-            logger.info(f"  ✓ Mapping success: App ID {app_id}, Score: {match['score']}")
+            mapped.append(mapped_entry)
+
+            # Log result
+            if 'score' in match:
+                logger.info(f"  ✓ Mapping success: App ID {app_id}, Score: {match['score']}")
+            else:
+                logger.info(f"  ✓ Mapping success: App ID {app_id} (direct appid)")
 
         logger.info(f"Auto-mapping result: Success {len(mapped)} items, Failed {len(failed)} items, Skipped (existing): {len(skipped_existing)} items, Skipped (multiple): {len(skipped_multiple)} items")
 

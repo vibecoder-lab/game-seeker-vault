@@ -4,14 +4,17 @@ Script to rebuild games.json from scratch
 Fetches all data from Steam API and IsThereAnyDeal API
 
 Usage:
-  python3 updater/main.py [ITAD_API_KEY] [--new-only] [--regions JP,US,UK,EU] [--kv] [--reset-prices]
+  python3 updater/main.py [ITAD_API_KEY] [--append] [--regions JP,US,UK,EU] [--kv] [--reset-prices] [--delete]
 
 Options:
-  --new-only: Add new titles + fetch data only for new additions
+  --append: Add new titles + fetch data only for new additions
   --regions: Regions to fetch prices for (default: JP)
     Example: --regions JP,US,UK,EU
   --kv: Use KV in local environment (for testing)
   --reset-prices: Reset all prices to 0 in games.json (for testing differential updates)
+  --delete: Delete games specified in updater/data/refs/delete_appid_list.txt
+    - Deletes from local files (games.json, id-map.json)
+    - With --kv option: Also deletes from Cloudflare KV (games-data, id-map)
 
 Environment detection:
   - Github Actions environment: Automatically uses KV
@@ -77,7 +80,8 @@ def print_mapping_report(mapping_result):
         print(f"\n--- Successfully Mapped ({len(mapped)}) ---")
         for item in mapped:
             itad_info = f", ITAD ID: {item['itadId']}" if item.get('itadId') else ", ITAD ID: None"
-            print(f"  • {item['name']} (App ID: {item['appid']}, Score: {item['score']}){itad_info}")
+            score_info = f", Score: {item['score']}" if 'score' in item else ""
+            print(f"  • {item['name']} (App ID: {item['appid']}{score_info}){itad_info}")
 
     if skipped_existing:
         print(f"\n--- Skipped - Already Exists ({len(skipped_existing)}) ---")
@@ -226,6 +230,70 @@ def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_
         print(f"{'='*60}")
 
 
+def delete_games_command(kv_helper):
+    """Delete games specified in delete_appid_list.txt"""
+    logger.info("=== Delete Games Mode ===")
+
+    # Read delete target appids from file
+    delete_list_file = refs_dir / 'delete_appid_list.txt'
+    if not delete_list_file.exists():
+        print(f"\n{'='*60}")
+        print(f"✗ Delete Failed")
+        print(f"{'='*60}")
+        print(f"Error: {delete_list_file} not found")
+        print(f"{'='*60}")
+        logger.error(f"Delete list file not found: {delete_list_file}")
+        return
+
+    # Read appids
+    with open(delete_list_file, 'r', encoding='utf-8') as f:
+        delete_appids = [line.strip() for line in f if line.strip()]
+
+    if not delete_appids:
+        print(f"\n{'='*60}")
+        print(f"✗ Delete Failed")
+        print(f"{'='*60}")
+        print(f"Error: No appids found in {delete_list_file}")
+        print(f"{'='*60}")
+        logger.error(f"No appids found in delete list file")
+        return
+
+    logger.info(f"Delete targets: {len(delete_appids)} appids")
+    print(f"\nDelete targets ({len(delete_appids)} appids):")
+    for appid in delete_appids:
+        print(f"  • {appid}")
+
+    # Get existing data
+    games_data = kv_helper.get_games_data()
+    id_map_data = kv_helper.get_id_map()
+    logger.info(f"Loaded {len(games_data)} games and {len(id_map_data)} id-map entries")
+
+    # Delete from games_data
+    initial_games_count = len(games_data)
+    games_data = [game for game in games_data if game.get('id') not in delete_appids]
+    deleted_games_count = initial_games_count - len(games_data)
+
+    # Delete from id_map_data
+    initial_map_count = len(id_map_data)
+    id_map_data = [entry for entry in id_map_data if entry.get('id') not in delete_appids]
+    deleted_map_count = initial_map_count - len(id_map_data)
+
+    # Save back
+    kv_helper.put_games_data(games_data)
+    kv_helper.put_id_map(id_map_data)
+
+    print(f"\n{'='*60}")
+    print(f"✓ Delete Complete")
+    print(f"{'='*60}")
+    print(f"Deleted from games-data: {deleted_games_count} games")
+    print(f"Deleted from id-map: {deleted_map_count} entries")
+    print(f"Remaining games: {len(games_data)}")
+    print(f"Remaining id-map entries: {len(id_map_data)}")
+    print(f"{'='*60}")
+
+    logger.info(f"Delete complete: {deleted_games_count} games, {deleted_map_count} id-map entries deleted")
+
+
 def reset_prices_command(kv_helper):
     """Reset all prices to 1 in games.json"""
     logger.info("=== Reset Prices Mode ===")
@@ -261,17 +329,20 @@ def main():
     new_only = False
     use_kv_option = False
     reset_prices = False
+    delete_mode = False
     regions = DEFAULT_REGIONS.copy()
 
     i = 1
     while i < len(sys.argv):
         arg = sys.argv[i]
-        if arg == '--new-only':
+        if arg == '--append':
             new_only = True
         elif arg == '--kv':
             use_kv_option = True
         elif arg == '--reset-prices':
             reset_prices = True
+        elif arg == '--delete':
+            delete_mode = True
         elif arg == '--regions':
             if i + 1 < len(sys.argv):
                 regions = sys.argv[i + 1].split(',')
@@ -293,6 +364,11 @@ def main():
 
     # Initialize KVHelper
     kv_helper = KVHelper(use_kv=use_kv)
+
+    # If delete mode, execute and exit
+    if delete_mode:
+        delete_games_command(kv_helper)
+        return
 
     # If reset-prices mode, execute and exit
     if reset_prices:
