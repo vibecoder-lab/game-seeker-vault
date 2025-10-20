@@ -21,6 +21,7 @@ export function MobileGenreModal({
   // Local state for immediate visual feedback
   const [localSelectedGenres, setLocalSelectedGenres] =
     React.useState(selectedGenres);
+  const [isTagSectionOpen, setIsTagSectionOpen] = React.useState(false);
 
   // Sync local state when parent state changes
   React.useEffect(() => {
@@ -269,38 +270,63 @@ export function MobileGenreModal({
 
         {allTags && allTags.length > 0 && (
           <div className="space-y-2">
-            <div className="text-sm font-semibold mb-2">タグ</div>
-            <div style={{ maxHeight: "200px", overflowY: "auto" }}>
-              <div className="grid grid-cols-2 gap-2">
-                {allTags.map((tag) => {
-                  const isSelected = selectedTags.includes(tag);
+            <div
+              className="flex items-center gap-2 text-sm font-semibold mb-2 cursor-pointer touch-enabled"
+              onClick={() => setIsTagSectionOpen(!isTagSectionOpen)}
+            >
+              <svg
+                className={`w-4 h-4 transition-transform duration-200 ${isTagSectionOpen ? "rotate-90" : ""}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+              <span>タグ</span>
+            </div>
+            <div
+              className="overflow-hidden transition-all duration-200 ease-in-out"
+              style={{
+                maxHeight: isTagSectionOpen ? "200px" : "0px",
+              }}
+            >
+              <div style={{ maxHeight: "200px", overflowY: "auto" }}>
+                <div className="grid grid-cols-2 gap-2">
+                  {allTags.map((tag) => {
+                    const isSelected = selectedTags.includes(tag);
 
-                  return (
-                    <div
-                      key={tag}
-                      className="flex items-center gap-2 text-sm cursor-pointer touch-enabled"
-                      onClick={() => {
-                        setSelectedTags((prev) => {
-                          if (prev.includes(tag)) {
-                            return prev.filter((t) => t !== tag);
-                          } else {
-                            return [...prev, tag];
-                          }
-                        });
-                      }}
-                    >
-                      <div className="relative w-4 h-4 flex-shrink-0">
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          readOnly
-                          className="w-4 h-4 pointer-events-none"
-                        />
+                    return (
+                      <div
+                        key={tag}
+                        className="flex items-center gap-2 text-sm cursor-pointer touch-enabled"
+                        onClick={() => {
+                          setSelectedTags((prev) => {
+                            if (prev.includes(tag)) {
+                              return prev.filter((t) => t !== tag);
+                            } else {
+                              return [...prev, tag];
+                            }
+                          });
+                        }}
+                      >
+                        <div className="relative w-4 h-4 flex-shrink-0">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            readOnly
+                            className="w-4 h-4 pointer-events-none"
+                          />
+                        </div>
+                        <span className="truncate">{tag}</span>
                       </div>
-                      <span className="truncate">{tag}</span>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
