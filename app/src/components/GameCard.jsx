@@ -2,6 +2,7 @@ import React from 'react';
 import { t, currentLocale, formatPrice, formatDate } from '../i18n/index.js';
 import { normalizeGenres, formatReleaseDate, checkJapaneseSupport, cleanLanguageText, translateReviewScore, yen } from '../utils/format.js';
 import { steamCapsuleUrl, linkFor } from '../utils/steam.js';
+import { VideoModal } from './modals/VideoModal.jsx';
 
 function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite, settings, locale }) {
   const [isHovered, setIsHovered] = React.useState(false);
@@ -12,6 +13,8 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
   const [sparkles, setSparkles] = React.useState([]);
   const [isSticky, setIsSticky] = React.useState(false);
   const [showDetailModal, setShowDetailModal] = React.useState(false);
+  const [showVideoModal, setShowVideoModal] = React.useState(false);
+  const [videoModalClosing, setVideoModalClosing] = React.useState(false);
   const cardRef = React.useRef(null);
   const detailRef = React.useRef(null);
   const longPressTimer = React.useRef(null);
@@ -139,6 +142,28 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
     }
   };
 
+  const handleVideoModalClose = () => {
+    setVideoModalClosing(true);
+    setTimeout(() => {
+      setShowVideoModal(false);
+      setVideoModalClosing(false);
+    }, 100);
+  };
+
+  const handleCardClick = (e) => {
+    if (showDetailModal) {
+      e.preventDefault();
+      return;
+    }
+
+    // Shift + Click opens video modal (prevent browser's default "open in new window")
+    if (e.shiftKey) {
+      e.preventDefault();
+      e.stopPropagation();
+      setShowVideoModal(true);
+    }
+  };
+
         return (
           <>
           {showDetailModal && (
@@ -146,6 +171,14 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
               className="fixed inset-0 bg-black bg-opacity-50 z-40"
               onClick={handleBackdropClick}
               style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+            />
+          )}
+          {showVideoModal && (
+            <VideoModal
+              game={g}
+              theme={theme}
+              isClosing={videoModalClosing}
+              onClose={handleVideoModalClose}
             />
           )}
           <div key={g.id} className="relative group">
@@ -240,11 +273,7 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
                onTouchStart={handleTouchStart}
                onTouchEnd={handleTouchEnd}
                onTouchMove={handleTouchMove}
-               onClick={(e) => {
-                 if (showDetailModal) {
-                   e.preventDefault();
-                 }
-               }}
+               onClick={handleCardClick}
                onContextMenu={(e) => {
                  const isMobile = window.innerWidth < 768;
                  if (isMobile) {

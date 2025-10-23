@@ -3,6 +3,7 @@ import { t, currentLocale, formatPrice } from '../../i18n/index.js';
 import { yen, formatDateTime, truncateByWidth, normalizeGenres, checkJapaneseSupport, cleanLanguageText, translateReviewScore, formatReleaseDate, getLocalizedFolderName } from '../../utils/format.js';
 import { steamCapsuleUrl, linkFor } from '../../utils/steam.js';
 import { dbHelper } from '../../db/index.js';
+import { VideoModal } from './VideoModal.jsx';
 
 export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, collectionMap, setCollectionMap, settings, targetFolderId, setTargetFolderId }) {
         const TRASH_FOLDER_ID = '__TRASH__';
@@ -21,6 +22,9 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         const [searchQuery, setSearchQuery] = React.useState('');
         const [hoveredGame, setHoveredGame] = React.useState(null);
         const [shiftPressed, setShiftPressed] = React.useState(false);
+        const [showVideoModal, setShowVideoModal] = React.useState(false);
+        const [videoModalClosing, setVideoModalClosing] = React.useState(false);
+        const [selectedGameForVideo, setSelectedGameForVideo] = React.useState(null);
         const hoveredGameRef = React.useRef(null);
         const detailPanelRef = React.useRef(null);
         const modalRef = React.useRef(null);
@@ -47,6 +51,24 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
             onClose();
             setIsClosing(false);
           }, 100);
+        };
+
+        const handleVideoModalClose = () => {
+          setVideoModalClosing(true);
+          setTimeout(() => {
+            setShowVideoModal(false);
+            setSelectedGameForVideo(null);
+          }, 200);
+        };
+
+        const handleGameClick = (e, gameData) => {
+          if (e.shiftKey && shiftPressed) {
+            e.preventDefault();
+            e.stopPropagation();
+            setVideoModalClosing(false);
+            setSelectedGameForVideo(gameData);
+            setShowVideoModal(true);
+          }
         };
 
         React.useEffect(() => {
@@ -269,7 +291,16 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         };
 
         return (
-          <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'}`} onClick={handleClose}>
+          <>
+          {showVideoModal && selectedGameForVideo && (
+            <VideoModal
+              game={selectedGameForVideo}
+              theme={theme}
+              isClosing={videoModalClosing}
+              onClose={handleVideoModalClose}
+            />
+          )}
+          <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'} ${showVideoModal && !videoModalClosing ? 'hidden' : ''}`} onClick={handleClose}>
             <div ref={modalRef} className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${theme.cardBg} ${theme.text} rounded-2xl shadow-2xl w-[90vw] md:w-[75vw] lg:w-[60vw] max-w-[1024px] h-[80vh] flex flex-col overflow-visible relative`} onClick={(e) => e.stopPropagation()}>
               {/* Modal Overlay (When Detail Panel is Visible) */}
               <div className={`absolute inset-0 bg-black rounded-2xl transition-opacity duration-100 pointer-events-none z-[100] ${hoveredGame && shiftPressed ? 'opacity-20' : 'opacity-0'}`}></div>
@@ -483,7 +514,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                           <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center">
                             <span className={`absolute left-[-40px] text-sm font-semibold ${theme.subText} w-[24px] text-right transition-transform duration-300 ${showOrderMenuForGame !== null ? 'translate-x-[40px]' : 'translate-x-0'}`}>{game.sortOrder}</span>
                           </div>
-                          <a href={linkFor(gameData)} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-0 pr-2 text-sm pl-6">
+                          <a href={linkFor(gameData)} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-0 pr-2 text-sm pl-6" onClick={(e) => handleGameClick(e, gameData)}>
                             {gameData?.title || 'Unknown'}
                           </a>
                           <div className={`flex items-center gap-3 transition-transform duration-300 group-hover:translate-x-0 ${selectedFolderId === TRASH_FOLDER_ID ? 'translate-x-[80px]' : 'translate-x-[120px]'}`}>
@@ -827,5 +858,6 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
             )}
             </div>
           </div>
+          </>
         );
 }
