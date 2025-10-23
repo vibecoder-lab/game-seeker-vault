@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 export function VideoModal({ game, theme, isClosing, onClose }) {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [selectedScreenshotIndex, setSelectedScreenshotIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const hasMovies = game.movies && game.movies.length > 0;
   const hasScreenshots = game.screenshots && game.screenshots.length > 0;
@@ -12,7 +13,7 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
 
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center z-[60] p-4 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'}`}
+      className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'}`}
       onClick={onClose}
     >
       <div
@@ -35,7 +36,7 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
         {/* Content */}
         <div className="p-6 overflow-y-auto flex-1">
           {/* Video Player or Screenshot Display */}
-          <div className="mb-4">
+          <div className="relative">
             {hasMovies ? (
               <div className="aspect-video bg-black rounded-lg overflow-hidden">
                 <video
@@ -62,46 +63,54 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
                 <p className={theme.subText}>No media available</p>
               </div>
             )}
-          </div>
 
-          {/* Movie List */}
-          {hasMovies && game.movies.length > 1 && (
-            <div>
-              <h3 className="text-sm font-bold mb-2">Videos ({game.movies.length})</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {game.movies.map((movie, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedVideoIndex(index)}
-                    className={`relative rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedVideoIndex === index
-                        ? 'border-blue-500'
-                        : `border-transparent ${theme.modalHover}`
+            {/* Thumbnail Hover Area and Overlay */}
+            {hasMovies && game.movies.length > 1 && (
+              <>
+                {/* Transparent hover area on the right side */}
+                <div
+                  className="absolute top-0 right-0 h-full w-32"
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >
+                  {/* Movie Thumbnails Overlay */}
+                  <div
+                    className={`h-full w-full flex flex-col gap-2 p-2 overflow-y-auto transition-opacity duration-200 bg-black bg-opacity-50 rounded-r-lg ${
+                      isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
                     }`}
                   >
-                    <img
-                      src={movie.thumbnail}
-                      alt={movie.name}
-                      className="w-full aspect-video object-cover"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-8 w-8 text-white"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
+                    {game.movies.map((movie, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setSelectedVideoIndex(index)}
+                        className={`relative rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${
+                          selectedVideoIndex === index
+                            ? 'border-blue-500'
+                            : `border-transparent ${theme.modalHover}`
+                        }`}
                       >
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-1">
-                      <p className="text-xs text-white truncate">{movie.name}</p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+                        <img
+                          src={movie.thumbnail}
+                          alt={movie.name}
+                          className="w-full aspect-video object-cover"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 text-white"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
 
           {/* Screenshot List (when no movies) */}
           {!hasMovies && hasScreenshots && game.screenshots.length > 1 && (
