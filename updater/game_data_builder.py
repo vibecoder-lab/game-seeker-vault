@@ -135,8 +135,36 @@ class GameDataBuilder:
         Returns:
             tuple: (updated id_map, mapping result)
         """
+        from constants import MAPPING_RESULT_FILE
+
         if existing_id_map is None:
             existing_id_map = []
+
+        # Check if mapping result file exists (resume from previous run)
+        already_mapped = {}  # {app_id: itad_id or None}
+        if Path(MAPPING_RESULT_FILE).exists():
+            logger.info(f"Found existing mapping result file: {MAPPING_RESULT_FILE}")
+            with open(MAPPING_RESULT_FILE, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    parts = line.split('\t')
+                    app_id = parts[0]
+                    itad_id = parts[1] if len(parts) > 1 and parts[1] else None
+                    already_mapped[app_id] = itad_id
+            logger.info(f"Loaded {len(already_mapped)} already mapped IDs")
+
+        # Merge already mapped entries into existing_id_map
+        existing_ids = {item['id'] for item in existing_id_map}
+        for app_id, itad_id in already_mapped.items():
+            if app_id not in existing_ids:
+                new_entry = {'id': app_id}
+                if itad_id:
+                    new_entry['itadId'] = itad_id
+                existing_id_map.append(new_entry)
+                existing_ids.add(app_id)
+                logger.info(f"  → Restored from mapping_result.txt: App ID {app_id}, ITAD ID: {itad_id if itad_id else 'None'}")
 
         # Fetch App ID list from Steam Web API
         try:
@@ -176,14 +204,34 @@ class GameDataBuilder:
         skipped_existing = []
         skipped_multiple = []
 
+        # Create mapping result file parent directory
+        Path(MAPPING_RESULT_FILE).parent.mkdir(parents=True, exist_ok=True)
+
         for title in title_list:
             logger.info(f"Processing title: {title}")
 
-            # Check if title is an appid (numeric) or game title (string)
-            if title.isdigit():
-                # Direct appid
-                app_id = title
-                logger.info(f"  → Detected as App ID: {app_id}")
+            # Extract appid from line (supports multiple formats)
+            # Formats supported:
+            # - "appid" (entire line is appid)
+            # - "appid<tab>title" or "appid title" (appid at start)
+            # - "title<tab>appid" or "title appid" (appid at end)
+            app_id = None
+            parts = title.split()  # Split by any whitespace
+
+            # Check each part for numeric appid
+            for part in parts:
+                if part.isdigit():
+                    app_id = part
+                    logger.info(f"  → Detected as App ID: {app_id}")
+                    break
+
+            # Skip if already mapped
+            if app_id and app_id in already_mapped:
+                logger.info(f"  → Skipped (already mapped in previous run: App ID {app_id})")
+                continue
+
+            # If appid was extracted, process as appid
+            if app_id:
 
                 # Verify appid exists in Steam API
                 app_exists = any(app['appid'] == int(app_id) for app in game_id_list)
@@ -264,6 +312,11 @@ class GameDataBuilder:
 
             mapped.append(mapped_entry)
 
+            # Save to mapping result file (append incrementally) - TSV format
+            with open(MAPPING_RESULT_FILE, 'a', encoding='utf-8') as f:
+                f.write(f"{app_id}\t{itad_id if itad_id else ''}\n")
+            already_mapped[app_id] = itad_id
+
             # Log result
             if 'score' in match:
                 logger.info(f"  ✓ Mapping success: App ID {app_id}, Score: {match['score']}")
@@ -297,27 +350,25 @@ class GameDataBuilder:
 
         game = {
             'id': app_id,
+            'itadId': itad_id if itad_id else None,
             'title': steam_data['title'],
-            'englishTitle': steam_data['title'],
-            'genres': steam_data['genres'],
-            'supportedLanguages': steam_data['supportedLanguages'],
             'storeUrl': steam_data['store_url'],
-            'platforms': steam_data['platforms'],
+            'imageUrl': steam_data.get('imageUrl', '-'),
+            'movies': steam_data.get('movies', []),
+            'reviewScore': steam_data.get('reviewScore', '-'),
+            'deal': None,  # Will be set below
+            'genres': steam_data['genres'],
+            'tags': top_tags,
+            'releaseDate': steam_data.get('releaseDate', '-'),
             'developers': steam_data.get('developers', []),
             'publishers': steam_data.get('publishers', []),
-            'imageUrl': steam_data.get('imageUrl', '-'),
-            'releaseDate': steam_data.get('releaseDate', '-'),
-            'reviewScore': steam_data.get('reviewScore', '-'),
-            'tags': top_tags
+            'platforms': steam_data['platforms'],
+            'supportedLanguages': steam_data['supportedLanguages']
         }
 
-        # Add ITAD data if available
-        if itad_id:
-            game['itadId'] = itad_id
-            if itad_deal is not None:
-                game['deal'] = itad_deal
-            else:
-                game['deal'] = {'JPY': {'price': '-', 'regular': '-', 'cut': 0, 'storeLow': '-'}}
+        # Add ITAD deal data
+        if itad_deal is not None:
+            game['deal'] = itad_deal
         else:
             game['deal'] = {'JPY': {'price': '-', 'regular': '-', 'cut': 0, 'storeLow': '-'}}
 
@@ -598,7 +649,20 @@ class GameDataBuilder:
         existing_games = kv_helper.get_games_data()
         logger.info(f"Existing games-data: {len(existing_games)} items")
 
-        # 6. Fetch detailed data only for new IDs
+        # 6. Auto-detect processing mode based on new_ids count
+        new_ids_count = len(new_ids)
+
+        if new_ids_count >= 1000:
+            logger.info(f"Batch mode enabled: {new_ids_count} games (>= 1000)")
+            return self._process_batch_mode(new_ids, regions, kv_helper, id_map, mapping_result, existing_games)
+        else:
+            logger.info(f"Normal mode: {new_ids_count} games (< 1000)")
+            return self._process_normal_mode(new_ids, regions, kv_helper, id_map, mapping_result, existing_games)
+
+    def _process_normal_mode(self, new_ids, regions, kv_helper, id_map, mapping_result, existing_games):
+        """Normal mode: Build all data in memory and save at the end"""
+
+        # Fetch detailed data only for new IDs
         target_ids = new_ids
         logger.info(f"ITAD API Key: {'Available' if self.itad_api_key else 'Not available (use existing data for historical lows)'}")
         logger.info(f"Fetch regions: {', '.join(regions)}")
@@ -749,6 +813,323 @@ class GameDataBuilder:
             'games_without_itad': games_without_itad,
             'games_with_image_fallback': games_with_image_fallback
         }
+
+    def _process_batch_mode(self, new_ids, regions, kv_helper, id_map, mapping_result, existing_games):
+        """Batch mode: Save checkpoint every 1000 games"""
+        from constants import CHECKPOINT_INTERVAL
+        from pathlib import Path
+        from constants import CHECKPOINT_DIR, BATCH_LOCK_FILE
+        from datetime import datetime
+
+        # Initialize batch directories
+        Path(CHECKPOINT_DIR).mkdir(parents=True, exist_ok=True)
+
+        # Create lock file if not exists (new batch processing)
+        lock_file_path = Path(BATCH_LOCK_FILE)
+        is_new_batch = not lock_file_path.exists()
+
+        if is_new_batch:
+            lock_file_path.parent.mkdir(parents=True, exist_ok=True)
+            lock_data = {
+                'log_file': 'batch_rebuild.log',
+                'start_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            }
+            with open(lock_file_path, 'w', encoding='utf-8') as f:
+                json.dump(lock_data, f, ensure_ascii=False, indent=2)
+            logger.info(f"Created batch lock file: {lock_file_path}")
+
+            # Switch logging to batch_rebuild.log
+            script_dir = Path(__file__).parent
+            log_dir = script_dir / 'log'
+            batch_log_file = log_dir / 'batch_rebuild.log'
+
+            # Remove existing FileHandler and add new one for batch_rebuild.log
+            root_logger = logging.getLogger()
+            for handler in root_logger.handlers[:]:
+                if isinstance(handler, logging.FileHandler):
+                    handler.close()
+                    root_logger.removeHandler(handler)
+
+            # Add new FileHandler for batch log
+            batch_handler = logging.FileHandler(batch_log_file, mode='w', encoding='utf-8')
+            batch_handler.setLevel(logging.INFO)
+            batch_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+            root_logger.addHandler(batch_handler)
+
+            logger.info(f"Switched logging to batch file: {batch_log_file}")
+
+        # 1. Find the latest checkpoint to determine resume position
+        checkpoint_dir = Path(CHECKPOINT_DIR)
+        checkpoint_files = list(checkpoint_dir.glob('games_checkpoint_*.json'))
+
+        if checkpoint_files:
+            # Extract checkpoint numbers and find the latest
+            checkpoint_numbers = []
+            for f in checkpoint_files:
+                try:
+                    num = int(f.stem.split('_')[-1])
+                    checkpoint_numbers.append(num)
+                except ValueError:
+                    continue
+
+            if checkpoint_numbers:
+                latest_checkpoint = max(checkpoint_numbers)
+                logger.info(f"Found latest checkpoint: {latest_checkpoint} games processed")
+                logger.info(f"Resuming from game {latest_checkpoint + 1}")
+
+                # Skip already processed games (no need to load checkpoint data)
+                target_ids = new_ids[latest_checkpoint:]
+                logger.info(f"Target IDs: {len(target_ids)} (skipped {latest_checkpoint} already processed)")
+                rebuilt_games = []
+            else:
+                logger.info("No valid checkpoint found, starting from beginning")
+                rebuilt_games = []
+                target_ids = new_ids
+        else:
+            logger.info("No checkpoint found, starting from beginning")
+            rebuilt_games = []
+            target_ids = new_ids
+
+        if len(target_ids) == 0:
+            logger.info("All IDs already processed")
+            return {
+                'rebuilt_games': existing_games,
+                'failed_games': [],
+                'missing_data': [],
+                'mapping_result': mapping_result,
+                'id_map': id_map,
+                'newly_added_games': [],
+                'games_without_itad': [],
+                'games_with_image_fallback': []
+            }
+
+        logger.info(f"ITAD API Key: {'Available' if self.itad_api_key else 'Not available (use existing data for historical lows)'}")
+        logger.info(f"Fetch regions: {', '.join(regions)}")
+
+        # 3. Convert id_map to dict for fast lookup
+        id_map_dict = {item['id']: item.get('itadId') for item in id_map}
+
+        # 4. Batch fetch ITAD deal data for target games
+        new_itad_ids = [id_map_dict.get(app_id) for app_id in target_ids if id_map_dict.get(app_id)]
+        itad_deal_map = {}
+        if new_itad_ids and self.itad_client:
+            logger.info(f"Fetching ITAD deals for {len(new_itad_ids)} games...")
+            itad_deal_map = self.itad_client.get_batch_deals(new_itad_ids, region='JP')
+            logger.info(f"ITAD batch fetch complete: {len(itad_deal_map)} deals retrieved")
+
+            # Check if ITAD API failed completely
+            if len(itad_deal_map) == 0 and len(new_itad_ids) > 0:
+                logger.error("ITAD API failed to retrieve any deal data. Aborting batch update.")
+                raise Exception("ITAD API batch fetch returned 0 results")
+
+        # 2. Initialize tracking lists (or resume from checkpoint)
+        if not checkpoint_files or not checkpoint_numbers:
+            # Starting fresh
+            rebuilt_games = []
+
+        failed_games = []
+        missing_data = []
+        games_without_itad = []
+        games_with_image_fallback = []
+
+        # Calculate starting index for checkpoint naming
+        start_index = latest_checkpoint if checkpoint_files and checkpoint_numbers else 0
+
+        for i, app_id in enumerate(target_ids, 1):
+            logger.info(f"[{i}/{len(target_ids)}] Processing App ID: {app_id}...")
+
+            # Fetch latest data from Steam API
+            steam_data = self.steam_client.get_game_info_from_api(app_id, regions=['JP'])
+
+            if not steam_data:
+                logger.error(f"  ✗ Steam API fetch failed, skipped (App ID: {app_id})")
+                failed_games.append({'app_id': app_id, 'reason': 'Steam API fetch failed'})
+                continue
+
+            # Get ITAD ID and deal data, or construct from Steam data
+            itad_id = id_map_dict.get(app_id)
+            itad_deal = itad_deal_map.get(itad_id) if itad_id else None
+
+            # Check if ITAD deal has no JPY/Steam data
+            if itad_deal and itad_deal.get('price') == '-' and itad_deal.get('regular') == '-':
+                logger.warning(f"  ✗ ITAD has no JPY/Steam data for App ID {app_id}, will construct from Steam API")
+                itad_deal = None
+
+            if itad_deal:
+                itad_deal_dict = {'JPY': itad_deal}
+            else:
+                # No ITAD data: construct deal structure from Steam API data
+                steam_prices = steam_data.get('prices', {}).get('JP', {})
+                regular_price = steam_prices.get('price', 0)
+                sale_price = steam_prices.get('salePrice')
+
+                if sale_price is not None and sale_price < regular_price:
+                    price = sale_price
+                    cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
+                else:
+                    price = regular_price
+                    cut = 0
+
+                steam_deal = {
+                    'price': price,
+                    'regular': regular_price,
+                    'cut': cut,
+                    'storeLow': '-',
+                    'noItadData': True
+                }
+                itad_deal_dict = {'JPY': steam_deal}
+                games_without_itad.append(app_id)
+                logger.info(f"  → Constructed deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
+
+            # Fetch tags from ITAD if available
+            tags = []
+            if itad_id and self.itad_client:
+                tags = self.itad_client.get_game_tags(itad_id)
+                logger.debug(f"  → Fetched {len(tags)} tags from ITAD for App ID {app_id}")
+
+            # Build game data using common method
+            new_game = self._build_game_data_from_steam(app_id, steam_data, itad_id, itad_deal_dict, tags)
+
+            # Check if image URL conversion failed
+            image_url = new_game.get('imageUrl', '')
+            if image_url and image_url != '-' and 'capsule_616x353' not in image_url:
+                games_with_image_fallback.append(app_id)
+
+            # Check for missing data
+            if steam_data.get('imageUrl') is None:
+                missing_data.append({'app_id': app_id, 'missing': 'imageUrl (Steam)'})
+                logger.warning(f"  ⚠ Image URL fetch failed (App ID: {app_id})")
+
+            if steam_data.get('releaseDate') is None:
+                missing_data.append({'app_id': app_id, 'missing': 'releaseDate (Steam)'})
+                logger.warning(f"  ⚠ Release date fetch failed (App ID: {app_id})")
+
+            if steam_data.get('reviewScore') is None:
+                missing_data.append({'app_id': app_id, 'missing': 'reviewScore (Steam)'})
+                logger.warning(f"  ⚠ Review score fetch failed (App ID: {app_id})")
+
+            if not itad_id:
+                missing_data.append({'app_id': app_id, 'missing': 'itadId'})
+                logger.warning(f"  ⚠ No ITAD ID (App ID: {app_id})")
+
+            rebuilt_games.append(new_game)
+            logger.info(f"  ✓ Success (App ID: {app_id})")
+
+            # Save checkpoint every CHECKPOINT_INTERVAL games
+            checkpoint_number = start_index + i
+            if checkpoint_number % CHECKPOINT_INTERVAL == 0:
+                # Save checkpoint (current batch only, then clear memory)
+                checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number)
+                # Save id-map at checkpoint
+                kv_helper.put_id_map(id_map)
+                logger.info(f"✓ Checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games in this checkpoint, id-map updated)")
+
+                # Clear memory after saving checkpoint
+                rebuilt_games = []
+                logger.info("Memory cleared after checkpoint save")
+
+        # 6. Load all checkpoint files and merge
+        logger.info("Loading all checkpoint files...")
+        checkpoint_dir = Path(CHECKPOINT_DIR)
+        all_checkpoint_files = sorted(checkpoint_dir.glob('games_checkpoint_*.json'),
+                                      key=lambda f: int(f.stem.split('_')[-1]))
+
+        all_new_games = []
+        for cp_file in all_checkpoint_files:
+            logger.info(f"Loading checkpoint: {cp_file.name}")
+            with open(cp_file, 'r', encoding='utf-8') as f:
+                checkpoint_data = json.load(f)
+                all_new_games.extend(checkpoint_data)
+                logger.info(f"  Loaded {len(checkpoint_data)} games from {cp_file.name}")
+
+        # Add remaining in-memory data (games processed after last checkpoint)
+        if rebuilt_games:
+            logger.info(f"Adding {len(rebuilt_games)} games from memory (processed after last checkpoint)")
+            all_new_games.extend(rebuilt_games)
+
+        logger.info(f"Total new games loaded: {len(all_new_games)}")
+
+        # Merge with existing data
+        logger.info("Merging with existing data...")
+        existing_ids = {game['id'] for game in existing_games}
+
+        # Track newly added games
+        newly_added_games = []
+
+        # Existing data + new data (skip duplicates)
+        final_games = existing_games.copy()
+        for new_game in all_new_games:
+            if new_game['id'] not in existing_ids:
+                final_games.append(new_game)
+                newly_added_games.append({
+                    'id': new_game['id'],
+                    'title': new_game['title']
+                })
+            else:
+                logger.info(f"  → Skipped (already exists: App ID {new_game['id']})")
+
+        logger.info(f"Merge result: Existing {len(existing_games)} items + New {len(newly_added_games)} items = Total {len(final_games)} items")
+        rebuilt_games = final_games
+
+        # Log games using fallback images
+        if games_with_image_fallback:
+            logger.warning(f"  ⚠ Games using fallback image (not capsule_616x353): {len(games_with_image_fallback)} games")
+            logger.warning(f"  App IDs: {games_with_image_fallback}")
+
+        # 7. Cleanup lock file and rename log file
+        logger.info("Batch processing complete. Checkpoint files and mapping_result.txt preserved for resume capability.")
+
+        # Rename log file and delete lock file
+        if lock_file_path.exists():
+            with open(lock_file_path, 'r', encoding='utf-8') as f:
+                lock_data = json.load(f)
+
+            start_time = lock_data['start_time']
+            end_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+            # Convert to filename format
+            start_timestamp = start_time.replace('-', '').replace(':', '').replace(' ', '_')
+            end_timestamp = end_time.replace('-', '').replace(':', '').replace(' ', '_')
+
+            # Get log directory from main.py
+            script_dir = Path(__file__).parent
+            log_dir = script_dir / 'log'
+
+            old_log_file = log_dir / lock_data['log_file']
+            new_log_file = log_dir / f"rebuild_{start_timestamp}_to_{end_timestamp}.log"
+
+            if old_log_file.exists():
+                old_log_file.rename(new_log_file)
+                logger.info(f"Renamed log file: {old_log_file.name} -> {new_log_file.name}")
+
+            # Delete lock file
+            lock_file_path.unlink()
+            logger.info(f"Deleted batch lock file: {lock_file_path}")
+
+        return {
+            'rebuilt_games': rebuilt_games,
+            'failed_games': failed_games,
+            'missing_data': missing_data,
+            'mapping_result': mapping_result,
+            'id_map': id_map,
+            'newly_added_games': newly_added_games,
+            'games_without_itad': games_without_itad,
+            'games_with_image_fallback': games_with_image_fallback
+        }
+
+    def _save_checkpoint(self, games, count):
+        """Save checkpoint file"""
+        from pathlib import Path
+        from constants import CHECKPOINT_DIR
+
+        checkpoint_dir = Path(CHECKPOINT_DIR)
+        checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        checkpoint_file = checkpoint_dir / f"games_checkpoint_{count}.json"
+
+        with open(checkpoint_file, 'w', encoding='utf-8') as f:
+            json.dump(games, f, ensure_ascii=False, indent=2)
+
+        return checkpoint_file
 
     def rebuild_games_data(self, new_only=False, regions=None, kv_helper=None):
         """Build games.json

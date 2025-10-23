@@ -40,13 +40,14 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
             {hasMovies ? (
               <div className="aspect-video bg-black rounded-lg overflow-hidden">
                 <video
-                  key={currentMovie.url}
+                  key={currentMovie.id}
                   controls
                   autoPlay
                   className="w-full h-full"
                   poster={currentMovie.thumbnail}
                 >
-                  <source src={currentMovie.url} type="video/mp4" />
+                  <source src={currentMovie.webm} type="video/webm" />
+                  <source src={currentMovie.mp4} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>

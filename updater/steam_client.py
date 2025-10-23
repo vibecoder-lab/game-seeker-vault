@@ -121,6 +121,9 @@ class SteamClient:
             developers = self._extract_developers(app_data)
             publishers = self._extract_publishers(app_data)
 
+            # Movies information
+            movies = self._extract_movies(app_data)
+
             # Price information (first region from already fetched app_data, rest from API)
             prices = {}
 
@@ -146,6 +149,7 @@ class SteamClient:
                 'platforms': platforms,
                 'developers': developers,
                 'publishers': publishers,
+                'movies': movies,
                 'prices': prices
             }
 
@@ -293,7 +297,6 @@ class SteamClient:
 
             # Pattern 2: .../apps/{appid}/{hash}/header_XXX.jpg -> .../apps/{appid}/capsule_616x353.jpg
             elif '/apps/' in header_image and '/header' in header_image:
-                import re
                 match = re.match(r'(https?://[^/]+/[^/]+/[^/]+/apps/\d+)/[^/]+/(header[^?]*\.jpg)', header_image)
                 if match:
                     base_url = match.group(1)
@@ -371,6 +374,30 @@ class SteamClient:
             return app_data.get('publishers', [])
         except Exception as e:
             logger.error(f"Error extracting publishers: {e}")
+            return []
+
+    def _extract_movies(self, app_data):
+        """Get movies (trailers) information"""
+        try:
+            movies = app_data.get('movies', [])
+            if not movies:
+                return []
+
+            # Extract webm URL (480p) and mp4 URL from each movie
+            result = []
+            for movie in movies:
+                movie_data = {
+                    'id': movie.get('id'),
+                    'name': movie.get('name', ''),
+                    'thumbnail': movie.get('thumbnail', ''),
+                    'webm': movie.get('webm', {}).get('480', ''),
+                    'mp4': movie.get('mp4', {}).get('480', '')
+                }
+                result.append(movie_data)
+
+            return result
+        except Exception as e:
+            logger.error(f"Error extracting movies: {e}")
             return []
 
     def _extract_release_date(self, app_data):

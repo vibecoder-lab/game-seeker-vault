@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-review-data_0.jsonからスコア8以上のゲームタイトルを抽出
+Extract games with score 8+ from review-data_*.json files
 """
 import json
 from pathlib import Path
@@ -8,10 +8,10 @@ from pathlib import Path
 
 def calculate_review_score(positive: int, negative: int) -> int:
     """
-    positive/negativeの比率からreview_scoreを計算
+    Calculate review score from positive/negative ratio
 
-    claude-research01.mdの基準:
-    - Score 9: 95%以上
+    Scoring criteria (from claude-research01.md):
+    - Score 9: 95%+
     - Score 8: 80-94%
     - Score 7: 70-79%
     - ...
@@ -45,17 +45,17 @@ def calculate_review_score(positive: int, negative: int) -> int:
 
 
 def main():
-    # 入力ディレクトリ
+    # Input directory
     input_dir = Path("/Volumes/LOGITEC SSD/01_dev/32_steam-game-seeker/data/steamspy-api-data/review-data")
 
-    # 出力先ディレクトリ
+    # Output directory
     output_dir = Path("/Volumes/LOGITEC SSD/01_dev/32_steam-game-seeker/game-seeker-vault/istore-service-data/high-score-games")
     output_dir.mkdir(exist_ok=True)
 
     total_files_processed = 0
     total_games_found = 0
 
-    # review-data_0.json から review-data_86.json まで処理
+    # Process review-data_0.json through review-data_86.json
     for i in range(87):
         input_file = input_dir / f"review-data_{i}.json"
         output_file = output_dir / f"score_8_plus_titles_{i}.txt"
@@ -64,11 +64,11 @@ def main():
             print(f"[WARN] {input_file.name} not found, skipping")
             continue
 
-        # データ読み込み
+        # Load data
         with open(input_file, 'r') as f:
             games_dict = json.load(f)
 
-        # スコア8以上 & レビュー総数100以上のタイトルを抽出
+        # Extract titles with score 8+ and 100+ total reviews
         high_score_games = []
 
         for appid, game in games_dict.items():
@@ -82,7 +82,7 @@ def main():
                 if title:
                     high_score_games.append((appid, title))
 
-        # テキストファイルに保存（appid + タイトル）
+        # Save to text file (appid + title)
         with open(output_file, 'w', encoding='utf-8') as f:
             for appid, title in high_score_games:
                 f.write(f"{appid}\t{title}\n")

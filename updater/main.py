@@ -27,9 +27,10 @@ import sys
 import logging
 import os
 from pathlib import Path
+from datetime import datetime
 from game_data_builder import GameDataBuilder
 from kv_helper import KVHelper
-from constants import DEFAULT_REGIONS
+from constants import DEFAULT_REGIONS, BATCH_LOCK_FILE
 
 # Log configuration (overwrite mode to rebuild.log)
 script_dir = Path(__file__).parent
@@ -45,17 +46,37 @@ log_dir = script_dir / 'log'
 
 # Create log directory
 log_dir.mkdir(parents=True, exist_ok=True)
-log_file = log_dir / 'rebuild.log'
+
+# Determine log file based on batch processing status
+lock_file_path = Path(BATCH_LOCK_FILE)
+
+if lock_file_path.exists():
+    # Batch processing resume - append to existing log file
+    with open(lock_file_path, 'r', encoding='utf-8') as f:
+        session = json.load(f)
+    log_file = log_dir / session['log_file']
+    log_mode = 'a'
+    logger_info = f"Resuming batch processing, logging to: {log_file}"
+else:
+    # New processing - create timestamped log file
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    log_file = log_dir / f'rebuild_{timestamp}.log'
+    log_mode = 'w'
+    logger_info = None
 
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler(log_file, mode='w', encoding='utf-8'),  # Overwrite to file
+        logging.FileHandler(log_file, mode=log_mode, encoding='utf-8'),
         logging.StreamHandler()  # Also output to console
     ]
 )
 logger = logging.getLogger(__name__)
+
+# Log resume info if applicable
+if logger_info:
+    logger.info(logger_info)
 
 
 def print_mapping_report(mapping_result):
