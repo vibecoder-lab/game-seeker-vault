@@ -58,7 +58,8 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
           setTimeout(() => {
             setShowVideoModal(false);
             setSelectedGameForVideo(null);
-          }, 200);
+            setVideoModalClosing(false);
+          }, 100);
         };
 
         const handleGameClick = (e, gameData) => {
@@ -300,7 +301,11 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
               onClose={handleVideoModalClose}
             />
           )}
-          <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'} ${showVideoModal && !videoModalClosing ? 'hidden' : ''}`} onClick={handleClose}>
+          {/* 共通背景 */}
+          <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 ${isClosing && !showVideoModal ? 'modal-fade-out' : 'modal-fade-in'}`} onClick={showVideoModal ? undefined : handleClose}></div>
+
+          {/* コレクションモーダルコンテンツ */}
+          <div className={`fixed inset-0 z-50 ${showVideoModal ? 'hidden' : ''}`} onClick={handleClose}>
             <div ref={modalRef} className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${theme.cardBg} ${theme.text} rounded-2xl shadow-2xl w-[90vw] md:w-[75vw] lg:w-[60vw] max-w-[1024px] h-[80vh] flex flex-col overflow-visible relative`} onClick={(e) => e.stopPropagation()}>
               {/* Modal Overlay (When Detail Panel is Visible) */}
               <div className={`absolute inset-0 bg-black rounded-2xl transition-opacity duration-100 pointer-events-none z-[100] ${hoveredGame && shiftPressed ? 'opacity-20' : 'opacity-0'}`}></div>

@@ -12,7 +12,7 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
 
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'}`}
+      className={`fixed inset-0 flex items-center justify-center z-[60] p-4 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'}`}
       onClick={onClose}
     >
       <div
