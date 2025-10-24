@@ -124,6 +124,11 @@ class SteamClient:
             # Movies information
             movies = self._extract_movies(app_data)
 
+            # Screenshot information (first one only, only if no movies)
+            screenshot = None
+            if not movies or len(movies) == 0:
+                screenshot = self._extract_screenshot(app_data)
+
             # Price information (first region from already fetched app_data, rest from API)
             prices = {}
 
@@ -150,6 +155,7 @@ class SteamClient:
                 'developers': developers,
                 'publishers': publishers,
                 'movies': movies,
+                'screenshot': screenshot,
                 'prices': prices
             }
 
@@ -399,6 +405,24 @@ class SteamClient:
         except Exception as e:
             logger.error(f"Error extracting movies: {e}")
             return []
+
+    def _extract_screenshot(self, app_data):
+        """Get first screenshot information"""
+        try:
+            screenshots = app_data.get('screenshots', [])
+            if not screenshots or len(screenshots) == 0:
+                return None
+
+            # Get only the first screenshot
+            first_screenshot = screenshots[0]
+            return {
+                'id': first_screenshot.get('id'),
+                'thumbnail': first_screenshot.get('path_thumbnail', ''),
+                'full': first_screenshot.get('path_full', '')
+            }
+        except Exception as e:
+            logger.error(f"Error extracting screenshot: {e}")
+            return None
 
     def _extract_release_date(self, app_data):
         """Get release date in YYYY-MM-DD format"""

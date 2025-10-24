@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 
 export function VideoModal({ game, theme, isClosing, onClose }) {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
-  const [selectedScreenshotIndex, setSelectedScreenshotIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
   const hasMovies = game.movies && game.movies.length > 0;
-  const hasScreenshots = game.screenshots && game.screenshots.length > 0;
+  const hasScreenshot = game.screenshot && game.screenshot.full;
 
   const currentMovie = hasMovies ? game.movies[selectedVideoIndex] : null;
-  const currentScreenshot = hasScreenshots ? game.screenshots[selectedScreenshotIndex] : null;
+  const currentScreenshot = game.screenshot;
 
   return (
     <div
@@ -51,11 +50,11 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
                   Your browser does not support the video tag.
                 </video>
               </div>
-            ) : hasScreenshots ? (
+            ) : hasScreenshot ? (
               <div className="aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
                 <img
                   src={currentScreenshot.full}
-                  alt={`${game.title} screenshot ${selectedScreenshotIndex + 1}`}
+                  alt={`${game.title} screenshot`}
                   className="max-w-full max-h-full object-contain"
                 />
               </div>
@@ -112,32 +111,6 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
               </>
             )}
           </div>
-
-          {/* Screenshot List (when no movies) */}
-          {!hasMovies && hasScreenshots && game.screenshots.length > 1 && (
-            <div>
-              <h3 className="text-sm font-bold mb-2">Screenshots ({game.screenshots.length})</h3>
-              <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
-                {game.screenshots.map((screenshot, index) => (
-                  <button
-                    key={screenshot.id}
-                    onClick={() => setSelectedScreenshotIndex(index)}
-                    className={`relative rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedScreenshotIndex === index
-                        ? 'border-blue-500'
-                        : `border-transparent ${theme.modalHover}`
-                    }`}
-                  >
-                    <img
-                      src={screenshot.thumbnail}
-                      alt={`Screenshot ${index + 1}`}
-                      className="w-full aspect-video object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
