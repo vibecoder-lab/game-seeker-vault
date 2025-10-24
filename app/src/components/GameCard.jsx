@@ -6,7 +6,6 @@ import { steamCapsuleUrl, linkFor } from '../utils/steam.js';
 function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite, onShowVideoModal, settings, locale }) {
   const [isHovered, setIsHovered] = React.useState(false);
   const [shiftPressed, setShiftPressed] = React.useState(false);
-  const [starHovered, setStarHovered] = React.useState(false);
   const [starButtonHovered, setStarButtonHovered] = React.useState(false);
   const [starClicked, setStarClicked] = React.useState(null);
   const [sparkles, setSparkles] = React.useState([]);
@@ -173,16 +172,11 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
             <div className="absolute top-2 right-2 z-20 hidden md:block">
               <button
                 onClick={handleStarClick}
-                onMouseEnter={() => {
-                  setStarHovered(true);
-                  setStarButtonHovered(true);
-                }}
-                onMouseLeave={() => {
-                  setStarHovered(false);
-                  setStarButtonHovered(false);
-                }}
-                className={`p-2 ${settings?.alwaysShowStarIcon ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                onMouseEnter={() => setStarButtonHovered(true)}
+                onMouseLeave={() => setStarButtonHovered(false)}
+                className={`star-button p-2 ${settings?.alwaysShowStarIcon ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
                 style={{
+                  '--gradient-id': `url(#rainbow-gradient-${g.id})`,
                   transform: starClicked === true ? 'scale(2)' :
                              starClicked === false ? 'scale(0.5)' :
                              starButtonHovered ? 'scale(1.1)' :
@@ -217,10 +211,11 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
                     </linearGradient>
                   </defs>
                   <path
+                    className="star-path"
                     strokeLinejoin="miter"
                     d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                    fill={starHovered ? `url(#rainbow-gradient-${g.id})` : (isFavorite ? '#facc15' : 'none')}
-                    stroke={starHovered ? `url(#rainbow-gradient-${g.id})` : '#facc15'}
+                    fill={isFavorite ? '#facc15' : 'none'}
+                    stroke='#facc15'
                     style={{transition: 'fill 0.3s ease, stroke 0.3s ease'}}
                   />
                 </svg>

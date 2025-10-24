@@ -97,3 +97,9 @@
         touch-action: manipulation;
         user-select: none;
       }
+
+      /* Star button hover effects */
+      .star-button:hover .star-path {
+        fill: var(--gradient-id) !important;
+        stroke: var(--gradient-id) !important;
+      }
