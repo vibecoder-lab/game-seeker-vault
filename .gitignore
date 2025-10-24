@@ -105,5 +105,6 @@ Desktop.ini
 
 .claude/
 .wrangler/
-CLAUDE.md
 docs/tmp/
+game_filter/
+CLAUDE.md

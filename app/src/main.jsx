@@ -755,7 +755,7 @@ function SteamPriceFilter({ initialData = null }) {
   const rowVirtualizer = useWindowVirtualizer({
     count: rowCount,
     estimateSize: () => 258, // Estimated row height including gap
-    overscan: 2,
+    overscan: 5,
   });
 
   return (
