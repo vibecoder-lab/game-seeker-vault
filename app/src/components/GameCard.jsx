@@ -62,22 +62,29 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
     const isMobile = window.innerWidth < 768;
     if (!isMobile || !cardRef.current || !settings?.enableScrollAnimation) return;
 
-    const checkPosition = () => {
-      if (!cardRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const threshold = viewportHeight / 4; // 1/4 from top = 3/4 from bottom
+    // Use Intersection Observer for better performance
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (!entry.target) return;
+          const rect = entry.boundingClientRect;
+          const viewportHeight = window.innerHeight;
+          const threshold = viewportHeight / 4; // 1/4 from top
 
-      // Show full image when card top is above the 1/4 line (3/4 from bottom)
-      setIsSticky(rect.top < threshold);
-    };
+          // Show full image when card top is above the 1/4 line and is intersecting
+          setIsSticky(rect.top < threshold && entry.isIntersecting);
+        });
+      },
+      {
+        root: null, // Use viewport as root
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], // Multiple thresholds for smooth detection
+      }
+    );
 
-    // Check on scroll
-    checkPosition();
-    window.addEventListener('scroll', checkPosition, { passive: true });
+    observer.observe(cardRef.current);
 
     return () => {
-      window.removeEventListener('scroll', checkPosition);
+      observer.disconnect();
     };
   }, [settings?.enableScrollAnimation]);
 
