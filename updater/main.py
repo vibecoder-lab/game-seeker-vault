@@ -193,7 +193,8 @@ def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_
             logger.info(f"Saved id-map to KV ({len(id_map)} items)")
 
             # Save games-data
-            kv_helper.put_games_data(rebuilt_games)
+            # In append mode (new_only=True), preserve existing timestamp
+            kv_helper.put_games_data(rebuilt_games, preserve_timestamp=new_only)
 
             # In local file mode, also create backup
             if kv_helper.is_local_mode():

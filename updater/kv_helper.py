@@ -191,20 +191,55 @@ class KVHelper:
                 logger.error(f"JSON parsing error: {e}")
                 return []
 
-    def put_games_data(self, games_data, local_file_path='updater/data/current/games.json'):
+    def put_games_data(self, games_data, local_file_path='updater/data/current/games.json', preserve_timestamp=False):
         """Save games-data
 
         Args:
             games_data: games data list to save
             local_file_path: File path for local mode
+            preserve_timestamp: If True, preserve existing last_updated timestamp (for append mode)
         """
         import datetime
         import uuid
 
+        # Determine last_updated timestamp
+        if preserve_timestamp:
+            # Preserve existing timestamp from current data
+            file_path = Path(local_file_path)
+            existing_timestamp = None
+            try:
+                if self.is_local_mode():
+                    # Local mode: read from file
+                    if file_path.exists():
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            raw_data = json.load(f)
+                        if isinstance(raw_data, dict) and 'meta' in raw_data:
+                            existing_timestamp = raw_data['meta'].get('last_updated')
+                else:
+                    # KV mode: fetch from KV
+                    result = subprocess.run(
+                        ['wrangler', 'kv', 'key', 'get', 'games-data', f'--namespace-id={self.namespace_id}', '--remote'],
+                        capture_output=True,
+                        text=True,
+                        check=True
+                    )
+                    raw_data = json.loads(result.stdout)
+                    if isinstance(raw_data, dict) and 'meta' in raw_data:
+                        existing_timestamp = raw_data['meta'].get('last_updated')
+            except Exception as e:
+                logger.warning(f"Failed to get existing timestamp: {e}")
+
+            last_updated = existing_timestamp if existing_timestamp else datetime.datetime.now(datetime.UTC).replace(tzinfo=None).isoformat(timespec="seconds") + "Z"
+            logger.info(f"Preserving existing timestamp: {last_updated}")
+        else:
+            # Create new timestamp
+            last_updated = datetime.datetime.now(datetime.UTC).replace(tzinfo=None).isoformat(timespec="seconds") + "Z"
+            logger.info(f"Creating new timestamp: {last_updated}")
+
         # Add meta block
         output_data = {
             "meta": {
-                "last_updated": datetime.datetime.now(datetime.UTC).replace(tzinfo=None).isoformat(timespec="seconds") + "Z",
+                "last_updated": last_updated,
                 "data_version": "1.0.0",
                 "source": {
                     "steam": True,
