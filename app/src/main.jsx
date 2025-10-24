@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { VideoModal } from "./components/modals/VideoModal.jsx";
 import "./index.css";
 
 // Import i18n
@@ -707,6 +709,54 @@ function SteamPriceFilter({ initialData = null }) {
 
   // Defer the rendering of game list to improve filter checkbox responsiveness
   const deferredSorted = React.useDeferredValue(sorted);
+
+  // VideoModal state management
+  const [showVideoModal, setShowVideoModal] = React.useState(false);
+  const [videoModalClosing, setVideoModalClosing] = React.useState(false);
+  const [selectedGameForVideo, setSelectedGameForVideo] = React.useState(null);
+
+  const handleVideoModalClose = () => {
+    setVideoModalClosing(true);
+    setTimeout(() => {
+      setShowVideoModal(false);
+      setSelectedGameForVideo(null);
+      setVideoModalClosing(false);
+    }, 100);
+  };
+
+  const handleShowVideoModal = (game) => {
+    setSelectedGameForVideo(game);
+    setShowVideoModal(true);
+  };
+
+  // Virtual scrolling setup
+  // Get window width for responsive column count
+  const [windowWidth, setWindowWidth] = React.useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
+
+  React.useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Calculate column count based on screen width (matching Tailwind breakpoints)
+  const getColumnCount = () => {
+    if (windowWidth < 768) return 1; // mobile (grid-cols-1)
+    if (windowWidth < 1024) return 2; // tablet (md:grid-cols-2)
+    return 3; // desktop (lg:grid-cols-3)
+  };
+
+  const columnCount = getColumnCount();
+  const rowCount = Math.ceil(deferredSorted.length / columnCount);
+
+  // Virtual row virtualizer
+  const rowVirtualizer = useWindowVirtualizer({
+    count: rowCount,
+    estimateSize: () => 258, // Estimated row height including gap
+    overscan: 2,
+  });
 
   return (
     <>
@@ -1588,26 +1638,67 @@ function SteamPriceFilter({ initialData = null }) {
             )}
           </div>
 
-          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {!loading && deferredSorted.length === 0 && (
-              <div className={`text-sm ${theme.subText}`}>
-                {t("search.noResults", currentLocale)}
-              </div>
-            )}
-            {deferredSorted.map((g) => (
-              <GameCard
-                key={g.id}
-                g={g}
-                theme={theme}
-                priceMode={priceMode}
-                favoriteData={collectionMap[g.id]}
-                onToggleFavorite={handleToggleFavorite}
-                settings={settings}
-                locale={currentLocale}
-              />
-            ))}
-          </section>
+          {!loading && deferredSorted.length === 0 ? (
+            <div className={`text-sm ${theme.subText}`}>
+              {t("search.noResults", currentLocale)}
+            </div>
+          ) : (
+            <div
+              style={{
+                height: `${rowVirtualizer.getTotalSize()}px`,
+                width: "100%",
+                position: "relative",
+              }}
+            >
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const startIndex = virtualRow.index * columnCount;
+                return (
+                  <div
+                    key={virtualRow.key}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: `${virtualRow.size}px`,
+                      transform: `translateY(${virtualRow.start}px)`,
+                    }}
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {Array.from({ length: columnCount }).map((_, colIndex) => {
+                        const index = startIndex + colIndex;
+                        if (index >= deferredSorted.length) return null;
+                        const g = deferredSorted[index];
+                        return (
+                          <GameCard
+                            key={g.id}
+                            g={g}
+                            theme={theme}
+                            priceMode={priceMode}
+                            favoriteData={collectionMap[g.id]}
+                            onToggleFavorite={handleToggleFavorite}
+                            onShowVideoModal={handleShowVideoModal}
+                            settings={settings}
+                            locale={currentLocale}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
+
+        {showVideoModal && selectedGameForVideo && (
+          <VideoModal
+            game={selectedGameForVideo}
+            theme={theme}
+            isClosing={videoModalClosing}
+            onClose={handleVideoModalClose}
+          />
+        )}
 
         {showCollectionModal && (
           <CollectionModal
