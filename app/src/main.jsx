@@ -422,7 +422,7 @@ function SteamPriceFilter({ initialData = null }) {
     })();
   }, [folders]);
 
-  const handleToggleFavorite = async (game) => {
+  const handleToggleFavorite = React.useCallback(async (game) => {
     // Wait for folders to be initialized
     if (folders.length === 0) {
       return;
@@ -464,7 +464,7 @@ function SteamPriceFilter({ initialData = null }) {
         },
       }));
     }
-  };
+  }, [folders, dbHelper]);
 
   const games = React.useMemo(
     () =>
@@ -724,10 +724,10 @@ function SteamPriceFilter({ initialData = null }) {
     }, 100);
   };
 
-  const handleShowVideoModal = (game) => {
+  const handleShowVideoModal = React.useCallback((game) => {
     setSelectedGameForVideo(game);
     setShowVideoModal(true);
-  };
+  }, []);
 
   // Virtual scrolling setup
   // Get window width for responsive column count

@@ -747,7 +747,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                       <defs>
                         <mask id="saleMask">
                           <rect x="0" y="0" width="24" height="24" fill="white"/>
-                          <text x="12" y="17" font-family="Arial, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="black">%</text>
+                          <text x="12" y="17" fontFamily="Arial, sans-serif" fontSize="8" fontWeight="bold" textAnchor="middle" fill="black">%</text>
                         </mask>
                       </defs>
                       <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z" mask="url(#saleMask)"/>
@@ -763,7 +763,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                       <defs>
                         <mask id="jpMask">
                           <rect x="0" y="0" width="24" height="24" fill="white"/>
-                          <text x="12" y="15.5" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="black">JP</text>
+                          <text x="12" y="15.5" fontFamily="Arial, sans-serif" fontSize="10" fontWeight="bold" textAnchor="middle" fill="black">JP</text>
                         </mask>
                       </defs>
                       <rect x="2" y="4" width="20" height="16" rx="2" fill="currentColor" mask="url(#jpMask)"/>
