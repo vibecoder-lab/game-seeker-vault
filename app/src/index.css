@@ -103,3 +103,9 @@
         fill: var(--gradient-id) !important;
         stroke: var(--gradient-id) !important;
       }
+
+      /* Play button hover effects */
+      .play-button:hover .play-path {
+        fill: var(--play-gradient-id) !important;
+        stroke: var(--play-gradient-id) !important;
+      }

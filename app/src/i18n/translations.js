@@ -74,6 +74,7 @@ const translations = {
     'card.overallRating': 'Overall Rating',
     'card.addToFavorites': 'Add to Favorites',
     'card.removeFromFavorites': 'Remove from Favorites',
+    'card.playVideo': 'Play Video',
 
     // Language Support
     'language.supported': 'Supported',
@@ -425,6 +426,7 @@ const translations = {
     'card.overallRating': '総合評価',
     'card.addToFavorites': 'お気に入りに追加',
     'card.removeFromFavorites': 'お気に入りから削除',
+    'card.playVideo': '動画を再生',
 
     // Language Support
     'language.supported': '対応',

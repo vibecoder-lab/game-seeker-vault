@@ -7,6 +7,7 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
   const [isHovered, setIsHovered] = React.useState(false);
   const [shiftPressed, setShiftPressed] = React.useState(false);
   const [starButtonHovered, setStarButtonHovered] = React.useState(false);
+  const [playButtonHovered, setPlayButtonHovered] = React.useState(false);
   const [starClicked, setStarClicked] = React.useState(null);
   const [sparkles, setSparkles] = React.useState([]);
   const [isSticky, setIsSticky] = React.useState(false);
@@ -235,6 +236,56 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
                 </div>
               ))}
             </div>
+
+            {/* Play Button (Bottom-Right, Hover Only) */}
+            {g.movies && g.movies.length > 0 && (
+              <div className="absolute bottom-2 right-2 z-20 hidden md:block">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onShowVideoModal(g);
+                  }}
+                  onMouseEnter={() => setPlayButtonHovered(true)}
+                  onMouseLeave={() => setPlayButtonHovered(false)}
+                  className="play-button p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    '--play-gradient-id': `url(#green-gradient-${g.id})`,
+                    transform: playButtonHovered ? 'scale(1.1)' : 'scale(1)',
+                    transition: 'transform 300ms ease, opacity 300ms ease'
+                  }}
+                  title={t('card.playVideo', currentLocale)}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" strokeWidth="1.5">
+                    <defs>
+                      <linearGradient id={`green-gradient-${g.id}`} x1="0%" y1="0%" x2="400%" y2="0%">
+                        <stop offset="0%" style={{stopColor: '#16a34a'}} />
+                        <stop offset="25%" style={{stopColor: '#22c55e'}} />
+                        <stop offset="50%" style={{stopColor: '#84cc16'}} />
+                        <stop offset="75%" style={{stopColor: '#22c55e'}} />
+                        <stop offset="100%" style={{stopColor: '#16a34a'}} />
+                        <animateTransform
+                          attributeName="gradientTransform"
+                          type="translate"
+                          values="0 0; -2 0; 0 0"
+                          dur="2s"
+                          repeatCount="indefinite"
+                          calcMode="spline"
+                          keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
+                        />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      className="play-path"
+                      d="M8 5v14l11-7z"
+                      fill="#84cc16"
+                      stroke="#84cc16"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
+
             <a href={linkFor(g)} target="_blank" rel="noreferrer noopener"
                ref={cardRef}
                className={`block rounded-2xl ${theme.cardShadow} overflow-hidden ${showDetailModal ? 'relative z-50' : ''}`}
