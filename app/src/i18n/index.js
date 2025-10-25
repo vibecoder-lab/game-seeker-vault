@@ -1,4 +1,5 @@
 import translations from './translations.js';
+import { loadSettings, saveSettings } from '../db/settings.js';
 
 // Global locale state
 export let currentLocale = 'en';
@@ -48,20 +49,24 @@ export function formatDate(dateString, locale = 'en') {
 }
 
 // Set locale and update document
-export function setLocale(locale) {
+export async function setLocale(locale) {
   currentLocale = locale;
   document.documentElement.lang = locale;
-  localStorage.setItem('preferred-locale', locale);
+
+  // Save to settings store
+  const settings = await loadSettings();
+  await saveSettings({ ...settings, locale });
+
   // Trigger re-render (will be handled by React state)
   return locale;
 }
 
 // Get saved or detected locale
 export async function detectLocale() {
-  // 1. Check localStorage first
-  const saved = localStorage.getItem('preferred-locale');
-  if (saved && translations[saved]) {
-    return saved;
+  // 1. Check settings store first
+  const settings = await loadSettings();
+  if (settings.locale && translations[settings.locale]) {
+    return settings.locale;
   }
 
   // 2. Check browser language

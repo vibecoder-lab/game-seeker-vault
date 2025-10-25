@@ -1,21 +1,21 @@
-import { FAVORITES_STORE } from '../constants/index.js';
+import { COLLECTION_STORE } from '../constants/index.js';
 import { formatDateTime } from '../utils/format.js';
 import { initDB } from './init.js';
 
-// Add a favorite
-export async function addFavorite(folderId, gameId, sortOrder = null) {
+// Add a collection
+export async function addCollection(folderId, gameId, sortOrder = null) {
   const db = await initDB();
-  const tx = db.transaction(FAVORITES_STORE, 'readwrite');
-  const store = tx.objectStore(FAVORITES_STORE);
+  const tx = db.transaction(COLLECTION_STORE, 'readwrite');
+  const store = tx.objectStore(COLLECTION_STORE);
 
   // If sortOrder is not specified, set to max value in folder + 1
   if (sortOrder === null) {
     const index = store.index('folderId');
-    const existingFavs = await new Promise((resolve) => {
+    const existingCollections = await new Promise((resolve) => {
       const request = index.getAll(folderId);
       request.onsuccess = () => resolve(request.result);
     });
-    const maxOrder = existingFavs.reduce((max, fav) => Math.max(max, fav.sortOrder ?? 0), 0);
+    const maxOrder = existingCollections.reduce((max, collection) => Math.max(max, collection.sortOrder ?? 0), 0);
     sortOrder = maxOrder + 1;
   }
 
@@ -28,11 +28,11 @@ export async function addFavorite(folderId, gameId, sortOrder = null) {
   return result;
 }
 
-// Get favorites by folder
-export async function getFavoritesByFolder(folderId) {
+// Get collections by folder
+export async function getCollectionsByFolder(folderId) {
   const db = await initDB();
-  const tx = db.transaction(FAVORITES_STORE, 'readonly');
-  const store = tx.objectStore(FAVORITES_STORE);
+  const tx = db.transaction(COLLECTION_STORE, 'readonly');
+  const store = tx.objectStore(COLLECTION_STORE);
   const index = store.index('folderId');
   const result = await new Promise((resolve, reject) => {
     const request = index.getAll(folderId);
@@ -43,11 +43,11 @@ export async function getFavoritesByFolder(folderId) {
   return result;
 }
 
-// Get favorite by game ID
-export async function getFavoriteByGameId(gameId) {
+// Get collection by game ID
+export async function getCollectionByGameId(gameId) {
   const db = await initDB();
-  const tx = db.transaction(FAVORITES_STORE, 'readonly');
-  const store = tx.objectStore(FAVORITES_STORE);
+  const tx = db.transaction(COLLECTION_STORE, 'readonly');
+  const store = tx.objectStore(COLLECTION_STORE);
   const index = store.index('gameId');
   const result = await new Promise((resolve) => {
     const request = index.get(gameId);
@@ -57,18 +57,18 @@ export async function getFavoriteByGameId(gameId) {
   return result;
 }
 
-// Update favorite folder
-export async function updateFavoriteFolder(favoriteId, newFolderId) {
+// Update collection folder
+export async function updateCollectionFolder(collectionId, newFolderId) {
   const db = await initDB();
-  const tx = db.transaction(FAVORITES_STORE, 'readwrite');
-  const store = tx.objectStore(FAVORITES_STORE);
-  const fav = await new Promise((resolve) => {
-    const req = store.get(favoriteId);
+  const tx = db.transaction(COLLECTION_STORE, 'readwrite');
+  const store = tx.objectStore(COLLECTION_STORE);
+  const collection = await new Promise((resolve) => {
+    const req = store.get(collectionId);
     req.onsuccess = () => resolve(req.result);
   });
 
-  const oldSortOrder = fav.sortOrder;
-  const oldFolderId = fav.folderId;
+  const oldSortOrder = collection.sortOrder;
+  const oldFolderId = collection.folderId;
 
   // Get game count in destination folder and set sortOrder to the end
   const index = store.index('folderId');
@@ -78,11 +78,11 @@ export async function updateFavoriteFolder(favoriteId, newFolderId) {
   });
 
   const activeGamesInDest = destFolderGames.filter(item => !item.deleted);
-  fav.folderId = newFolderId;
-  fav.sortOrder = activeGamesInDest.length + 1;
+  collection.folderId = newFolderId;
+  collection.sortOrder = activeGamesInDest.length + 1;
 
   await new Promise((resolve, reject) => {
-    const request = store.put(fav);
+    const request = store.put(collection);
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
@@ -94,7 +94,7 @@ export async function updateFavoriteFolder(favoriteId, newFolderId) {
   });
 
   for (const item of sourceFolderGames) {
-    if (item.id !== favoriteId && !item.deleted && typeof item.sortOrder === 'number' && item.sortOrder > oldSortOrder) {
+    if (item.id !== collectionId && !item.deleted && typeof item.sortOrder === 'number' && item.sortOrder > oldSortOrder) {
       item.sortOrder -= 1;
       await new Promise((resolve, reject) => {
         const request = store.put(item);
@@ -107,11 +107,11 @@ export async function updateFavoriteFolder(favoriteId, newFolderId) {
   db.close();
 }
 
-// Delete favorite
-export async function deleteFavorite(id) {
+// Delete collection
+export async function deleteCollection(id) {
   const db = await initDB();
-  const tx = db.transaction(FAVORITES_STORE, 'readwrite');
-  const store = tx.objectStore(FAVORITES_STORE);
+  const tx = db.transaction(COLLECTION_STORE, 'readwrite');
+  const store = tx.objectStore(COLLECTION_STORE);
   await new Promise((resolve, reject) => {
     const request = store.delete(id);
     request.onsuccess = () => resolve();
@@ -120,36 +120,36 @@ export async function deleteFavorite(id) {
   db.close();
 }
 
-// Update favorite sort order
-export async function updateFavoriteOrder(favoriteId, sortOrder) {
+// Update collection sort order
+export async function updateCollectionOrder(collectionId, sortOrder) {
   const db = await initDB();
-  const tx = db.transaction(FAVORITES_STORE, 'readwrite');
-  const store = tx.objectStore(FAVORITES_STORE);
-  const fav = await new Promise((resolve) => {
-    const req = store.get(favoriteId);
+  const tx = db.transaction(COLLECTION_STORE, 'readwrite');
+  const store = tx.objectStore(COLLECTION_STORE);
+  const collection = await new Promise((resolve) => {
+    const req = store.get(collectionId);
     req.onsuccess = () => resolve(req.result);
   });
-  fav.sortOrder = sortOrder;
+  collection.sortOrder = sortOrder;
   await new Promise((resolve, reject) => {
-    const request = store.put(fav);
+    const request = store.put(collection);
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
   db.close();
 }
 
-// Mark favorite as deleted (move to trash)
-export async function markAsDeleted(favoriteId) {
+// Mark collection as deleted (move to trash)
+export async function markAsDeleted(collectionId) {
   const db = await initDB();
-  const tx = db.transaction(FAVORITES_STORE, 'readwrite');
-  const store = tx.objectStore(FAVORITES_STORE);
-  const fav = await new Promise((resolve) => {
-    const req = store.get(favoriteId);
+  const tx = db.transaction(COLLECTION_STORE, 'readwrite');
+  const store = tx.objectStore(COLLECTION_STORE);
+  const collection = await new Promise((resolve) => {
+    const req = store.get(collectionId);
     req.onsuccess = () => resolve(req.result);
   });
 
-  const deletedSortOrder = fav.sortOrder;
-  const folderId = fav.folderId;
+  const deletedSortOrder = collection.sortOrder;
+  const folderId = collection.folderId;
 
   // Get all items in folder before deletion
   const index = store.index('folderId');
@@ -159,18 +159,18 @@ export async function markAsDeleted(favoriteId) {
   });
 
   // Execute deletion
-  fav.deleted = true;
-  fav.sortOrder = "";
+  collection.deleted = true;
+  collection.sortOrder = "";
 
   await new Promise((resolve, reject) => {
-    const request = store.put(fav);
+    const request = store.put(collection);
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
 
   // Decrement sortOrder by 1 for games after the deleted game in the same folder
   for (const item of allInFolder) {
-    if (item.id !== favoriteId && !item.deleted && typeof item.sortOrder === 'number' && item.sortOrder > deletedSortOrder) {
+    if (item.id !== collectionId && !item.deleted && typeof item.sortOrder === 'number' && item.sortOrder > deletedSortOrder) {
       item.sortOrder -= 1;
       await new Promise((resolve, reject) => {
         const request = store.put(item);
@@ -183,45 +183,45 @@ export async function markAsDeleted(favoriteId) {
   db.close();
 }
 
-// Restore favorite from trash
-export async function restoreFromTrash(favoriteId) {
+// Restore collection from trash
+export async function restoreFromTrash(collectionId) {
   const db = await initDB();
-  const tx = db.transaction(FAVORITES_STORE, 'readwrite');
-  const store = tx.objectStore(FAVORITES_STORE);
-  const fav = await new Promise((resolve) => {
-    const req = store.get(favoriteId);
+  const tx = db.transaction(COLLECTION_STORE, 'readwrite');
+  const store = tx.objectStore(COLLECTION_STORE);
+  const collection = await new Promise((resolve) => {
+    const req = store.get(collectionId);
     req.onsuccess = () => resolve(req.result);
   });
 
-  fav.deleted = false;
+  collection.deleted = false;
 
   // Get game count in restore folder and set sortOrder
   const index = store.index('folderId');
   const allInFolder = await new Promise((resolve) => {
-    const request = index.getAll(fav.folderId);
+    const request = index.getAll(collection.folderId);
     request.onsuccess = () => resolve(request.result);
   });
 
   const activeGames = allInFolder.filter(item => !item.deleted);
-  fav.sortOrder = activeGames.length + 1;
+  collection.sortOrder = activeGames.length + 1;
 
   await new Promise((resolve, reject) => {
-    const request = store.put(fav);
+    const request = store.put(collection);
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
   db.close();
 }
 
-// Get deleted favorites (trash)
-export async function getDeletedFavorites() {
+// Get deleted collections (trash)
+export async function getDeletedCollections() {
   const db = await initDB();
-  const tx = db.transaction(FAVORITES_STORE, 'readonly');
-  const store = tx.objectStore(FAVORITES_STORE);
+  const tx = db.transaction(COLLECTION_STORE, 'readonly');
+  const store = tx.objectStore(COLLECTION_STORE);
   const result = await new Promise((resolve, reject) => {
     const request = store.getAll();
     request.onsuccess = () => {
-      const filtered = request.result.filter(fav => fav.deleted === true);
+      const filtered = request.result.filter(collection => collection.deleted === true);
       resolve(filtered);
     };
     request.onerror = () => reject(request.error);

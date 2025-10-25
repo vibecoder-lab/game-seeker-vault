@@ -72,9 +72,8 @@ export function Header({
         </button>
 
         <div className="hidden md:flex items-center gap-3">
-          <div className="relative" onMouseLeave={() => setShowFolderDropdown(false)}>
+          <div className="relative" onMouseEnter={() => setShowFolderDropdown(true)} onMouseLeave={() => setShowFolderDropdown(false)}>
             <button
-              onClick={() => setShowFolderDropdown(!showFolderDropdown)}
               className={`px-3 py-2 rounded-lg ${theme.cardShadow} hover:scale-105 transition-all ${theme.buttonBg} text-sm flex items-center gap-2`}
               title={t('header.folder.tooltip', currentLocale)}
             >

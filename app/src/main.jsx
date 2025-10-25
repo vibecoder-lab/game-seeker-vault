@@ -23,7 +23,7 @@ import {
   DB_NAME,
   DB_VERSION,
   FOLDERS_STORE,
-  FAVORITES_STORE,
+  COLLECTION_STORE,
   SETTINGS_STORE,
   BAND_REPRESENTATIVE_PRICE_YEN,
   THEMES,
@@ -284,7 +284,7 @@ function SteamPriceFilter({ initialData = null }) {
     document.title = t("page.title", currentLocale);
   }, [forceUpdate]);
 
-  // Initialize folders and favorites
+  // Initialize folders and collections
   React.useEffect(() => {
     (async () => {
       const existingFolders = await dbHelper.getFolders();
@@ -344,24 +344,24 @@ function SteamPriceFilter({ initialData = null }) {
           }
         }
 
-        // Convert favorite dates
-        const favTx = db.transaction("favorites", "readwrite");
-        const favStore = favTx.objectStore("favorites");
-        const allFavs = await new Promise((resolve, reject) => {
-          const request = favStore.getAll();
+        // Convert collection dates
+        const collectionTx = db.transaction("collection", "readwrite");
+        const collectionStore = collectionTx.objectStore("collection");
+        const allCollections = await new Promise((resolve, reject) => {
+          const request = collectionStore.getAll();
           request.onsuccess = () => resolve(request.result);
           request.onerror = () => reject(request.error);
         });
 
-        for (const fav of allFavs) {
-          if (fav.createdAt && fav.createdAt.match(/^\d{2}-\d{2}-\d{2}/)) {
-            const parts = fav.createdAt.split(" ");
+        for (const collection of allCollections) {
+          if (collection.createdAt && collection.createdAt.match(/^\d{2}-\d{2}-\d{2}/)) {
+            const parts = collection.createdAt.split(" ");
             const dateParts = parts[0].split("-");
             const year = parseInt(dateParts[0]);
             const fullYear = year < 50 ? 2000 + year : 1900 + year;
-            fav.createdAt = `${fullYear}-${dateParts[1]}-${dateParts[2]}${parts[1] ? " " + parts[1] : ""}`;
+            collection.createdAt = `${fullYear}-${dateParts[1]}-${dateParts[2]}${parts[1] ? " " + parts[1] : ""}`;
             await new Promise((resolve, reject) => {
-              const request = favStore.put(fav);
+              const request = collectionStore.put(collection);
               request.onsuccess = () => resolve();
               request.onerror = () => reject(request.error);
             });
@@ -408,17 +408,17 @@ function SteamPriceFilter({ initialData = null }) {
     })();
   }, []);
 
-  // Update favorites map
+  // Update collections map
   React.useEffect(() => {
     (async () => {
-      const allFavorites = {};
+      const allCollections = {};
       for (const folder of folders) {
-        const favs = await dbHelper.getFavoritesByFolder(folder.id);
-        favs.forEach((fav) => {
-          allFavorites[fav.gameId] = fav;
+        const collections = await dbHelper.getCollectionsByFolder(folder.id);
+        collections.forEach((collection) => {
+          allCollections[collection.gameId] = collection;
         });
       }
-      setCollectionMap(allFavorites);
+      setCollectionMap(allCollections);
     })();
   }, [folders]);
 
@@ -428,41 +428,49 @@ function SteamPriceFilter({ initialData = null }) {
       return;
     }
 
-    const existing = await dbHelper.getFavoriteByGameId(game.id);
-    if (existing) {
-      if (existing.deleted) {
-        // Restore if deletion flag is set
-        await dbHelper.restoreFromTrash(existing.id);
+    try {
+      const existing = await dbHelper.getCollectionByGameId(game.id);
+
+      if (existing) {
+        if (existing.deleted) {
+          // Restore if deletion flag is set
+          await dbHelper.restoreFromTrash(existing.id);
+          setCollectionMap((prev) => ({
+            ...prev,
+            [game.id]: { ...existing, deleted: false },
+          }));
+        } else {
+          // Physical deletion if deletion flag is not set
+          await dbHelper.deleteCollection(existing.id);
+          setCollectionMap((prev) => {
+            const newMap = { ...prev };
+            delete newMap[game.id];
+            return newMap;
+          });
+        }
+      } else {
+        const currentTargetFolderId = targetFolderIdRef.current;
+        const targetFolder = folders.find((f) => f.id === currentTargetFolderId);
+
+        if (!targetFolder) {
+          return;
+        }
+
+        const newCollectionId = await dbHelper.addCollection(targetFolder.id, game.id);
+
+        // Add to collectionMap
         setCollectionMap((prev) => ({
           ...prev,
-          [game.id]: { ...existing, deleted: false },
+          [game.id]: {
+            id: newCollectionId,
+            folderId: targetFolder.id,
+            gameId: game.id,
+            deleted: false,
+          },
         }));
-      } else {
-        // Physical deletion if deletion flag is not set
-        await dbHelper.deleteFavorite(existing.id);
-        setCollectionMap((prev) => {
-          const newMap = { ...prev };
-          delete newMap[game.id];
-          return newMap;
-        });
       }
-    } else {
-      const currentTargetFolderId = targetFolderIdRef.current;
-      const targetFolder = folders.find((f) => f.id === currentTargetFolderId);
-      if (!targetFolder) {
-        return;
-      }
-      const newFavId = await dbHelper.addFavorite(targetFolder.id, game.id);
-      // Add to collectionMap
-      setCollectionMap((prev) => ({
-        ...prev,
-        [game.id]: {
-          id: newFavId,
-          folderId: targetFolder.id,
-          gameId: game.id,
-          deleted: false,
-        },
-      }));
+    } catch (error) {
+      console.error('[handleToggleFavorite] Error:', error);
     }
   }, [folders, dbHelper]);
 
@@ -1675,7 +1683,7 @@ function SteamPriceFilter({ initialData = null }) {
                             g={g}
                             theme={theme}
                             priceMode={priceMode}
-                            favoriteData={collectionMap[g.id]}
+                            collectionData={collectionMap[g.id]}
                             onToggleFavorite={handleToggleFavorite}
                             onShowVideoModal={handleShowVideoModal}
                             settings={settings}

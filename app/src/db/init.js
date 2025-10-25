@@ -1,4 +1,4 @@
-import { DB_NAME, DB_VERSION, FOLDERS_STORE, FAVORITES_STORE, SETTINGS_STORE } from '../constants/index.js';
+import { DB_NAME, DB_VERSION, FOLDERS_STORE, COLLECTION_STORE, SETTINGS_STORE } from '../constants/index.js';
 import { formatDateTime } from '../utils/format.js';
 
 // IndexedDB initialization
@@ -17,10 +17,10 @@ export const initDB = () => {
         folderStore.createIndex('name', 'name', { unique: false });
       }
 
-      if (!db.objectStoreNames.contains(FAVORITES_STORE)) {
-        const favStore = db.createObjectStore(FAVORITES_STORE, { keyPath: 'id', autoIncrement: true });
-        favStore.createIndex('folderId', 'folderId', { unique: false });
-        favStore.createIndex('gameId', 'gameId', { unique: false });
+      if (!db.objectStoreNames.contains(COLLECTION_STORE)) {
+        const collectionStore = db.createObjectStore(COLLECTION_STORE, { keyPath: 'id', autoIncrement: true });
+        collectionStore.createIndex('folderId', 'folderId', { unique: false });
+        collectionStore.createIndex('gameId', 'gameId', { unique: false });
       }
 
       if (!db.objectStoreNames.contains(SETTINGS_STORE)) {

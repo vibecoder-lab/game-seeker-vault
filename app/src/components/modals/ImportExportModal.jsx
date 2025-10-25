@@ -29,11 +29,11 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
         const handleExportAll = async () => {
           try {
             const allFolders = await dbHelper.getFolders();
-            const allFavorites = [];
+            const allCollections = [];
 
             for (const folder of allFolders) {
-              const favs = await dbHelper.getFavoritesByFolder(folder.id);
-              allFavorites.push(...favs);
+              const collections = await dbHelper.getCollectionsByFolder(folder.id);
+              allCollections.push(...collections);
             }
 
             const formatDateForFilename = (timestamp) => {
@@ -45,19 +45,21 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
             };
 
             const now = Date.now();
+            const settings = await dbHelper.loadSettings();
 
             const exportData = {
               version: '1.0',
               exportDate: formatDateTime(now),
+              settings,
               folders: allFolders.map(f => ({
                 name: f.name,
                 createdAt: f.createdAt
               })),
-              favorites: allFavorites.map(fav => ({
-                folderId: allFolders.find(f => f.id === fav.folderId)?.name,
-                gameId: fav.gameId,
-                sortOrder: fav.sortOrder,
-                createdAt: fav.createdAt
+              collection: allCollections.map(collection => ({
+                folderId: allFolders.find(f => f.id === collection.folderId)?.name,
+                gameId: collection.gameId,
+                sortOrder: collection.sortOrder,
+                createdAt: collection.createdAt
               }))
             };
 
@@ -84,7 +86,7 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
               return;
             }
 
-            const favs = await dbHelper.getFavoritesByFolder(folder.id);
+            const collections = await dbHelper.getCollectionsByFolder(folder.id);
 
             const formatDateForFilename = (timestamp) => {
               const d = new Date(timestamp);
@@ -95,19 +97,21 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
             };
 
             const now = Date.now();
+            const settings = await dbHelper.loadSettings();
 
             const exportData = {
               version: '1.0',
               exportDate: formatDateTime(now),
+              settings,
               folders: [{
                 name: folder.name,
                 createdAt: folder.createdAt
               }],
-              favorites: favs.map(fav => ({
+              collection: collections.map(collection => ({
                 folderId: folder.name,
-                gameId: fav.gameId,
-                sortOrder: fav.sortOrder,
-                createdAt: fav.createdAt
+                gameId: collection.gameId,
+                sortOrder: collection.sortOrder,
+                createdAt: collection.createdAt
               }))
             };
 
@@ -135,9 +139,14 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
             const text = await file.text();
             const importData = JSON.parse(text);
 
-            if (!importData.version || !importData.folders || !importData.favorites) {
+            if (!importData.version || !importData.folders || !importData.collection) {
               alert(t('error.invalidData', currentLocale));
               return;
+            }
+
+            // Import settings
+            if (importData.settings) {
+              await dbHelper.saveSettings(importData.settings);
             }
 
             const existingFolders = await dbHelper.getFolders();
@@ -157,31 +166,31 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
             let importedCount = 0;
             let skippedCount = 0;
 
-            for (const fav of importData.favorites) {
-              const newFolderId = folderNameToIdMap[fav.folderId];
+            for (const item of importData.collection) {
+              const newFolderId = folderNameToIdMap[item.folderId];
               if (!newFolderId) continue;
 
-              const existing = await dbHelper.getFavoriteByGameId(fav.gameId);
+              const existing = await dbHelper.getCollectionByGameId(item.gameId);
               if (existing) {
                 skippedCount++;
                 continue;
               }
 
-              await dbHelper.addFavorite(newFolderId, fav.gameId, fav.sortOrder);
+              await dbHelper.addCollection(newFolderId, item.gameId, item.sortOrder);
               importedCount++;
             }
 
             const updatedFolders = await dbHelper.getFolders();
             setFolders(updatedFolders);
 
-            const allFavorites = {};
+            const allCollections = {};
             for (const folder of updatedFolders) {
-              const favs = await dbHelper.getFavoritesByFolder(folder.id);
-              favs.forEach(fav => {
-                allFavorites[fav.gameId] = fav;
+              const collections = await dbHelper.getCollectionsByFolder(folder.id);
+              collections.forEach(collection => {
+                allCollections[collection.gameId] = collection;
               });
             }
-            setCollectionMap(allFavorites);
+            setCollectionMap(allCollections);
 
             alert(t('status.importComplete', currentLocale).replace('{imported}', importedCount).replace('{skipped}', skippedCount));
             handleClose();

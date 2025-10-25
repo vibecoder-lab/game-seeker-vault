@@ -130,10 +130,10 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
             games.forEach(g => gamesMap[g.id] = g);
             const status = {};
             for (const folder of folders) {
-              const favs = await dbHelper.getFavoritesByFolder(folder.id);
-              const hasSale = favs.some(fav => {
-                if (fav.deleted) return false;
-                const game = gamesMap[fav.gameId];
+              const collections = await dbHelper.getCollectionsByFolder(folder.id);
+              const hasSale = collections.some(collection => {
+                if (collection.deleted) return false;
+                const game = gamesMap[collection.gameId];
                 return game?.salePriceYen != null && game.salePriceYen < game.priceYenResolved;
               });
               status[folder.id] = hasSale;
@@ -145,23 +145,23 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         React.useEffect(() => {
           if (selectedFolderId) {
             (async () => {
-              let favs;
+              let collections;
               if (selectedFolderId === TRASH_FOLDER_ID) {
-                favs = await dbHelper.getDeletedFavorites();
+                collections = await dbHelper.getDeletedCollections();
               } else {
-                favs = await dbHelper.getFavoritesByFolder(selectedFolderId);
-                favs = favs.filter(fav => !fav.deleted);
+                collections = await dbHelper.getCollectionsByFolder(selectedFolderId);
+                collections = collections.filter(collection => !collection.deleted);
               }
               const gamesMap = {};
               games.forEach(g => gamesMap[g.id] = g);
-              const enrichedFavs = favs.map(fav => ({
-                ...fav,
-                gameTitle: gamesMap[fav.gameId]?.title || '',
-                normalPrice: gamesMap[fav.gameId]?.priceYenResolved || 0,
-                salePrice: gamesMap[fav.gameId]?.salePriceYen
+              const enrichedCollections = collections.map(collection => ({
+                ...collection,
+                gameTitle: gamesMap[collection.gameId]?.title || '',
+                normalPrice: gamesMap[collection.gameId]?.priceYenResolved || 0,
+                salePrice: gamesMap[collection.gameId]?.salePriceYen
               }));
-              enrichedFavs.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
-              setCollectionGames(enrichedFavs);
+              enrichedCollections.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+              setCollectionGames(enrichedCollections);
             })();
           }
         }, [selectedFolderId, folders, games]);
@@ -193,7 +193,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
 
         const handleDeleteFolder = async (folderId) => {
           // Check game count in folder
-          const gamesInFolder = await dbHelper.getFavoritesByFolder(folderId);
+          const gamesInFolder = await dbHelper.getCollectionsByFolder(folderId);
           const isEmpty = gamesInFolder.length === 0;
 
           // Show confirmation prompt only if not empty
@@ -210,7 +210,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         };
 
         const handleMoveGame = async (favoriteId, newFolderId) => {
-          await dbHelper.updateFavoriteFolder(favoriteId, newFolderId);
+          await dbHelper.updateCollectionFolder(favoriteId, newFolderId);
           const movedGame = collectionGames.find(f => f.id === favoriteId);
           setCollectionGames(collectionGames.filter(f => f.id !== favoriteId));
 
@@ -222,18 +222,18 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
             const hasSale = game?.salePriceYen != null && game.salePriceYen < game.priceYenResolved;
 
             // Recalculate sale status of source folder
-            const oldFolderFavs = await dbHelper.getFavoritesByFolder(selectedFolderId);
-            const oldFolderHasSale = oldFolderFavs.some(fav => {
-              if (fav.deleted) return false;
-              const g = gamesMap[fav.gameId];
+            const oldFolderCollections = await dbHelper.getCollectionsByFolder(selectedFolderId);
+            const oldFolderHasSale = oldFolderCollections.some(collection => {
+              if (collection.deleted) return false;
+              const g = gamesMap[collection.gameId];
               return g?.salePriceYen != null && g.salePriceYen < g.priceYenResolved;
             });
 
             // Update sale status of destination folder
-            const newFolderFavs = await dbHelper.getFavoritesByFolder(newFolderId);
-            const newFolderHasSale = newFolderFavs.some(fav => {
-              if (fav.deleted) return false;
-              const g = gamesMap[fav.gameId];
+            const newFolderCollections = await dbHelper.getCollectionsByFolder(newFolderId);
+            const newFolderHasSale = newFolderCollections.some(collection => {
+              if (collection.deleted) return false;
+              const g = gamesMap[collection.gameId];
               return g?.salePriceYen != null && g.salePriceYen < g.priceYenResolved;
             });
 
@@ -254,7 +254,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
           updatedGames.splice(newOrder, 0, movedGame);
 
           for (let i = 0; i < updatedGames.length; i++) {
-            await dbHelper.updateFavoriteOrder(updatedGames[i].id, i + 1);
+            await dbHelper.updateCollectionOrder(updatedGames[i].id, i + 1);
             updatedGames[i].sortOrder = i + 1;
           }
 
@@ -264,7 +264,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
 
         const handleDeleteGame = async (favoriteId) => {
           const deletedGame = collectionGames.find(f => f.id === favoriteId);
-          await dbHelper.deleteFavorite(favoriteId);
+          await dbHelper.deleteCollection(favoriteId);
           setCollectionGames(collectionGames.filter(f => f.id !== favoriteId));
 
           // Remove from collectionMap
@@ -279,9 +279,9 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
           // Update sale status
           const gamesMap = {};
           games.forEach(g => gamesMap[g.id] = g);
-          const folderFavs = await dbHelper.getFavoritesByFolder(selectedFolderId);
-          const folderHasSale = folderFavs.some(fav => {
-            const g = gamesMap[fav.gameId];
+          const folderCollections = await dbHelper.getCollectionsByFolder(selectedFolderId);
+          const folderHasSale = folderCollections.some(collection => {
+            const g = gamesMap[collection.gameId];
             return g?.salePriceYen != null && g.salePriceYen < g.priceYenResolved;
           });
 
@@ -425,7 +425,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                             return a.gameTitle.localeCompare(b.gameTitle, 'ja');
                           });
                           for (let i = 0; i < sorted.length; i++) {
-                            await dbHelper.updateFavoriteOrder(sorted[i].id, i + 1);
+                            await dbHelper.updateCollectionOrder(sorted[i].id, i + 1);
                             sorted[i].sortOrder = i + 1;
                           }
                           setCollectionGames(sorted);
@@ -447,7 +447,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                             return priceA - priceB;
                           });
                           for (let i = 0; i < sorted.length; i++) {
-                            await dbHelper.updateFavoriteOrder(sorted[i].id, i + 1);
+                            await dbHelper.updateCollectionOrder(sorted[i].id, i + 1);
                             sorted[i].sortOrder = i + 1;
                           }
                           setCollectionGames(sorted);
@@ -467,7 +467,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                           if (selectedFolderId === TRASH_FOLDER_ID) {
                             if (confirm(t('confirm.emptyTrash', currentLocale))) {
                               collectionGames.forEach(game => {
-                                dbHelper.deleteFavorite(game.id);
+                                dbHelper.deleteCollection(game.id);
                                 setCollectionMap(prev => {
                                   const newMap = { ...prev };
                                   delete newMap[game.gameId];
@@ -676,9 +676,9 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                   // Recalculate folder sale status
                                   const gamesMap = {};
                                   games.forEach(g => gamesMap[g.id] = g);
-                                  const remainingFavs = collectionGames.filter(g => g.id !== game.id);
-                                  const folderHasSale = remainingFavs.some(fav => {
-                                    const g = gamesMap[fav.gameId];
+                                  const remainingCollections = collectionGames.filter(g => g.id !== game.id);
+                                  const folderHasSale = remainingCollections.some(collection => {
+                                    const g = gamesMap[collection.gameId];
                                     return g?.salePriceYen != null && g.salePriceYen < g.priceYenResolved;
                                   });
                                   setFolderSaleStatus(prev => ({

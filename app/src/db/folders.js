@@ -1,4 +1,4 @@
-import { FOLDERS_STORE, FAVORITES_STORE } from '../constants/index.js';
+import { FOLDERS_STORE, COLLECTION_STORE } from '../constants/index.js';
 import { formatDateTime } from '../utils/format.js';
 import { initDB } from './init.js';
 
@@ -48,24 +48,24 @@ export async function updateFolder(id, name) {
   db.close();
 }
 
-// Delete folder and its favorites
+// Delete folder and its collections
 export async function deleteFolder(id) {
   const db = await initDB();
-  const tx = db.transaction([FOLDERS_STORE, FAVORITES_STORE], 'readwrite');
+  const tx = db.transaction([FOLDERS_STORE, COLLECTION_STORE], 'readwrite');
   await new Promise((resolve, reject) => {
     const request = tx.objectStore(FOLDERS_STORE).delete(id);
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
-  const favStore = tx.objectStore(FAVORITES_STORE);
-  const index = favStore.index('folderId');
-  const favorites = await new Promise((resolve) => {
+  const collectionStore = tx.objectStore(COLLECTION_STORE);
+  const index = collectionStore.index('folderId');
+  const collections = await new Promise((resolve) => {
     const req = index.getAll(id);
     req.onsuccess = () => resolve(req.result);
   });
-  for (const fav of favorites) {
+  for (const collection of collections) {
     await new Promise((resolve) => {
-      const req = favStore.delete(fav.id);
+      const req = collectionStore.delete(collection.id);
       req.onsuccess = () => resolve();
     });
   }

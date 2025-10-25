@@ -11,14 +11,15 @@ export const DEFAULT_SETTINGS = {
   saveTheme: false,                // Whether to save theme
   showAllTags: false,              // Show all tags (default: top 50)
   enableScrollAnimation: true,     // Enable scroll-linked card animation on mobile
+  locale: 'en',                    // Preferred locale
   settingsVersion: 1
 };
 
 // IndexedDB configuration
 export const DB_NAME = 'GameSeekerVaultDB';
-export const DB_VERSION = 2;
+export const DB_VERSION = 3;
 export const FOLDERS_STORE = 'folders';
-export const FAVORITES_STORE = 'favorites';
+export const COLLECTION_STORE = 'collection';
 export const SETTINGS_STORE = 'settings';
 
 // Price band representative prices

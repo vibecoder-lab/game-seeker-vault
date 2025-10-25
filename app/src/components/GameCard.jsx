@@ -3,7 +3,7 @@ import { t, currentLocale, formatPrice, formatDate } from '../i18n/index.js';
 import { normalizeGenres, formatReleaseDate, checkJapaneseSupport, cleanLanguageText, translateReviewScore, yen } from '../utils/format.js';
 import { steamCapsuleUrl, linkFor } from '../utils/steam.js';
 
-function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite, onShowVideoModal, settings, locale }) {
+function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale }) {
   const [isHovered, setIsHovered] = React.useState(false);
   const [shiftPressed, setShiftPressed] = React.useState(false);
   const [starButtonHovered, setStarButtonHovered] = React.useState(false);
@@ -17,7 +17,7 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
   const longPressTimer = React.useRef(null);
   const cap = steamCapsuleUrl(g);
   const genres = g.genres?.length ? normalizeGenres(g.genres) : ['(genre unknown)'];
-  const isFavorite = favoriteData && !favoriteData.deleted;
+  const isFavorite = collectionData && !collectionData.deleted;
 
   React.useEffect(() => {
     const handleKeyDown = (e) => {
@@ -56,35 +56,32 @@ function GameCardComponent({ g, theme, priceMode, favoriteData, onToggleFavorite
     };
   }, [isHovered, shiftPressed]);
 
-  // Mobile sticky behavior: show full image when card is in upper 1/3 of screen
+  // Mobile sticky behavior: show full image when card is in upper 1/4 of screen
   React.useEffect(() => {
     // Only apply on mobile devices
     const isMobile = window.innerWidth < 768;
     if (!isMobile || !cardRef.current || !settings?.enableScrollAnimation) return;
 
-    // Use Intersection Observer for better performance
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (!entry.target) return;
-          const rect = entry.boundingClientRect;
-          const viewportHeight = window.innerHeight;
-          const threshold = viewportHeight / 4; // 1/4 from top
+    const handleScroll = () => {
+      if (!cardRef.current) return;
 
-          // Show full image when card top is above the 1/4 line and is intersecting
-          setIsSticky(rect.top < threshold && entry.isIntersecting);
-        });
-      },
-      {
-        root: null, // Use viewport as root
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], // Multiple thresholds for smooth detection
-      }
-    );
+      const rect = cardRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const threshold = viewportHeight / 4; // 1/4 from top
 
-    observer.observe(cardRef.current);
+      // Show full image when card top is above the 1/4 line and card is visible
+      const isVisible = rect.top < viewportHeight && rect.bottom > 0;
+      setIsSticky(rect.top < threshold && isVisible);
+    };
+
+    // Initial check
+    handleScroll();
+
+    // Listen to scroll events
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [settings?.enableScrollAnimation]);
 
@@ -479,8 +476,8 @@ export const GameCard = React.memo(GameCardComponent, (prevProps, nextProps) => 
     prevProps.g.id === nextProps.g.id &&
     prevProps.priceMode === nextProps.priceMode &&
     prevProps.theme === nextProps.theme &&
-    prevProps.favoriteData?.folderId === nextProps.favoriteData?.folderId &&
-    prevProps.favoriteData?.deleted === nextProps.favoriteData?.deleted &&
+    prevProps.collectionData?.folderId === nextProps.collectionData?.folderId &&
+    prevProps.collectionData?.deleted === nextProps.collectionData?.deleted &&
     prevProps.settings === nextProps.settings &&
     prevProps.locale === nextProps.locale
   );

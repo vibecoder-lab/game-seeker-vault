@@ -1,7 +1,7 @@
 import { DB_NAME } from '../constants/index.js';
 import { initDB } from './init.js';
 import { addFolder, getFolders, updateFolder, deleteFolder } from './folders.js';
-import { addFavorite, getFavoritesByFolder, getFavoriteByGameId, updateFavoriteFolder, deleteFavorite, updateFavoriteOrder, markAsDeleted, restoreFromTrash, getDeletedFavorites } from './favorites.js';
+import { addCollection, getCollectionsByFolder, getCollectionByGameId, updateCollectionFolder, deleteCollection, updateCollectionOrder, markAsDeleted, restoreFromTrash, getDeletedCollections } from './collection.js';
 import { loadSettings, saveSettings, resetSettings } from './settings.js';
 
 // Delete all data
@@ -24,15 +24,15 @@ export const dbHelper = {
   getFolders,
   updateFolder,
   deleteFolder,
-  addFavorite,
-  getFavoritesByFolder,
-  getFavoriteByGameId,
-  updateFavoriteFolder,
-  deleteFavorite,
-  updateFavoriteOrder,
+  addCollection,
+  getCollectionsByFolder,
+  getCollectionByGameId,
+  updateCollectionFolder,
+  deleteCollection,
+  updateCollectionOrder,
   markAsDeleted,
   restoreFromTrash,
-  getDeletedFavorites,
+  getDeletedCollections,
   loadSettings,
   saveSettings,
   resetSettings
