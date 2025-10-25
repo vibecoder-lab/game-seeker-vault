@@ -355,6 +355,13 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                         <div>{genres.join('、')}</div>
                         <div className="mt-1"></div>
                       </div>
+                      {g.tags && g.tags.length > 0 && (
+                        <div>
+                          <div>{t('card.tags', currentLocale)}:</div>
+                          <div>{g.tags.join('、')}</div>
+                          <div className="mt-1"></div>
+                        </div>
+                      )}
                       <div>{t('price.regular', currentLocale)}: {formatPrice(g.priceYenResolved, currentLocale)}</div>
                       {g.salePriceYen && (
                         <div className={theme.saleText}>

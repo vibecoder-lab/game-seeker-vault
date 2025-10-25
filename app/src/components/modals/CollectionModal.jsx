@@ -884,6 +884,12 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                     <div className="font-semibold">{t('card.genre', currentLocale)}:</div>
                     <div>{normalizeGenres(hoveredGame.genres).join('、')}</div>
                   </div>
+                  {hoveredGame.tags && hoveredGame.tags.length > 0 && (
+                    <div>
+                      <div className="font-semibold">{t('card.tags', currentLocale)}:</div>
+                      <div>{hoveredGame.tags.join('、')}</div>
+                    </div>
+                  )}
                   <div>
                     <div className="font-semibold">{t('price.regular', currentLocale)}:</div>
                     <div>{formatPrice(hoveredGame.priceYenResolved, currentLocale)}</div>

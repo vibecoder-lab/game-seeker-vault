@@ -68,6 +68,7 @@ const translations = {
 
     // Game Card Details
     'card.genre': 'Genre',
+    'card.tags': 'Tags',
     'card.platforms': 'Platforms',
     'card.japanese': 'Japanese',
     'card.languages': 'Languages',
@@ -423,6 +424,7 @@ const translations = {
 
     // Game Card Details
     'card.genre': 'ジャンル',
+    'card.tags': 'タグ',
     'card.platforms': '対応OS',
     'card.japanese': '日本語',
     'card.languages': '対応言語',
