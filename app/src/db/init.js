@@ -11,6 +11,7 @@ export const initDB = () => {
 
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
+      const oldVersion = event.oldVersion;
 
       if (!db.objectStoreNames.contains(FOLDERS_STORE)) {
         const folderStore = db.createObjectStore(FOLDERS_STORE, { keyPath: 'id', autoIncrement: true });
@@ -25,6 +26,22 @@ export const initDB = () => {
 
       if (!db.objectStoreNames.contains(SETTINGS_STORE)) {
         db.createObjectStore(SETTINGS_STORE, { keyPath: 'key' });
+      }
+
+      // Migration to version 4: Add sortOrder to folders
+      if (oldVersion < 4 && db.objectStoreNames.contains(FOLDERS_STORE)) {
+        const transaction = event.target.transaction;
+        const folderStore = transaction.objectStore(FOLDERS_STORE);
+
+        // Get all folders and add sortOrder
+        const getAllRequest = folderStore.getAll();
+        getAllRequest.onsuccess = () => {
+          const folders = getAllRequest.result;
+          folders.forEach((folder, index) => {
+            folder.sortOrder = index + 1;
+            folderStore.put(folder);
+          });
+        };
       }
     };
   });

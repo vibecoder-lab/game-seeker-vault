@@ -41,7 +41,9 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
               const yyyy = d.getFullYear();
               const mm = String(d.getMonth() + 1).padStart(2, '0');
               const dd = String(d.getDate()).padStart(2, '0');
-              return `${yyyy}-${mm}-${dd}`;
+              const hh = String(d.getHours()).padStart(2, '0');
+              const min = String(d.getMinutes()).padStart(2, '0');
+              return `${yyyy}-${mm}${dd}-${hh}${min}`;
             };
 
             const now = Date.now();
@@ -53,7 +55,8 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
               settings,
               folders: allFolders.map(f => ({
                 name: f.name,
-                createdAt: f.createdAt
+                createdAt: f.createdAt,
+                sortOrder: f.sortOrder
               })),
               collection: allCollections.map(collection => ({
                 folderId: allFolders.find(f => f.id === collection.folderId)?.name,
@@ -67,7 +70,7 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `steam-collection-${formatDateForFilename(now)}.json`;
+            a.download = `steam-collection_${formatDateForFilename(now)}.json`;
             a.click();
             URL.revokeObjectURL(url);
 
@@ -93,7 +96,9 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
               const yyyy = d.getFullYear();
               const mm = String(d.getMonth() + 1).padStart(2, '0');
               const dd = String(d.getDate()).padStart(2, '0');
-              return `${yyyy}-${mm}-${dd}`;
+              const hh = String(d.getHours()).padStart(2, '0');
+              const min = String(d.getMinutes()).padStart(2, '0');
+              return `${yyyy}-${mm}${dd}-${hh}${min}`;
             };
 
             const now = Date.now();
@@ -105,7 +110,8 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
               settings,
               folders: [{
                 name: folder.name,
-                createdAt: folder.createdAt
+                createdAt: folder.createdAt,
+                sortOrder: folder.sortOrder
               }],
               collection: collections.map(collection => ({
                 folderId: folder.name,
@@ -119,7 +125,7 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `steam-collection-${folder.name}-${formatDateForFilename(now)}.json`;
+            a.download = `steam-collection_${folder.name}_${formatDateForFilename(now)}.json`;
             a.click();
             URL.revokeObjectURL(url);
 
@@ -153,13 +159,23 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
             const existingFolderNames = new Set(existingFolders.map(f => f.name));
             const folderNameToIdMap = {};
 
+            // Get max sortOrder for new folders
+            const maxSortOrder = existingFolders.reduce((max, f) => Math.max(max, f.sortOrder || 0), 0);
+            let nextSortOrder = maxSortOrder + 1;
+
             for (const folder of importData.folders) {
               if (existingFolderNames.has(folder.name)) {
+                // Existing folder: update sortOrder to maintain original order
                 const existing = existingFolders.find(f => f.name === folder.name);
                 folderNameToIdMap[folder.name] = existing.id;
+                if (folder.sortOrder !== undefined) {
+                  await dbHelper.updateFolderOrder(existing.id, folder.sortOrder);
+                }
               } else {
-                const newId = await dbHelper.addFolder(folder.name);
+                // New folder: assign new sortOrder to avoid conflicts
+                const newId = await dbHelper.addFolder(folder.name, nextSortOrder);
                 folderNameToIdMap[folder.name] = newId;
+                nextSortOrder++;
               }
             }
 

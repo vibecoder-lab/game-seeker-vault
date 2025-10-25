@@ -21,6 +21,62 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
+// Sortable Folder Item Component
+function SortableFolderItem({ id, folder, theme, isSpecialFolder, children }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging: isItemDragging,
+  } = useSortable({ id, disabled: isSpecialFolder });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isItemDragging ? 0.5 : 1,
+  };
+
+  const [isHovering, setIsHovering] = React.useState(false);
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      className="relative"
+    >
+      {!isSpecialFolder && (
+        <div
+          {...attributes}
+          {...listeners}
+          className={`absolute left-1 top-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing p-1 z-10 transition-opacity duration-300 ${isHovering ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          style={{ touchAction: 'none' }}
+        >
+          <svg
+            className={`w-3 h-3 ${theme.subText}`}
+            viewBox="0 0 16 16"
+            fill="currentColor"
+          >
+            <circle cx="4" cy="3" r="1.5" />
+            <circle cx="8" cy="3" r="1.5" />
+            <circle cx="12" cy="3" r="1.5" />
+            <circle cx="4" cy="8" r="1.5" />
+            <circle cx="8" cy="8" r="1.5" />
+            <circle cx="12" cy="8" r="1.5" />
+            <circle cx="4" cy="13" r="1.5" />
+            <circle cx="8" cy="13" r="1.5" />
+            <circle cx="12" cy="13" r="1.5" />
+          </svg>
+        </div>
+      )}
+      {children}
+    </div>
+  );
+}
+
 // Sortable Item Component
 function SortableItem({ id, game, gameData, theme, currentTheme, selectedFolderId, TRASH_FOLDER_ID, children, isDragging }) {
   const {
@@ -93,10 +149,20 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
           );
         }, [folders]);
 
-        // Regular folders (excluding owned list)
+        // Identify the interested list folder (created with translation key 'folder.default.interested')
+        const interestedListFolder = React.useMemo(() => {
+          return folders.find(f =>
+            f.name === t('folder.default.interested', 'en') ||
+            f.name === t('folder.default.interested', 'ja') ||
+            f.name === 'Interested List' ||
+            f.name === '気になるリスト'
+          );
+        }, [folders]);
+
+        // Regular folders (excluding owned list and interested list)
         const regularFolders = React.useMemo(() => {
-          return folders.filter(f => f.id !== ownedListFolder?.id);
-        }, [folders, ownedListFolder]);
+          return folders.filter(f => f.id !== ownedListFolder?.id && f.id !== interestedListFolder?.id);
+        }, [folders, ownedListFolder, interestedListFolder]);
         const [collectionGames, setCollectionGames] = React.useState([]);
         const [isCreatingFolder, setIsCreatingFolder] = React.useState(false);
         const [newFolderName, setNewFolderName] = React.useState('');
@@ -155,6 +221,35 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
           setFilterOnlySale(false);
           setFilterJapanese(false);
           setFilterOverwhelming(false);
+        };
+
+        // Handle folder drag end
+        const handleFolderDragEnd = async (event) => {
+          const { active, over } = event;
+
+          if (active.id !== over?.id) {
+            const oldIndex = regularFolders.findIndex(f => f.id === active.id);
+            const newIndex = regularFolders.findIndex(f => f.id === over.id);
+
+            const newOrder = arrayMove(regularFolders, oldIndex, newIndex);
+
+            // Update folders state with new order
+            // Place interested list first, then regular folders, then owned list
+            const updatedFolders = [];
+            if (interestedListFolder) updatedFolders.push(interestedListFolder);
+            updatedFolders.push(...newOrder);
+            if (ownedListFolder) updatedFolders.push(ownedListFolder);
+
+            setFolders(updatedFolders);
+
+            // Update sortOrder in IndexedDB
+            // Start from 2 (interested list is 1) or 1 if no interested list
+            const startOrder = interestedListFolder ? 2 : 1;
+            for (let i = 0; i < newOrder.length; i++) {
+              await dbHelper.updateFolderOrder(newOrder[i].id, startOrder + i);
+              newOrder[i].sortOrder = startOrder + i;
+            }
+          }
         };
 
         const filteredFavoriteGames = React.useMemo(() => {
@@ -455,12 +550,86 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                 </div>
                 {/* Scrollable folder list */}
                 <div className="flex-1 overflow-y-auto p-2">
-                  {regularFolders.map(folder => (
+                  {/* Interested List (non-draggable) */}
+                  {interestedListFolder && (
                     <div
-                      key={folder.id}
-                      className={`group flex items-center px-3 py-2 rounded cursor-pointer mb-1 min-h-[36px] overflow-hidden relative ${selectedFolderId === folder.id ? theme.folderSelected : theme.folderHover}`}
-                      onClick={() => editingFolderId !== folder.id && setSelectedFolderId(folder.id)}
+                      className={`group flex items-center px-3 py-2 rounded cursor-pointer mb-1 min-h-[36px] overflow-hidden relative ${selectedFolderId === interestedListFolder.id ? theme.folderSelected : theme.folderHover}`}
+                      onClick={() => editingFolderId !== interestedListFolder.id && setSelectedFolderId(interestedListFolder.id)}
                     >
+                      {editingFolderId === interestedListFolder.id ? (
+                        <input
+                          type="text"
+                          value={editingFolderName}
+                          onChange={(e) => setEditingFolderName(e.target.value)}
+                          onBlur={() => handleRenameFolder(interestedListFolder.id)}
+                          onKeyDown={(e) => e.key === 'Enter' && handleRenameFolder(interestedListFolder.id)}
+                          className="flex-1 px-2 py-1 text-sm rounded bg-white dark:bg-gray-800 text-black dark:text-white"
+                          autoFocus
+                        />
+                      ) : (
+                        <>
+                          <div className="flex items-center gap-2 flex-1 min-w-0">
+                            <span className="w-[5px] h-[5px] flex-shrink-0">
+                              {folderSaleStatus[interestedListFolder.id] && (
+                                <span className={`block w-full h-full rounded-full ${theme.saleBg}`}></span>
+                              )}
+                            </span>
+                            <span className="flex-1 text-xs min-w-0">{getLocalizedFolderName(interestedListFolder.name, currentLocale)}</span>
+                          </div>
+                          <div className="flex items-center gap-1 transition-transform duration-300 group-hover:translate-x-0 translate-x-[60px]">
+                            <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setEditingFolderId(interestedListFolder.id);
+                                  setEditingFolderName(getLocalizedFolderName(interestedListFolder.name, currentLocale));
+                                }}
+                                className={`p-1 rounded ${theme.text} ${theme.iconHover}`}
+                                title={t('button.rename', currentLocale)}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                </svg>
+                              </button>
+                              <button
+                                className={`p-1 rounded opacity-30 cursor-not-allowed`}
+                                title={t('collection.deleteFolder', currentLocale)}
+                                disabled
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleFolderDragEnd}
+                  >
+                    <SortableContext
+                      items={regularFolders.map(f => f.id)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {regularFolders.map(folder => {
+                        const isSpecialFolder = false; // regularFolders already excludes special folders
+                        return (
+                          <SortableFolderItem
+                            key={folder.id}
+                            id={folder.id}
+                            folder={folder}
+                            theme={theme}
+                            isSpecialFolder={isSpecialFolder}
+                          >
+                            <div
+                              className={`group flex items-center px-3 py-2 rounded cursor-pointer mb-1 min-h-[36px] overflow-hidden relative ${selectedFolderId === folder.id ? theme.folderSelected : theme.folderHover}`}
+                              onClick={() => editingFolderId !== folder.id && setSelectedFolderId(folder.id)}
+                            >
                       {editingFolderId === folder.id ? (
                         <input
                           type="text"
@@ -516,8 +685,12 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                           </div>
                         </>
                       )}
-                    </div>
-                  ))}
+                            </div>
+                          </SortableFolderItem>
+                        );
+                      })}
+                    </SortableContext>
+                  </DndContext>
                   {isCreatingFolder ? (
                     <div className="p-2">
                       <input

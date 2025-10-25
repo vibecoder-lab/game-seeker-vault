@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS = {
 
 // IndexedDB configuration
 export const DB_NAME = 'GameSeekerVaultDB';
-export const DB_VERSION = 3;
+export const DB_VERSION = 4;
 export const FOLDERS_STORE = 'folders';
 export const COLLECTION_STORE = 'collection';
 export const SETTINGS_STORE = 'settings';

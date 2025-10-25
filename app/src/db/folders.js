@@ -3,12 +3,28 @@ import { formatDateTime } from '../utils/format.js';
 import { initDB } from './init.js';
 
 // Add a new folder
-export async function addFolder(name) {
+export async function addFolder(name, sortOrder = null) {
   const db = await initDB();
   const tx = db.transaction(FOLDERS_STORE, 'readwrite');
   const store = tx.objectStore(FOLDERS_STORE);
+
+  // Get max sortOrder if not provided
+  let finalSortOrder = sortOrder;
+  if (finalSortOrder === null) {
+    const allFolders = await new Promise((resolve) => {
+      const req = store.getAll();
+      req.onsuccess = () => resolve(req.result);
+    });
+    const maxSortOrder = allFolders.reduce((max, f) => Math.max(max, f.sortOrder || 0), 0);
+    finalSortOrder = maxSortOrder + 1;
+  }
+
   const result = await new Promise((resolve, reject) => {
-    const request = store.add({ name, createdAt: formatDateTime(Date.now()) });
+    const request = store.add({
+      name,
+      createdAt: formatDateTime(Date.now()),
+      sortOrder: finalSortOrder
+    });
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
   });
@@ -79,6 +95,24 @@ export async function deleteAllFolders() {
   const store = tx.objectStore(FOLDERS_STORE);
   await new Promise((resolve, reject) => {
     const request = store.clear();
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+  });
+  db.close();
+}
+
+// Update folder sort order
+export async function updateFolderOrder(id, sortOrder) {
+  const db = await initDB();
+  const tx = db.transaction(FOLDERS_STORE, 'readwrite');
+  const store = tx.objectStore(FOLDERS_STORE);
+  const folder = await new Promise((resolve) => {
+    const req = store.get(id);
+    req.onsuccess = () => resolve(req.result);
+  });
+  folder.sortOrder = sortOrder;
+  await new Promise((resolve, reject) => {
+    const request = store.put(folder);
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
