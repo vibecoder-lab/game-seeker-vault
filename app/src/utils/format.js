@@ -112,8 +112,8 @@ export const getLocalizedFolderName = (folderName, locale) => {
     '気になるリスト': 'folder.default.interested',
     'Wishlist': 'folder.default.wishlist',
     '購入予定リスト': 'folder.default.wishlist',
-    'Owned Games': 'folder.default.owned',
-    '所有しているゲーム': 'folder.default.owned',
+    'Sale Watch List': 'folder.default.sale_watch',
+    'セール待ちリスト': 'folder.default.sale_watch',
     'Owned List': 'folder.default.owned_list',
     '所有リスト': 'folder.default.owned_list'
   };

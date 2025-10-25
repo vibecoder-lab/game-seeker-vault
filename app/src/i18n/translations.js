@@ -18,7 +18,7 @@ const translations = {
     // Default Folders
     'folder.default.interested': 'Interested List',
     'folder.default.wishlist': 'Wishlist',
-    'folder.default.owned': 'Owned Games',
+    'folder.default.sale_watch': 'Sale Watch List',
     'folder.default.owned_list': 'Owned List',
 
     // Theme
@@ -374,7 +374,7 @@ const translations = {
     // Default Folders
     'folder.default.interested': '気になるリスト',
     'folder.default.wishlist': '購入予定リスト',
-    'folder.default.owned': '所有しているゲーム',
+    'folder.default.sale_watch': 'セール待ちリスト',
     'folder.default.owned_list': '所有リスト',
 
     // Theme

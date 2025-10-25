@@ -298,7 +298,7 @@ function SteamPriceFilter({ initialData = null }) {
           t("folder.default.wishlist", locale),
         );
         const folder3Id = await dbHelper.addFolder(
-          t("folder.default.owned", locale),
+          t("folder.default.sale_watch", locale),
         );
         const ownedListId = await dbHelper.addFolder(
           t("folder.default.owned_list", locale),
@@ -316,7 +316,7 @@ function SteamPriceFilter({ initialData = null }) {
           },
           {
             id: folder3Id,
-            name: t("folder.default.owned", locale),
+            name: t("folder.default.sale_watch", locale),
             createdAt: formatDateTime(Date.now()),
           },
           {
