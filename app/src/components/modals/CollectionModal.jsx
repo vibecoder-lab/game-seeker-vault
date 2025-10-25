@@ -736,10 +736,13 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                     )}
                   </div>
                   <button
-                    onClick={() => setFilterOnlySale(!filterOnlySale)}
-                    className={`p-1 rounded transition-all ${filterOnlySale ? (currentTheme === 'steam' ? 'steam-blue-bg text-white' : `${theme.text}`) : `${theme.text} ${theme.iconHover}`}`}
+                    onClick={() => {
+                      if (collectionGames.length === 0) return;
+                      setFilterOnlySale(!filterOnlySale);
+                    }}
+                    className={`p-1 rounded transition-all ${collectionGames.length === 0 ? 'opacity-30 cursor-not-allowed' : (filterOnlySale ? (currentTheme === 'default' ? 'bg-gray-900 text-gray-200' : 'bg-slate-900 text-slate-400') : `${theme.text} ${theme.iconHover}`)}`}
                     title={t('filter.onlySale', currentLocale)}
-                    style={filterOnlySale && currentTheme !== 'steam' ? {backgroundColor: 'currentColor', transition: 'background-color 0.1s ease, color 0.1s ease'} : {transition: 'background-color 0.1s ease, color 0.1s ease'}}
+                    disabled={collectionGames.length === 0}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" style={filterOnlySale && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569', transition: 'color 0.1s ease'} : {transition: 'color 0.1s ease'}}>
                       <defs>
@@ -752,10 +755,13 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                     </svg>
                   </button>
                   <button
-                    onClick={() => setFilterJapanese(!filterJapanese)}
-                    className={`p-1 rounded transition-all ${filterJapanese ? (currentTheme === 'steam' ? 'steam-blue-bg text-white' : `${theme.text}`) : `${theme.text} ${theme.iconHover}`}`}
+                    onClick={() => {
+                      if (collectionGames.length === 0) return;
+                      setFilterJapanese(!filterJapanese);
+                    }}
+                    className={`p-1 rounded transition-all ${collectionGames.length === 0 ? 'opacity-30 cursor-not-allowed' : (filterJapanese ? (currentTheme === 'default' ? 'bg-gray-900 text-gray-200' : 'bg-slate-900 text-slate-400') : `${theme.text} ${theme.iconHover}`)}`}
                     title={t('filter.onlyJapanese', currentLocale)}
-                    style={filterJapanese && currentTheme !== 'steam' ? {backgroundColor: 'currentColor', transition: 'background-color 0.1s ease, color 0.1s ease'} : {transition: 'background-color 0.1s ease, color 0.1s ease'}}
+                    disabled={collectionGames.length === 0}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" style={filterJapanese && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569', transition: 'color 0.1s ease'} : {transition: 'color 0.1s ease'}}>
                       <defs>
@@ -768,10 +774,13 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                     </svg>
                   </button>
                   <button
-                    onClick={() => setFilterOverwhelming(!filterOverwhelming)}
-                    className={`p-1 rounded transition-all ${filterOverwhelming ? (currentTheme === 'steam' ? 'steam-blue-bg text-white' : `${theme.text}`) : `${theme.text} ${theme.iconHover}`}`}
+                    onClick={() => {
+                      if (collectionGames.length === 0) return;
+                      setFilterOverwhelming(!filterOverwhelming);
+                    }}
+                    className={`p-1 rounded transition-all ${collectionGames.length === 0 ? 'opacity-30 cursor-not-allowed' : (filterOverwhelming ? (currentTheme === 'default' ? 'bg-gray-900 text-gray-200' : 'bg-slate-900 text-slate-400') : `${theme.text} ${theme.iconHover}`)}`}
                     title={t('filter.onlyOverwhelming', currentLocale)}
-                    style={filterOverwhelming && currentTheme !== 'steam' ? {backgroundColor: 'currentColor', transition: 'background-color 0.1s ease, color 0.1s ease'} : {transition: 'background-color 0.1s ease, color 0.1s ease'}}
+                    disabled={collectionGames.length === 0}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" style={filterOverwhelming && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569', transition: 'color 0.1s ease'} : {transition: 'color 0.1s ease'}}>
                       <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
