@@ -1070,7 +1070,7 @@ function SteamPriceFilter({ initialData = null }) {
                 {t("filter.title", currentLocale)}
               </div>
               <div className="flex items-center gap-4 flex-wrap mb-6">
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                   <input
                     id="saleOnly"
                     type="checkbox"
@@ -1087,7 +1087,7 @@ function SteamPriceFilter({ initialData = null }) {
                     {t("filter.onlySale", currentLocale)}
                   </label>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                   <input
                     id="overwhelmingOnly"
                     type="checkbox"
@@ -1104,7 +1104,7 @@ function SteamPriceFilter({ initialData = null }) {
                     {t("filter.onlyOverwhelming", currentLocale)}
                   </label>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                   <input
                     id="jpOnly"
                     type="checkbox"
@@ -1118,7 +1118,7 @@ function SteamPriceFilter({ initialData = null }) {
                     {t("filter.onlyJapanese", currentLocale)}
                   </label>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                   <input
                     id="macOnly"
                     type="checkbox"
