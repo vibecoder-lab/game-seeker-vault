@@ -4,6 +4,81 @@ import { yen, formatDateTime, truncateByWidth, normalizeGenres, checkJapaneseSup
 import { steamCapsuleUrl, linkFor } from '../../utils/steam.js';
 import { dbHelper } from '../../db/index.js';
 import { VideoModal } from './VideoModal.jsx';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+// Sortable Item Component
+function SortableItem({ id, game, gameData, theme, currentTheme, selectedFolderId, TRASH_FOLDER_ID, children, isDragging }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging: isItemDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isItemDragging ? 0.5 : 1,
+  };
+
+  const [isHovering, setIsHovering] = React.useState(false);
+
+  // Disable drag in trash folder
+  const isDragDisabled = selectedFolderId === TRASH_FOLDER_ID;
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      className="relative"
+    >
+      {!isDragDisabled && (
+        <div
+          {...attributes}
+          {...listeners}
+          className={`absolute left-1 top-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing p-1 z-10 transition-opacity duration-300 ${isHovering ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          style={{ touchAction: 'none' }}
+        >
+          <svg
+            className={`w-4 h-4 ${theme.subText}`}
+            viewBox="0 0 16 16"
+            fill="currentColor"
+          >
+            <circle cx="4" cy="3" r="1.5" />
+            <circle cx="8" cy="3" r="1.5" />
+            <circle cx="12" cy="3" r="1.5" />
+            <circle cx="4" cy="8" r="1.5" />
+            <circle cx="8" cy="8" r="1.5" />
+            <circle cx="12" cy="8" r="1.5" />
+            <circle cx="4" cy="13" r="1.5" />
+            <circle cx="8" cy="13" r="1.5" />
+            <circle cx="12" cy="13" r="1.5" />
+          </svg>
+        </div>
+      )}
+      {children}
+    </div>
+  );
+}
 
 export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, collectionMap, setCollectionMap, settings, targetFolderId, setTargetFolderId }) {
         const TRASH_FOLDER_ID = '__TRASH__';
@@ -43,6 +118,44 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         const hoveredGameRef = React.useRef(null);
         const detailPanelRef = React.useRef(null);
         const modalRef = React.useRef(null);
+
+        // Drag and drop sensors
+        const sensors = useSensors(
+          useSensor(PointerSensor, {
+            activationConstraint: {
+              distance: 8,
+            },
+          }),
+          useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+          })
+        );
+
+        // Handle drag end
+        const handleDragEnd = async (event) => {
+          const { active, over } = event;
+
+          if (active.id !== over?.id) {
+            const oldIndex = collectionGames.findIndex(g => g.id === active.id);
+            const newIndex = collectionGames.findIndex(g => g.id === over.id);
+
+            const newOrder = arrayMove(collectionGames, oldIndex, newIndex);
+            setCollectionGames(newOrder);
+
+            // Update sortOrder in IndexedDB
+            for (let i = 0; i < newOrder.length; i++) {
+              await dbHelper.updateCollectionOrder(newOrder[i].id, i + 1);
+              newOrder[i].sortOrder = i + 1;
+            }
+          }
+        };
+
+        // Handle drag start - force disable all filters
+        const handleDragStart = () => {
+          setFilterOnlySale(false);
+          setFilterJapanese(false);
+          setFilterOverwhelming(false);
+        };
 
         const filteredFavoriteGames = React.useMemo(() => {
           const gamesMap = {};
@@ -505,13 +618,33 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                       {selectedFolderId === TRASH_FOLDER_ID ? t('collection.trashEmpty', currentLocale) : t('collection.empty', currentLocale)}
                     </div>
                   ) : (
-                    <div className="space-y-2">
-                      {filteredFavoriteGames.map((game, index) => {
-                        const gamesMap = {};
-                        games.forEach(g => gamesMap[g.id] = g);
-                        const gameData = gamesMap[game.gameId];
-                        return (
-                        <div key={game.id} className={`group flex items-center p-3 rounded ${theme.buttonBg} ${theme.modalHover} transition-colors min-h-[48px] relative ${(showFolderMenuForGame === game.id || showOrderMenuForGame === game.id) ? 'overflow-visible z-50' : 'overflow-hidden z-0'}`} onMouseEnter={() => { if (showFolderMenuForGame !== game.id) setShowFolderMenuForGame(null); if (showOrderMenuForGame !== game.id) setShowOrderMenuForGame(null); hoveredGameRef.current = gameData; if (shiftPressed) setHoveredGame(gameData); }} onMouseLeave={(e) => { const relatedTarget = e.relatedTarget; const detailPanel = document.querySelector('[data-detail-panel]'); if (relatedTarget !== detailPanel && !detailPanel?.contains(relatedTarget)) { setShowFolderMenuForGame(null); setShowOrderMenuForGame(null); hoveredGameRef.current = null; setHoveredGame(null); } }}>
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragStart={handleDragStart}
+                      onDragEnd={handleDragEnd}
+                    >
+                      <SortableContext
+                        items={filteredFavoriteGames.map(g => g.id)}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        <div className="space-y-2">
+                          {filteredFavoriteGames.map((game, index) => {
+                            const gamesMap = {};
+                            games.forEach(g => gamesMap[g.id] = g);
+                            const gameData = gamesMap[game.gameId];
+                            return (
+                              <SortableItem
+                                key={game.id}
+                                id={game.id}
+                                game={game}
+                                gameData={gameData}
+                                theme={theme}
+                                currentTheme={currentTheme}
+                                selectedFolderId={selectedFolderId}
+                                TRASH_FOLDER_ID={TRASH_FOLDER_ID}
+                              >
+                                <div className={`group flex items-center p-3 rounded ${theme.buttonBg} ${theme.modalHover} transition-colors min-h-[48px] relative ${(showFolderMenuForGame === game.id || showOrderMenuForGame === game.id) ? 'overflow-visible z-50' : 'overflow-hidden z-0'}`} onMouseEnter={() => { if (showFolderMenuForGame !== game.id) setShowFolderMenuForGame(null); if (showOrderMenuForGame !== game.id) setShowOrderMenuForGame(null); hoveredGameRef.current = gameData; if (shiftPressed) setHoveredGame(gameData); }} onMouseLeave={(e) => { const relatedTarget = e.relatedTarget; const detailPanel = document.querySelector('[data-detail-panel]'); if (relatedTarget !== detailPanel && !detailPanel?.contains(relatedTarget)) { setShowFolderMenuForGame(null); setShowOrderMenuForGame(null); hoveredGameRef.current = null; setHoveredGame(null); } }}>
                           <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center">
                             <span className={`absolute left-[-40px] text-sm font-semibold ${theme.subText} w-[24px] text-right transition-transform duration-300 ${showOrderMenuForGame !== null ? 'translate-x-[40px]' : 'translate-x-0'}`}>{game.sortOrder}</span>
                           </div>
@@ -693,9 +826,12 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                           </div>
                           </div>
                         </div>
-                        );
-                      })}
-                    </div>
+                              </SortableItem>
+                            );
+                          })}
+                        </div>
+                      </SortableContext>
+                    </DndContext>
                   )}
                 </div>
               </div>
