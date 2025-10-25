@@ -28,7 +28,7 @@ REGIONS = {
 }
 
 # Default region for price fetching
-DEFAULT_REGIONS = ['JP']
+DEFAULT_REGIONS = ['JP', 'US']
 
 # Title filtering: exclude keywords
 EXCLUDE_KEYWORDS = [
