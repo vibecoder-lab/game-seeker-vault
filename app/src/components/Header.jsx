@@ -74,13 +74,15 @@ export function Header({
         <div className="hidden md:flex items-center gap-3">
           <div className="relative" onMouseEnter={() => setShowFolderDropdown(true)} onMouseLeave={() => setShowFolderDropdown(false)}>
             <button
-              className={`px-3 py-2 rounded-lg ${theme.cardShadow} hover:scale-105 transition-all ${theme.buttonBg} text-sm flex items-center gap-2`}
+              onClick={() => setShowCollectionModal(!showCollectionModal)}
+              className={`px-3 py-2 rounded-lg ${theme.cardShadow} hover:scale-105 transition-all relative ${showCollectionModal ? (currentTheme === 'steam' ? 'steam-blue-bg text-white' : `${theme.text}`) : `${theme.buttonBg}`} text-sm flex items-center gap-2`}
+              style={showCollectionModal && currentTheme !== 'steam' ? {backgroundColor: 'currentColor', transition: 'background-color 0.1s ease, color 0.1s ease'} : {transition: 'background-color 0.1s ease, color 0.1s ease'}}
               title={t('header.folder.tooltip', currentLocale)}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-colors duration-100" viewBox="0 0 20 20" fill="currentColor" style={showCollectionModal && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569'} : {}}>
                 <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
               </svg>
-              <span className="max-w-[160px] truncate">
+              <span className="max-w-[160px] truncate" style={showCollectionModal && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569'} : {}}>
                 {getLocalizedFolderName(folders.find(f => f.id === targetFolderId)?.name, currentLocale) || t('header.folder.label', currentLocale)}
               </span>
             </button>
@@ -89,7 +91,8 @@ export function Header({
                 {folders.map(folder => (
                   <button
                     key={folder.id}
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setTargetFolderId(folder.id);
                       setShowFolderDropdown(false);
                     }}
@@ -101,39 +104,6 @@ export function Header({
               </div>
             )}
           </div>
-          <button
-            onMouseEnter={() => setIsHoveringDeleteButton(true)}
-            onMouseLeave={() => setIsHoveringDeleteButton(false)}
-            onClick={async () => {
-              if (shiftPressedForDelete && isHoveringDeleteButton) {
-                if (confirm(t('header.collection.deleteConfirm', currentLocale))) {
-                  try {
-                    await dbHelper.deleteAllData();
-                    setFolders([]);
-                    setCollectionMap({});
-                    setSelectedFolderId(null);
-                    setTargetFolderId(null);
-                    window.location.reload();
-                  } catch (error) {
-                    console.error('Data deletion error:', error);
-                    alert(t('header.collection.deleteError', currentLocale));
-                  }
-                }
-              } else {
-                setShowCollectionModal(!showCollectionModal);
-              }
-            }}
-            className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all relative ${showCollectionModal ? (currentTheme === 'steam' ? 'steam-blue-bg text-white' : `${theme.text}`) : `${theme.buttonBg}`}`}
-            title={shiftPressedForDelete && isHoveringDeleteButton ? t('header.collection.deleteTooltip', currentLocale) : t('header.collection.tooltip', currentLocale)}
-            style={showCollectionModal && currentTheme !== 'steam' ? {backgroundColor: 'currentColor', transition: 'background-color 0.1s ease, color 0.1s ease'} : {transition: 'background-color 0.1s ease, color 0.1s ease'}}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 transition-opacity duration-100 ${shiftPressedForDelete && isHoveringDeleteButton ? 'opacity-0' : 'opacity-100'}`} viewBox="0 0 24 24" fill="currentColor" style={showCollectionModal && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569'} : {}}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 transition-opacity duration-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${shiftPressedForDelete && isHoveringDeleteButton ? 'opacity-100' : 'opacity-0'}`} viewBox="0 0 24 24" fill="currentColor">
-              <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clipRule="evenodd" />
-            </svg>
-          </button>
           <button
             onClick={() => setShowImportExportModal(true)}
             className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all relative ${showImportExportModal ? (currentTheme === 'steam' ? 'steam-blue-bg text-white' : `${theme.text}`) : `${theme.buttonBg}`}`}
