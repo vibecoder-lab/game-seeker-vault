@@ -47,8 +47,11 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
             <div className="space-y-4">
               <h3 className="text-lg font-bold">{t('help.disclaimer.title', currentLocale)}</h3>
               <div className="space-y-3 text-sm">
-                <p>{t('help.disclaimer.intro1', currentLocale)}<br />
-                {t('help.disclaimer.intro2', currentLocale)}</p>
+                <p>
+                  {t('help.disclaimer.intro1', currentLocale)}<br />
+                  {t('help.disclaimer.intro2', currentLocale)}<br />
+                  {t('help.disclaimer.intro3', currentLocale)}
+                </p>
 
                 <h4 className="font-bold mt-4">{t('help.disclaimer.priceInfo.title', currentLocale)}</h4>
                 <ul className="list-disc list-inside space-y-2 ml-4">
@@ -62,6 +65,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                   <li>{t('help.disclaimer.dataAccuracy.text1', currentLocale)}</li>
                   <li>{t('help.disclaimer.dataAccuracy.text2', currentLocale)}</li>
                   <li>{t('help.disclaimer.dataAccuracy.text3', currentLocale)}</li>
+                  <li>{t('help.disclaimer.dataAccuracy.text4', currentLocale)}</li>
                 </ul>
 
                 <h4 className="font-bold mt-4">{t('help.disclaimer.liability.title', currentLocale)}</h4>
@@ -74,17 +78,11 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                 <h4 className="font-bold mt-4">{t('help.disclaimer.curation.title', currentLocale)}</h4>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>{t('help.disclaimer.curation.text1', currentLocale)}</li>
-                  <li>{t('help.disclaimer.curation.text2', currentLocale)}
-                    <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
-                      <li>{t('help.disclaimer.curation.reviewType1', currentLocale)}</li>
-                      <li>{t('help.disclaimer.curation.reviewType2', currentLocale)}</li>
-                      <li>{t('help.disclaimer.curation.reviewType3', currentLocale)}</li>
-                      <li>{t('help.disclaimer.curation.reviewType4', currentLocale)}</li>
-                    </ul>
-                  </li>
+                  <li>{t('help.disclaimer.curation.text2', currentLocale)}</li>
                   <li>{t('help.disclaimer.curation.text3', currentLocale)}</li>
                   <li>{t('help.disclaimer.curation.text4', currentLocale)}</li>
                   <li>{t('help.disclaimer.curation.text5', currentLocale)}</li>
+                  <li>{t('help.disclaimer.curation.text6', currentLocale)}</li>
                 </ul>
               </div>
             </div>
@@ -92,67 +90,112 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
             <div className="space-y-4">
               <h3 className="text-lg font-bold">{t('help.guide.title', currentLocale)}</h3>
               <div className="space-y-3 text-sm">
-                <div className="md:hidden">
-                  <h4 className="font-bold">{t('help.guide.basicMobile', currentLocale)}</h4>
-                  <ul className="list-disc list-inside space-y-2  ml-4">
-                    <li>{t('help.guide.mobile.filter', currentLocale)}</li>
-                    <li>{t('help.guide.mobile.genreSelect', currentLocale)}</li>
-                    <li>{t('help.guide.mobile.searchConditions', currentLocale)}</li>
+                <div className="md:hidden space-y-3">
+                  <h4 className="font-bold">{t('help.guide.mobile.basic', currentLocale)}</h4>
+                  <ul className="list-disc list-inside space-y-2 ml-4">
+                    <li>{t('help.guide.mobile.basic1', currentLocale)}</li>
+                    <li>{t('help.guide.mobile.basic2', currentLocale)}</li>
+                    <li>{t('help.guide.mobile.basic3', currentLocale)}</li>
+                    <li>{t('help.guide.mobile.basic4', currentLocale)}
+                      <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
+                        <li>{t('help.guide.mobile.basic4a', currentLocale)}</li>
+                        <li>{t('help.guide.mobile.basic4b', currentLocale)}</li>
+                        <li>{t('help.guide.mobile.basic4c', currentLocale)}</li>
+                        <li>{t('help.guide.mobile.basic4d', currentLocale)}</li>
+                        <li>{t('help.guide.mobile.basic4e', currentLocale)}</li>
+                        <li>{t('help.guide.mobile.basic4f', currentLocale)}</li>
+                      </ul>
+                    </li>
+                    <li>{t('help.guide.mobile.basic5', currentLocale)}</li>
+                    <li>{t('help.guide.mobile.basic6', currentLocale)}</li>
+                  </ul>
+
+                  <h4 className="font-bold mt-4">{t('help.guide.mobile.longTap', currentLocale)}</h4>
+                  <ul className="list-disc list-inside space-y-2 ml-4">
+                    <li>{t('help.guide.mobile.longTap1', currentLocale)}
+                      <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
+                        <li>{t('help.guide.mobile.longTap1a', currentLocale)}</li>
+                      </ul>
+                    </li>
+                  </ul>
+
+                  <h4 className="font-bold mt-4">{t('help.guide.mobile.pcOnly', currentLocale)}</h4>
+                  <ul className="list-disc list-inside space-y-2 ml-4">
+                    <li>{t('help.guide.mobile.pcOnly1', currentLocale)}
+                      <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
+                        <li>{t('help.guide.mobile.pcOnly1a', currentLocale)}</li>
+                        <li>{t('help.guide.mobile.pcOnly1b', currentLocale)}</li>
+                        <li>{t('help.guide.mobile.pcOnly1c', currentLocale)}</li>
+                      </ul>
+                    </li>
                   </ul>
                 </div>
                 <div className="hidden md:block space-y-3">
-                  <h4 className="font-bold">{t('help.guide.basic', currentLocale)}</h4>
+                  <h4 className="font-bold">{t('help.guide.pc.basic', currentLocale)}</h4>
                   <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>{t('help.guide.basic.text1', currentLocale)}</li>
-                    <li>{t('help.guide.basic.text2', currentLocale)}</li>
-                    <li>{t('help.guide.basic.text3', currentLocale)}</li>
-                    <li>{t('help.guide.basic.text4', currentLocale)}</li>
+                    <li>{t('help.guide.pc.basic1', currentLocale)}</li>
+                    <li>{t('help.guide.pc.basic2', currentLocale)}</li>
+                    <li>{t('help.guide.pc.basic3', currentLocale)}</li>
+                    <li>{t('help.guide.pc.basic4', currentLocale)}</li>
+                    <li>{t('help.guide.pc.basic5', currentLocale)}</li>
                   </ul>
 
-                  <h4 className="font-bold mt-4">{t('help.guide.collection', currentLocale)}</h4>
+                  <h4 className="font-bold mt-4">{t('help.guide.pc.collection', currentLocale)}</h4>
                   <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>{t('help.guide.collection.text1', currentLocale)}</li>
-                    <li>{t('help.guide.collection.text2', currentLocale)}</li>
-                    <li>{t('help.guide.collection.text3', currentLocale)}</li>
-                    <li>{t('help.guide.collection.text4', currentLocale)}</li>
-                    <li>{t('help.guide.collection.text5', currentLocale)}
+                    <li>{t('help.guide.pc.collection1', currentLocale)}</li>
+                    <li>{t('help.guide.pc.collection2', currentLocale)}</li>
+                    <li>{t('help.guide.pc.collection3', currentLocale)}</li>
+                    <li>{t('help.guide.pc.collection4', currentLocale)}</li>
+                    <li>{t('help.guide.pc.collection5', currentLocale)}</li>
+                    <li>{t('help.guide.pc.collection6', currentLocale)}</li>
+                    <li>{t('help.guide.pc.collection7', currentLocale)}
                       <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
-                        <li>{t('help.guide.collection.operation1', currentLocale)}</li>
-                        <li>{t('help.guide.collection.operation2', currentLocale)}</li>
-                        <li>{t('help.guide.collection.operation3', currentLocale)}</li>
-                        <li>{t('help.guide.collection.operation4', currentLocale)}</li>
+                        <li>{t('help.guide.pc.collection7a', currentLocale)}</li>
+                        <li>{t('help.guide.pc.collection7b', currentLocale)}</li>
+                        <li>{t('help.guide.pc.collection7c', currentLocale)}</li>
+                        <li>{t('help.guide.pc.collection7d', currentLocale)}</li>
+                        <li>{t('help.guide.pc.collection7e', currentLocale)}</li>
+                        <li>{t('help.guide.pc.collection7f', currentLocale)}</li>
                       </ul>
                     </li>
-                    <li>{t('help.guide.collection.text6', currentLocale)}</li>
-                    <li>{t('help.guide.collection.text7', currentLocale)}</li>
-                    <li>{t('help.guide.collection.text8', currentLocale)}</li>
-                    <li>{t('help.guide.collection.text9', currentLocale)}</li>
+                    <li>{t('help.guide.pc.collection8', currentLocale)}</li>
                   </ul>
 
-                  <h4 className="font-bold mt-4">{t('help.guide.exportImport.title', currentLocale)}</h4>
+                  <h4 className="font-bold mt-4">{t('help.guide.pc.exportImport', currentLocale)}</h4>
                   <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>{t('help.guide.exportImport.text1', currentLocale)}</li>
-                    <li>{t('help.guide.exportImport.text2', currentLocale)}</li>
+                    <li>{t('help.guide.pc.exportImport1', currentLocale)}</li>
+                    <li>{t('help.guide.pc.exportImport2', currentLocale)}</li>
                   </ul>
 
-                  <h4 className="font-bold mt-4">{t('help.guide.basicUsage.title', currentLocale)}</h4>
+                  <h4 className="font-bold mt-4">{t('help.guide.pc.basicUsage', currentLocale)}</h4>
                   <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>{t('help.guide.basicUsage.text1', currentLocale)}</li>
-                    <li>{t('help.guide.basicUsage.text2', currentLocale)}</li>
+                    <li>{t('help.guide.pc.basicUsage1', currentLocale)}</li>
+                    <li>{t('help.guide.pc.basicUsage2', currentLocale)}</li>
                   </ul>
 
-                  <h4 className="font-bold mt-4">{t('help.guide.shortcuts.title', currentLocale)}</h4>
+                  <h4 className="font-bold mt-4">{t('help.guide.pc.shortcuts', currentLocale)}</h4>
                   <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>{t('help.guide.shortcuts.openCollection', currentLocale)}</li>
-                    <li>{t('help.guide.shortcuts.scrollToTop', currentLocale)}</li>
+                    <li>{t('help.guide.pc.shortcuts1', currentLocale)}</li>
+                    <li>{t('help.guide.pc.shortcuts2', currentLocale)}</li>
                   </ul>
 
-                  <h4 className="font-bold mt-4">{t('help.guide.shiftKey.title', currentLocale)}</h4>
+                  <h4 className="font-bold mt-4">{t('help.guide.pc.shiftKey', currentLocale)}</h4>
                   <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>{t('help.guide.shiftKey.excludeFilter', currentLocale)}</li>
-                    <li>{t('help.guide.shiftKey.deleteAll', currentLocale)}</li>
-                    <li>{t('help.guide.shiftKey.cardDetails', currentLocale)}</li>
-                    <li>{t('help.guide.shiftKey.gameDetails', currentLocale)}</li>
+                    <li>{t('help.guide.pc.shiftKey1', currentLocale)}
+                      <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
+                        <li>{t('help.guide.pc.shiftKey1a', currentLocale)}</li>
+                        <li>{t('help.guide.pc.shiftKey1b', currentLocale)}</li>
+                      </ul>
+                    </li>
+                    <li>{t('help.guide.pc.shiftKey2', currentLocale)}
+                      <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
+                        <li>{t('help.guide.pc.shiftKey2a', currentLocale)}</li>
+                      </ul>
+                    </li>
+                    <li>{t('help.guide.pc.shiftKey3', currentLocale)}</li>
+                    <li>{t('help.guide.pc.shiftKey4', currentLocale)}</li>
+                    <li>{t('help.guide.pc.shiftKey5', currentLocale)}</li>
+                    <li>{t('help.guide.pc.shiftKey6', currentLocale)}</li>
                   </ul>
                 </div>
               </div>
