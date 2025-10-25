@@ -179,7 +179,14 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         }, [selectedFolderId, folders, games]);
 
         // Sync selected folder and target folder when setting is enabled
+        const isFirstRender = React.useRef(true);
         React.useEffect(() => {
+          // Skip on first render to avoid changing targetFolderId when modal opens
+          if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+          }
+
           if (settings?.useSelectedFolderAsTarget && selectedFolderId && selectedFolderId !== TRASH_FOLDER_ID) {
             setTargetFolderId(selectedFolderId);
           }
@@ -491,91 +498,6 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                   <h2 className="text-base font-bold">
                     {selectedFolderId === TRASH_FOLDER_ID ? t('collection.trash', currentLocale) : (getLocalizedFolderName(folders.find(f => f.id === selectedFolderId)?.name, currentLocale) || t('collection.title', currentLocale))}
                   </h2>
-                  <div className="flex items-center gap-2 mr-20">
-                      <button
-                        onClick={async () => {
-                          if (collectionGames.length === 0) return;
-                          const sorted = [...collectionGames].sort((a, b) => {
-                            return a.gameTitle.localeCompare(b.gameTitle, 'ja');
-                          });
-                          for (let i = 0; i < sorted.length; i++) {
-                            await dbHelper.updateCollectionOrder(sorted[i].id, i + 1);
-                            sorted[i].sortOrder = i + 1;
-                          }
-                          setCollectionGames(sorted);
-                        }}
-                        className={`p-1 rounded ${collectionGames.length === 0 || selectedFolderId === TRASH_FOLDER_ID ? 'opacity-30 cursor-not-allowed' : `${theme.text} ${theme.iconHover}`}`}
-                        title={t('collection.sortByName', currentLocale)}
-                        disabled={collectionGames.length === 0 || selectedFolderId === TRASH_FOLDER_ID}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3zM15 8a1 1 0 10-2 0v5.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L15 13.586V8z" />
-                        </svg>
-                      </button>
-                      <button
-                        onClick={async () => {
-                          if (collectionGames.length === 0) return;
-                          const sorted = [...collectionGames].sort((a, b) => {
-                            const priceA = a.salePrice != null && a.salePrice < a.normalPrice ? a.salePrice : a.normalPrice;
-                            const priceB = b.salePrice != null && b.salePrice < b.normalPrice ? b.salePrice : b.normalPrice;
-                            return priceA - priceB;
-                          });
-                          for (let i = 0; i < sorted.length; i++) {
-                            await dbHelper.updateCollectionOrder(sorted[i].id, i + 1);
-                            sorted[i].sortOrder = i + 1;
-                          }
-                          setCollectionGames(sorted);
-                        }}
-                        className={`p-1 rounded ${collectionGames.length === 0 || selectedFolderId === TRASH_FOLDER_ID ? 'opacity-30 cursor-not-allowed' : `${theme.text} ${theme.iconHover}`}`}
-                        title={t('collection.sortByPrice', currentLocale)}
-                        disabled={collectionGames.length === 0 || selectedFolderId === TRASH_FOLDER_ID}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
-                        </svg>
-                      </button>
-                      <button
-                        onClick={async () => {
-                          if (collectionGames.length === 0) return;
-                          if (selectedFolderId === TRASH_FOLDER_ID) {
-                            if (confirm(t('confirm.emptyTrash', currentLocale))) {
-                              collectionGames.forEach(game => {
-                                dbHelper.deleteCollection(game.id);
-                                setCollectionMap(prev => {
-                                  const newMap = { ...prev };
-                                  delete newMap[game.gameId];
-                                  return newMap;
-                                });
-                              });
-                              setCollectionGames([]);
-                            }
-                          } else {
-                            if (confirm(t('confirm.moveToTrash', currentLocale))) {
-                              for (const game of collectionGames) {
-                                await dbHelper.markAsDeleted(game.id);
-                                setCollectionMap(prev => ({
-                                  ...prev,
-                                  [game.gameId]: { ...prev[game.gameId], deleted: true }
-                                }));
-                              }
-                              setCollectionGames([]);
-                              setFolderSaleStatus(prev => ({
-                                ...prev,
-                                [selectedFolderId]: false
-                              }));
-                            }
-                          }
-                        }}
-                        className={`p-1 rounded ${collectionGames.length === 0 ? 'opacity-30 cursor-not-allowed' : `${theme.text} ${theme.iconHover}`}`}
-                        title={selectedFolderId === TRASH_FOLDER_ID ? t('collection.emptyTrash', currentLocale) : t('confirm.moveToTrash', currentLocale)}
-                        disabled={collectionGames.length === 0}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
-                      </button>
-                    </div>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4">
                   {collectionGames.length === 0 ? (
@@ -853,6 +775,89 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" style={filterOverwhelming && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569', transition: 'color 0.1s ease'} : {transition: 'color 0.1s ease'}}>
                       <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={async () => {
+                      if (collectionGames.length === 0) return;
+                      const sorted = [...collectionGames].sort((a, b) => {
+                        return a.gameTitle.localeCompare(b.gameTitle, 'ja');
+                      });
+                      for (let i = 0; i < sorted.length; i++) {
+                        await dbHelper.updateCollectionOrder(sorted[i].id, i + 1);
+                        sorted[i].sortOrder = i + 1;
+                      }
+                      setCollectionGames(sorted);
+                    }}
+                    className={`p-1 rounded ${collectionGames.length === 0 || selectedFolderId === TRASH_FOLDER_ID ? 'opacity-30 cursor-not-allowed' : `${theme.text} ${theme.iconHover}`}`}
+                    title={t('collection.sortByName', currentLocale)}
+                    disabled={collectionGames.length === 0 || selectedFolderId === TRASH_FOLDER_ID}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3zM15 8a1 1 0 10-2 0v5.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L15 13.586V8z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={async () => {
+                      if (collectionGames.length === 0) return;
+                      const sorted = [...collectionGames].sort((a, b) => {
+                        const priceA = a.salePrice != null && a.salePrice < a.normalPrice ? a.salePrice : a.normalPrice;
+                        const priceB = b.salePrice != null && b.salePrice < b.normalPrice ? b.salePrice : b.normalPrice;
+                        return priceA - priceB;
+                      });
+                      for (let i = 0; i < sorted.length; i++) {
+                        await dbHelper.updateCollectionOrder(sorted[i].id, i + 1);
+                        sorted[i].sortOrder = i + 1;
+                      }
+                      setCollectionGames(sorted);
+                    }}
+                    className={`p-1 rounded ${collectionGames.length === 0 || selectedFolderId === TRASH_FOLDER_ID ? 'opacity-30 cursor-not-allowed' : `${theme.text} ${theme.iconHover}`}`}
+                    title={t('collection.sortByPrice', currentLocale)}
+                    disabled={collectionGames.length === 0 || selectedFolderId === TRASH_FOLDER_ID}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={async () => {
+                      if (collectionGames.length === 0) return;
+                      if (selectedFolderId === TRASH_FOLDER_ID) {
+                        if (confirm(t('confirm.emptyTrash', currentLocale))) {
+                          collectionGames.forEach(game => {
+                            dbHelper.deleteCollection(game.id);
+                            setCollectionMap(prev => {
+                              const newMap = { ...prev };
+                              delete newMap[game.gameId];
+                              return newMap;
+                            });
+                          });
+                          setCollectionGames([]);
+                        }
+                      } else {
+                        if (confirm(t('confirm.moveToTrash', currentLocale))) {
+                          for (const game of collectionGames) {
+                            await dbHelper.markAsDeleted(game.id);
+                            setCollectionMap(prev => ({
+                              ...prev,
+                              [game.gameId]: { ...prev[game.gameId], deleted: true }
+                            }));
+                          }
+                          setCollectionGames([]);
+                          setFolderSaleStatus(prev => ({
+                            ...prev,
+                            [selectedFolderId]: false
+                          }));
+                        }
+                      }
+                    }}
+                    className={`p-1 rounded ${collectionGames.length === 0 ? 'opacity-30 cursor-not-allowed' : `${theme.text} ${theme.iconHover}`}`}
+                    title={selectedFolderId === TRASH_FOLDER_ID ? t('collection.emptyTrash', currentLocale) : t('collection.deleteAllInFolder', currentLocale)}
+                    disabled={collectionGames.length === 0}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                   </button>
                   </div>

@@ -287,7 +287,7 @@ export function MobileGenreModal({
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-              <span>タグ</span>
+              <span>{t("filter.tags", currentLocale)}</span>
             </div>
             <div
               className="overflow-hidden transition-all duration-200 ease-in-out"

@@ -229,3 +229,16 @@ export async function getDeletedCollections() {
   db.close();
   return result;
 }
+
+// Delete all collections
+export async function deleteAllCollections() {
+  const db = await initDB();
+  const tx = db.transaction(COLLECTION_STORE, 'readwrite');
+  const store = tx.objectStore(COLLECTION_STORE);
+  await new Promise((resolve, reject) => {
+    const request = store.clear();
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+  });
+  db.close();
+}

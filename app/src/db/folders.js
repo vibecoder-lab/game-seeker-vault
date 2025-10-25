@@ -71,3 +71,16 @@ export async function deleteFolder(id) {
   }
   db.close();
 }
+
+// Delete all folders
+export async function deleteAllFolders() {
+  const db = await initDB();
+  const tx = db.transaction(FOLDERS_STORE, 'readwrite');
+  const store = tx.objectStore(FOLDERS_STORE);
+  await new Promise((resolve, reject) => {
+    const request = store.clear();
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+  });
+  db.close();
+}

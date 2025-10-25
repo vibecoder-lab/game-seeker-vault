@@ -5,6 +5,8 @@ const translations = {
     'page.title': 'Game Seeker Vault - Find fun & cheap games on Steam',
     'header.title': 'Game Seeker Vault',
     'header.collection.tooltip': 'Collection',
+    'header.collection.openModal': 'Open Collection Modal',
+    'header.collection.deleteAll': 'Delete All Collections',
     'header.collection.deleteTooltip': 'Delete All Data',
     'header.collection.deleteConfirm': 'Are you sure you want to delete all collection data?\nThis action cannot be undone.',
     'header.collection.deleteError': 'Failed to delete data.',
@@ -122,7 +124,7 @@ const translations = {
     'filter.genreHelp': 'Tap to select, long press to exclude (red X)',
     'filter.genreInclude': 'Include',
     'filter.genreExclude': 'Exclude',
-    'filter.genreAndFeature': 'Genre & Feature',
+    'filter.genreAndFeature': 'Genre/Feature/Tag',
 
     // Search
     'search.placeholder': 'Search by title...',
@@ -177,6 +179,7 @@ const translations = {
     'collection.shortcuts': 'Shortcuts',
     'collection.shortcutToggle': 'Collection (Shift+C)',
     'collection.deleteAll': 'Delete All Data',
+    'collection.deleteAllInFolder': 'Delete All in Folder',
 
     // Import/Export Modal
     'importExport.title': 'Import/Export',
@@ -266,8 +269,8 @@ const translations = {
     'help.guide.collection.operation2': 'Add folder',
     'help.guide.collection.operation3': 'Sort game titles in folders (sort/change order)',
     'help.guide.collection.operation4': 'Change the destination folder for game titles',
-    'help.guide.collection.text6': 'At the top of the collection modal, there are buttons for "Sort by name", "Sort by price (lowest first)", and "Delete all data in folder"',
-    'help.guide.collection.text7': 'At the bottom of the collection modal, like the main page, there are buttons to filter by "On sale only", "Japanese support only", and "Overwhelmingly Positive only"',
+    'help.guide.collection.text6': 'At the bottom of the collection modal, there are buttons to filter by "On sale only", "Japanese support only", and "Overwhelmingly Positive only", as well as buttons for "Sort by name", "Sort by price (lowest first)", and "Delete all data in folder"',
+    'help.guide.collection.text7': '',
     'help.guide.collection.text8': 'Like the main page, detailed information is displayed when you move the mouse cursor over a game title in the collection modal and press the Shift key',
     'help.guide.collection.text9': 'A red dot is displayed on the left side of folders containing games on sale',
     'help.guide.exportImport.title': 'Export/Import Features',
@@ -377,6 +380,8 @@ const translations = {
     'page.title': 'Game Seeker Vault - Steamで楽しく安いゲームを見つけよう',
     'header.title': 'Game Seeker Vault',
     'header.collection.tooltip': 'コレクション',
+    'header.collection.openModal': 'コレクションモーダルを開く',
+    'header.collection.deleteAll': 'コレクションを全削除',
     'header.collection.deleteTooltip': '全データ削除',
     'header.collection.deleteConfirm': 'すべてのコレクションデータを削除してもよろしいですか？\nこの操作は取り消せません。',
     'header.collection.deleteError': 'データの削除に失敗しました。',
@@ -494,7 +499,7 @@ const translations = {
     'filter.genreHelp': 'タップで選択、長押しで除外（赤いバツマーク）',
     'filter.genreInclude': '含む',
     'filter.genreExclude': '除外',
-    'filter.genreAndFeature': 'ジャンル・フィーチャー',
+    'filter.genreAndFeature': 'ジャンル・フィーチャー・タグ',
 
     // Search
     'search.placeholder': 'タイトルで検索...',
@@ -549,6 +554,7 @@ const translations = {
     'collection.shortcuts': 'ショートカット',
     'collection.shortcutToggle': 'コレクション (Shift+C)',
     'collection.deleteAll': 'すべてのデータを削除',
+    'collection.deleteAllInFolder': 'フォルダ内リスト全削除',
 
     // Import/Export Modal
     'importExport.title': 'インポート/エクスポート',
