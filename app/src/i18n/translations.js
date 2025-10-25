@@ -19,6 +19,7 @@ const translations = {
     'folder.default.interested': 'Interested List',
     'folder.default.wishlist': 'Wishlist',
     'folder.default.owned': 'Owned Games',
+    'folder.default.owned_list': 'Owned List',
 
     // Theme
     'theme.default': 'Default Theme',
@@ -279,6 +280,8 @@ const translations = {
     'settings.showAllTagsDesc': 'Display all tags instead of top 50',
     'settings.enableScrollAnimation': 'Scroll Animation',
     'settings.enableScrollAnimationDesc': 'Show card image when scrolling on mobile',
+    'settings.hideOwnedTitles': 'Hide Owned Titles',
+    'settings.hideOwnedTitlesDesc': 'Hide titles in owned list from search results',
     'settings.permanentDelete': 'Permanent Delete',
     'settings.permanentDeleteDesc': 'Delete items permanently without using trash',
     'settings.theme': 'Theme',
@@ -371,6 +374,7 @@ const translations = {
     'folder.default.interested': '気になるリスト',
     'folder.default.wishlist': '購入予定リスト',
     'folder.default.owned': '所有しているゲーム',
+    'folder.default.owned_list': '所有リスト',
 
     // Theme
     'theme.default': 'デフォルトテーマ',
@@ -631,6 +635,8 @@ const translations = {
     'settings.showAllTagsDesc': '上位50個ではなく全てのタグを表示',
     'settings.enableScrollAnimation': 'スクロールアニメーション',
     'settings.enableScrollAnimationDesc': 'スマホでスクロール時にカード画像を表示',
+    'settings.hideOwnedTitles': '所有タイトルを非表示',
+    'settings.hideOwnedTitlesDesc': '所有リストに含まれるタイトルを検索結果に表示しない',
     'settings.permanentDelete': '完全削除',
     'settings.permanentDeleteDesc': 'ゴミ箱を使わずに完全に削除',
     'settings.theme': 'テーマ',

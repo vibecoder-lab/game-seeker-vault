@@ -11,6 +11,7 @@ export const DEFAULT_SETTINGS = {
   saveTheme: false,                // Whether to save theme
   showAllTags: false,              // Show all tags (default: top 50)
   enableScrollAnimation: true,     // Enable scroll-linked card animation on mobile
+  hideOwnedTitles: false,          // Hide titles in owned list from search results
   locale: 'en',                    // Preferred locale
   settingsVersion: 1
 };

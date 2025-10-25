@@ -7,6 +7,21 @@ import { VideoModal } from './VideoModal.jsx';
 
 export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, collectionMap, setCollectionMap, settings, targetFolderId, setTargetFolderId }) {
         const TRASH_FOLDER_ID = '__TRASH__';
+
+        // Identify the owned list folder (created with translation key 'folder.default.owned_list')
+        const ownedListFolder = React.useMemo(() => {
+          return folders.find(f =>
+            f.name === t('folder.default.owned_list', 'en') ||
+            f.name === t('folder.default.owned_list', 'ja') ||
+            f.name === 'Owned List' ||
+            f.name === '所有リスト'
+          );
+        }, [folders]);
+
+        // Regular folders (excluding owned list)
+        const regularFolders = React.useMemo(() => {
+          return folders.filter(f => f.id !== ownedListFolder?.id);
+        }, [folders, ownedListFolder]);
         const [collectionGames, setCollectionGames] = React.useState([]);
         const [isCreatingFolder, setIsCreatingFolder] = React.useState(false);
         const [newFolderName, setNewFolderName] = React.useState('');
@@ -321,8 +336,9 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                 <div className={`px-4 py-3 border-b ${theme.border} flex items-center justify-between h-[46px]`}>
                   <h2 className="text-base font-bold">{t('collection.folders', currentLocale)}</h2>
                 </div>
+                {/* Scrollable folder list */}
                 <div className="flex-1 overflow-y-auto p-2">
-                  {folders.map(folder => (
+                  {regularFolders.map(folder => (
                     <div
                       key={folder.id}
                       className={`group flex items-center px-3 py-2 rounded cursor-pointer mb-1 min-h-[36px] overflow-hidden relative ${selectedFolderId === folder.id ? theme.folderSelected : theme.folderHover}`}
@@ -366,13 +382,14 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                             <button
                               onClick={async (e) => {
                                 e.stopPropagation();
-                                if (folder.id !== folders[0]?.id) {
+                                const isProtectedFolder = folder.id === folders[0]?.id || folder.id === ownedListFolder?.id;
+                                if (!isProtectedFolder) {
                                   await handleDeleteFolder(folder.id);
                                 }
                               }}
-                              className={`p-1 rounded ${folder.id === folders[0]?.id ? 'opacity-30 cursor-not-allowed' : `${theme.text} ${theme.iconHover}`}`}
-                              title={folder.id === folders[0]?.id ? t('collection.deleteFolder', currentLocale) : t('button.delete', currentLocale)}
-                              disabled={folder.id === folders[0]?.id}
+                              className={`p-1 rounded ${(folder.id === folders[0]?.id || folder.id === ownedListFolder?.id) ? 'opacity-30 cursor-not-allowed' : `${theme.text} ${theme.iconHover}`}`}
+                              title={(folder.id === folders[0]?.id || folder.id === ownedListFolder?.id) ? t('collection.deleteFolder', currentLocale) : t('button.delete', currentLocale)}
+                              disabled={folder.id === folders[0]?.id || folder.id === ownedListFolder?.id}
                             >
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                 <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
@@ -409,6 +426,66 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                     </button>
                   )}
                 </div>
+                {/* Fixed Owned List Folder (above footer) */}
+                {ownedListFolder && (
+                  <div className={`px-2 border-t ${theme.border}`} style={{paddingTop: '3px', paddingBottom: '3px'}}>
+                    <div
+                      key={ownedListFolder.id}
+                      className={`group flex items-center px-3 py-2 rounded cursor-pointer min-h-[36px] overflow-hidden relative ${selectedFolderId === ownedListFolder.id ? theme.folderSelected : theme.folderHover}`}
+                      onClick={() => editingFolderId !== ownedListFolder.id && setSelectedFolderId(ownedListFolder.id)}
+                    >
+                      {editingFolderId === ownedListFolder.id ? (
+                        <input
+                          type="text"
+                          value={editingFolderName}
+                          onChange={(e) => setEditingFolderName(e.target.value)}
+                          onBlur={() => handleRenameFolder(ownedListFolder.id)}
+                          onKeyDown={(e) => e.key === 'Enter' && handleRenameFolder(ownedListFolder.id)}
+                          className="flex-1 px-2 py-1 text-sm rounded bg-white dark:bg-gray-800 text-black dark:text-white"
+                          autoFocus
+                        />
+                      ) : (
+                        <>
+                          <div className="flex items-center gap-2 flex-1 min-w-0">
+                            <span className="w-[5px] h-[5px] flex-shrink-0">
+                              {folderSaleStatus[ownedListFolder.id] && (
+                                <span className={`block w-full h-full rounded-full ${theme.saleBg}`}></span>
+                              )}
+                            </span>
+                            <span className="flex-1 text-xs min-w-0">{getLocalizedFolderName(ownedListFolder.name, currentLocale)}</span>
+                          </div>
+                          <div className="flex items-center gap-1 transition-transform duration-300 group-hover:translate-x-0 translate-x-[60px]">
+                            <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setEditingFolderId(ownedListFolder.id);
+                                  setEditingFolderName(getLocalizedFolderName(ownedListFolder.name, currentLocale));
+                                }}
+                                className={`p-1 rounded ${theme.text} ${theme.iconHover}`}
+                                title={t('button.rename', currentLocale)}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                </svg>
+                              </button>
+                              <button
+                                onClick={(e) => e.stopPropagation()}
+                                className="p-1 rounded opacity-30 cursor-not-allowed"
+                                title={t('collection.deleteFolder', currentLocale)}
+                                disabled
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Right Content Area */}
@@ -583,7 +660,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                               </button>
                               {showFolderMenuForGame === game.id && (
                                 <div className={`absolute left-1/2 -translate-x-[60%] mt-1 ${theme.cardBg} ${theme.text} ${theme.cardShadow} rounded-lg overflow-hidden z-50 max-h-[200px] overflow-y-auto`}>
-                                  {folders.filter(f => f.id !== selectedFolderId).map(f => (
+                                  {regularFolders.filter(f => f.id !== selectedFolderId).map(f => (
                                     <button
                                       key={f.id}
                                       onClick={() => {
@@ -706,10 +783,12 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
               </div>
               {/* Footer */}
               <div className={`border-t ${theme.border} flex items-center h-[46px] rounded-b-2xl overflow-hidden`}>
-                <div className={`w-64 ${theme.bg} border-r ${theme.border} h-full flex items-center px-2`}>
+                <div className={`w-64 ${theme.bg} border-r ${theme.border} h-full flex items-center py-1`} style={{paddingLeft: '8px', paddingRight: '8px'}}>
+                  {/* Trash Folder */}
                   <div
                     onClick={() => setSelectedFolderId(TRASH_FOLDER_ID)}
-                    className={`w-full p-2 rounded cursor-pointer text-xs ${selectedFolderId === TRASH_FOLDER_ID ? theme.folderSelected : theme.folderHover}`}
+                    className={`w-full rounded cursor-pointer text-xs min-h-[36px] flex items-center ${selectedFolderId === TRASH_FOLDER_ID ? theme.folderSelected : theme.folderHover}`}
+                    style={{paddingLeft: '24px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px'}}
                   >
                     {t('collection.trash', currentLocale)}
                   </div>

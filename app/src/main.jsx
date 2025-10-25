@@ -300,6 +300,9 @@ function SteamPriceFilter({ initialData = null }) {
         const folder3Id = await dbHelper.addFolder(
           t("folder.default.owned", locale),
         );
+        const ownedListId = await dbHelper.addFolder(
+          t("folder.default.owned_list", locale),
+        );
         setFolders([
           {
             id: defaultFolderId,
@@ -314,6 +317,11 @@ function SteamPriceFilter({ initialData = null }) {
           {
             id: folder3Id,
             name: t("folder.default.owned", locale),
+            createdAt: formatDateTime(Date.now()),
+          },
+          {
+            id: ownedListId,
+            name: t("folder.default.owned_list", locale),
             createdAt: formatDateTime(Date.now()),
           },
         ]);
@@ -611,6 +619,22 @@ function SteamPriceFilter({ initialData = null }) {
       // Current price (sale price if on sale, otherwise normal price)
       const currentPrice = g.salePriceYen || g.priceYenResolved;
       const inRange = currentPrice >= minPrice && currentPrice <= maxPrice;
+
+      // Owned list filter: hide games in owned list if setting is enabled
+      const notInOwnedList = (() => {
+        if (!settings?.hideOwnedTitles) return true;
+        const collection = collectionMap[g.id];
+        if (!collection || collection.deleted) return true;
+
+        // Check if the game is in the owned list folder
+        const ownedListFolder = folders.find(f =>
+          f.name === 'Owned List' || f.name === '所有リスト'
+        );
+        if (!ownedListFolder) return true;
+
+        return collection.folderId !== ownedListFolder.id;
+      })();
+
       return (
         matchesJP &&
         matchesSale &&
@@ -620,7 +644,8 @@ function SteamPriceFilter({ initialData = null }) {
         matchesTags &&
         matchesYear &&
         matchesTitle &&
-        inRange
+        inRange &&
+        notInOwnedList
       );
     });
   }, [
@@ -635,6 +660,9 @@ function SteamPriceFilter({ initialData = null }) {
     searchTitle,
     minPrice,
     maxPrice,
+    settings?.hideOwnedTitles,
+    collectionMap,
+    folders,
   ]);
 
   const priceOf = React.useCallback(
