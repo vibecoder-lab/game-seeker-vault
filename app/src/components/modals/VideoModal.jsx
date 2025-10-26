@@ -1,8 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export function VideoModal({ game, theme, isClosing, onClose }) {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isShiftPressed, setIsShiftPressed] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Shift') {
+        setIsShiftPressed(true);
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      if (e.key === 'Shift') {
+        setIsShiftPressed(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
 
   const hasMovies = game.movies && game.movies.length > 0;
   const hasScreenshot = game.screenshot && game.screenshot.full;
@@ -69,14 +92,14 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
               <>
                 {/* Transparent hover area on the right side */}
                 <div
-                  className="absolute top-0 right-0 h-full w-32"
+                  className={`absolute top-0 right-0 h-full w-32 ${isShiftPressed ? 'pointer-events-none' : ''}`}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >
                   {/* Movie Thumbnails Overlay */}
                   <div
                     className={`h-full w-full flex flex-col gap-2 p-2 overflow-y-auto transition-opacity duration-200 bg-black bg-opacity-50 rounded-r-lg ${
-                      isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                      isHovered && !isShiftPressed ? 'opacity-100' : 'opacity-0 pointer-events-none'
                     }`}
                   >
                     {game.movies.map((movie, index) => (
