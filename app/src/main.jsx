@@ -112,6 +112,12 @@ function SteamPriceFilter({ initialData = null }) {
   const [showFolderDropdown, setShowFolderDropdown] = React.useState(false);
   const [clearButtonPressed, setClearButtonPressed] = React.useState(false);
   const [forceUpdate, setForceUpdate] = React.useState(0);
+
+  // VideoModal state management (moved here to be accessible in keyboard shortcuts useEffect)
+  const [showVideoModal, setShowVideoModal] = React.useState(false);
+  const [videoModalClosing, setVideoModalClosing] = React.useState(false);
+  const [selectedGameForVideo, setSelectedGameForVideo] = React.useState(null);
+
   const theme = THEMES[currentTheme];
 
   React.useEffect(() => {
@@ -134,6 +140,11 @@ function SteamPriceFilter({ initialData = null }) {
 
       // Disable in input fields
       if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+        return;
+      }
+
+      // Disable shortcuts when video modal is open
+      if (showVideoModal) {
         return;
       }
 
@@ -221,7 +232,7 @@ function SteamPriceFilter({ initialData = null }) {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [settings?.useAlternativeKeys, settings?.keyboardLayout]);
+  }, [settings?.useAlternativeKeys, settings?.keyboardLayout, showVideoModal]);
 
   React.useEffect(() => {
     if (initialData) {
@@ -745,11 +756,6 @@ function SteamPriceFilter({ initialData = null }) {
 
   // Defer the rendering of game list to improve filter checkbox responsiveness
   const deferredSorted = React.useDeferredValue(sorted);
-
-  // VideoModal state management
-  const [showVideoModal, setShowVideoModal] = React.useState(false);
-  const [videoModalClosing, setVideoModalClosing] = React.useState(false);
-  const [selectedGameForVideo, setSelectedGameForVideo] = React.useState(null);
 
   const handleVideoModalClose = () => {
     setVideoModalClosing(true);
@@ -1751,6 +1757,12 @@ function SteamPriceFilter({ initialData = null }) {
             settings={settings}
             targetFolderId={targetFolderId}
             setTargetFolderId={setTargetFolderId}
+            showVideoModal={showVideoModal}
+            setShowVideoModal={setShowVideoModal}
+            selectedGameForVideo={selectedGameForVideo}
+            setSelectedGameForVideo={setSelectedGameForVideo}
+            videoModalClosing={videoModalClosing}
+            setVideoModalClosing={setVideoModalClosing}
           />
         )}
 

@@ -136,7 +136,7 @@ function SortableItem({ id, game, gameData, theme, currentTheme, selectedFolderI
   );
 }
 
-export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, collectionMap, setCollectionMap, settings, targetFolderId, setTargetFolderId }) {
+export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, collectionMap, setCollectionMap, settings, targetFolderId, setTargetFolderId, showVideoModal, setShowVideoModal, selectedGameForVideo, setSelectedGameForVideo, videoModalClosing, setVideoModalClosing }) {
         const TRASH_FOLDER_ID = '__TRASH__';
 
         // Identify the owned list folder (created with translation key 'folder.default.owned_list')
@@ -178,9 +178,6 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         const [searchQuery, setSearchQuery] = React.useState('');
         const [hoveredGame, setHoveredGame] = React.useState(null);
         const [shiftPressed, setShiftPressed] = React.useState(false);
-        const [showVideoModal, setShowVideoModal] = React.useState(false);
-        const [videoModalClosing, setVideoModalClosing] = React.useState(false);
-        const [selectedGameForVideo, setSelectedGameForVideo] = React.useState(null);
         const hoveredGameRef = React.useRef(null);
         const detailPanelRef = React.useRef(null);
         const modalRef = React.useRef(null);
