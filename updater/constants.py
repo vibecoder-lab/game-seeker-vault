@@ -72,4 +72,4 @@ CHECKPOINT_DIR = 'updater/data/batch/checkpoints'
 PROCESSED_IDS_FILE = 'updater/data/batch/processed_ids.txt'
 MAPPING_RESULT_FILE = 'updater/data/batch/mapping_result.txt'
 BATCH_LOCK_FILE = 'updater/data/batch/batch_in_progress.lock'
-CHECKPOINT_INTERVAL = 1000
+CHECKPOINT_INTERVAL = 100

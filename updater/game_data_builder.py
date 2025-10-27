@@ -377,10 +377,11 @@ class GameDataBuilder:
 
         return game
 
-    def _rebuild_differential_update(self, kv_helper):
+    def _rebuild_differential_update(self, regions, kv_helper):
         """Mode B: Differential update (daily batch)
 
         Args:
+            regions: List of regions to fetch prices for
             kv_helper: KVHelper instance
 
         Returns:
@@ -411,17 +412,16 @@ class GameDataBuilder:
 
         # Fetch ITAD deals in batch (200 items per request) - only for games without noItadData flag
         itad_enabled_ids = [item.get('itadId') for item in id_map if item.get('itadId') and item['id'] not in games_with_no_itad_flag]
-        itad_deal_map_jpy = {}
-        itad_deal_map_usd = {}
+        itad_deal_maps = {}
         if itad_enabled_ids and self.itad_client:
             logger.info(f"  → Fetching ITAD deals for {len(itad_enabled_ids)} games (excluding {len(games_with_no_itad_flag)} noItadData games)...")
-            itad_deal_map_jpy = self.itad_client.get_batch_deals(itad_enabled_ids, region='JP')
-            logger.info(f"  → ITAD batch fetch (JPY) complete: {len(itad_deal_map_jpy)} deals retrieved")
-            itad_deal_map_usd = self.itad_client.get_batch_deals(itad_enabled_ids, region='US')
-            logger.info(f"  → ITAD batch fetch (USD) complete: {len(itad_deal_map_usd)} deals retrieved")
+            for region in regions:
+                itad_deal_maps[region] = self.itad_client.get_batch_deals(itad_enabled_ids, region=region)
+                logger.info(f"  → ITAD batch fetch ({region}) complete: {len(itad_deal_maps[region])} deals retrieved")
 
-            # Check if ITAD API failed completely (0 deals retrieved)
-            if len(itad_deal_map_jpy) == 0 and len(itad_enabled_ids) > 0:
+            # Check if ITAD API failed completely (0 deals retrieved for first region)
+            first_region = regions[0]
+            if len(itad_deal_maps.get(first_region, {})) == 0 and len(itad_enabled_ids) > 0:
                 logger.error("ITAD API failed to retrieve any deal data. Aborting differential update.")
                 raise Exception("ITAD API batch fetch returned 0 results")
 
@@ -430,16 +430,17 @@ class GameDataBuilder:
         games_without_itad = []  # Track games without ITAD data
         games_needing_steam_comparison = []  # Games with noItadData flag that need Steam API comparison
 
-        # Compare ITAD deal data with KV data
+        # Compare ITAD deal data with KV data (check all regions)
+        first_region = regions[0]
         for i, app_id in enumerate(all_app_ids, 1):
             existing_game = existing_games_dict.get(app_id)
             if not existing_game:
                 logger.warning(f"  ✗ App ID {app_id} exists in id-map but not in games-data, skipping...")
                 continue
 
-            # Check if this game has noItadData flag
-            kv_deal = existing_game.get('deal', {}).get('JPY', {})
-            has_no_itad_flag = kv_deal.get('noItadData', False)
+            # Check if this game has noItadData flag (check first region)
+            kv_deal_first = existing_game.get('deal', {}).get(first_region, {})
+            has_no_itad_flag = kv_deal_first.get('noItadData', False)
 
             if has_no_itad_flag:
                 # This game needs Steam API comparison (will be done in Phase 1.5)
@@ -454,31 +455,43 @@ class GameDataBuilder:
                 games_without_itad.append(app_id)
                 continue
 
-            itad_deal_jpy = itad_deal_map_jpy.get(itad_id)
-            if not itad_deal_jpy:
-                logger.warning(f"  ✗ No ITAD deal data for ITAD ID {itad_id} (App ID: {app_id}), will fetch from Steam API only")
-                games_to_update.append((app_id, itad_id))
-                games_without_itad.append(app_id)
-                continue
+            # Check all regions for price changes
+            price_changed = False
+            changed_regions = []
 
-            # Check if ITAD deal has no JPY/Steam data (all values are '-')
-            if itad_deal_jpy.get('price') == '-' and itad_deal_jpy.get('regular') == '-':
-                logger.warning(f"  ✗ ITAD has no JPY/Steam data for ITAD ID {itad_id} (App ID: {app_id}), will fetch from Steam API only")
-                games_to_update.append((app_id, itad_id))
-                games_without_itad.append(app_id)
-                continue
+            for region in regions:
+                itad_deal = itad_deal_maps.get(region, {}).get(itad_id)
+                if not itad_deal:
+                    # No ITAD data for this region - will need to update
+                    logger.warning(f"  ✗ No ITAD deal data for ITAD ID {itad_id} (App ID: {app_id}, Region: {region}), will fetch from Steam API only")
+                    price_changed = True
+                    games_without_itad.append(app_id)
+                    break
 
-            # Extract KV deal data
-            kv_price = kv_deal.get('price')
-            kv_cut = kv_deal.get('cut', 0)
+                # Check if ITAD deal has no data for this region (all values are '-')
+                if itad_deal.get('price') == '-' and itad_deal.get('regular') == '-':
+                    logger.warning(f"  ✗ ITAD has no {region} data for ITAD ID {itad_id} (App ID: {app_id}), will fetch from Steam API only")
+                    price_changed = True
+                    games_without_itad.append(app_id)
+                    break
 
-            # Extract ITAD deal data (JPY)
-            itad_price = itad_deal_jpy.get('price')
-            itad_cut = itad_deal_jpy.get('cut', 0)
+                # Extract KV deal data for this region
+                kv_deal = existing_game.get('deal', {}).get(region, {})
+                kv_price = kv_deal.get('price')
+                kv_cut = kv_deal.get('cut', 0)
 
-            # Compare price and cut
-            if itad_price != kv_price or itad_cut != kv_cut:
-                logger.info(f"[{i}/{len(all_app_ids)}] Price/cut difference detected for App ID {app_id}: KV(price={kv_price}, cut={kv_cut}), ITAD(price={itad_price}, cut={itad_cut})")
+                # Extract ITAD deal data
+                itad_price = itad_deal.get('price')
+                itad_cut = itad_deal.get('cut', 0)
+
+                # Compare price and cut
+                if itad_price != kv_price or itad_cut != kv_cut:
+                    price_changed = True
+                    changed_regions.append(f"{region}(KV: price={kv_price}, cut={kv_cut} / ITAD: price={itad_price}, cut={itad_cut})")
+
+            if price_changed:
+                if changed_regions:
+                    logger.info(f"[{i}/{len(all_app_ids)}] Price/cut difference detected for App ID {app_id}: {', '.join(changed_regions)}")
                 games_to_update.append((app_id, itad_id))
             else:
                 games_no_change.append(app_id)
@@ -492,21 +505,21 @@ class GameDataBuilder:
                 logger.info(f"[{i}/{len(games_needing_steam_comparison)}] Fetching Steam data for App ID: {app_id}...")
 
                 # Fetch Steam Basic API
-                basic_data = self.steam_client.get_game_info_from_api(app_id, regions=['JP', 'US'])
+                basic_data = self.steam_client.get_game_info_from_api(app_id, regions=regions)
                 if not basic_data:
                     logger.warning(f"  ✗ Failed to fetch Steam data for App ID {app_id}, keeping existing data")
                     games_no_change.append(app_id)
                     continue
 
-                # Extract Steam prices
-                steam_prices = basic_data.get('prices', {}).get('JP', {})
+                # Extract Steam prices (use first region)
+                steam_prices = basic_data.get('prices', {}).get(first_region, {})
                 steam_regular = steam_prices.get('price', 0)
                 steam_sale = steam_prices.get('salePrice')
                 steam_current = steam_sale if steam_sale is not None else steam_regular
 
-                # Extract KV prices
+                # Extract KV prices (use first region)
                 existing_game = existing_games_dict.get(app_id)
-                kv_deal = existing_game.get('deal', {}).get('JPY', {})
+                kv_deal = existing_game.get('deal', {}).get(first_region, {})
                 kv_price = kv_deal.get('price')
 
                 # Compare
@@ -542,77 +555,50 @@ class GameDataBuilder:
             logger.info(f"[{i}/{len(games_to_update)}] Fetching Steam data for App ID: {app_id}...")
 
             # Fetch Steam Basic API (includes price, genres, languages, etc.)
-            basic_data = self.steam_client.get_game_info_from_api(app_id, regions=['JP', 'US'])
+            basic_data = self.steam_client.get_game_info_from_api(app_id, regions=regions)
             if not basic_data:
                 logger.warning(f"  ✗ Failed to fetch Steam data for App ID {app_id}")
                 failed_games.append({'app_id': app_id, 'reason': 'Failed to fetch Steam data'})
                 continue
 
-            # Get ITAD deal data from Phase 1 cache, or construct from Steam data
-            itad_deal_jpy = itad_deal_map_jpy.get(itad_id) if itad_id else None
-            itad_deal_usd = itad_deal_map_usd.get(itad_id) if itad_id else None
-
-            # Check if ITAD deal has no JPY/Steam data (all values are '-')
-            if itad_deal_jpy and itad_deal_jpy.get('price') == '-' and itad_deal_jpy.get('regular') == '-':
-                logger.info(f"  → ITAD has no JPY/Steam data, will construct from Steam API")
-                itad_deal_jpy = None  # Treat as no ITAD data
-
-            if itad_deal_usd and itad_deal_usd.get('price') == '-' and itad_deal_usd.get('regular') == '-':
-                logger.info(f"  → ITAD has no USD/Steam data, will construct from Steam API")
-                itad_deal_usd = None  # Treat as no ITAD data
-
+            # Build deal dict for all regions
             itad_deal_dict = {}
+            for region in regions:
+                # Get ITAD deal data from Phase 1 cache
+                itad_deal = itad_deal_maps.get(region, {}).get(itad_id) if itad_id else None
 
-            # Build JPY deal
-            if itad_deal_jpy:
-                itad_deal_dict['JPY'] = itad_deal_jpy
-            else:
-                # No ITAD data: construct deal structure from Steam API data
-                steam_prices_jpy = basic_data.get('prices', {}).get('JP', {})
-                regular_price = steam_prices_jpy.get('price', 0)
-                sale_price = steam_prices_jpy.get('salePrice')
+                # Check if ITAD deal has no data (all values are '-')
+                if itad_deal and itad_deal.get('price') == '-' and itad_deal.get('regular') == '-':
+                    logger.info(f"  → ITAD has no {region} data, will construct from Steam API")
+                    itad_deal = None
 
-                if sale_price is not None and sale_price < regular_price:
-                    price = sale_price
-                    cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
+                if itad_deal:
+                    itad_deal_dict[region] = itad_deal
                 else:
-                    price = regular_price
-                    cut = 0
+                    # No ITAD data: construct deal structure from Steam API data
+                    steam_prices = basic_data.get('prices', {}).get(region, {})
+                    regular_price = steam_prices.get('price', 0)
+                    sale_price = steam_prices.get('salePrice')
 
-                itad_deal_dict['JPY'] = {
-                    'price': price,
-                    'regular': regular_price,
-                    'cut': cut,
-                    'storeLow': '-',
-                    'noItadData': True
-                }
-                games_without_itad.append(app_id)
-                logger.info(f"  → Constructed JPY deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
+                    if sale_price is not None and sale_price < regular_price:
+                        price = sale_price
+                        cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
+                    else:
+                        price = regular_price
+                        cut = 0
 
-            # Build USD deal
-            if itad_deal_usd:
-                itad_deal_dict['USD'] = itad_deal_usd
-            else:
-                # No ITAD data: construct deal structure from Steam API data
-                steam_prices_usd = basic_data.get('prices', {}).get('US', {})
-                regular_price = steam_prices_usd.get('price', 0)
-                sale_price = steam_prices_usd.get('salePrice')
+                    itad_deal_dict[region] = {
+                        'price': price,
+                        'regular': regular_price,
+                        'cut': cut,
+                        'storeLow': '-',
+                        'noItadData': True
+                    }
 
-                if sale_price is not None and sale_price < regular_price:
-                    price = sale_price
-                    cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
-                else:
-                    price = regular_price
-                    cut = 0
+                    if region == first_region and app_id not in games_without_itad:
+                        games_without_itad.append(app_id)
 
-                itad_deal_dict['USD'] = {
-                    'price': price,
-                    'regular': regular_price,
-                    'cut': cut,
-                    'storeLow': '-',
-                    'noItadData': True
-                }
-                logger.info(f"  → Constructed USD deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
+                    logger.info(f"  → Constructed {region} deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
 
             # Fetch tags from ITAD if available
             tags = []
@@ -659,6 +645,9 @@ class GameDataBuilder:
         Returns:
             dict: Processing result
         """
+        from pathlib import Path
+        from constants import BATCH_LOCK_FILE
+
         logger.info("=== Processing Mode: Add new titles + fetch data only for new additions ===")
 
         # 1. Get existing id-map
@@ -676,19 +665,33 @@ class GameDataBuilder:
         # 3. Don't save id-map yet - will save after successful games-data update
         logger.info("id-map updated (not saved to KV yet)")
 
-        # 4. Get newly added IDs
+        # 4. Get newly mapped IDs from current run
+        newly_mapped_ids = []
         if mapping_result and mapping_result.get('mapped'):
-            new_ids = [item['appid'] for item in mapping_result['mapped']]
-            logger.info(f"New IDs: {len(new_ids)} items")
+            newly_mapped_ids = [item['appid'] for item in mapping_result['mapped']]
+            logger.info(f"Newly mapped IDs in this run: {len(newly_mapped_ids)} items")
         else:
-            new_ids = []
-            logger.info("No new IDs")
+            logger.info("No newly mapped IDs in this run")
 
         # 5. Get existing games-data
         existing_games = kv_helper.get_games_data()
         logger.info(f"Existing games-data: {len(existing_games)} items")
 
-        # 6. Auto-detect processing mode based on new_ids count
+        # 6. Determine IDs to process based on batch_in_progress.lock
+        lock_file_path = Path(BATCH_LOCK_FILE)
+        is_resuming = lock_file_path.exists()
+
+        if is_resuming:
+            # Resume mode: Process all IDs from id-map (checkpoint will filter processed ones)
+            new_ids = [item['id'] for item in id_map]
+            logger.info(f"Resume mode detected (batch_in_progress.lock exists). Processing all IDs from id-map: {len(new_ids)} items")
+            logger.info("Checkpoint files will be used to skip already processed IDs")
+        else:
+            # New mode: Process only newly mapped IDs
+            new_ids = newly_mapped_ids
+            logger.info(f"New batch mode. Processing newly mapped IDs: {len(new_ids)} items")
+
+        # 7. Auto-detect processing mode based on new_ids count
         new_ids_count = len(new_ids)
 
         if new_ids_count >= 1000:
@@ -718,17 +721,16 @@ class GameDataBuilder:
 
         # Batch fetch ITAD deal data for new games
         new_itad_ids = [id_map_dict.get(app_id) for app_id in target_ids if id_map_dict.get(app_id)]
-        itad_deal_map_jpy = {}
-        itad_deal_map_usd = {}
+        itad_deal_maps = {}
         if new_itad_ids and self.itad_client:
             logger.info(f"Fetching ITAD deals for {len(new_itad_ids)} new games...")
-            itad_deal_map_jpy = self.itad_client.get_batch_deals(new_itad_ids, region='JP')
-            logger.info(f"ITAD batch fetch (JPY) complete: {len(itad_deal_map_jpy)} deals retrieved")
-            itad_deal_map_usd = self.itad_client.get_batch_deals(new_itad_ids, region='US')
-            logger.info(f"ITAD batch fetch (USD) complete: {len(itad_deal_map_usd)} deals retrieved")
+            for region in regions:
+                itad_deal_maps[region] = self.itad_client.get_batch_deals(new_itad_ids, region=region)
+                logger.info(f"  → ITAD batch fetch ({region}) complete: {len(itad_deal_maps[region])} deals retrieved")
 
-            # Check if ITAD API failed completely (0 deals retrieved)
-            if len(itad_deal_map_jpy) == 0 and len(new_itad_ids) > 0:
+            # Check if ITAD API failed completely (0 deals retrieved for first region)
+            first_region = regions[0]
+            if len(itad_deal_maps.get(first_region, {})) == 0 and len(new_itad_ids) > 0:
                 logger.error("ITAD API failed to retrieve any deal data. Aborting new-only update.")
                 raise Exception("ITAD API batch fetch returned 0 results")
 
@@ -737,79 +739,53 @@ class GameDataBuilder:
             logger.info(f"[{i}/{len(target_ids)}] Processing App ID: {app_id}...")
 
             # Fetch latest data from Steam API (Basic + Review)
-            steam_data = self.steam_client.get_game_info_from_api(app_id, regions=['JP', 'US'])
+            steam_data = self.steam_client.get_game_info_from_api(app_id, regions=regions)
 
             if not steam_data:
                 logger.error(f"  ✗ Steam API fetch failed, skipped (App ID: {app_id})")
                 failed_games.append({'app_id': app_id, 'reason': 'Steam API fetch failed'})
                 continue
 
-            # Get ITAD ID and deal data, or construct from Steam data
+            # Get ITAD ID and build deal dict for all regions
             itad_id = id_map_dict.get(app_id)
-            itad_deal_jpy = itad_deal_map_jpy.get(itad_id) if itad_id else None
-            itad_deal_usd = itad_deal_map_usd.get(itad_id) if itad_id else None
-
-            # Check if ITAD deal has no JPY/Steam data (all values are '-')
-            if itad_deal_jpy and itad_deal_jpy.get('price') == '-' and itad_deal_jpy.get('regular') == '-':
-                logger.warning(f"  ✗ ITAD has no JPY/Steam data for App ID {app_id}, will construct from Steam API")
-                itad_deal_jpy = None
-
-            if itad_deal_usd and itad_deal_usd.get('price') == '-' and itad_deal_usd.get('regular') == '-':
-                logger.warning(f"  ✗ ITAD has no USD/Steam data for App ID {app_id}, will construct from Steam API")
-                itad_deal_usd = None
-
             itad_deal_dict = {}
+            no_itad_for_any_region = False
 
-            # Build JPY deal
-            if itad_deal_jpy:
-                itad_deal_dict['JPY'] = itad_deal_jpy
-            else:
-                # No ITAD data: construct deal structure from Steam API data
-                steam_prices_jpy = steam_data.get('prices', {}).get('JP', {})
-                regular_price = steam_prices_jpy.get('price', 0)
-                sale_price = steam_prices_jpy.get('salePrice')
+            for region in regions:
+                itad_deal = itad_deal_maps.get(region, {}).get(itad_id) if itad_id else None
 
-                if sale_price is not None and sale_price < regular_price:
-                    price = sale_price
-                    cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
+                # Check if ITAD deal has no data (all values are '-')
+                if itad_deal and itad_deal.get('price') == '-' and itad_deal.get('regular') == '-':
+                    logger.warning(f"  ✗ ITAD has no {region} data for App ID {app_id}, will construct from Steam API")
+                    itad_deal = None
+
+                if itad_deal:
+                    itad_deal_dict[region] = itad_deal
                 else:
-                    price = regular_price
-                    cut = 0
+                    # No ITAD data: construct deal structure from Steam API data
+                    steam_prices = steam_data.get('prices', {}).get(region, {})
+                    regular_price = steam_prices.get('price', 0)
+                    sale_price = steam_prices.get('salePrice')
 
-                itad_deal_dict['JPY'] = {
-                    'price': price,
-                    'regular': regular_price,
-                    'cut': cut,
-                    'storeLow': '-',
-                    'noItadData': True
-                }
+                    if sale_price is not None and sale_price < regular_price:
+                        price = sale_price
+                        cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
+                    else:
+                        price = regular_price
+                        cut = 0
+
+                    itad_deal_dict[region] = {
+                        'price': price,
+                        'regular': regular_price,
+                        'cut': cut,
+                        'storeLow': '-',
+                        'noItadData': True
+                    }
+                    no_itad_for_any_region = True
+                    logger.info(f"  → Constructed {region} deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
+
+            if no_itad_for_any_region:
                 games_without_itad.append(app_id)
-                logger.info(f"  → Constructed JPY deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
-
-            # Build USD deal
-            if itad_deal_usd:
-                itad_deal_dict['USD'] = itad_deal_usd
-            else:
-                # No ITAD data: construct deal structure from Steam API data
-                steam_prices_usd = steam_data.get('prices', {}).get('US', {})
-                regular_price = steam_prices_usd.get('price', 0)
-                sale_price = steam_prices_usd.get('salePrice')
-
-                if sale_price is not None and sale_price < regular_price:
-                    price = sale_price
-                    cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
-                else:
-                    price = regular_price
-                    cut = 0
-
-                itad_deal_dict['USD'] = {
-                    'price': price,
-                    'regular': regular_price,
-                    'cut': cut,
-                    'storeLow': '-',
-                    'noItadData': True
-                }
-                logger.info(f"  → Constructed USD deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
 
             # Fetch tags from ITAD if available
             tags = []
@@ -936,24 +912,56 @@ class GameDataBuilder:
         checkpoint_dir = Path(CHECKPOINT_DIR)
         checkpoint_files = list(checkpoint_dir.glob('games_checkpoint_*.json'))
 
+        resume_index = 0  # Initialize resume_index
+
         if checkpoint_files:
-            # Extract checkpoint numbers and find the latest
-            checkpoint_numbers = []
+            # Sort checkpoint files by number
+            sorted_checkpoint_files = []
             for f in checkpoint_files:
                 try:
                     num = int(f.stem.split('_')[-1])
-                    checkpoint_numbers.append(num)
+                    sorted_checkpoint_files.append((num, f))
                 except ValueError:
                     continue
 
-            if checkpoint_numbers:
-                latest_checkpoint = max(checkpoint_numbers)
-                logger.info(f"Found latest checkpoint: {latest_checkpoint} games processed")
-                logger.info(f"Resuming from game {latest_checkpoint + 1}")
+            if sorted_checkpoint_files:
+                # Sort by checkpoint number
+                sorted_checkpoint_files.sort(key=lambda x: x[0])
 
-                # Skip already processed games (no need to load checkpoint data)
-                target_ids = new_ids[latest_checkpoint:]
-                logger.info(f"Target IDs: {len(target_ids)} (skipped {latest_checkpoint} already processed)")
+                logger.info(f"Found {len(sorted_checkpoint_files)} checkpoint file(s)")
+
+                # Read all checkpoint files to build set of processed IDs
+                processed_ids = set()
+                total_checkpoint_games = 0
+
+                for checkpoint_num, checkpoint_file in sorted_checkpoint_files:
+                    logger.info(f"Reading checkpoint file: {checkpoint_file.name}")
+                    with open(checkpoint_file, 'r', encoding='utf-8') as f:
+                        checkpoint_games = json.load(f)
+
+                    logger.info(f"  → Contains {len(checkpoint_games)} games")
+                    for game in checkpoint_games:
+                        processed_ids.add(game['id'])
+                    total_checkpoint_games += len(checkpoint_games)
+
+                logger.info(f"Total games in checkpoints: {total_checkpoint_games}")
+                logger.info(f"Unique processed IDs: {len(processed_ids)}")
+
+                # Compare with new_ids to find exact resume position
+                # new_ids is the full list from id-map.json in order
+                for idx, app_id in enumerate(new_ids):
+                    if app_id in processed_ids:
+                        resume_index = idx + 1
+                    else:
+                        # First unprocessed ID found
+                        break
+
+                logger.info(f"Resume position determined: {resume_index} games already processed")
+                logger.info(f"Resuming from game {resume_index + 1}")
+
+                # Skip already processed games
+                target_ids = new_ids[resume_index:]
+                logger.info(f"Target IDs: {len(target_ids)} (skipped {resume_index} already processed)")
                 rebuilt_games = []
             else:
                 logger.info("No valid checkpoint found, starting from beginning")
@@ -985,75 +993,81 @@ class GameDataBuilder:
 
         # 4. Batch fetch ITAD deal data for target games
         new_itad_ids = [id_map_dict.get(app_id) for app_id in target_ids if id_map_dict.get(app_id)]
-        itad_deal_map = {}
+        itad_deal_maps = {}
         if new_itad_ids and self.itad_client:
             logger.info(f"Fetching ITAD deals for {len(new_itad_ids)} games...")
-            itad_deal_map = self.itad_client.get_batch_deals(new_itad_ids, region='JP')
-            logger.info(f"ITAD batch fetch complete: {len(itad_deal_map)} deals retrieved")
+            for region in regions:
+                itad_deal_maps[region] = self.itad_client.get_batch_deals(new_itad_ids, region=region)
+                logger.info(f"  → ITAD batch fetch ({region}) complete: {len(itad_deal_maps[region])} deals retrieved")
 
-            # Check if ITAD API failed completely
-            if len(itad_deal_map) == 0 and len(new_itad_ids) > 0:
+            # Check if ITAD API failed completely (0 deals retrieved for first region)
+            first_region = regions[0]
+            if len(itad_deal_maps.get(first_region, {})) == 0 and len(new_itad_ids) > 0:
                 logger.error("ITAD API failed to retrieve any deal data. Aborting batch update.")
                 raise Exception("ITAD API batch fetch returned 0 results")
 
-        # 2. Initialize tracking lists (or resume from checkpoint)
-        if not checkpoint_files or not checkpoint_numbers:
-            # Starting fresh
-            rebuilt_games = []
-
+        # 2. Initialize tracking lists
+        rebuilt_games = []
         failed_games = []
         missing_data = []
         games_without_itad = []
         games_with_image_fallback = []
 
         # Calculate starting index for checkpoint naming
-        start_index = latest_checkpoint if checkpoint_files and checkpoint_numbers else 0
+        # If resuming, start_index = resume_index. Otherwise, start from 0.
+        start_index = resume_index
 
         for i, app_id in enumerate(target_ids, 1):
             logger.info(f"[{i}/{len(target_ids)}] Processing App ID: {app_id}...")
 
             # Fetch latest data from Steam API
-            steam_data = self.steam_client.get_game_info_from_api(app_id, regions=['JP'])
+            steam_data = self.steam_client.get_game_info_from_api(app_id, regions=regions)
 
             if not steam_data:
                 logger.error(f"  ✗ Steam API fetch failed, skipped (App ID: {app_id})")
                 failed_games.append({'app_id': app_id, 'reason': 'Steam API fetch failed'})
                 continue
 
-            # Get ITAD ID and deal data, or construct from Steam data
+            # Get ITAD ID and build deal dict for all regions
             itad_id = id_map_dict.get(app_id)
-            itad_deal = itad_deal_map.get(itad_id) if itad_id else None
+            itad_deal_dict = {}
+            no_itad_for_any_region = False
 
-            # Check if ITAD deal has no JPY/Steam data
-            if itad_deal and itad_deal.get('price') == '-' and itad_deal.get('regular') == '-':
-                logger.warning(f"  ✗ ITAD has no JPY/Steam data for App ID {app_id}, will construct from Steam API")
-                itad_deal = None
+            for region in regions:
+                itad_deal = itad_deal_maps.get(region, {}).get(itad_id) if itad_id else None
 
-            if itad_deal:
-                itad_deal_dict = {'JPY': itad_deal}
-            else:
-                # No ITAD data: construct deal structure from Steam API data
-                steam_prices = steam_data.get('prices', {}).get('JP', {})
-                regular_price = steam_prices.get('price', 0)
-                sale_price = steam_prices.get('salePrice')
+                # Check if ITAD deal has no data
+                if itad_deal and itad_deal.get('price') == '-' and itad_deal.get('regular') == '-':
+                    logger.warning(f"  ✗ ITAD has no {region} data for App ID {app_id}, will construct from Steam API")
+                    itad_deal = None
 
-                if sale_price is not None and sale_price < regular_price:
-                    price = sale_price
-                    cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
+                if itad_deal:
+                    itad_deal_dict[region] = itad_deal
                 else:
-                    price = regular_price
-                    cut = 0
+                    # No ITAD data: construct deal structure from Steam API data
+                    steam_prices = steam_data.get('prices', {}).get(region, {})
+                    regular_price = steam_prices.get('price', 0)
+                    sale_price = steam_prices.get('salePrice')
 
-                steam_deal = {
-                    'price': price,
-                    'regular': regular_price,
-                    'cut': cut,
-                    'storeLow': '-',
-                    'noItadData': True
-                }
-                itad_deal_dict = {'JPY': steam_deal}
+                    if sale_price is not None and sale_price < regular_price:
+                        price = sale_price
+                        cut = int(((regular_price - sale_price) / regular_price) * 100) if regular_price > 0 else 0
+                    else:
+                        price = regular_price
+                        cut = 0
+
+                    itad_deal_dict[region] = {
+                        'price': price,
+                        'regular': regular_price,
+                        'cut': cut,
+                        'storeLow': '-',
+                        'noItadData': True
+                    }
+                    no_itad_for_any_region = True
+                    logger.info(f"  → Constructed {region} deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
+
+            if no_itad_for_any_region:
                 games_without_itad.append(app_id)
-                logger.info(f"  → Constructed deal from Steam API (no ITAD): price={price}, regular={regular_price}, cut={cut}")
 
             # Fetch tags from ITAD if available
             tags = []
@@ -1092,11 +1106,17 @@ class GameDataBuilder:
             # Save checkpoint every CHECKPOINT_INTERVAL games
             checkpoint_number = start_index + i
             if checkpoint_number % CHECKPOINT_INTERVAL == 0:
-                # Save checkpoint (current batch only, then clear memory)
-                checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number)
+                # Determine if this is the first checkpoint in a 1000-game block
+                # checkpoint_number: 100, 200, ..., 1000, 1100, 1200, ..., 2000, ...
+                # 100, 200, ... 1000 -> append to checkpoint_1000.json
+                # 1100, 1200, ... 2000 -> append to checkpoint_2000.json
+                is_new_file = (checkpoint_number % 1000 == 0)
+
+                # Save checkpoint (append mode for all except first in 1000-game block)
+                checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number, append=(not is_new_file))
                 # Save id-map at checkpoint
                 kv_helper.put_id_map(id_map)
-                logger.info(f"✓ Checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games in this checkpoint, id-map updated)")
+                logger.info(f"✓ Checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games in this batch, id-map updated)")
 
                 # Clear memory after saving checkpoint
                 rebuilt_games = []
@@ -1191,17 +1211,44 @@ class GameDataBuilder:
             'games_with_image_fallback': games_with_image_fallback
         }
 
-    def _save_checkpoint(self, games, count):
-        """Save checkpoint file"""
+    def _save_checkpoint(self, games, count, append=False):
+        """Save checkpoint file
+
+        Args:
+            games: List of game data to save
+            count: Current count of processed games
+            append: If True, append to existing file. If False, create new file.
+
+        Returns:
+            Path to checkpoint file
+        """
         from pathlib import Path
         from constants import CHECKPOINT_DIR
 
         checkpoint_dir = Path(CHECKPOINT_DIR)
         checkpoint_dir.mkdir(parents=True, exist_ok=True)
-        checkpoint_file = checkpoint_dir / f"games_checkpoint_{count}.json"
 
-        with open(checkpoint_file, 'w', encoding='utf-8') as f:
-            json.dump(games, f, ensure_ascii=False, indent=2)
+        # Calculate file number based on 1000-game intervals
+        # 1-1000 -> checkpoint_1000.json
+        # 1001-2000 -> checkpoint_2000.json
+        file_number = ((count - 1) // 1000 + 1) * 1000
+        checkpoint_file = checkpoint_dir / f"games_checkpoint_{file_number}.json"
+
+        if append and checkpoint_file.exists():
+            # Read existing data
+            with open(checkpoint_file, 'r', encoding='utf-8') as f:
+                existing_games = json.load(f)
+
+            # Append new games
+            existing_games.extend(games)
+
+            # Write back
+            with open(checkpoint_file, 'w', encoding='utf-8') as f:
+                json.dump(existing_games, f, ensure_ascii=False, indent=2)
+        else:
+            # Create new file
+            with open(checkpoint_file, 'w', encoding='utf-8') as f:
+                json.dump(games, f, ensure_ascii=False, indent=2)
 
         return checkpoint_file
 
@@ -1226,4 +1273,4 @@ class GameDataBuilder:
         if new_only:
             return self._rebuild_new_only(regions, kv_helper)
         else:
-            return self._rebuild_differential_update(kv_helper)
+            return self._rebuild_differential_update(regions, kv_helper)
