@@ -736,7 +736,7 @@ class GameDataBuilder:
 
         # Process new IDs
         for i, app_id in enumerate(target_ids, 1):
-            logger.info(f"[{i}/{len(target_ids)}] Processing App ID: {app_id}...")
+            logger.info(f"[{start_index + i}/{len(new_ids)}] Processing App ID: {app_id}...")
 
             # Fetch latest data from Steam API (Basic + Review)
             steam_data = self.steam_client.get_game_info_from_api(app_id, regions=regions)
@@ -952,9 +952,6 @@ class GameDataBuilder:
                 for idx, app_id in enumerate(new_ids):
                     if app_id in processed_ids:
                         resume_index = idx + 1
-                    else:
-                        # First unprocessed ID found
-                        break
 
                 logger.info(f"Resume position determined: {resume_index} games already processed")
                 logger.info(f"Resuming from game {resume_index + 1}")
@@ -1018,7 +1015,7 @@ class GameDataBuilder:
         start_index = resume_index
 
         for i, app_id in enumerate(target_ids, 1):
-            logger.info(f"[{i}/{len(target_ids)}] Processing App ID: {app_id}...")
+            logger.info(f"[{start_index + i}/{len(new_ids)}] Processing App ID: {app_id}...")
 
             # Fetch latest data from Steam API
             steam_data = self.steam_client.get_game_info_from_api(app_id, regions=regions)
@@ -1106,14 +1103,8 @@ class GameDataBuilder:
             # Save checkpoint every CHECKPOINT_INTERVAL games
             checkpoint_number = start_index + i
             if checkpoint_number % CHECKPOINT_INTERVAL == 0:
-                # Determine if this is the first checkpoint in a 1000-game block
-                # checkpoint_number: 100, 200, ..., 1000, 1100, 1200, ..., 2000, ...
-                # 100, 200, ... 1000 -> append to checkpoint_1000.json
-                # 1100, 1200, ... 2000 -> append to checkpoint_2000.json
-                is_new_file = (checkpoint_number % 1000 == 0)
-
-                # Save checkpoint (append mode for all except first in 1000-game block)
-                checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number, append=(not is_new_file))
+                # Save checkpoint (auto-detects append vs new file)
+                checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number)
                 # Save id-map at checkpoint
                 kv_helper.put_id_map(id_map)
                 logger.info(f"✓ Checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games in this batch, id-map updated)")
@@ -1211,13 +1202,12 @@ class GameDataBuilder:
             'games_with_image_fallback': games_with_image_fallback
         }
 
-    def _save_checkpoint(self, games, count, append=False):
+    def _save_checkpoint(self, games, count):
         """Save checkpoint file
 
         Args:
             games: List of game data to save
             count: Current count of processed games
-            append: If True, append to existing file. If False, create new file.
 
         Returns:
             Path to checkpoint file
@@ -1234,7 +1224,8 @@ class GameDataBuilder:
         file_number = ((count - 1) // 1000 + 1) * 1000
         checkpoint_file = checkpoint_dir / f"games_checkpoint_{file_number}.json"
 
-        if append and checkpoint_file.exists():
+        # If file exists, append. Otherwise, create new file.
+        if checkpoint_file.exists():
             # Read existing data
             with open(checkpoint_file, 'r', encoding='utf-8') as f:
                 existing_games = json.load(f)

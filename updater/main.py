@@ -182,9 +182,9 @@ def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_
         json.dump(rebuilt_games, f, ensure_ascii=False, indent=2)
     logger.info(f"Saved to {output_file}")
 
-    # Update KV/local if we have data and no data fetch failures
-    # Note: Mapping failures don't block KV updates
-    should_update = len(rebuilt_games) > 0 and len(failed_games) == 0
+    # Update KV/local if we have data
+    # Note: Failed games are logged but don't block updates (successful games are still saved)
+    should_update = len(rebuilt_games) > 0
 
     if should_update:
         try:
@@ -217,6 +217,20 @@ def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_
                         for game in newly_added_games:
                             print(f"  • {game['title']} (App ID: {game['id']})")
 
+                    # Display failed games summary
+                    if len(failed_games) > 0:
+                        print(f"\n{'='*60}")
+                        print(f"⚠ WARNING: Failed Games Summary")
+                        print(f"{'='*60}")
+                        print(f"Total failed: {len(failed_games)} game(s)")
+                        print(f"\nFailed App IDs:")
+                        failed_ids = [str(f['app_id']) for f in failed_games]
+                        for i in range(0, len(failed_ids), 10):
+                            print(f"  {', '.join(failed_ids[i:i+10])}")
+                        print(f"\nDetails:")
+                        for failed in failed_games:
+                            print(f"  - App ID {failed['app_id']}: {failed['reason']}")
+
                     print(f"{'='*60}")
             else:
                 print(f"\n{'='*60}")
@@ -230,6 +244,20 @@ def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_
                     print(f"\nNewly Added Games ({len(newly_added_games)}):")
                     for game in newly_added_games:
                         print(f"  • {game['title']} (App ID: {game['id']})")
+
+                # Display failed games summary
+                if len(failed_games) > 0:
+                    print(f"\n{'='*60}")
+                    print(f"⚠ WARNING: Failed Games Summary")
+                    print(f"{'='*60}")
+                    print(f"Total failed: {len(failed_games)} game(s)")
+                    print(f"\nFailed App IDs:")
+                    failed_ids = [str(f['app_id']) for f in failed_games]
+                    for i in range(0, len(failed_ids), 10):
+                        print(f"  {', '.join(failed_ids[i:i+10])}")
+                    print(f"\nDetails:")
+                    for failed in failed_games:
+                        print(f"  - App ID {failed['app_id']}: {failed['reason']}")
 
                 print(f"{'='*60}")
         except Exception as e:
