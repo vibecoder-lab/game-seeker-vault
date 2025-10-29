@@ -496,8 +496,8 @@ function SteamPriceFilter({ initialData = null }) {
   const games = React.useMemo(
     () =>
       (rawGames || []).map((g) => {
-        // New data structure (deal.JPY)
-        const deal = g.deal?.JPY || {};
+        // New data structure (deal.JP)
+        const deal = g.deal?.JP || {};
         const regular =
           deal.regular !== "-" && deal.regular !== undefined ? deal.regular : 0;
         const price =
