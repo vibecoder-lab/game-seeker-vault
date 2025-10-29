@@ -293,6 +293,8 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         };
 
         React.useEffect(() => {
+          document.body.style.overflow = 'hidden';
+
           const handleKeyDown = (e) => {
             if (e.key === 'Shift') {
               setShiftPressed(true);
@@ -311,6 +313,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
           window.addEventListener('keyup', handleKeyUp);
 
           return () => {
+            document.body.style.overflow = '';
             window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('keyup', handleKeyUp);
           };
