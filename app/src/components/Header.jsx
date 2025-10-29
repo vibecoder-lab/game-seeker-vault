@@ -22,6 +22,7 @@ export function Header({
   showFolderDropdown,
   setShowFolderDropdown,
   shiftPressedForDelete,
+  setShiftPressedForDelete,
   isHoveringDeleteButton,
   setIsHoveringDeleteButton,
   setFolders,
@@ -108,7 +109,7 @@ export function Header({
               if (shiftPressedForDelete && isHoveringDeleteButton) {
                 if (confirm(t('header.collection.deleteConfirm', currentLocale))) {
                   try {
-                    await dbHelper.deleteAllData();
+                    await dbHelper.deleteAllCollectionData();
                     setFolders([]);
                     setCollectionMap({});
                     setSelectedFolderId(null);
@@ -119,6 +120,7 @@ export function Header({
                     alert(t('header.collection.deleteError', currentLocale));
                   }
                 }
+                setShiftPressedForDelete(false);
               } else {
                 setShowCollectionModal(!showCollectionModal);
               }

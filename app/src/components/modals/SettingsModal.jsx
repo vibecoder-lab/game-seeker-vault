@@ -257,8 +257,6 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
                   if (confirm(t('confirm.deleteAllData', currentLocale))) {
                     try {
                       await dbHelper.deleteAllData();
-                      const resetSettings = await dbHelper.resetSettings();
-                      setSettings(resetSettings);
                       window.location.reload();
                     } catch (e) {
                       alert(t('error.deleteFailed', currentLocale).replace('{message}', e.message));

@@ -872,6 +872,7 @@ function SteamPriceFilter({ initialData = null }) {
           showFolderDropdown={showFolderDropdown}
           setShowFolderDropdown={setShowFolderDropdown}
           shiftPressedForDelete={shiftPressedForDelete}
+          setShiftPressedForDelete={setShiftPressedForDelete}
           isHoveringDeleteButton={isHoveringDeleteButton}
           setIsHoveringDeleteButton={setIsHoveringDeleteButton}
           setFolders={setFolders}
