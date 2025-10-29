@@ -1558,7 +1558,7 @@ function SteamPriceFilter({ initialData = null }) {
                     setOnlyMac(false);
                     setSelectedGenres({ include: [], exclude: [] });
                     setSelectedTags([]);
-                    setMinPrice(0);
+                    setMinPrice(100);
                     setMaxPrice(settings?.removePriceLimit ? 20000 : 3000);
                     setPriceMode("current");
                     setSortOrder("asc");
@@ -1938,7 +1938,7 @@ function SteamPriceFilter({ initialData = null }) {
                   setOnlyMac(false);
                   setSelectedGenres({ include: [], exclude: [] });
                   setSelectedTags([]);
-                  setMinPrice(0);
+                  setMinPrice(100);
                   setMaxPrice(settings?.removePriceLimit ? 20000 : 3000);
                   setPriceMode("current");
                   setSortOrder("asc");
