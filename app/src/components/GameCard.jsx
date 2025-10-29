@@ -477,17 +477,5 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
 
 // Memoize GameCard to prevent unnecessary re-renders
 // Only re-render when props actually change
-export const GameCard = React.memo(GameCardComponent, (prevProps, nextProps) => {
-  // Custom comparison for better performance
-  return (
-    prevProps.g.id === nextProps.g.id &&
-    prevProps.priceMode === nextProps.priceMode &&
-    prevProps.theme === nextProps.theme &&
-    prevProps.collectionData?.folderId === nextProps.collectionData?.folderId &&
-    prevProps.collectionData?.deleted === nextProps.collectionData?.deleted &&
-    prevProps.settings === nextProps.settings &&
-    prevProps.locale === nextProps.locale &&
-    prevProps.onToggleFavorite === nextProps.onToggleFavorite
-  );
-});
+export const GameCard = React.memo(GameCardComponent);
 
