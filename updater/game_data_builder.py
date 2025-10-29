@@ -1113,6 +1113,14 @@ class GameDataBuilder:
                 rebuilt_games = []
                 logger.info("Memory cleared after checkpoint save")
 
+        # Save any remaining games that didn't reach checkpoint interval
+        if len(rebuilt_games) > 0:
+            checkpoint_number = start_index + len(target_ids)
+            checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number)
+            kv_helper.put_id_map(id_map)
+            logger.info(f"✓ Final checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games remaining, id-map updated)")
+            rebuilt_games = []
+
         # 6. Load all checkpoint files and merge
         logger.info("Loading all checkpoint files...")
         checkpoint_dir = Path(CHECKPOINT_DIR)
