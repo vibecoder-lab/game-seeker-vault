@@ -28,7 +28,7 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 modal-fade-in" onClick={onClose}>
-      <div className={`${theme.cardBg} rounded-2xl max-w-md w-full flex flex-col ${theme.cardShadow}`} onClick={(e) => e.stopPropagation()}>
+      <div className={`${theme.cardBg} rounded-2xl max-w-sm w-full flex flex-col ${theme.cardShadow}`} onClick={(e) => e.stopPropagation()}>
         <div className={`flex justify-between items-center px-4 py-3 border-b ${theme.border} h-[46px]`}>
           <h2 className="text-base font-bold">{t('languageRegion.title', currentLocale)}</h2>
           <button
@@ -45,10 +45,10 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
           {/* Language Section */}
           <div>
             <div className={`text-sm font-medium mb-2 ${theme.text}`}>{t('languageRegion.language', currentLocale)}</div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2">
               <button
                 onClick={() => handleLanguageChange('en')}
-                className={`py-2 px-4 rounded-lg text-sm transition-all ${
+                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
                   currentLocale === 'en'
                     ? 'bg-blue-600 text-white'
                     : `${theme.buttonBg} ${theme.text} hover:opacity-80`
@@ -58,7 +58,7 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
               </button>
               <button
                 onClick={() => handleLanguageChange('ja')}
-                className={`py-2 px-4 rounded-lg text-sm transition-all ${
+                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
                   currentLocale === 'ja'
                     ? 'bg-blue-600 text-white'
                     : `${theme.buttonBg} ${theme.text} hover:opacity-80`
@@ -72,10 +72,10 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
           {/* Region Section */}
           <div>
             <div className={`text-sm font-medium mb-2 ${theme.text}`}>{t('languageRegion.region', currentLocale)}</div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2">
               <button
                 onClick={() => handleRegionChange('USD')}
-                className={`py-2 px-4 rounded-lg text-sm transition-all ${
+                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
                   currentRegion === 'USD'
                     ? 'bg-blue-600 text-white'
                     : `${theme.buttonBg} ${theme.text} hover:opacity-80`
@@ -85,7 +85,7 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
               </button>
               <button
                 onClick={() => handleRegionChange('JPY')}
-                className={`py-2 px-4 rounded-lg text-sm transition-all ${
+                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
                   currentRegion === 'JPY'
                     ? 'bg-blue-600 text-white'
                     : `${theme.buttonBg} ${theme.text} hover:opacity-80`
