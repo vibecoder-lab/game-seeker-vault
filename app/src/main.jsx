@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { VideoModal } from "./components/modals/VideoModal.jsx";
+import { AdminPanel } from "./components/AdminPanel.jsx";
 import "./index.css";
 
 // Import i18n
@@ -2145,6 +2146,13 @@ function SteamPriceFilter({ initialData = null }) {
 }
 
 function App() {
+  // Check if current path is /admin
+  const isAdminPath = window.location.pathname === '/admin';
+
+  if (isAdminPath) {
+    return <AdminPanel />;
+  }
+
   return <SteamPriceFilter />;
 }
 

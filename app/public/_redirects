@@ -1,0 +1,4 @@
+# SPA routing - redirect all non-API requests to index.html
+/api/* 200
+/admin /index.html 200
+/* /index.html 200

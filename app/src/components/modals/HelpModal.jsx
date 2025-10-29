@@ -3,6 +3,13 @@ import { t, currentLocale } from '../../i18n/index.js';
 
 export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
   const [activeTab, setActiveTab] = useState('disclaimer');
+  const [feedbackType, setFeedbackType] = useState('inquiry');
+  const [feedbackTitle, setFeedbackTitle] = useState('');
+  const [feedbackContent, setFeedbackContent] = useState('');
+  const [feedbackEmail, setFeedbackEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [errors, setErrors] = useState({});
 
   return (
     <div className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'}`} onClick={onClose}>
@@ -40,10 +47,197 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
           >
             {t('help.tabGuide', currentLocale)}
           </button>
+          <button
+            onClick={() => setActiveTab('feedback')}
+            className={`px-6 py-3 font-medium transition-colors ${
+              activeTab === 'feedback'
+                ? `${theme.text} border-b-2 ${currentTheme === 'steam' ? 'border-blue-500' : 'border-current'}`
+                : `${theme.subText} hover:${theme.text}`
+            }`}
+          >
+            {t('help.tabFeedback', currentLocale)}
+          </button>
         </div>
 
         <div className="p-6 overflow-y-auto flex-1">
-          {activeTab === 'disclaimer' ? (
+          {activeTab === 'feedback' ? (
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold">{t('feedback.title', currentLocale)}</h3>
+
+              {submitStatus === 'success' ? (
+                <div className="p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg">
+                  {t('feedback.success', currentLocale)}
+                </div>
+              ) : (
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  setErrors({});
+
+                  // Validation
+                  const newErrors = {};
+                  if (!feedbackTitle.trim()) {
+                    newErrors.title = t('feedback.titleRequired', currentLocale);
+                  } else if (feedbackTitle.length > 100) {
+                    newErrors.title = t('feedback.titleTooLong', currentLocale);
+                  }
+
+                  if (!feedbackContent.trim()) {
+                    newErrors.content = t('feedback.contentRequired', currentLocale);
+                  } else if (feedbackContent.length > 2000) {
+                    newErrors.content = t('feedback.contentTooLong', currentLocale);
+                  }
+
+                  if (feedbackEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(feedbackEmail)) {
+                    newErrors.email = t('feedback.emailInvalid', currentLocale);
+                  }
+
+                  if (Object.keys(newErrors).length > 0) {
+                    setErrors(newErrors);
+                    return;
+                  }
+
+                  setIsSubmitting(true);
+                  setSubmitStatus(null);
+
+                  try {
+                    const response = await fetch('/api/submit-feedback', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        type: feedbackType,
+                        title: feedbackTitle.trim(),
+                        content: feedbackContent.trim(),
+                        email: feedbackEmail.trim() || null,
+                      }),
+                    });
+
+                    if (response.ok) {
+                      setSubmitStatus('success');
+                      setFeedbackTitle('');
+                      setFeedbackContent('');
+                      setFeedbackEmail('');
+                      setFeedbackType('inquiry');
+                    } else {
+                      setSubmitStatus('error');
+                    }
+                  } catch (error) {
+                    console.error('Error submitting feedback:', error);
+                    setSubmitStatus('error');
+                  } finally {
+                    setIsSubmitting(false);
+                  }
+                }} className="space-y-4">
+                  {/* Category */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      {t('feedback.category', currentLocale)}
+                    </label>
+                    <div className="flex gap-4">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="feedbackType"
+                          value="inquiry"
+                          checked={feedbackType === 'inquiry'}
+                          onChange={(e) => setFeedbackType(e.target.value)}
+                          className="mr-2"
+                        />
+                        {t('feedback.categoryInquiry', currentLocale)}
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="feedbackType"
+                          value="bug"
+                          checked={feedbackType === 'bug'}
+                          onChange={(e) => setFeedbackType(e.target.value)}
+                          className="mr-2"
+                        />
+                        {t('feedback.categoryBug', currentLocale)}
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Title */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      {t('feedback.titleLabel', currentLocale)}
+                    </label>
+                    <input
+                      type="text"
+                      value={feedbackTitle}
+                      onChange={(e) => setFeedbackTitle(e.target.value)}
+                      placeholder={t('feedback.titlePlaceholder', currentLocale)}
+                      className={`w-full px-3 py-2 border rounded-lg ${theme.cardBg} ${theme.border} ${errors.title ? 'border-red-500' : ''}`}
+                      maxLength={100}
+                    />
+                    {errors.title && (
+                      <p className="text-red-500 text-xs mt-1">{errors.title}</p>
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      {t('feedback.contentLabel', currentLocale)}
+                    </label>
+                    <textarea
+                      value={feedbackContent}
+                      onChange={(e) => setFeedbackContent(e.target.value)}
+                      placeholder={t('feedback.contentPlaceholder', currentLocale)}
+                      className={`w-full px-3 py-2 border rounded-lg ${theme.cardBg} ${theme.border} ${errors.content ? 'border-red-500' : ''}`}
+                      rows={6}
+                      maxLength={2000}
+                    />
+                    {errors.content && (
+                      <p className="text-red-500 text-xs mt-1">{errors.content}</p>
+                    )}
+                    <p className="text-xs text-gray-500 mt-1">{feedbackContent.length}/2000</p>
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      {t('feedback.emailLabel', currentLocale)}
+                    </label>
+                    <input
+                      type="email"
+                      value={feedbackEmail}
+                      onChange={(e) => setFeedbackEmail(e.target.value)}
+                      placeholder={t('feedback.emailPlaceholder', currentLocale)}
+                      className={`w-full px-3 py-2 border rounded-lg ${theme.cardBg} ${theme.border} ${errors.email ? 'border-red-500' : ''}`}
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                    )}
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
+                      isSubmitting
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : currentTheme === 'steam'
+                        ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                        : `${theme.buttonBg} hover:opacity-80`
+                    }`}
+                  >
+                    {isSubmitting ? t('feedback.submitting', currentLocale) : t('feedback.submit', currentLocale)}
+                  </button>
+
+                  {submitStatus === 'error' && (
+                    <div className="p-4 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-lg">
+                      {t('feedback.error', currentLocale)}
+                    </div>
+                  )}
+                </form>
+              )}
+            </div>
+          ) : activeTab === 'disclaimer' ? (
             <div className="space-y-4">
               <h3 className="text-lg font-bold">{t('help.disclaimer.title', currentLocale)}</h3>
               <div className="space-y-3 text-sm">
