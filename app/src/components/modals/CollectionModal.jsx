@@ -136,7 +136,7 @@ function SortableItem({ id, game, gameData, theme, currentTheme, selectedFolderI
   );
 }
 
-export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, collectionMap, setCollectionMap, settings, targetFolderId, setTargetFolderId, showVideoModal, setShowVideoModal, selectedGameForVideo, setSelectedGameForVideo, videoModalClosing, setVideoModalClosing }) {
+export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, collectionMap, setCollectionMap, settings, targetFolderId, setTargetFolderId, showVideoModal, setShowVideoModal, selectedGameForVideo, setSelectedGameForVideo, videoModalClosing, setVideoModalClosing, currentRegion }) {
         const TRASH_FOLDER_ID = '__TRASH__';
 
         // Identify the owned list folder (created with translation key 'folder.default.owned_list')
@@ -828,11 +828,11 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                             <div className="text-sm whitespace-nowrap pr-6">
                               {game.salePrice != null && game.salePrice < game.normalPrice ? (
                                 <>
-                                  <span className={`line-through ${theme.subText}`}>{formatPrice(game.normalPrice, currentLocale)}</span>
-                                  <span className={`ml-2 font-bold ${theme.saleText}`}>{formatPrice(game.salePrice, currentLocale)}</span>
+                                  <span className={`line-through ${theme.subText}`}>{formatPrice(game.normalPrice, currentRegion, currentLocale)}</span>
+                                  <span className={`ml-2 font-bold ${theme.saleText}`}>{formatPrice(game.salePrice, currentRegion, currentLocale)}</span>
                                 </>
                               ) : (
-                                <span>{formatPrice(game.normalPrice, currentLocale)}</span>
+                                <span>{formatPrice(game.normalPrice, currentRegion, currentLocale)}</span>
                               )}
                             </div>
                             <div className="flex items-center gap-2">
@@ -1212,20 +1212,20 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                   )}
                   <div>
                     <div className="font-semibold">{t('price.regular', currentLocale)}:</div>
-                    <div>{formatPrice(hoveredGame.priceYenResolved, currentLocale)}</div>
+                    <div>{formatPrice(hoveredGame.priceYenResolved, currentRegion, currentLocale)}</div>
                   </div>
                   {hoveredGame.salePriceYen && (
                     <div>
                       <div className="font-semibold">{t('price.sale', currentLocale)}:</div>
                       <div className={theme.saleText}>
-                        {formatPrice(hoveredGame.salePriceYen, currentLocale)}
+                        {formatPrice(hoveredGame.salePriceYen, currentRegion, currentLocale)}
                         {hoveredGame.discountPercent && ` (-${hoveredGame.discountPercent}%)`}
                       </div>
                     </div>
                   )}
                   <div>
                     <div className="font-semibold">{t('price.lowest', currentLocale)}:</div>
-                    <div>{hoveredGame.lowestYenResolved ? formatPrice(hoveredGame.lowestYenResolved, currentLocale) : '-'}</div>
+                    <div>{hoveredGame.lowestYenResolved ? formatPrice(hoveredGame.lowestYenResolved, currentRegion, currentLocale) : '-'}</div>
                   </div>
                   {hoveredGame.reviewScore && (
                     <div>

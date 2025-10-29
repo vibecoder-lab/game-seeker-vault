@@ -3,7 +3,7 @@ import { t, currentLocale, formatPrice, formatDate } from '../i18n/index.js';
 import { normalizeGenres, formatReleaseDate, checkJapaneseSupport, cleanLanguageText, translateReviewScore, yen } from '../utils/format.js';
 import { steamCapsuleUrl, linkFor } from '../utils/steam.js';
 
-function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale }) {
+function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale, currentRegion }) {
   const [isHovered, setIsHovered] = React.useState(false);
   const [shiftPressed, setShiftPressed] = React.useState(false);
   const [starButtonHovered, setStarButtonHovered] = React.useState(false);
@@ -362,14 +362,14 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                           <div className="mt-1"></div>
                         </div>
                       )}
-                      <div>{t('price.regular', currentLocale)}: {formatPrice(g.priceYenResolved, currentLocale)}</div>
+                      <div>{t('price.regular', currentLocale)}: {formatPrice(g.priceYenResolved, currentRegion, currentLocale)}</div>
                       {g.salePriceYen && (
                         <div className={theme.saleText}>
-                          {t('price.sale', currentLocale)}: {formatPrice(g.salePriceYen, currentLocale)}
+                          {t('price.sale', currentLocale)}: {formatPrice(g.salePriceYen, currentRegion, currentLocale)}
                           {g.discountPercent && ` (-${g.discountPercent}%)`}
                         </div>
                       )}
-                      <div>{t('price.lowest', currentLocale)}: {g.lowestYenResolved ? formatPrice(g.lowestYenResolved, currentLocale) : t('price.unknown', currentLocale)}</div>
+                      <div>{t('price.lowest', currentLocale)}: {g.lowestYenResolved ? formatPrice(g.lowestYenResolved, currentRegion, currentLocale) : t('price.unknown', currentLocale)}</div>
                       {g.reviewScore && (
                         <>
                           <div className="mt-1"></div>
@@ -437,9 +437,9 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                     <div className="flex-1">
                       {g.salePriceYen ? (
                         <>
-                          <div className="text-[11px] line-through text-gray-400 leading-tight">{formatPrice(g.priceYenResolved, currentLocale)}</div>
+                          <div className="text-[11px] line-through text-gray-400 leading-tight">{formatPrice(g.priceYenResolved, currentRegion, currentLocale)}</div>
                           <div className={`font-medium flex items-center gap-2 leading-tight ${g.salePriceYen === 0 ? 'text-green-500' : theme.saleText}`}>
-                            {formatPrice(g.salePriceYen, currentLocale)}
+                            {formatPrice(g.salePriceYen, currentRegion, currentLocale)}
                             {g.discountPercent && (
                               <span className={`text-[11px] ${theme.saleBg} text-white px-1.5 py-0.5 rounded`}>
                                 -{g.discountPercent}%
@@ -449,14 +449,14 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                         </>
                       ) : (
                         <div className={`font-medium leading-tight ${g.priceYenResolved === 0 ? 'text-green-500' : theme.text}`}>
-                          {formatPrice(g.priceYenResolved, currentLocale)}
+                          {formatPrice(g.priceYenResolved, currentRegion, currentLocale)}
                         </div>
                       )}
                     </div>
                   </div>
                   <div className="flex items-center justify-between gap-2">
                     <div className={`text-[11px] ${theme.lowestText}`}>
-                      {g.lowestYenResolved && g.lowestYenResolved !== '-' ? `${formatPrice(g.lowestYenResolved, currentLocale)}(${t('price.lowest', currentLocale)})` : t('price.unknown', currentLocale)}
+                      {g.lowestYenResolved && g.lowestYenResolved !== '-' ? `${formatPrice(g.lowestYenResolved, currentRegion, currentLocale)}(${t('price.lowest', currentLocale)})` : t('price.unknown', currentLocale)}
                     </div>
                     {checkJapaneseSupport(g.supportedLanguages) === t('language.supported', currentLocale) && (
                       <div className={`hidden md:block text-[11px] px-2 py-0.5 rounded-full whitespace-nowrap ${theme.jpBg} ${theme.jpText}`}>
@@ -486,7 +486,8 @@ export const GameCard = React.memo(GameCardComponent, (prevProps, nextProps) => 
     prevProps.collectionData?.folderId === nextProps.collectionData?.folderId &&
     prevProps.collectionData?.deleted === nextProps.collectionData?.deleted &&
     prevProps.settings === nextProps.settings &&
-    prevProps.locale === nextProps.locale
+    prevProps.locale === nextProps.locale &&
+    prevProps.onToggleFavorite === nextProps.onToggleFavorite
   );
 });
 

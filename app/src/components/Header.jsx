@@ -34,6 +34,8 @@ export function Header({
   setShowImportExportModal,
   showSettingsModal,
   setShowSettingsModal,
+  showLanguageRegionModal,
+  setShowLanguageRegionModal,
   setForceUpdate,
   settings,
   setSettings
@@ -168,19 +170,14 @@ export function Header({
             </svg>
           </button>
           <button
-            onClick={() => {
-              const newLocale = currentLocale === 'en' ? 'ja' : 'en';
-              setLocale(newLocale);
-              setForceUpdate(prev => prev + 1);
-            }}
-            className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all ${theme.buttonBg}`}
-            title={t('header.language.tooltip', currentLocale)}
+            onClick={() => setShowLanguageRegionModal(true)}
+            className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all ${showLanguageRegionModal ? (currentTheme === 'steam' ? 'steam-blue-bg text-white' : `${theme.text}`) : `${theme.buttonBg}`}`}
+            title={t('header.languageRegion.tooltip', currentLocale)}
+            style={showLanguageRegionModal && currentTheme !== 'steam' ? {backgroundColor: 'currentColor', transition: 'background-color 0.1s ease, color 0.1s ease'} : {transition: 'background-color 0.1s ease, color 0.1s ease'}}
           >
-            <div className="w-5 h-5 flex items-center justify-center">
-              <span className="text-sm font-bold leading-none">
-                {currentLocale.toUpperCase()}
-              </span>
-            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" style={showLanguageRegionModal && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569'} : {}}>
+              <path fillRule="evenodd" d="M9 2.221V7H4.221a2 2 0 01.365-.5L8.5 2.586A2 2 0 019 2.22zM11 2v5a2 2 0 01-2 2H4v11a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2h-7zm1.394 9.4a1 1 0 00-1.758-.072L7.75 16.75l-1.536-1.536a1 1 0 00-1.414 1.414l2.25 2.25a1 1 0 001.538-.144l3.25-5.75z" clipRule="evenodd" />
+            </svg>
           </button>
           <div className={`inline-flex rounded-xl ${theme.buttonBg} p-1`}>
             <button

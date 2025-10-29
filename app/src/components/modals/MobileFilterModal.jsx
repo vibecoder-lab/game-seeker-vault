@@ -27,7 +27,8 @@ export function MobileFilterModal({
   setPriceMode,
   sortOrder,
   setSortOrder,
-  settings
+  settings,
+  currentRegion
 }) {
   // Local state for immediate visual feedback
   const [localOnlySale, setLocalOnlySale] = React.useState(onlySale);
@@ -88,6 +89,24 @@ export function MobileFilterModal({
   const handleSortOrderChange = (order) => {
     setLocalSortOrder(order);
     React.startTransition(() => setSortOrder(order));
+  };
+
+  // Get price slider configuration based on region
+  const getPriceSliderConfig = (region, removePriceLimit) => {
+    if (region === 'JPY') {
+      return {
+        min: 0,
+        max: removePriceLimit ? 20000 : 3000,
+        step: 100
+      };
+    } else {
+      // USD, EUR, GBP
+      return {
+        min: 0,
+        max: removePriceLimit ? 200 : 50,
+        step: 1
+      };
+    }
   };
 
   return (
@@ -182,11 +201,11 @@ export function MobileFilterModal({
           <div className="text-sm font-semibold mb-2">{t('filter.price.title', currentLocale)}</div>
           <div className="space-y-2">
             <div className={`flex items-center justify-between text-sm ${theme.subText}`}>
-              <span>{t('filter.priceMin', currentLocale)} {formatPrice(localMinPrice, currentLocale)}</span>
-              <span>{t('filter.priceMax', currentLocale)} {formatPrice(localMaxPrice, currentLocale)}</span>
+              <span>{t('filter.priceMin', currentLocale)} {formatPrice(localMinPrice, currentRegion, currentLocale)}</span>
+              <span>{t('filter.priceMax', currentLocale)} {formatPrice(localMaxPrice, currentRegion, currentLocale)}</span>
             </div>
-            <input type="range" min={0} max={settings?.removePriceLimit ? 20000 : 3000} step={100} value={localMinPrice} onChange={(e)=>handleMinPriceChange(Math.min(Number(e.target.value), localMaxPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
-            <input type="range" min={0} max={settings?.removePriceLimit ? 20000 : 3000} step={100} value={localMaxPrice} onChange={(e)=>handleMaxPriceChange(Math.max(Number(e.target.value), localMinPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
+            <input type="range" min={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).min} max={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).max} step={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).step} value={localMinPrice} onChange={(e)=>handleMinPriceChange(Math.min(Number(e.target.value), localMaxPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
+            <input type="range" min={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).min} max={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).max} step={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).step} value={localMaxPrice} onChange={(e)=>handleMaxPriceChange(Math.max(Number(e.target.value), localMinPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
           </div>
         </div>
 

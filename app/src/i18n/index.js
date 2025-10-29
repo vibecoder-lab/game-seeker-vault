@@ -9,18 +9,23 @@ export function t(key, lang = 'en') {
   return translations[lang]?.[key] || translations['en']?.[key] || key;
 }
 
-// Format price with currency symbol based on locale
-export function formatPrice(price, locale = 'en') {
+// Format price with currency symbol based on region
+export function formatPrice(price, region = 'USD', locale = 'en') {
   if (price === null || price === undefined || price === 0) {
     return t('price.free', locale);
   }
 
-  if (locale === 'ja') {
-    return `¥${price.toLocaleString('ja-JP')}`;
-  } else {
-    // For USD approximation (divide yen by 150)
-    const usd = (price / 150).toFixed(2);
-    return `$${usd}`;
+  switch (region) {
+    case 'JPY':
+      return `¥${price.toLocaleString('ja-JP')}`;
+    case 'USD':
+      return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    case 'EUR':
+      return `€${price.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    case 'GBP':
+      return `£${price.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    default:
+      return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 }
 
@@ -94,6 +99,33 @@ export async function detectLocale() {
 
   // 4. Default to English
   return 'en';
+}
+
+// Get saved or detected region
+export async function detectRegion() {
+  // 1. Check settings store first
+  const settings = await loadSettings();
+  if (settings.region && ['USD', 'JPY', 'EUR', 'GBP'].includes(settings.region)) {
+    return settings.region;
+  }
+
+  // 2. Try to detect from API (Cloudflare geo)
+  try {
+    const response = await fetch('/api/detect-locale');
+    if (response.ok) {
+      const data = await response.json();
+      // Map country to region
+      const countryCode = data.country || '';
+      if (countryCode === 'JP') return 'JPY';
+      if (['GB', 'UK'].includes(countryCode)) return 'GBP';
+      if (['DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'AT', 'PT', 'FI', 'IE', 'GR'].includes(countryCode)) return 'EUR';
+    }
+  } catch (e) {
+    console.warn('Failed to detect region from API:', e);
+  }
+
+  // 3. Default to USD
+  return 'USD';
 }
 
 // Translate genre name

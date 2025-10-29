@@ -15,7 +15,7 @@ const translations = {
     'header.importExport.tooltip': 'Import/Export',
     'header.help.tooltip': 'Help & Disclaimer',
     'header.settings.tooltip': 'Settings',
-    'header.language.tooltip': 'Switch Language',
+    'header.languageRegion.tooltip': 'Language & Region',
 
     // Default Folders
     'folder.default.interested': 'Interested List',
@@ -180,6 +180,13 @@ const translations = {
     'collection.shortcutToggle': 'Collection (Shift+C)',
     'collection.deleteAll': 'Delete All Data',
     'collection.deleteAllInFolder': 'Delete All in Folder',
+
+    // Language & Region Modal
+    'languageRegion.title': 'Language & Region',
+    'languageRegion.language': 'Language',
+    'languageRegion.region': 'Region',
+    'languageRegion.japanese': 'Japanese',
+    'languageRegion.english': 'English',
 
     // Import/Export Modal
     'importExport.title': 'Import/Export',
@@ -390,7 +397,7 @@ const translations = {
     'header.importExport.tooltip': 'インポート/エクスポート',
     'header.help.tooltip': 'ヘルプ・免責事項',
     'header.settings.tooltip': '設定',
-    'header.language.tooltip': '言語切り替え',
+    'header.languageRegion.tooltip': '言語・リージョン',
 
     // Default Folders
     'folder.default.interested': '気になるリスト',
@@ -555,6 +562,13 @@ const translations = {
     'collection.shortcutToggle': 'コレクション (Shift+C)',
     'collection.deleteAll': 'すべてのデータを削除',
     'collection.deleteAllInFolder': 'フォルダ内リスト全削除',
+
+    // Language & Region Modal
+    'languageRegion.title': '言語・リージョン',
+    'languageRegion.language': '言語',
+    'languageRegion.region': 'リージョン',
+    'languageRegion.japanese': '日本語',
+    'languageRegion.english': '英語',
 
     // Import/Export Modal
     'importExport.title': 'インポート/エクスポート',

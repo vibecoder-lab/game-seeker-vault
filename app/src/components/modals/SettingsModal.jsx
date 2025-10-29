@@ -2,7 +2,7 @@ import React from 'react';
 import { t, currentLocale } from '../../i18n/index.js';
 import { dbHelper } from '../../db/index.js';
 
-export function SettingsModal({ theme, currentTheme, settings, setSettings, onClose }) {
+export function SettingsModal({ theme, currentTheme, settings, setSettings, onClose, currentRegion, maxPrice, setMaxPrice, setForceUpdate }) {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   return (
@@ -32,9 +32,20 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
                 type="checkbox"
                 checked={settings.removePriceLimit}
                 onChange={async (e) => {
-                  const newSettings = { ...settings, removePriceLimit: e.target.checked };
+                  const isEnabled = e.target.checked;
+                  const newSettings = { ...settings, removePriceLimit: isEnabled };
                   setSettings(newSettings);
                   await dbHelper.saveSettings(newSettings);
+
+                  // Adjust maxPrice if it exceeds new limit
+                  if (!isEnabled) {
+                    // Price limit enabled: check if maxPrice exceeds the new limit
+                    const newLimit = currentRegion === 'JPY' ? 3000 : 50;
+                    if (maxPrice > newLimit) {
+                      setMaxPrice(newLimit);
+                      setForceUpdate(prev => prev + 1);
+                    }
+                  }
                 }}
                 className="sr-only peer"
               />

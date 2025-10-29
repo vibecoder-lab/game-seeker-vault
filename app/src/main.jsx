@@ -10,6 +10,7 @@ import {
   currentLocale,
   setLocale,
   detectLocale,
+  detectRegion,
   formatPrice,
   formatYear,
   formatDate,
@@ -55,6 +56,7 @@ import { ImportExportModal } from "./components/modals/ImportExportModal.jsx";
 import { GameCard } from "./components/GameCard.jsx";
 import { HelpModal } from "./components/modals/HelpModal.jsx";
 import { SettingsModal } from "./components/modals/SettingsModal.jsx";
+import { LanguageRegionModal } from "./components/modals/LanguageRegionModal.jsx";
 import { MobileFilterModal } from "./components/modals/MobileFilterModal.jsx";
 import { MobileGenreModal } from "./components/modals/MobileGenreModal.jsx";
 import { Header } from "./components/Header.jsx";
@@ -98,7 +100,9 @@ function SteamPriceFilter({ initialData = null }) {
     React.useState(false);
   const [showHelpModal, setShowHelpModal] = React.useState(false);
   const [showSettingsModal, setShowSettingsModal] = React.useState(false);
+  const [showLanguageRegionModal, setShowLanguageRegionModal] = React.useState(false);
   const [settings, setSettings] = React.useState(DEFAULT_SETTINGS);
+  const [currentRegion, setCurrentRegion] = React.useState('USD');
   const [folders, setFolders] = React.useState([]);
   const [selectedFolderId, setSelectedFolderId] = React.useState(null);
   const [collectionMap, setCollectionMap] = React.useState({});
@@ -277,6 +281,23 @@ function SteamPriceFilter({ initialData = null }) {
       // Initialize locale
       const detected = await detectLocale();
       setLocale(detected);
+
+      // Initialize region
+      const detectedRegion = await detectRegion();
+      setCurrentRegion(detectedRegion);
+
+      // Set initial price range based on region
+      if (detectedRegion === 'USD') {
+        setMinPrice(1);
+        setMaxPrice(50);
+      } else if (detectedRegion === 'JPY') {
+        setMinPrice(100);
+        setMaxPrice(3000);
+      } else if (detectedRegion === 'EUR' || detectedRegion === 'GBP') {
+        setMinPrice(1);
+        setMaxPrice(50);
+      }
+
       setForceUpdate((prev) => prev + 1);
 
       const loadedSettings = await dbHelper.loadSettings();
@@ -496,8 +517,17 @@ function SteamPriceFilter({ initialData = null }) {
   const games = React.useMemo(
     () =>
       (rawGames || []).map((g) => {
-        // New data structure (deal.JP)
-        const deal = g.deal?.JP || {};
+        // Region mapping: USD -> US, JPY -> JP, EUR -> EU, GBP -> UK
+        const regionMap = {
+          'USD': 'US',
+          'JPY': 'JP',
+          'EUR': 'EU',
+          'GBP': 'UK'
+        };
+        const dealKey = regionMap[currentRegion] || 'JP';
+
+        // Get deal data with fallback to JP
+        const deal = g.deal?.[dealKey] || g.deal?.JP || {};
         const regular =
           deal.regular !== "-" && deal.regular !== undefined ? deal.regular : 0;
         const price =
@@ -522,7 +552,7 @@ function SteamPriceFilter({ initialData = null }) {
           genres,
         };
       }),
-    [rawGames],
+    [rawGames, currentRegion],
   );
 
   const allGenres = React.useMemo(() => {
@@ -675,6 +705,29 @@ function SteamPriceFilter({ initialData = null }) {
     collectionMap,
     folders,
   ]);
+
+  // Get price slider configuration based on region
+  const priceSliderConfig = React.useMemo(() => {
+    const removePriceLimit = settings?.removePriceLimit;
+    if (currentRegion === 'JPY') {
+      return {
+        min: 0,
+        max: removePriceLimit ? 20000 : 3000,
+        step: 100,
+        defaultMin: 100,
+        defaultMax: 3000
+      };
+    } else {
+      // USD, EUR, GBP
+      return {
+        min: 0,
+        max: removePriceLimit ? 200 : 50,
+        step: 1,
+        defaultMin: 1,
+        defaultMax: 50
+      };
+    }
+  }, [currentRegion, settings?.removePriceLimit]);
 
   const priceOf = React.useCallback(
     (g) => {
@@ -831,6 +884,7 @@ function SteamPriceFilter({ initialData = null }) {
           sortOrder={sortOrder}
           setSortOrder={setSortOrder}
           settings={settings}
+          currentRegion={currentRegion}
         />
       )}
 
@@ -884,6 +938,8 @@ function SteamPriceFilter({ initialData = null }) {
           setShowImportExportModal={setShowImportExportModal}
           showSettingsModal={showSettingsModal}
           setShowSettingsModal={setShowSettingsModal}
+          showLanguageRegionModal={showLanguageRegionModal}
+          setShowLanguageRegionModal={setShowLanguageRegionModal}
           setForceUpdate={setForceUpdate}
           settings={settings}
           setSettings={setSettings}
@@ -1189,18 +1245,18 @@ function SteamPriceFilter({ initialData = null }) {
                 >
                   <span>
                     {t("filter.priceMin", currentLocale)}{" "}
-                    {formatPrice(minPrice, currentLocale)}
+                    {formatPrice(minPrice, currentRegion, currentLocale)}
                   </span>
                   <span>
                     {t("filter.priceMax", currentLocale)}{" "}
-                    {formatPrice(maxPrice, currentLocale)}
+                    {formatPrice(maxPrice, currentRegion, currentLocale)}
                   </span>
                 </div>
                 <input
                   type="range"
-                  min={0}
-                  max={settings?.removePriceLimit ? 20000 : 3000}
-                  step={100}
+                  min={priceSliderConfig.min}
+                  max={priceSliderConfig.max}
+                  step={priceSliderConfig.step}
                   value={minPrice}
                   onChange={(e) =>
                     handleFilterChange(setMinPrice)(
@@ -1211,9 +1267,9 @@ function SteamPriceFilter({ initialData = null }) {
                 />
                 <input
                   type="range"
-                  min={0}
-                  max={settings?.removePriceLimit ? 20000 : 3000}
-                  step={100}
+                  min={priceSliderConfig.min}
+                  max={priceSliderConfig.max}
+                  step={priceSliderConfig.step}
                   value={maxPrice}
                   onChange={(e) =>
                     handleFilterChange(setMaxPrice)(
@@ -1558,8 +1614,9 @@ function SteamPriceFilter({ initialData = null }) {
                     setOnlyMac(false);
                     setSelectedGenres({ include: [], exclude: [] });
                     setSelectedTags([]);
-                    setMinPrice(100);
-                    setMaxPrice(settings?.removePriceLimit ? 20000 : 3000);
+                    // Reset price to default min and current max limit
+                    setMinPrice(priceSliderConfig.defaultMin);
+                    setMaxPrice(priceSliderConfig.max);
                     setPriceMode("current");
                     setSortOrder("asc");
                     setSelectedYear("all");
@@ -1723,6 +1780,7 @@ function SteamPriceFilter({ initialData = null }) {
                             onShowVideoModal={handleShowVideoModal}
                             settings={settings}
                             locale={currentLocale}
+                            currentRegion={currentRegion}
                           />
                         );
                       })}
@@ -1764,6 +1822,7 @@ function SteamPriceFilter({ initialData = null }) {
             setSelectedGameForVideo={setSelectedGameForVideo}
             videoModalClosing={videoModalClosing}
             setVideoModalClosing={setVideoModalClosing}
+            currentRegion={currentRegion}
           />
         )}
 
@@ -1794,6 +1853,22 @@ function SteamPriceFilter({ initialData = null }) {
             settings={settings}
             setSettings={setSettings}
             onClose={() => setShowSettingsModal(false)}
+            currentRegion={currentRegion}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            setForceUpdate={setForceUpdate}
+          />
+        )}
+
+        {showLanguageRegionModal && (
+          <LanguageRegionModal
+            theme={theme}
+            currentRegion={currentRegion}
+            setCurrentRegion={setCurrentRegion}
+            setForceUpdate={setForceUpdate}
+            onClose={() => setShowLanguageRegionModal(false)}
+            setMinPrice={setMinPrice}
+            setMaxPrice={setMaxPrice}
           />
         )}
 
@@ -1938,8 +2013,9 @@ function SteamPriceFilter({ initialData = null }) {
                   setOnlyMac(false);
                   setSelectedGenres({ include: [], exclude: [] });
                   setSelectedTags([]);
-                  setMinPrice(100);
-                  setMaxPrice(settings?.removePriceLimit ? 20000 : 3000);
+                  // Reset price to default min and current max limit
+                  setMinPrice(priceSliderConfig.defaultMin);
+                  setMaxPrice(priceSliderConfig.max);
                   setPriceMode("current");
                   setSortOrder("asc");
                   setSelectedYear("all");

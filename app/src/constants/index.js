@@ -13,6 +13,7 @@ export const DEFAULT_SETTINGS = {
   enableScrollAnimation: true,     // Enable scroll-linked card animation on mobile
   hideOwnedTitles: false,          // Hide titles in owned list from search results
   locale: 'en',                    // Preferred locale
+  region: 'USD',                   // Preferred region (USD, JPY, EUR, GBP)
   settingsVersion: 1
 };
 
