@@ -545,10 +545,10 @@ function SteamPriceFilter({ initialData = null }) {
 
         return {
           ...g,
-          priceYenResolved: regular,
-          salePriceYen: onSale ? price : null,
+          regularPrice: regular,
+          salePrice: onSale ? price : null,
           discountPercent: onSale ? cut : null,
-          lowestYenResolved: storeLow,
+          lowestPrice: storeLow,
           genres,
         };
       }),
@@ -613,7 +613,7 @@ function SteamPriceFilter({ initialData = null }) {
         ? checkJapaneseSupport(g.supportedLanguages) ===
           t("language.supported", currentLocale)
         : true;
-      const matchesSale = onlySale ? g.salePriceYen : true;
+      const matchesSale = onlySale ? g.salePrice : true;
       const matchesOverwhelming = onlyOverwhelming
         ? g.reviewScore === "Overwhelmingly Positive"
         : true;
@@ -658,7 +658,7 @@ function SteamPriceFilter({ initialData = null }) {
         ? g.title?.toLowerCase().includes(searchTitle.toLowerCase())
         : true;
       // Current price (sale price if on sale, otherwise normal price)
-      const currentPrice = g.salePriceYen || g.priceYenResolved;
+      const currentPrice = g.salePrice || g.regularPrice;
       const inRange = currentPrice >= minPrice && currentPrice <= maxPrice;
 
       // Owned list filter: hide games in owned list if setting is enabled
@@ -733,15 +733,15 @@ function SteamPriceFilter({ initialData = null }) {
     (g) => {
       if (priceMode === "current") {
         // Current price (sale price if available, otherwise normal price)
-        return g.salePriceYen != null && g.salePriceYen < g.priceYenResolved
-          ? g.salePriceYen
-          : g.priceYenResolved;
+        return g.salePrice != null && g.salePrice < g.regularPrice
+          ? g.salePrice
+          : g.regularPrice;
       } else if (priceMode === "normal") {
         // Normal price
-        return g.priceYenResolved;
+        return g.regularPrice;
       } else if (priceMode === "lowest") {
         // Lowest price
-        return g.lowestYenResolved;
+        return g.lowestPrice;
       } else if (priceMode === "discount") {
         // Discount rate
         return g.discountPercent || 0;
@@ -792,13 +792,13 @@ function SteamPriceFilter({ initialData = null }) {
       // If primary sort values are equal, secondary sort by current price
       if (primaryDiff === 0) {
         const currentPriceA =
-          a.salePriceYen != null && a.salePriceYen < a.priceYenResolved
-            ? a.salePriceYen
-            : a.priceYenResolved;
+          a.salePrice != null && a.salePrice < a.regularPrice
+            ? a.salePrice
+            : a.regularPrice;
         const currentPriceB =
-          b.salePriceYen != null && b.salePriceYen < b.priceYenResolved
-            ? b.salePriceYen
-            : b.priceYenResolved;
+          b.salePrice != null && b.salePrice < b.regularPrice
+            ? b.salePrice
+            : b.regularPrice;
         return (currentPriceA - currentPriceB) * (sortOrder === "asc" ? 1 : -1);
       }
 

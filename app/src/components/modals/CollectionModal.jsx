@@ -256,7 +256,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
             const gameData = gamesMap[game.gameId];
             if (!gameData) return false;
 
-            if (filterOnlySale && !(gameData.salePriceYen != null && gameData.salePriceYen < gameData.priceYenResolved)) return false;
+            if (filterOnlySale && !(gameData.salePrice != null && gameData.salePrice < gameData.regularPrice)) return false;
             if (filterJapanese && checkJapaneseSupport(gameData.supportedLanguages) !== t('language.supported', currentLocale)) return false;
             if (filterOverwhelming && gameData.reviewScore !== 'Overwhelmingly Positive') return false;
             if (searchQuery && !gameData.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
@@ -354,7 +354,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
               const hasSale = collections.some(collection => {
                 if (collection.deleted) return false;
                 const game = gamesMap[collection.gameId];
-                return game?.salePriceYen != null && game.salePriceYen < game.priceYenResolved;
+                return game?.salePrice != null && game.salePrice < game.regularPrice;
               });
               status[folder.id] = hasSale;
             }
@@ -377,8 +377,8 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
               const enrichedCollections = collections.map(collection => ({
                 ...collection,
                 gameTitle: gamesMap[collection.gameId]?.title || '',
-                normalPrice: gamesMap[collection.gameId]?.priceYenResolved || 0,
-                salePrice: gamesMap[collection.gameId]?.salePriceYen
+                normalPrice: gamesMap[collection.gameId]?.regularPrice || 0,
+                salePrice: gamesMap[collection.gameId]?.salePrice
               }));
               enrichedCollections.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
               setCollectionGames(enrichedCollections);
@@ -446,14 +446,14 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
             const gamesMap = {};
             games.forEach(g => gamesMap[g.id] = g);
             const game = gamesMap[movedGame.gameId];
-            const hasSale = game?.salePriceYen != null && game.salePriceYen < game.priceYenResolved;
+            const hasSale = game?.salePrice != null && game.salePrice < game.regularPrice;
 
             // Recalculate sale status of source folder
             const oldFolderCollections = await dbHelper.getCollectionsByFolder(selectedFolderId);
             const oldFolderHasSale = oldFolderCollections.some(collection => {
               if (collection.deleted) return false;
               const g = gamesMap[collection.gameId];
-              return g?.salePriceYen != null && g.salePriceYen < g.priceYenResolved;
+              return g?.salePrice != null && g.salePrice < g.regularPrice;
             });
 
             // Update sale status of destination folder
@@ -461,7 +461,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
             const newFolderHasSale = newFolderCollections.some(collection => {
               if (collection.deleted) return false;
               const g = gamesMap[collection.gameId];
-              return g?.salePriceYen != null && g.salePriceYen < g.priceYenResolved;
+              return g?.salePrice != null && g.salePrice < g.regularPrice;
             });
 
             setFolderSaleStatus(prev => ({
@@ -509,7 +509,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
           const folderCollections = await dbHelper.getCollectionsByFolder(selectedFolderId);
           const folderHasSale = folderCollections.some(collection => {
             const g = gamesMap[collection.gameId];
-            return g?.salePriceYen != null && g.salePriceYen < g.priceYenResolved;
+            return g?.salePrice != null && g.salePrice < g.regularPrice;
           });
 
           setFolderSaleStatus(prev => ({
@@ -917,7 +917,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                     const gamesMap = {};
                                     games.forEach(g => gamesMap[g.id] = g);
                                     const restoredGame = gamesMap[game.gameId];
-                                    const hasSale = restoredGame?.salePriceYen != null && restoredGame.salePriceYen < restoredGame.priceYenResolved;
+                                    const hasSale = restoredGame?.salePrice != null && restoredGame.salePrice < restoredGame.regularPrice;
                                     if (hasSale) {
                                       const targetFolderId = game.folderId;
                                       setFolderSaleStatus(prev => ({
@@ -981,7 +981,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                   const remainingCollections = collectionGames.filter(g => g.id !== game.id);
                                   const folderHasSale = remainingCollections.some(collection => {
                                     const g = gamesMap[collection.gameId];
-                                    return g?.salePriceYen != null && g.salePriceYen < g.priceYenResolved;
+                                    return g?.salePrice != null && g.salePrice < g.regularPrice;
                                   });
                                   setFolderSaleStatus(prev => ({
                                     ...prev,
@@ -1212,20 +1212,20 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                   )}
                   <div>
                     <div className="font-semibold">{t('price.regular', currentLocale)}:</div>
-                    <div>{formatPrice(hoveredGame.priceYenResolved, currentRegion, currentLocale)}</div>
+                    <div>{formatPrice(hoveredGame.regularPrice, currentRegion, currentLocale)}</div>
                   </div>
-                  {hoveredGame.salePriceYen && (
+                  {hoveredGame.salePrice != null && (
                     <div>
                       <div className="font-semibold">{t('price.sale', currentLocale)}:</div>
                       <div className={theme.saleText}>
-                        {formatPrice(hoveredGame.salePriceYen, currentRegion, currentLocale)}
+                        {formatPrice(hoveredGame.salePrice, currentRegion, currentLocale)}
                         {hoveredGame.discountPercent && ` (-${hoveredGame.discountPercent}%)`}
                       </div>
                     </div>
                   )}
                   <div>
                     <div className="font-semibold">{t('price.lowest', currentLocale)}:</div>
-                    <div>{hoveredGame.lowestYenResolved ? formatPrice(hoveredGame.lowestYenResolved, currentRegion, currentLocale) : '-'}</div>
+                    <div>{hoveredGame.lowestPrice ? formatPrice(hoveredGame.lowestPrice, currentRegion, currentLocale) : '-'}</div>
                   </div>
                   {hoveredGame.reviewScore && (
                     <div>

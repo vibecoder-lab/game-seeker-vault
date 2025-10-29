@@ -362,14 +362,14 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                           <div className="mt-1"></div>
                         </div>
                       )}
-                      <div>{t('price.regular', currentLocale)}: {formatPrice(g.priceYenResolved, currentRegion, currentLocale)}</div>
-                      {g.salePriceYen && (
+                      <div>{t('price.regular', currentLocale)}: {formatPrice(g.regularPrice, currentRegion, currentLocale)}</div>
+                      {g.salePrice != null && (
                         <div className={theme.saleText}>
-                          {t('price.sale', currentLocale)}: {formatPrice(g.salePriceYen, currentRegion, currentLocale)}
+                          {t('price.sale', currentLocale)}: {formatPrice(g.salePrice, currentRegion, currentLocale)}
                           {g.discountPercent && ` (-${g.discountPercent}%)`}
                         </div>
                       )}
-                      <div>{t('price.lowest', currentLocale)}: {g.lowestYenResolved ? formatPrice(g.lowestYenResolved, currentRegion, currentLocale) : t('price.unknown', currentLocale)}</div>
+                      <div>{t('price.lowest', currentLocale)}: {g.lowestPrice ? formatPrice(g.lowestPrice, currentRegion, currentLocale) : t('price.unknown', currentLocale)}</div>
                       {g.reviewScore && (
                         <>
                           <div className="mt-1"></div>
@@ -435,12 +435,12 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                 <div className="mt-auto space-y-0.5">
                   <div className="flex items-end justify-between text-sm gap-2">
                     <div className="flex-1">
-                      {g.salePriceYen ? (
+                      {g.salePrice != null ? (
                         <>
-                          <div className="text-[11px] line-through text-gray-400 leading-tight">{formatPrice(g.priceYenResolved, currentRegion, currentLocale)}</div>
-                          <div className={`font-medium flex items-center gap-2 leading-tight ${g.salePriceYen === 0 ? 'text-green-500' : theme.saleText}`}>
-                            {formatPrice(g.salePriceYen, currentRegion, currentLocale)}
-                            {g.discountPercent && (
+                          <div className="text-[11px] line-through text-gray-400 leading-tight">{formatPrice(g.regularPrice, currentRegion, currentLocale)}</div>
+                          <div className={`font-medium flex items-center gap-2 leading-tight ${g.salePrice === 0 ? 'text-green-500' : theme.saleText}`}>
+                            {formatPrice(g.salePrice, currentRegion, currentLocale)}
+                            {g.discountPercent && g.salePrice > 0 && (
                               <span className={`text-[11px] ${theme.saleBg} text-white px-1.5 py-0.5 rounded`}>
                                 -{g.discountPercent}%
                               </span>
@@ -448,15 +448,15 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                           </div>
                         </>
                       ) : (
-                        <div className={`font-medium leading-tight ${g.priceYenResolved === 0 ? 'text-green-500' : theme.text}`}>
-                          {formatPrice(g.priceYenResolved, currentRegion, currentLocale)}
+                        <div className={`font-medium leading-tight ${g.regularPrice === 0 ? 'text-green-500' : theme.text}`}>
+                          {formatPrice(g.regularPrice, currentRegion, currentLocale)}
                         </div>
                       )}
                     </div>
                   </div>
                   <div className="flex items-center justify-between gap-2">
                     <div className={`text-[11px] ${theme.lowestText}`}>
-                      {g.lowestYenResolved && g.lowestYenResolved !== '-' ? `${formatPrice(g.lowestYenResolved, currentRegion, currentLocale)}(${t('price.lowest', currentLocale)})` : t('price.unknown', currentLocale)}
+                      {g.lowestPrice && g.lowestPrice !== '-' ? `${formatPrice(g.lowestPrice, currentRegion, currentLocale)}(${t('price.lowest', currentLocale)})` : t('price.unknown', currentLocale)}
                     </div>
                     {checkJapaneseSupport(g.supportedLanguages) === t('language.supported', currentLocale) && (
                       <div className={`hidden md:block text-[11px] px-2 py-0.5 rounded-full whitespace-nowrap ${theme.jpBg} ${theme.jpText}`}>
