@@ -658,7 +658,7 @@ function SteamPriceFilter({ initialData = null }) {
         ? g.title?.toLowerCase().includes(searchTitle.toLowerCase())
         : true;
       // Current price (sale price if on sale, otherwise normal price)
-      const currentPrice = g.salePrice || g.regularPrice;
+      const currentPrice = g.salePrice != null ? g.salePrice : g.regularPrice;
       const inRange = currentPrice >= minPrice && currentPrice <= maxPrice;
 
       // Owned list filter: hide games in owned list if setting is enabled
