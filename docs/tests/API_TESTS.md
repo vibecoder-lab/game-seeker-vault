@@ -1,475 +1,510 @@
-# API テストケース
+# APIテストケース
 
-## 概要
+## 📋 概要
 
-Cloudflare Pages Functions APIエンドポイントのテストケース集です。
+このドキュメントは、Cloudflare Pages Functions APIの自動テストケースを定義します。
 
-**テスト環境**:
-- ローカル: `npm run dev` (Vite + Wrangler)
-- 本番: Cloudflare Pages デプロイ後
+**対象**: `app/functions/api/` 配下のすべてのPages Functions
 
----
+**テストフレームワーク**: Vitest + Miniflare
 
-## エンドポイント一覧
-
-| エンドポイント | メソッド | 用途 |
-|---------------|---------|------|
-| `/api/games-data` | GET | ゲームデータ取得 |
-| `/api/detect-locale` | GET | ロケール検出 |
+**優先テスト対象**:
+1. /api/games-data エンドポイント
+2. /api/detect-locale エンドポイント
+3. /api/submit-feedback エンドポイント
 
 ---
 
-## `/api/games-data` テスト
+## 🎯 テストカテゴリ
 
-### TC-A001: 正常レスポンス
+### 1. /api/games-data テスト
+### 2. /api/detect-locale テスト
+### 3. /api/submit-feedback テスト
 
-**目的**: ゲームデータを正常に取得できるか
+---
 
-**手順**:
-```bash
-curl http://localhost:5173/api/games-data | jq '.' | head -50
-```
+## 🎮 1. /api/games-data テスト
 
-**期待結果**:
-```json
-{
-  "success": true,
-  "data": {
-    "meta": {
-      "last_updated": "2025-01-25T10:30:00Z",
-      "data_version": "1.0.0",
-      "source": {
-        "steam": true,
-        "itad": true
-      },
-      "build_id": "...",
-      "record_count": 10762
-    },
-    "games": [
+### API-GAMES-001: 正常レスポンス
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- KVに games-data が保存されている
+
+**テスト内容**
+- GET /api/games-data を呼び出し
+- ゲームデータを取得
+
+**期待結果（正常系）**
+- ステータスコード: 200
+- レスポンス形式: `{ success: true, data: { meta: {}, games: [] } }`
+- games配列に10,000件程度のデータ
+
+**異常系**
+- KVが空の場合: 500エラー
+
+**実装例**
+
+```javascript
+// app/functions/__tests__/games-data.test.js
+import { describe, it, expect, beforeEach } from 'vitest';
+import { env, createExecutionContext, waitOnExecutionContext } from 'cloudflare:test';
+import worker from '../api/games-data';
+
+describe('API-GAMES-001: /api/games-data 正常レスポンス', () => {
+  beforeEach(() => {
+    // KVモックデータを設定
+    const mockGamesData = [
       {
-        "id": "730",
-        "title": "Counter-Strike 2",
-        "deal": {
-          "JPY": {...},
-          "USD": {...}
+        id: '730',
+        title: 'Counter-Strike 2',
+        deal: {
+          JPY: { price: 0 },
+          USD: { price: 0 }
         },
-        ...
+        genres: ['Action', 'FPS'],
+        reviewScore: 'Very Positive'
       }
-    ]
-  }
-}
-```
+    ];
+    
+    env.GSV_GAMES.put('games-data', JSON.stringify(mockGamesData));
+  });
 
-**確認ポイント**:
-- ✅ `success: true`
-- ✅ `data.meta` が存在
-- ✅ `data.games` が配列
-- ✅ ゲーム数が 10,000件程度
+  it('正常系: ゲームデータが取得できる', async () => {
+    // Arrange
+    const request = new Request('http://localhost/api/games-data');
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    await waitOnExecutionContext(ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.data).toBeDefined();
+    expect(data.data.games).toBeInstanceOf(Array);
+    expect(data.data.games.length).toBeGreaterThan(0);
+    expect(data.data.games[0].id).toBe('730');
+  });
+
+  it('異常系: KVが空の場合', async () => {
+    // Arrange
+    await env.GSV_GAMES.delete('games-data');
+    const request = new Request('http://localhost/api/games-data');
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    await waitOnExecutionContext(ctx);
+
+    // Assert
+    expect(response.status).toBe(500);
+  });
+});
+```
 
 ---
 
-### TC-A002: レスポンスヘッダー
+### API-GAMES-002: KV読み取りエラー
 
-**目的**: 適切なHTTPヘッダーが返されるか
+**優先度**: High
+**ステータス**: ⬜ 未実装
 
-**手順**:
+**前提条件**
+- KVへのアクセスが失敗する状況
+
+**テスト内容**
+- KV読み取りエラーを模擬
+- エラーハンドリングを確認
+
+**期待結果（正常系）**
+- ステータスコード: 500
+- エラーメッセージが返され��
+
+**実装例**
+
+```javascript
+describe('API-GAMES-002: KV読み取りエラー', () => {
+  it('異常系: KV読み取りエラー時', async () => {
+    // Arrange
+    env.GSV_GAMES.get = () => Promise.reject(new Error('KV Error'));
+    const request = new Request('http://localhost/api/games-data');
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    await waitOnExecutionContext(ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(500);
+    expect(data.success).toBe(false);
+    expect(data.error).toBeDefined();
+  });
+});
+```
+
+---
+
+### API-GAMES-003: データ形式検証
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- KVにゲームデータが保存されている
+
+**テスト内容**
+- レスポンスデータの形式を検証
+- 必須フィールドの存在確認
+
+**期待結果（正常系）**
+- 各ゲームに必須フィールドが含まれる
+  - id, title, deal, genres, reviewScore
+
+**実装例**
+
+```javascript
+describe('API-GAMES-003: データ形式検証', () => {
+  it('正常系: 必須フィールドが含まれる', async () => {
+    // Arrange
+    const mockGamesData = [
+      {
+        id: '730',
+        title: 'Counter-Strike 2',
+        deal: {
+          JPY: { price: 0, storeLow: 0 },
+          USD: { price: 0, storeLow: 0 }
+        },
+        genres: ['Action'],
+        reviewScore: 'Very Positive',
+        platforms: { windows: true, mac: true }
+      }
+    ];
+    
+    await env.GSV_GAMES.put('games-data', JSON.stringify(mockGamesData));
+    const request = new Request('http://localhost/api/games-data');
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    const data = await response.json();
+    const game = data.data.games[0];
+
+    // Assert
+    expect(game.id).toBeDefined();
+    expect(game.title).toBeDefined();
+    expect(game.deal).toBeDefined();
+    expect(game.deal.JPY).toBeDefined();
+    expect(game.deal.USD).toBeDefined();
+    expect(game.genres).toBeInstanceOf(Array);
+    expect(game.reviewScore).toBeDefined();
+  });
+});
+```
+
+---
+
+## 🌐 2. /api/detect-locale テスト
+
+### API-LOCALE-001: ロケール検出（日本）
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- Cloudflare Geo情報がJPを返す
+
+**テスト内容**
+- GET /api/detect-locale を呼び出し
+- 日本のIPからのアクセスを模擬
+
+**期待結果（正常系）**
+- ステータスコード: 200
+- suggestedLang: 'ja'
+
+**実装例**
+
+```javascript
+// app/functions/__tests__/detect-locale.test.js
+import { describe, it, expect } from 'vitest';
+import { env, createExecutionContext, waitOnExecutionContext } from 'cloudflare:test';
+import worker from '../api/detect-locale';
+
+describe('API-LOCALE-001: ロケール検出（日本）', () => {
+  it('正常系: 日本からのアクセス', async () => {
+    // Arrange
+    const request = new Request('http://localhost/api/detect-locale', {
+      headers: {
+        'CF-IPCountry': 'JP'
+      }
+    });
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    await waitOnExecutionContext(ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(200);
+    expect(data.suggestedLang).toBe('ja');
+    expect(data.country).toBe('JP');
+  });
+});
+```
+
+---
+
+### API-LOCALE-002: ロケール検出（フォールバック）
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- Cloudflare Geo情報が取得できない
+
+**テスト内容**
+- CF-IPCountryヘッダーなし
+- デフォルト言語にフォールバック
+
+**期待結果（正常系）**
+- ステータスコード: 200
+- suggestedLang: 'en'
+
+**実装例**
+
+```javascript
+describe('API-LOCALE-002: ロケール検出（フォールバック）', () => {
+  it('正常系: Geoヘッダーなしの場合', async () => {
+    // Arrange
+    const request = new Request('http://localhost/api/detect-locale');
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(200);
+    expect(data.suggestedLang).toBe('en');
+  });
+});
+```
+
+---
+
+## 📧 3. /api/submit-feedback テスト
+
+### API-FEEDBACK-001: フィードバック送信（正常系）
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- FEEDBACK_KVが設定されている
+
+**テスト内容**
+- POST /api/submit-feedback にデータを送信
+- フィードバックが保存される
+
+**期待結果（正常系）**
+- ステータスコード: 200
+- success: true
+- idが返される
+
+**実装例**
+
+```javascript
+// app/functions/__tests__/submit-feedback.test.js
+import { describe, it, expect } from 'vitest';
+import { env, createExecutionContext, waitOnExecutionContext } from 'cloudflare:test';
+import worker from '../api/submit-feedback';
+
+describe('API-FEEDBACK-001: フィードバック送信（正常系）', () => {
+  it('正常系: フィードバックが保存される', async () => {
+    // Arrange
+    const feedbackData = {
+      type: 'inquiry',
+      title: 'テストタイトル',
+      content: 'テスト内容',
+      email: 'test@example.com'
+    };
+    
+    const request = new Request('http://localhost/api/submit-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(feedbackData)
+    });
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    await waitOnExecutionContext(ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.id).toBeDefined();
+    expect(data.id).toMatch(/^feedback:/);
+  });
+});
+```
+
+---
+
+### API-FEEDBACK-002: バリデーションエラー
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- なし
+
+**テスト内容**
+- 不正なデータでPOST送信
+- バリデーションエラーが返される
+
+**期待結果（正常系）**
+- ステータスコード: 400
+- エラーメッセージが返される
+
+**実装例**
+
+```javascript
+describe('API-FEEDBACK-002: バリデーションエラー', () => {
+  it('異常系: タイトルが空', async () => {
+    // Arrange
+    const feedbackData = {
+      type: 'inquiry',
+      title: '',
+      content: 'テスト内容'
+    };
+    
+    const request = new Request('http://localhost/api/submit-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(feedbackData)
+    });
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(400);
+    expect(data.error).toBeDefined();
+  });
+
+  it('異常系: 内容が2000文字超過', async () => {
+    // Arrange
+    const feedbackData = {
+      type: 'inquiry',
+      title: 'テスト',
+      content: 'あ'.repeat(2001)
+    };
+    
+    const request = new Request('http://localhost/api/submit-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(feedbackData)
+    });
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(400);
+    expect(data.error).toContain('2000');
+  });
+});
+```
+
+---
+
+### API-FEEDBACK-003: 認証エラー
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- 管理者APIエンドポイントへのアクセス
+
+**テスト内容**
+- パスワードなしで管理者APIにアクセス
+- 認証エラーが返される
+
+**期待結果（正常系）**
+- ステータスコード: 401
+- 認証エラーメッセージ
+
+**実装例**
+
+```javascript
+describe('API-FEEDBACK-003: 認証エラー', () => {
+  it('異常系: パスワードなしでアクセス', async () => {
+    // Arrange
+    const request = new Request('http://localhost/api/admin/list-feedback');
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(401);
+    expect(data.error).toContain('認証');
+  });
+});
+```
+
+---
+
+## 📊 テスト実装状況サマリー
+
+### /api/games-data
+- [ ] API-GAMES-001: 正常レスポンス
+- [ ] API-GAMES-002: KV読み取りエラー
+- [ ] API-GAMES-003: データ形式検証
+
+### /api/detect-locale
+- [ ] API-LOCALE-001: ロケール検出（日本）
+- [ ] API-LOCALE-002: ロケール検出（フォールバック）
+
+### /api/submit-feedback
+- [ ] API-FEEDBACK-001: フィードバック送信（正常系）
+- [ ] API-FEEDBACK-002: バリデーションエラー
+- [ ] API-FEEDBACK-003: 認証エラー
+
+---
+
+## 🚀 テスト実行方法
+
 ```bash
-curl -I http://localhost:5173/api/games-data
-```
+cd app
 
-**期待結果**:
-```
-HTTP/1.1 200 OK
-Content-Type: application/json
-Cache-Control: public, max-age=3600
-```
+# すべてのAPIテスト実行
+npm run test:api
 
-**確認ポイント**:
-- ✅ `Content-Type: application/json`
-- ✅ キャッシュヘッダーが適切
+# 特定のテストのみ
+npm run test:api -- games-data.test.js
 
----
-
-### TC-A003: USD価格データ確認
-
-**目的**: USD価格が含まれているか
-
-**手順**:
-```bash
-curl http://localhost:5173/api/games-data | jq '.data.games[0].deal.USD'
-```
-
-**期待結果**:
-```json
-{
-  "price": 17,
-  "regular": 34,
-  "cut": 50,
-  "storeLow": 10
-}
-```
-
-**確認ポイント**:
-- ✅ `deal.USD` が存在
-- ✅ 4つのフィールド（price, regular, cut, storeLow）
-
----
-
-### TC-A004: エラーハンドリング（KV取得失敗）
-
-**目的**: KV取得失敗時にエラーレスポンスが返るか
-
-**手順**:
-```bash
-# KVが利用できない環境で実行
-# または、意図的にKV Bindingを無効化
-```
-
-**期待結果**:
-```json
-{
-  "success": false,
-  "data": null,
-  "error": "Failed to fetch games data from KV"
-}
-```
-
-**確認ポイント**:
-- ✅ `success: false`
-- ✅ `error` メッセージが含まれる
-- ✅ HTTPステータス: 500
-
----
-
-### TC-A005: レスポンスサイズ
-
-**目的**: レスポンスサイズが適切か
-
-**手順**:
-```bash
-curl http://localhost:5173/api/games-data -w "%{size_download}\n" -o /dev/null -s
-```
-
-**期待結果**:
-- ✅ 3-5MB程度（gzip圧縮前）
-- ✅ 1-2MB程度（gzip圧縮後）
-
-**確認ポイント**:
-- サイズが大きすぎない（Cloudflare Pages Functions の制限内）
-
----
-
-## `/api/detect-locale` テスト
-
-### TC-A006: 正常レスポンス
-
-**目的**: ロケール情報を正常に取得できるか
-
-**手順**:
-```bash
-curl http://localhost:5173/api/detect-locale | jq '.'
-```
-
-**期待結果**:
-```json
-{
-  "browserLang": "ja",
-  "suggestedLang": "ja",
-  "country": "JP"
-}
-```
-
-**確認ポイント**:
-- ✅ `browserLang` が存在
-- ✅ `suggestedLang` が存在
-- ✅ `country` が存在（Cloudflare Geo利用時）
-
----
-
-### TC-A007: Accept-Languageヘッダー
-
-**目的**: ブラウザ言語を正しく検出できるか
-
-**手順**:
-```bash
-# 日本語
-curl -H "Accept-Language: ja-JP,ja;q=0.9" http://localhost:5173/api/detect-locale | jq '.browserLang'
-
-# 英語
-curl -H "Accept-Language: en-US,en;q=0.9" http://localhost:5173/api/detect-locale | jq '.browserLang'
-```
-
-**期待結果**:
-- ✅ 日本語リクエスト: `"ja"`
-- ✅ 英語リクエスト: `"en"`
-
----
-
-### TC-A008: Cloudflare Geo情報
-
-**目的**: Cloudflare Geoから国情報を取得できるか
-
-**手順**:
-```bash
-# 本番環境でテスト（ローカルでは取得できない）
-curl https://your-site.pages.dev/api/detect-locale | jq '.country'
-```
-
-**期待結果**:
-- ✅ 日本からアクセス: `"JP"`
-- ✅ 米国からアクセス: `"US"`
-
-**ローカル環境**:
-- `country` は `undefined` または存在しない
-
----
-
-### TC-A009: レスポンスヘッダー
-
-**目的**: 適切なHTTPヘッダーが返されるか
-
-**手順**:
-```bash
-curl -I http://localhost:5173/api/detect-locale
-```
-
-**期待結果**:
-```
-HTTP/1.1 200 OK
-Content-Type: application/json
-Cache-Control: no-cache
-```
-
-**確認ポイント**:
-- ✅ `Content-Type: application/json`
-- ✅ キャッシュなし（ユーザーごとに異なる）
-
----
-
-## パフォーマンステスト
-
-### TC-A010: レスポンスタイム（games-data）
-
-**目的**: レスポンスが十分高速か
-
-**手順**:
-```bash
-curl -w "@curl-format.txt" -o /dev/null -s http://localhost:5173/api/games-data
-```
-
-**curl-format.txt**:
-```
-time_namelookup:  %{time_namelookup}\n
-time_connect:  %{time_connect}\n
-time_starttransfer:  %{time_starttransfer}\n
-time_total:  %{time_total}\n
-```
-
-**期待結果**:
-- ✅ ローカル: < 100ms
-- ✅ 本番（初回）: < 500ms
-- ✅ 本番（キャッシュ）: < 100ms
-
----
-
-### TC-A011: 同時リクエスト
-
-**目的**: 同時アクセスに耐えられるか
-
-**手順**:
-```bash
-# 10並列リクエスト
-seq 1 10 | xargs -P 10 -I {} curl -s http://localhost:5173/api/games-data -o /dev/null -w "%{http_code}\n"
-```
-
-**期待結果**:
-```
-200
-200
-200
-...
-```
-
-**確認ポイント**:
-- ✅ 全て 200 OK
-- ✅ エラーなし
-
----
-
-## セキュリティテスト
-
-### TC-A012: CORS設定
-
-**目的**: CORSヘッダーが適切か
-
-**手順**:
-```bash
-curl -H "Origin: https://example.com" \
-     -H "Access-Control-Request-Method: GET" \
-     -H "Access-Control-Request-Headers: X-Requested-With" \
-     -I http://localhost:5173/api/games-data
-```
-
-**期待結果**:
-```
-Access-Control-Allow-Origin: *
-```
-
-**確認ポイント**:
-- ✅ CORS許可されている（公開API）
-
----
-
-### TC-A013: HTTPメソッド制限
-
-**目的**: GET以外のメソッドが拒否されるか
-
-**手順**:
-```bash
-# POST
-curl -X POST http://localhost:5173/api/games-data
-
-# PUT
-curl -X PUT http://localhost:5173/api/games-data
-```
-
-**期待結果**:
-- ✅ 405 Method Not Allowed
-- または適切なエラーレスポンス
-
----
-
-## エッジケーステスト
-
-### TC-A014: データなし（空配列）
-
-**目的**: ゲームデータが空の場合の挙動
-
-**手順**:
-```bash
-# KVに空配列を保存した状態でテスト
-```
-
-**期待結果**:
-```json
-{
-  "success": true,
-  "data": {
-    "meta": {...},
-    "games": []
-  }
-}
-```
-
-**確認ポイント**:
-- ✅ エラーにならない
-- ✅ 空配列が返る
-
----
-
-### TC-A015: 大量データ
-
-**目的**: 100,000件のゲームでも動作するか
-
-**手順**:
-```bash
-# テストデータを大量に生成（実際には不要）
-```
-
-**期待結果**:
-- ✅ レスポンスが返る
-- ✅ タイムアウトしない（Cloudflare Pages Functions 制限内）
-
----
-
-## テスト実行チェックリスト
-
-### ローカル開発時
-
-- [ ] TC-A001: 正常レスポンス
-- [ ] TC-A003: USD価格データ確認
-- [ ] TC-A006: ロケール検出
-- [ ] TC-A007: Accept-Languageヘッダー
-
-### デプロイ前
-
-- [ ] TC-A001: 正常レスポンス
-- [ ] TC-A002: レスポンスヘッダー
-- [ ] TC-A003: USD価格データ確認
-- [ ] TC-A006: ロケール検出
-- [ ] TC-A010: レスポンスタイム
-- [ ] TC-A012: CORS設定
-
-### 本番デプロイ後
-
-- [ ] TC-A001: 正常レスポンス（本番環境）
-- [ ] TC-A003: USD価格データ確認（本番環境）
-- [ ] TC-A008: Cloudflare Geo情報
-- [ ] TC-A010: レスポンスタイム（本番環境）
-
----
-
-## 自動テストスクリプト
-
-### 基本テストスクリプト
-
-**`docs/tests/test-api.sh`**:
-
-```bash
-#!/bin/bash
-
-BASE_URL="${1:-http://localhost:5173}"
-
-echo "Testing API endpoints at $BASE_URL"
-echo "===================================="
-
-# TC-A001: games-data正常レスポンス
-echo -n "TC-A001: /api/games-data ... "
-RESPONSE=$(curl -s "$BASE_URL/api/games-data")
-SUCCESS=$(echo $RESPONSE | jq -r '.success')
-if [ "$SUCCESS" == "true" ]; then
-  echo "✅ PASS"
-else
-  echo "❌ FAIL"
-fi
-
-# TC-A003: USD価格確認
-echo -n "TC-A003: USD price data ... "
-USD=$(echo $RESPONSE | jq -r '.data.games[0].deal.USD')
-if [ "$USD" != "null" ]; then
-  echo "✅ PASS"
-else
-  echo "❌ FAIL"
-fi
-
-# TC-A006: detect-locale
-echo -n "TC-A006: /api/detect-locale ... "
-LOCALE_RESPONSE=$(curl -s "$BASE_URL/api/detect-locale")
-BROWSER_LANG=$(echo $LOCALE_RESPONSE | jq -r '.browserLang')
-if [ "$BROWSER_LANG" != "null" ] && [ "$BROWSER_LANG" != "" ]; then
-  echo "✅ PASS"
-else
-  echo "❌ FAIL"
-fi
-
-echo "===================================="
-echo "Tests completed"
-```
-
-**使用方法**:
-```bash
-chmod +x docs/tests/test-api.sh
-
-# ローカルテスト
-./docs/tests/test-api.sh
-
-# 本番テスト
-./docs/tests/test-api.sh https://your-site.pages.dev
+# 詳細出力
+npm run test:api -- -v
 ```
 
 ---
 
-## 関連ドキュメント
+## 📚 参考資料
 
-- [../ARCHITECTURE.md](../ARCHITECTURE.md) - システム全体構成
-- [../DATA_STRUCTURE.md](../DATA_STRUCTURE.md) - データ構造仕様
+- [Vitest Documentation](https://vitest.dev/)
+- [Miniflare Documentation](https://miniflare.dev/)
+- [Cloudflare Workers Testing](https://developers.cloudflare.com/workers/testing/)

@@ -1,520 +1,1030 @@
-# フロントエンド テストケース
+# フロントエンド自動テストケース
 
-## 概要
+## 📋 概要
 
-Game Seeker Vaultのフロントエンド機能の手動テストケース集です。
+このドキュメントは、Game Seeker Vaultのフロントエンド（React UI）の自動テストケースを定義します。
 
-**テスト環境**:
-- ブラウザ: Chrome/Safari/Firefox 最新版
-- デバイス: デスクトップ、タブレット、スマートフォン
+**対象**: `app/src/` 配下のすべてのコンポーネント、ユーティリティ、Hooks
 
----
+**テストフレームワーク**: Vitest + React Testing Library
 
-## 基本機能テスト
-
-### TC-F001: ページ読み込み
-
-**目的**: アプリケーションが正常に起動するか
-
-**手順**:
-1. ブラウザで `http://localhost:5173` にアクセス
-2. ページが完全に読み込まれるまで待機
-
-**期待結果**:
-- ✅ ヘッダーが表示される
-- ✅ ゲーム一覧が表示される（10,000件程度）
-- ✅ エラーメッセージが表示されない
-- ✅ Console エラーがない
-
-**失敗時の確認**:
-- Network タブで `/api/games-data` のレスポンス確認
-- Console でエラーログ確認
+**優先テスト対象**:
+1. コレクション機能（フォルダ管理、ゲーム追加/削除）
+2. フィルタ・検索機能
 
 ---
 
-### TC-F002: ゲームデータ取得
+## 🎯 テストカテゴリ
 
-**目的**: APIからゲームデータを正常に取得できるか
+### 1. コレクション機能テスト
+### 2. フィルタ・検索機能テスト
+### 3. IndexedDB操作テスト
+### 4. i18n（多言語対応）テスト
+### 5. ユーティリティ関数テスト
 
-**手順**:
-1. DevTools → Network タブを開く
-2. ページリロード
-3. `/api/games-data` リクエストを確認
+---
 
-**期待結果**:
-- ✅ ステータスコード: 200
-- ✅ レスポンスに `meta` と `games` が含まれる
-- ✅ `games` 配列に10,000件程度のデータ
-- ✅ 各ゲームに `deal.JPY` と `deal.USD` が含まれる
+## 📦 1. コレクション機能テスト
 
-**サンプル確認コマンド（Console）**:
+### FE-COL-001: フォルダ一覧の表示
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- IndexedDBに3つのフォルダが存在する
+  - 気になるリスト (id: 1)
+  - 購入予定リスト (id: 2)
+  - セール待ちリスト (id: 3)
+
+**テスト手順**
+1. CollectionModalを開く
+2. フォルダ一覧を表示
+
+**期待結果（正常系）**
+- 3つのフォルダが表示される
+- フォルダ名が正しく表示される
+- sortOrder順に並んでいる
+
+**異常系**
+- IndexedDBが空の場合、デフォルトフォルダが作成される
+- IndexedDB接続エラー時、エラーメッセージが表示される
+
+**実装例**
 ```javascript
-fetch('/api/games-data')
-  .then(r => r.json())
-  .then(d => {
-    console.log('Game count:', d.data.games.length);
-    console.log('First game:', d.data.games[0]);
-    console.log('Has USD:', d.data.games[0].deal.USD ? 'YES' : 'NO');
+// app/src/components/modals/__tests__/CollectionModal.test.jsx
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import { CollectionModal } from '../CollectionModal';
+import * as dbHelper from '../../../db/index';
+
+describe('FE-COL-001: フォルダ一覧の表示', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
+
+  it('正常系: フォルダ一覧が正しく表示される', async () => {
+    // Arrange
+    const mockFolders = [
+      { id: 1, name: '気になるリスト', sortOrder: 0 },
+      { id: 2, name: '購入予定リスト', sortOrder: 1 },
+      { id: 3, name: 'セール待ちリスト', sortOrder: 2 },
+    ];
+    vi.spyOn(dbHelper.dbHelper, 'getFolders').mockResolvedValue(mockFolders);
+    vi.spyOn(dbHelper.dbHelper, 'getCollectionItems').mockResolvedValue([]);
+
+    // Act
+    render(
+      <CollectionModal
+        isOpen={true}
+        onClose={() => {}}
+        theme={{}}
+        locale="ja"
+      />
+    );
+
+    // Assert
+    await waitFor(() => {
+      expect(screen.getByText('気になるリスト')).toBeInTheDocument();
+      expect(screen.getByText('購入予定リスト')).toBeInTheDocument();
+      expect(screen.getByText('セール待ちリスト')).toBeInTheDocument();
+    });
+  });
+
+  it('異常系: IndexedDBが空の場合、デフォルトフォルダが作成される', async () => {
+    // Arrange
+    vi.spyOn(dbHelper.dbHelper, 'getFolders').mockResolvedValue([]);
+    const mockAddFolder = vi.spyOn(dbHelper.dbHelper, 'addFolder').mockResolvedValue(1);
+    vi.spyOn(dbHelper.dbHelper, 'getCollectionItems').mockResolvedValue([]);
+
+    // Act
+    render(
+      <CollectionModal
+        isOpen={true}
+        onClose={() => {}}
+        theme={{}}
+        locale="ja"
+      />
+    );
+
+    // Assert
+    await waitFor(() => {
+      expect(mockAddFolder).toHaveBeenCalled();
+    });
+  });
+});
 ```
 
 ---
 
-## 検索・フィルタ機能テスト
+### FE-COL-002: フォルダの追加
 
-### TC-F003: タイトル検索
+**優先度**: High
+**ステータス**: ⬜ 未実装
 
-**目的**: ゲームタイトルで検索できるか
+**前提条件**
+- CollectionModalが開いている
 
-**手順**:
-1. 検索ボックスに「Portal」と入力
-2. 結果を確認
+**テスト手順**
+1. 「新規フォルダ」ボタンをクリック
+2. フォルダ名入力フィールドに「テストフォルダ」を入力
+3. 「追加」ボタンをクリック
 
-**期待結果**:
-- ✅ 「Portal」を含むゲームのみ表示
-- ✅ 「Portal 2」「Portal」が含まれる
-- ✅ 件数が表示される
+**期待結果（正常系）**
+- 新しいフォルダがリストに追加される
+- フォルダ名が「テストフォルダ」として表示される
+- dbHelper.addFolder() が呼ばれる
 
-**失敗パターン**:
-- 何も表示されない → 検索ロジック確認
-- 全ゲーム表示 → フィルタリング未動作
+**異常系**
+- フォルダ名が空の場合、エラーメッセージが表示される
+- フォルダ名が100文字を超える場合、エラーメッセージが表示される
+- 同名フォルダが存在する場合、エラーメッセージが表示される
 
----
-
-### TC-F004: 価格フィルタ
-
-**目的**: 価格範囲でフィルタリングできるか
-
-**手順**:
-1. 最低価格: 500円
-2. 最高価格: 1000円
-3. 結果を確認
-
-**期待結果**:
-- ✅ 500円〜1000円のゲームのみ表示
-- ✅ 無料ゲーム（0円）は表示されない
-- ✅ 1001円以上のゲームは表示されない
-
----
-
-### TC-F005: ジャンルフィルタ
-
-**目的**: ジャンルでフィルタリングできるか
-
-**手順**:
-1. 「Action」をクリック
-2. 結果を確認
-
-**期待結果**:
-- ✅ Actionジャンルのゲームのみ表示
-- ✅ 他ジャンルは表示されない
-- ✅ ボタンがアクティブ状態になる
-
----
-
-### TC-F006: 除外フィルタ
-
-**目的**: Shift + クリックで除外できるか
-
-**手順**:
-1. Shift キーを押しながら「Sports」をクリック
-2. 結果を確認
-
-**期待結果**:
-- ✅ Sportsジャンルが除外される
-- ✅ ボタンが赤い ✖︎ マークになる
-- ✅ Sports以外のゲームが表示される
-
----
-
-## コレクション機能テスト
-
-### TC-F007: コレクションモーダル表示
-
-**目的**: コレクションモーダルが開くか
-
-**手順**:
-1. ヘッダーの「★ コレクション」ボタンをクリック
-2. モーダルが表示されることを確認
-
-**期待結果**:
-- ✅ モーダルが表示される
-- ✅ デフォルトフォルダが3つ表示される
-  - 気になるリスト
-  - 購入予定リスト（ユーザーが作成していれば）
-  - 所有リスト
-
----
-
-### TC-F008: ゲーム追加
-
-**目的**: ゲームをコレクションに追加できるか
-
-**手順**:
-1. ゲームカードの ⭐️ アイコンをクリック
-2. コレクションモーダルを開く
-3. 「気になるリスト」を確認
-
-**期待結果**:
-- ✅ ⭐️ アイコンが黄色くなる
-- ✅ 「気になるリスト」にゲームが追加される
-- ✅ 件数が増える
-
-**IndexedDB確認**:
+**実装例**
 ```javascript
-// DevTools → Application → IndexedDB → GameSeekerVaultDB → collection
-// 新しいレコードが追加されているか確認
+// app/src/components/modals/__tests__/CollectionModal.test.jsx
+import { userEvent } from '@testing-library/user-event';
+
+describe('FE-COL-002: フォルダの追加', () => {
+  it('正常系: 新しいフォルダが追加される', async () => {
+    // Arrange
+    const user = userEvent.setup();
+    vi.spyOn(dbHelper.dbHelper, 'getFolders').mockResolvedValue([]);
+    const mockAddFolder = vi.spyOn(dbHelper.dbHelper, 'addFolder').mockResolvedValue(1);
+    vi.spyOn(dbHelper.dbHelper, 'getCollectionItems').mockResolvedValue([]);
+
+    render(
+      <CollectionModal
+        isOpen={true}
+        onClose={() => {}}
+        theme={{}}
+        locale="ja"
+      />
+    );
+
+    // Act
+    const addButton = screen.getByText('新規フォルダ');
+    await user.click(addButton);
+
+    const input = screen.getByPlaceholderText(/フォルダ名を入力/i);
+    await user.type(input, 'テストフォルダ');
+
+    const confirmButton = screen.getByText('追加');
+    await user.click(confirmButton);
+
+    // Assert
+    await waitFor(() => {
+      expect(mockAddFolder).toHaveBeenCalledWith('テストフォルダ', expect.any(Number));
+      expect(screen.getByText('テストフォルダ')).toBeInTheDocument();
+    });
+  });
+
+  it('異常系: フォルダ名が空の場合エラー', async () => {
+    // Arrange
+    const user = userEvent.setup();
+    vi.spyOn(dbHelper.dbHelper, 'getFolders').mockResolvedValue([]);
+    vi.spyOn(dbHelper.dbHelper, 'getCollectionItems').mockResolvedValue([]);
+
+    render(
+      <CollectionModal
+        isOpen={true}
+        onClose={() => {}}
+        theme={{}}
+        locale="ja"
+      />
+    );
+
+    // Act
+    const addButton = screen.getByText('新規フォルダ');
+    await user.click(addButton);
+
+    const confirmButton = screen.getByText('追加');
+    await user.click(confirmButton);
+
+    // Assert
+    expect(screen.getByText(/フォルダ名を入力してください/i)).toBeInTheDocument();
+  });
+});
 ```
 
 ---
 
-### TC-F009: フォルダ作成
+### FE-COL-003: ゲームをコレクションに追加
 
-**目的**: 新しいフォルダを作成できるか
+**優先度**: High
+**ステータス**: ⬜ 未実装
 
-**手順**:
-1. コレクションモーダルを開く
-2. 「新規フォルダ」ボタンをクリック
-3. 「セール待ち」と入力
-4. OKをクリック
+**前提条件**
+- メインページにゲームカードが表示されている
+- フォルダ「気になるリスト」が選択されている
 
-**期待結果**:
-- ✅ 「セール待ち」フォルダが作成される
-- ✅ フォルダ一覧に表示される
-- ✅ sortOrder が正しく設定される
+**テスト手順**
+1. ゲームカードの⭐アイコンをクリック
 
-**IndexedDB確認**:
+**期待結果（正常系）**
+- ⭐が塗りつぶされる
+- dbHelper.addToCollection() が呼ばれる
+- ゲームIDとフォルダIDが正しく渡される
+
+**異常系**
+- 既に追加済みのゲームの場合、何も起こらない
+- フォルダが選択されていない場合、エラーメッセージが表示される
+
+**実装例**
 ```javascript
-// folders ストアに新しいレコードが追加されているか
+// app/src/components/__tests__/GameCard.test.jsx
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { GameCard } from '../GameCard';
+import * as dbHelper from '../../db/index';
+
+describe('FE-COL-003: ゲームをコレクションに追加', () => {
+  it('正常系: ゲームがコレクションに追加される', async () => {
+    // Arrange
+    const user = userEvent.setup();
+    const mockGame = {
+      id: '123456',
+      title: 'Test Game',
+      deal: { JPY: { price: 1000 } },
+      genres: ['Action'],
+      reviewScore: 'Very Positive',
+    };
+    const mockAddToCollection = vi.spyOn(dbHelper.dbHelper, 'addToCollection').mockResolvedValue(1);
+    const onToggleFavorite = vi.fn();
+
+    render(
+      <GameCard
+        game={mockGame}
+        theme={{}}
+        locale="ja"
+        isFavorited={false}
+        onToggleFavorite={onToggleFavorite}
+        selectedFolderId={1}
+      />
+    );
+
+    // Act
+    const starIcon = screen.getByRole('button', { name: /お気に入りに追加/i });
+    await user.click(starIcon);
+
+    // Assert
+    expect(onToggleFavorite).toHaveBeenCalledWith('123456');
+  });
+
+  it('異常系: 既に追加済みのゲーム', async () => {
+    // Arrange
+    const user = userEvent.setup();
+    const mockGame = {
+      id: '123456',
+      title: 'Test Game',
+      deal: { JPY: { price: 1000 } },
+      genres: ['Action'],
+      reviewScore: 'Very Positive',
+    };
+    const onToggleFavorite = vi.fn();
+
+    render(
+      <GameCard
+        game={mockGame}
+        theme={{}}
+        locale="ja"
+        isFavorited={true}
+        onToggleFavorite={onToggleFavorite}
+        selectedFolderId={1}
+      />
+    );
+
+    // Act
+    const starIcon = screen.getByRole('button', { name: /お気に入りから削除/i });
+    await user.click(starIcon);
+
+    // Assert
+    expect(onToggleFavorite).toHaveBeenCalledWith('123456');
+  });
+});
 ```
 
 ---
 
-### TC-F010: フォルダ削除
+### FE-COL-004: フォルダの削除
 
-**目的**: フォルダを削除できるか
+**優先度**: High
+**ステータス**: ⬜ 未実装
 
-**手順**:
-1. コレクションモーダルを開く
-2. ユーザー作成フォルダにホバー
-3. ゴミ箱アイコンをクリック
-4. 確認ダイアログで「OK」
+**前提条件**
+- CollectionModalが開いている
+- フォルダ「テストフォルダ」が存在する
 
-**期待結果**:
-- ✅ フォルダが削除される
-- ✅ フォルダ内のゲームも削除される
-- ✅ IndexedDBから削除される
+**テスト手順**
+1. フォルダ「テストフォルダ」の削除ボタンをクリック
+2. 確認ダイアログで「削除」をクリック
 
-**制約**:
-- ❌ 「気になるリスト」は削除不可
-- ❌ 「所有リスト」は削除不可
+**期待結果（正常系）**
+- フォルダがリストから削除される
+- dbHelper.deleteFolder() が呼ばれる
+- フォルダ内のゲームも削除される
 
----
+**異常系**
+- デフォルトフォルダ（気になるリスト、所有リスト）は削除できない
 
-### TC-F011: ドラッグ&ドロップ（ゲーム）
-
-**目的**: ゲームをドラッグ&ドロップで並び替えできるか
-
-**手順**:
-1. コレクションモーダルを開く
-2. ゲームの左端のドラッグハンドル（6つの点）にホバー
-3. ドラッグして別の位置にドロップ
-
-**期待結果**:
-- ✅ ゲームの順序が入れ替わる
-- ✅ sortOrder が更新される
-- ✅ 300ms のフェードアニメーション
-
----
-
-### TC-F012: ドラッグ&ドロップ（フォルダ）
-
-**目的**: フォルダをドラッグ&ドロップで並び替えできるか
-
-**手順**:
-1. コレクションモーダルを開く
-2. ユーザー作成フォルダをドラッグ
-3. 別の位置にドロップ
-
-**期待結果**:
-- ✅ フォルダの順序が入れ替わる
-- ✅ sortOrder が更新される
-
-**制約**:
-- ❌ 「気になるリスト」は常に最上位（移動不可）
-- ❌ 「所有リスト」は常に最下位（移動不可）
-
----
-
-## インポート/エクスポート機能テスト
-
-### TC-F013: エクスポート
-
-**目的**: コレクションをJSONファイルにエクスポートできるか
-
-**手順**:
-1. ヘッダーのインポート/エクスポートボタンをクリック
-2. 「全フォルダをエクスポート」をクリック
-
-**期待結果**:
-- ✅ `steam-collection_YYYY-MMDD-HHMM.json` がダウンロードされる
-- ✅ ファイルに `folders` と `games` が含まれる
-- ✅ フォルダに `sortOrder` が含まれる
-
-**ファイル検証**:
+**実装例**
 ```javascript
-// ダウンロードしたJSONファイルを確認
-{
-  "exportedAt": "2025-01-25 14:30:00",
-  "version": "1.0",
-  "folders": [
-    {
-      "name": "気になるリスト",
-      "createdAt": "...",
-      "sortOrder": 1
-    }
-  ],
-  "games": [...]
-}
+describe('FE-COL-004: フォルダの削除', () => {
+  it('正常系: フォルダが削除される', async () => {
+    // Arrange
+    const user = userEvent.setup();
+    const mockFolders = [
+      { id: 1, name: 'テストフォルダ', sortOrder: 0, isDefault: false },
+    ];
+    vi.spyOn(dbHelper.dbHelper, 'getFolders').mockResolvedValue(mockFolders);
+    const mockDeleteFolder = vi.spyOn(dbHelper.dbHelper, 'deleteFolder').mockResolvedValue();
+    vi.spyOn(dbHelper.dbHelper, 'getCollectionItems').mockResolvedValue([]);
+    window.confirm = vi.fn(() => true);
+
+    render(
+      <CollectionModal
+        isOpen={true}
+        onClose={() => {}}
+        theme={{}}
+        locale="ja"
+      />
+    );
+
+    // Act
+    await waitFor(() => screen.getByText('テストフォルダ'));
+    const deleteButton = screen.getByRole('button', { name: /削除/i });
+    await user.click(deleteButton);
+
+    // Assert
+    expect(window.confirm).toHaveBeenCalled();
+    expect(mockDeleteFolder).toHaveBeenCalledWith(1);
+  });
+
+  it('異常系: デフォルトフォルダは削除できない', async () => {
+    // Arrange
+    const mockFolders = [
+      { id: 1, name: '気になるリスト', sortOrder: 0, isDefault: true },
+    ];
+    vi.spyOn(dbHelper.dbHelper, 'getFolders').mockResolvedValue(mockFolders);
+    vi.spyOn(dbHelper.dbHelper, 'getCollectionItems').mockResolvedValue([]);
+
+    render(
+      <CollectionModal
+        isOpen={true}
+        onClose={() => {}}
+        theme={{}}
+        locale="ja"
+      />
+    );
+
+    // Act & Assert
+    await waitFor(() => screen.getByText('気になるリスト'));
+    expect(screen.queryByRole('button', { name: /削除/i })).not.toBeInTheDocument();
+  });
+});
 ```
 
 ---
 
-### TC-F014: インポート
+### FE-COL-005: フォルダのドラッグ&ドロップ並び替え
 
-**目的**: JSONファイルからコレクションをインポートできるか
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
 
-**手順**:
-1. 事前にエクスポートしたJSONファイルを用意
-2. インポート/エクスポートモーダルを開く
-3. 「ファイルを選択」でJSONファイルを選択
-4. 「インポート」をクリック
+**前提条件**
+- CollectionModalが開いている
+- 3つのフォルダが存在する
 
-**期待結果**:
-- ✅ フォルダが復元される
-- ✅ ゲームが復元される
-- ✅ sortOrder が保持される
-- ✅ 成功メッセージが表示される
+**テスト手順**
+1. フォルダ「購入予定リスト」をドラッグ
+2. フォルダ「気になるリスト」の上にドロップ
 
-**衝突時の動作**:
-- 既存フォルダ: sortOrder を更新
-- 新規フォルダ: max+1 から採番
+**期待結果（正常系）**
+- フォルダの順序が入れ替わる
+- dbHelper.updateFolderOrder() が呼ばれる
+- sortOrderが更新される
 
----
+**異常系**
+- ドラッグ中にエラーが発生した場合、元の順序に戻る
 
-## 多言語化テスト
-
-### TC-F015: 言語切り替え
-
-**目的**: 日本語/英語を切り替えできるか
-
-**手順**:
-1. ヘッダーの言語切り替えボタンをクリック
-2. UIの表示を確認
-
-**期待結果（英語）**:
-- ✅ ボタンラベル: 「Collection」「Settings」
-- ✅ 価格: `$17.00` 形式
-
-**期待結果（日本語）**:
-- ✅ ボタンラベル: 「コレクション」「設定」
-- ✅ 価格: `¥2,550` 形式
-
----
-
-### TC-F016: 言語設定の永続化
-
-**目的**: 言語設定が保存されるか
-
-**手順**:
-1. 言語を「日本語」に変更
-2. ページリロード
-3. 言語設定を確認
-
-**期待結果**:
-- ✅ 日本語のまま表示される
-- ✅ IndexedDB settings ストアに `locale: "ja"` が保存される
-
----
-
-## 設定機能テスト
-
-### TC-F017: 設定モーダル表示
-
-**目的**: 設定モーダルが開くか
-
-**手順**:
-1. ヘッダーの設定アイコンをクリック
-2. モーダルが表示されることを確認
-
-**期待結果**:
-- ✅ 設定項目が一覧表示される
-- ✅ 現在の設定値が反映されている
-
----
-
-### TC-F018: テーマ変更
-
-**目的**: テーマを変更できるか
-
-**手順**:
-1. 設定モーダルを開く
-2. テーマを「Steam」に変更
-3. UIを確認
-
-**期待結果**:
-- ✅ 背景が暗色になる
-- ✅ テキスト色が明色になる
-- ✅ Steam風のデザインになる
-
----
-
-## レスポンシブデザインテスト
-
-### TC-F019: モバイル表示
-
-**目的**: スマートフォンで正常に表示されるか
-
-**手順**:
-1. DevTools → デバイスモード（iPhone 14 Pro）
-2. ページを確認
-
-**期待結果**:
-- ✅ 1カラム表示
-- ✅ タップ可能な要素が十分な大きさ
-- ✅ 横スクロールが発生しない
-
----
-
-### TC-F020: タブレット表示
-
-**目的**: タブレットで正常に表示されるか
-
-**手順**:
-1. DevTools → デバイスモード（iPad Pro）
-2. ページを確認
-
-**期待結果**:
-- ✅ 2カラム表示
-- ✅ レイアウトが崩れない
-
----
-
-## パフォーマンステスト
-
-### TC-F021: 仮想スクロール
-
-**目的**: 10,000件のゲームを高速スクロールできるか
-
-**手順**:
-1. ゲーム一覧を表示
-2. 高速にスクロール（マウスホイールまたはスワイプ）
-3. パフォーマンスを確認
-
-**期待結果**:
-- ✅ スクロールがスムーズ（60fps）
-- ✅ カクつきがない
-- ✅ メモリ使用量が安定している
-
-**パフォーマンス確認**:
+**実装例**
 ```javascript
-// DevTools → Performance タブで録画
-// FPS が 50fps 以上であることを確認
+// @dnd-kitのテストはモックが複雑なため、E2Eテストで検証することを推奨
+describe('FE-COL-005: フォルダのドラッグ&ドロップ並び替え', () => {
+  it('E2Eテストで検証 - E2E-COL-002を参照', () => {
+    // E2Eテストで実装
+  });
+});
 ```
 
 ---
 
-## エラーハンドリングテスト
+## 🔍 2. フィルタ・検索機能テスト
 
-### TC-F022: ネットワークエラー
+### FE-FIL-001: ジャンルフィルタ（単一選択）
 
-**目的**: オフライン時に適切なエラーメッセージが表示されるか
+**優先度**: High
+**ステータス**: ⬜ 未実装
 
-**手順**:
-1. DevTools → Network → Offline に設定
-2. ページリロード
+**前提条件**
+- ゲームデータが読み込まれている
+- Actionジャンルのゲームが10件存在
 
-**期待結果**:
-- ✅ エラーメッセージが表示される
-- ✅ 「Failed to fetch games data」などの説明
+**テスト手順**
+1. ジャンルフィルタで「Action」を選択
 
----
+**期待結果（正常系）**
+- Actionジャンルのゲームのみが表示される
+- 表示件数が10件になる
 
-### TC-F023: 無効なJSONインポート
+**異常系**
+- 該当ゲームが0件の場合、「ゲームが見つかりません」と表示される
 
-**目的**: 無効なJSONファイルのインポートを拒否できるか
+**実装例**
+```javascript
+// app/src/__tests__/filterLogic.test.js
+import { describe, it, expect } from 'vitest';
 
-**手順**:
-1. テキストファイル（`.txt`）を用意
-2. インポートを試行
+describe('FE-FIL-001: ジャンルフィルタ（単一選択）', () => {
+  it('正常系: Actionジャンルでフィルタされる', () => {
+    // Arrange
+    const games = [
+      { id: '1', title: 'Action Game 1', genres: ['Action'] },
+      { id: '2', title: 'RPG Game 1', genres: ['RPG'] },
+      { id: '3', title: 'Action Game 2', genres: ['Action'] },
+    ];
+    const selectedGenres = { include: ['Action'], exclude: [] };
 
-**期待結果**:
-- ✅ エラーメッセージ: 「無効なファイル形式です」
-- ✅ インポートが実行されない
+    // Act
+    const filtered = games.filter(game => 
+      selectedGenres.include.every(g => game.genres.includes(g))
+    );
 
----
+    // Assert
+    expect(filtered).toHaveLength(2);
+    expect(filtered[0].id).toBe('1');
+    expect(filtered[1].id).toBe('3');
+  });
 
-## ブラウザ互換性テスト
+  it('異常系: 該当ゲームが0件', () => {
+    // Arrange
+    const games = [
+      { id: '1', title: 'Action Game 1', genres: ['Action'] },
+    ];
+    const selectedGenres = { include: ['Strategy'], exclude: [] };
 
-### TC-F024: Chrome
+    // Act
+    const filtered = games.filter(game => 
+      selectedGenres.include.every(g => game.genres.includes(g))
+    );
 
-**環境**: Chrome 最新版
-
-**確認項目**:
-- ✅ 全機能が動作する
-- ✅ IndexedDB が動作する
-- ✅ ドラッグ&ドロップが動作する
-
----
-
-### TC-F025: Safari
-
-**環境**: Safari 最新版
-
-**確認項目**:
-- ✅ 全機能が動作する
-- ✅ IndexedDB が動作する
-- ✅ ドラッグ&ドロップが動作する
-
-**既知の問題**:
-- （もしあれば記載）
-
----
-
-### TC-F026: Firefox
-
-**環境**: Firefox 最新版
-
-**確認項目**:
-- ✅ 全機能が動作する
-- ✅ IndexedDB が動作する
-- ✅ ドラッグ&ドロップが動作する
-
----
-
-## テスト実行チェックリスト
-
-### リリース前チェック
-
-- [ ] TC-F001: ページ読み込み
-- [ ] TC-F002: ゲームデータ取得
-- [ ] TC-F003: タイトル検索
-- [ ] TC-F007: コレクションモーダル表示
-- [ ] TC-F008: ゲーム追加
-- [ ] TC-F009: フォルダ作成
-- [ ] TC-F013: エクスポート
-- [ ] TC-F014: インポート
-- [ ] TC-F015: 言語切り替え
-- [ ] TC-F024: Chrome 互換性
-- [ ] TC-F025: Safari 互換性
-
-### フルテスト（メジャーリリース前）
-
-- [ ] 全テストケース実行
+    // Assert
+    expect(filtered).toHaveLength(0);
+  });
+});
+```
 
 ---
 
-## 関連ドキュメント
+### FE-FIL-002: ジャンルフィルタ（複数選択・AND条件）
 
-- [../FRONTEND_GUIDE.md](../FRONTEND_GUIDE.md) - フロントエンド開発ガイド
-- [../DATA_STRUCTURE.md](../DATA_STRUCTURE.md) - データ構造仕様
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- ゲームデータが読み込まれている
+
+**テスト手順**
+1. ジャンルフィルタで「Action」を選択
+2. ジャンルフィルタで「Indie」を選択
+
+**期待結果（正常系）**
+- ActionとIndieの両方を持つゲームのみが表示される
+- AND条件で絞り込まれる
+
+**異常系**
+- 該当ゲームが0件の場合、「ゲームが見つかりません」と表示される
+
+**実装例**
+```javascript
+describe('FE-FIL-002: ジャンルフィルタ（複数選択・AND条件）', () => {
+  it('正常系: ActionとIndieの両方を持つゲームのみ表示', () => {
+    // Arrange
+    const games = [
+      { id: '1', title: 'Action Indie Game', genres: ['Action', 'Indie'] },
+      { id: '2', title: 'Action Only Game', genres: ['Action'] },
+      { id: '3', title: 'Indie Only Game', genres: ['Indie'] },
+    ];
+    const selectedGenres = { include: ['Action', 'Indie'], exclude: [] };
+
+    // Act
+    const filtered = games.filter(game => 
+      selectedGenres.include.every(g => game.genres.includes(g))
+    );
+
+    // Assert
+    expect(filtered).toHaveLength(1);
+    expect(filtered[0].id).toBe('1');
+  });
+});
+```
+
+---
+
+### FE-FIL-003: ジャンル除外フィルタ（Shift+クリック）
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- ゲームデータが読み込まれている
+
+**テスト手順**
+1. Shiftキーを押しながらジャンル「Action」をクリック
+
+**期待結果（正常系）**
+- Actionジャンルを含むゲームが除外される
+- チェックボックスに✖︎アイコンが表示される
+- テキストが赤色になる
+
+**異常系**
+- 除外条件のみでゲームが0件になった場合、「ゲームが見つかりません」と表示される
+
+**実装例**
+```javascript
+describe('FE-FIL-003: ジャンル除外フィルタ', () => {
+  it('正常系: Actionジャンルが除外される', () => {
+    // Arrange
+    const games = [
+      { id: '1', title: 'Action Game 1', genres: ['Action'] },
+      { id: '2', title: 'RPG Game 1', genres: ['RPG'] },
+    ];
+    const selectedGenres = { include: [], exclude: ['Action'] };
+
+    // Act
+    const filtered = games.filter(game => 
+      !selectedGenres.exclude.some(g => game.genres.includes(g))
+    );
+
+    // Assert
+    expect(filtered).toHaveLength(1);
+    expect(filtered[0].id).toBe('2');
+  });
+});
+```
+
+---
+
+### FE-FIL-004: タイトル検索
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- ゲームデータが読み込まれている
+
+**テスト手順**
+1. 検索窓に「Portal」と入力
+
+**期待結果（正常系）**
+- タイトルに「Portal」を含むゲームのみが表示される
+- 大文字小文字を区別しない
+
+**異常系**
+- 該当ゲームが0件の場合、「ゲームが見つかりません」と表示される
+- 特殊文字が含まれる場合もエスケープして検索
+
+**実装例**
+```javascript
+describe('FE-FIL-004: タイトル検索', () => {
+  it('正常系: Portalを含むゲームが表示される', () => {
+    // Arrange
+    const games = [
+      { id: '1', title: 'Portal 2', genres: ['Action'] },
+      { id: '2', title: 'Half-Life 2', genres: ['Action'] },
+      { id: '3', title: 'Portal Knights', genres: ['RPG'] },
+    ];
+    const searchTitle = 'Portal';
+
+    // Act
+    const filtered = games.filter(game =>
+      game.title.toLowerCase().includes(searchTitle.toLowerCase())
+    );
+
+    // Assert
+    expect(filtered).toHaveLength(2);
+    expect(filtered[0].id).toBe('1');
+    expect(filtered[1].id).toBe('3');
+  });
+
+  it('正常系: 大文字小文字を区別しない', () => {
+    // Arrange
+    const games = [
+      { id: '1', title: 'Portal 2', genres: ['Action'] },
+    ];
+    const searchTitle = 'portal';
+
+    // Act
+    const filtered = games.filter(game =>
+      game.title.toLowerCase().includes(searchTitle.toLowerCase())
+    );
+
+    // Assert
+    expect(filtered).toHaveLength(1);
+  });
+});
+```
+
+---
+
+### FE-FIL-005: 価格範囲フィルタ
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- ゲームデータが読み込まれている
+
+**テスト手順**
+1. 最低価格を500円に設定
+2. 最高価格を2000円に設定
+
+**期待結果（正常系）**
+- 500円～2000円のゲームのみが表示される
+
+**異常系**
+- 最低価格 > 最高価格の場合、エラーメッセージが表示される
+
+**実装例**
+```javascript
+describe('FE-FIL-005: 価格範囲フィルタ', () => {
+  it('正常系: 500円～2000円のゲームのみ表示', () => {
+    // Arrange
+    const games = [
+      { id: '1', title: 'Game 1', deal: { JPY: { price: 1000 } } },
+      { id: '2', title: 'Game 2', deal: { JPY: { price: 3000 } } },
+      { id: '3', title: 'Game 3', deal: { JPY: { price: 500 } } },
+    ];
+    const minPrice = 500;
+    const maxPrice = 2000;
+
+    // Act
+    const filtered = games.filter(game => {
+      const price = game.deal.JPY.price;
+      return price >= minPrice && price <= maxPrice;
+    });
+
+    // Assert
+    expect(filtered).toHaveLength(2);
+    expect(filtered[0].id).toBe('1');
+    expect(filtered[1].id).toBe('3');
+  });
+});
+```
+
+---
+
+## 💾 3. IndexedDB操作テスト
+
+### FE-DB-001: DB初期化
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- IndexedDBが未初期化
+
+**テスト手順**
+1. initDB() を呼び出す
+
+**期待結果（正常系）**
+- DBが作成される
+- 3つのストア（folders, collection, settings）が作成される
+- バージョン番号が正しい
+
+**異常系**
+- ブラウザがIndexedDBをサポートしていない場合、エラーがスローされる
+
+**実装例**
+```javascript
+// app/src/db/__tests__/init.test.js
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { initDB } from '../init';
+import { DB_NAME, DB_VERSION } from '../../constants/index';
+
+describe('FE-DB-001: DB初期化', () => {
+  beforeEach(async () => {
+    // DBを削除
+    const deleteRequest = indexedDB.deleteDatabase(DB_NAME);
+    await new Promise((resolve) => {
+      deleteRequest.onsuccess = resolve;
+      deleteRequest.onerror = resolve;
+    });
+  });
+
+  afterEach(async () => {
+    // テスト後にDBをクリーンアップ
+    const deleteRequest = indexedDB.deleteDatabase(DB_NAME);
+    await new Promise((resolve) => {
+      deleteRequest.onsuccess = resolve;
+      deleteRequest.onerror = resolve;
+    });
+  });
+
+  it('正常系: DBが正しく初期化される', async () => {
+    // Act
+    const db = await initDB();
+
+    // Assert
+    expect(db.name).toBe(DB_NAME);
+    expect(db.version).toBe(DB_VERSION);
+    expect(db.objectStoreNames.contains('folders')).toBe(true);
+    expect(db.objectStoreNames.contains('collection')).toBe(true);
+    expect(db.objectStoreNames.contains('settings')).toBe(true);
+
+    db.close();
+  });
+});
+```
+
+---
+
+### FE-DB-002: フォルダの追加
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- DBが初期化されている
+
+**テスト手順**
+1. dbHelper.addFolder('テストフォルダ', 0) を呼び出す
+
+**期待結果（正常系）**
+- フォルダIDが返される
+- DBにフォルダが保存される
+
+**異常系**
+- DBエラーが発生した場合、エラーがスローされる
+
+**実装例**
+```javascript
+// app/src/db/__tests__/folders.test.js
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { dbHelper, initDB } from '../index';
+import { DB_NAME } from '../../constants/index';
+
+describe('FE-DB-002: フォルダの追加', () => {
+  let db;
+
+  beforeEach(async () => {
+    db = await initDB();
+  });
+
+  afterEach(async () => {
+    if (db) db.close();
+    const deleteRequest = indexedDB.deleteDatabase(DB_NAME);
+    await new Promise((resolve) => {
+      deleteRequest.onsuccess = resolve;
+      deleteRequest.onerror = resolve;
+    });
+  });
+
+  it('正常系: フォルダが追加される', async () => {
+    // Act
+    const folderId = await dbHelper.addFolder('テストフォルダ', 0);
+
+    // Assert
+    expect(folderId).toBeGreaterThan(0);
+
+    // 確認: DBから取得
+    const folders = await dbHelper.getFolders();
+    const addedFolder = folders.find(f => f.id === folderId);
+    expect(addedFolder).toBeDefined();
+    expect(addedFolder.name).toBe('テストフォルダ');
+    expect(addedFolder.sortOrder).toBe(0);
+  });
+});
+```
+
+---
+
+## 🌐 4. i18n（多言語対応）テスト
+
+### FE-I18N-001: 翻訳キーの取得
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- translations.jsに日本語・英語の翻訳が定義されている
+
+**テスト手順**
+1. t('header.title', 'ja') を呼び出す
+2. t('header.title', 'en') を呼び出す
+
+**期待結果（正常系）**
+- 日本語: 'Game Seeker Vault'
+- 英語: 'Game Seeker Vault'
+
+**異常系**
+- 存在しないキーの場合、キー名がそのまま返される
+
+**実装例**
+```javascript
+// app/src/i18n/__tests__/index.test.js
+import { describe, it, expect } from 'vitest';
+import { t } from '../index';
+
+describe('FE-I18N-001: 翻訳キーの取得', () => {
+  it('正常系: 日本語翻訳が取得できる', () => {
+    // Act
+    const result = t('price.free', 'ja');
+
+    // Assert
+    expect(result).toBe('無料');
+  });
+
+  it('正常系: 英語翻訳が取得できる', () => {
+    // Act
+    const result = t('price.free', 'en');
+
+    // Assert
+    expect(result).toBe('Free');
+  });
+
+  it('異常系: 存在しないキーの場合キー名が返される', () => {
+    // Act
+    const result = t('nonexistent.key', 'ja');
+
+    // Assert
+    expect(result).toBe('nonexistent.key');
+  });
+});
+```
+
+---
+
+## 🔧 5. ユーティリティ関数テスト
+
+### FE-UTIL-001: formatPrice() - 価格フォーマット
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- なし
+
+**テスト手順**
+1. formatPrice(2550, 'ja') を呼び出す
+2. formatPrice(2550, 'en') を呼び出す
+
+**期待結果（正常系）**
+- 日本語: '¥2,550'
+- 英語: '$17.00' （概算）
+
+**異常系**
+- 価格が null の場合、'-' が返される
+- 価格が 0 の場合、'無料' が返される
+
+**実装例**
+```javascript
+// app/src/i18n/__tests__/index.test.js
+import { describe, it, expect } from 'vitest';
+import { formatPrice } from '../index';
+
+describe('FE-UTIL-001: formatPrice()', () => {
+  it('正常系: 日本語の価格フォーマット', () => {
+    // Act
+    const result = formatPrice(2550, 'ja');
+
+    // Assert
+    expect(result).toBe('¥2,550');
+  });
+
+  it('正常系: 英語の価格フォーマット', () => {
+    // Act
+    const result = formatPrice(2550, 'en');
+
+    // Assert
+    expect(result).toContain('$');
+  });
+
+  it('異常系: 価格がnullの場合', () => {
+    // Act
+    const result = formatPrice(null, 'ja');
+
+    // Assert
+    expect(result).toBe('-');
+  });
+
+  it('異常系: 価格が0の場合', () => {
+    // Act
+    const result = formatPrice(0, 'ja');
+
+    // Assert
+    expect(result).toBe('無料');
+  });
+});
+```
+
+---
+
+### FE-UTIL-002: translateGenre() - ジャンル翻訳
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- なし
+
+**テスト手順**
+1. translateGenre('Action', 'ja') を呼び出す
+2. translateGenre('Action', 'en') を呼び出す
+
+**期待結果（正常系）**
+- 日本語: 'アクション'
+- 英語: 'Action'
+
+**異常系**
+- 存在しないジャンルの場合、元の文字列が返される
+
+**実装例**
+```javascript
+// app/src/i18n/__tests__/index.test.js
+import { describe, it, expect } from 'vitest';
+import { translateGenre } from '../index';
+
+describe('FE-UTIL-002: translateGenre()', () => {
+  it('正常系: 日本語のジャンル翻訳', () => {
+    // Act
+    const result = translateGenre('Action', 'ja');
+
+    // Assert
+    expect(result).toBe('アクション');
+  });
+
+  it('正常系: 英語のジャンル翻訳', () => {
+    // Act
+    const result = translateGenre('Action', 'en');
+
+    // Assert
+    expect(result).toBe('Action');
+  });
+
+  it('異常系: 存在しないジャンル', () => {
+    // Act
+    const result = translateGenre('Unknown Genre', 'ja');
+
+    // Assert
+    expect(result).toBe('Unknown Genre');
+  });
+});
+```
+
+---
+
+## 📊 テスト実装状況サマリー
+
+### コレクション機能テスト
+- [ ] FE-COL-001: フォルダ一覧の表示
+- [ ] FE-COL-002: フォルダの追加
+- [ ] FE-COL-003: ゲームをコレクションに追加
+- [ ] FE-COL-004: フォルダの削除
+- [ ] FE-COL-005: フォルダのドラッグ&ドロップ並び替え
+
+### フィルタ・検索機能テスト
+- [ ] FE-FIL-001: ジャンルフィルタ（単一選択）
+- [ ] FE-FIL-002: ジャンルフィルタ（複数選択・AND条件）
+- [ ] FE-FIL-003: ジャンル除外フィルタ（Shift+クリック）
+- [ ] FE-FIL-004: タイトル検索
+- [ ] FE-FIL-005: 価格範囲フィルタ
+
+### IndexedDB操作テスト
+- [ ] FE-DB-001: DB初期化
+- [ ] FE-DB-002: フォルダの追加
+
+### i18n（多言語対応）テスト
+- [ ] FE-I18N-001: 翻訳キーの取得
+
+### ユーティリティ関数テスト
+- [ ] FE-UTIL-001: formatPrice() - 価格フォーマット
+- [ ] FE-UTIL-002: translateGenre() - ジャンル翻訳
+
+---
+
+## 🚀 次のステップ
+
+1. テストセットアップファイルの作成（`app/src/test/setup.js`）
+2. モックデータの作成（`app/src/test/mocks/`）
+3. 優先度Highのテストから実装開始
+4. CI/CD統合
+
+---
+
+## 📚 参考資料
+
+- [Vitest API Reference](https://vitest.dev/api/)
+- [React Testing Library Cheatsheet](https://testing-library.com/docs/react-testing-library/cheatsheet)
+- [Testing Library User Interactions](https://testing-library.com/docs/user-event/intro)
