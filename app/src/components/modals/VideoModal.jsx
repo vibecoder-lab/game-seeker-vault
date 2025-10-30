@@ -3,27 +3,21 @@ import React, { useState, useEffect } from 'react';
 export function VideoModal({ game, theme, isClosing, onClose }) {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [isShiftPressed, setIsShiftPressed] = useState(false);
+  const videoRef = React.useRef(null);
+  const hoverAreaRef = React.useRef(null);
 
+  // Cleanup video when component unmounts
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Shift') {
-        setIsShiftPressed(true);
-      }
-    };
-
-    const handleKeyUp = (e) => {
-      if (e.key === 'Shift') {
-        setIsShiftPressed(false);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
+      if (videoRef.current) {
+        try {
+          videoRef.current.pause();
+          videoRef.current.currentTime = 0;
+          videoRef.current.load();
+        } catch (e) {
+          // Ignore errors if element is already removed
+        }
+      }
     };
   }, []);
 
@@ -62,6 +56,7 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
             {hasMovies ? (
               <div className="aspect-video bg-black rounded-lg overflow-hidden">
                 <video
+                  ref={videoRef}
                   key={currentMovie.id}
                   controls
                   autoPlay
@@ -90,18 +85,22 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
             {/* Thumbnail Hover Area and Overlay */}
             {hasMovies && game.movies.length > 1 && (
               <>
-                {/* Transparent hover area on the right side */}
+                {/* Hover detection area (excluding bottom 100px) */}
                 <div
-                  className={`absolute top-0 right-0 h-full w-32 ${isShiftPressed ? 'pointer-events-none' : ''}`}
+                  ref={hoverAreaRef}
+                  className="absolute top-0 right-0 w-32 pointer-events-auto"
+                  style={{ height: 'calc(100% - 100px)' }}
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                />
+                {/* Movie Thumbnails Overlay (full height) */}
+                <div
+                  className={`absolute top-0 right-0 h-full w-32 flex flex-col gap-2 p-2 overflow-y-auto transition-opacity duration-200 bg-black bg-opacity-50 rounded-r-lg ${
+                    isHovered ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                  }`}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >
-                  {/* Movie Thumbnails Overlay */}
-                  <div
-                    className={`h-full w-full flex flex-col gap-2 p-2 overflow-y-auto transition-opacity duration-200 bg-black bg-opacity-50 rounded-r-lg ${
-                      isHovered && !isShiftPressed ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                    }`}
-                  >
                     {game.movies.map((movie, index) => (
                       <button
                         key={index}
@@ -129,7 +128,6 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
                         </div>
                       </button>
                     ))}
-                  </div>
                 </div>
               </>
             )}

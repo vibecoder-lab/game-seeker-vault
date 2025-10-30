@@ -1,9 +1,8 @@
 import React from 'react';
 import { t, currentLocale, formatPrice } from '../../i18n/index.js';
-import { yen, formatDateTime, truncateByWidth, normalizeGenres, checkJapaneseSupport, cleanLanguageText, translateReviewScore, formatReleaseDate, getLocalizedFolderName } from '../../utils/format.js';
-import { steamCapsuleUrl, linkFor } from '../../utils/steam.js';
+import { normalizeGenres, checkJapaneseSupport, cleanLanguageText, translateReviewScore, formatReleaseDate, getLocalizedFolderName } from '../../utils/format.js';
+import { linkFor } from '../../utils/steam.js';
 import { dbHelper } from '../../db/index.js';
-import { VideoModal } from './VideoModal.jsx';
 import {
   DndContext,
   closestCenter,
@@ -136,7 +135,7 @@ function SortableItem({ id, game, gameData, theme, currentTheme, selectedFolderI
   );
 }
 
-export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, collectionMap, setCollectionMap, settings, targetFolderId, setTargetFolderId, showVideoModal, setShowVideoModal, selectedGameForVideo, setSelectedGameForVideo, videoModalClosing, setVideoModalClosing, currentRegion }) {
+export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, setCollectionMap, settings, setTargetFolderId, showVideoModal, setShowVideoModal, setSelectedGameForVideo, setVideoModalClosing, currentRegion }) {
         const TRASH_FOLDER_ID = '__TRASH__';
 
         // Identify the owned list folder (created with translation key 'folder.default.owned_list')
@@ -270,15 +269,6 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
           setTimeout(() => {
             onClose();
             setIsClosing(false);
-          }, 100);
-        };
-
-        const handleVideoModalClose = () => {
-          setVideoModalClosing(true);
-          setTimeout(() => {
-            setShowVideoModal(false);
-            setSelectedGameForVideo(null);
-            setVideoModalClosing(false);
           }, 100);
         };
 
@@ -520,19 +510,11 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
 
         return (
           <>
-          {showVideoModal && selectedGameForVideo && (
-            <VideoModal
-              game={selectedGameForVideo}
-              theme={theme}
-              isClosing={videoModalClosing}
-              onClose={handleVideoModalClose}
-            />
-          )}
           {/* 共通背景 */}
-          <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 ${isClosing && !showVideoModal ? 'modal-fade-out' : 'modal-fade-in'}`} onClick={showVideoModal ? undefined : handleClose}></div>
+          <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'} ${showVideoModal ? 'invisible' : ''}`} onClick={handleClose}></div>
 
           {/* コレクションモーダルコンテンツ */}
-          <div className={`fixed inset-0 z-50 ${showVideoModal ? 'hidden' : ''}`} onClick={handleClose}>
+          <div className={`fixed inset-0 z-50 ${showVideoModal ? 'invisible' : ''}`} onClick={handleClose}>
             <div ref={modalRef} className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${theme.cardBg} ${theme.text} rounded-2xl shadow-2xl w-[90vw] md:w-[75vw] lg:w-[60vw] max-w-[1024px] h-[80vh] flex flex-col overflow-visible relative`} onClick={(e) => e.stopPropagation()}>
               {/* Modal Overlay (When Detail Panel is Visible) */}
               <div className={`absolute inset-0 bg-black rounded-2xl transition-opacity duration-100 pointer-events-none z-[100] ${hoveredGame && shiftPressed ? 'opacity-20' : 'opacity-0'}`}></div>
