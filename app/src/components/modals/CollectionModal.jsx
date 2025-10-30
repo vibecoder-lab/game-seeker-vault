@@ -885,7 +885,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                               </button>
                               {showFolderMenuForGame === game.id && (
                                 <div className={`absolute left-1/2 -translate-x-[60%] mt-1 ${theme.cardBg} ${theme.text} ${theme.cardShadow} rounded-lg overflow-hidden z-50 max-h-[200px] overflow-y-auto`}>
-                                  {regularFolders.filter(f => f.id !== selectedFolderId).map(f => (
+                                  {folders.filter(f => f.id !== selectedFolderId).map(f => (
                                     <button
                                       key={f.id}
                                       onClick={() => {
