@@ -104,21 +104,21 @@ export const yen = (v) => `¥${(v ?? 0).toLocaleString()}`;
 // Get unique array items
 export const unique = (arr) => Array.from(new Set(arr));
 
+// Map of initial folder names (both en and ja) to translation keys
+export const FOLDER_NAME_TO_KEY = {
+  'Interested List': 'folder.default.interested',
+  '気になるリスト': 'folder.default.interested',
+  'Wishlist': 'folder.default.wishlist',
+  '購入予定リスト': 'folder.default.wishlist',
+  'Sale Watch List': 'folder.default.sale_watch',
+  'セール待ちリスト': 'folder.default.sale_watch',
+  'Owned List': 'folder.default.owned_list',
+  '所有リスト': 'folder.default.owned_list'
+};
+
 // Get localized folder name for initial folders
 export const getLocalizedFolderName = (folderName, locale) => {
-  // Map of initial folder names (both en and ja)
-  const initialFolderMap = {
-    'Interested List': 'folder.default.interested',
-    '気になるリスト': 'folder.default.interested',
-    'Wishlist': 'folder.default.wishlist',
-    '購入予定リスト': 'folder.default.wishlist',
-    'Sale Watch List': 'folder.default.sale_watch',
-    'セール待ちリスト': 'folder.default.sale_watch',
-    'Owned List': 'folder.default.owned_list',
-    '所有リスト': 'folder.default.owned_list'
-  };
-
-  const translationKey = initialFolderMap[folderName];
+  const translationKey = FOLDER_NAME_TO_KEY[folderName];
   if (translationKey) {
     return t(translationKey, locale);
   }

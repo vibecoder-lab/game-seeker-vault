@@ -1,6 +1,6 @@
 import React from 'react';
 import { t, currentLocale } from '../../i18n/index.js';
-import { formatDateTime } from '../../utils/format.js';
+import { formatDateTime, FOLDER_NAME_TO_KEY } from '../../utils/format.js';
 import { dbHelper } from '../../db/index.js';
 
 export function ImportExportModal({ theme, currentTheme, folders, setFolders, setCollectionMap, onClose }) {
@@ -156,7 +156,6 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
             }
 
             const existingFolders = await dbHelper.getFolders();
-            const existingFolderNames = new Set(existingFolders.map(f => f.name));
             const folderNameToIdMap = {};
 
             // Get max sortOrder for new folders
@@ -164,12 +163,29 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
             let nextSortOrder = maxSortOrder + 1;
 
             for (const folder of importData.folders) {
-              if (existingFolderNames.has(folder.name)) {
-                // Existing folder: update sortOrder to maintain original order
-                const existing = existingFolders.find(f => f.name === folder.name);
-                folderNameToIdMap[folder.name] = existing.id;
+              // Try to find matching existing folder
+              // 1. Exact name match
+              // 2. Translation key match (for 4 default folders)
+              const translationKey = FOLDER_NAME_TO_KEY[folder.name];
+              const matchingFolder = existingFolders.find(existing => {
+                // Exact match
+                if (existing.name === folder.name) return true;
+
+                // Translation key match
+                if (translationKey) {
+                  const enName = t(translationKey, 'en');
+                  const jaName = t(translationKey, 'ja');
+                  return existing.name === enName || existing.name === jaName;
+                }
+
+                return false;
+              });
+
+              if (matchingFolder) {
+                // Existing folder: use existing folder ID
+                folderNameToIdMap[folder.name] = matchingFolder.id;
                 if (folder.sortOrder !== undefined) {
-                  await dbHelper.updateFolderOrder(existing.id, folder.sortOrder);
+                  await dbHelper.updateFolderOrder(matchingFolder.id, folder.sortOrder);
                 }
               } else {
                 // New folder: assign new sortOrder to avoid conflicts

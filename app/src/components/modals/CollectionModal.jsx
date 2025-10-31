@@ -1,6 +1,6 @@
 import React from 'react';
 import { t, currentLocale, formatPrice } from '../../i18n/index.js';
-import { normalizeGenres, checkJapaneseSupport, cleanLanguageText, translateReviewScore, formatReleaseDate, getLocalizedFolderName } from '../../utils/format.js';
+import { normalizeGenres, checkJapaneseSupport, cleanLanguageText, translateReviewScore, formatReleaseDate } from '../../utils/format.js';
 import { linkFor } from '../../utils/steam.js';
 import { dbHelper } from '../../db/index.js';
 import {
@@ -556,7 +556,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                 <span className={`block w-[5px] h-[5px] rounded-full ${theme.saleBg}`}></span>
                               )}
                             </span>
-                            <span className="flex-1 text-xs min-w-0">{getLocalizedFolderName(interestedListFolder.name, currentLocale)}</span>
+                            <span className="flex-1 text-xs min-w-0">{interestedListFolder.name}</span>
                           </div>
                           <div className="flex items-center gap-1 transition-transform duration-300 group-hover:translate-x-0 translate-x-[60px]">
                             <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
@@ -564,7 +564,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setEditingFolderId(interestedListFolder.id);
-                                  setEditingFolderName(getLocalizedFolderName(interestedListFolder.name, currentLocale));
+                                  setEditingFolderName(interestedListFolder.name);
                                 }}
                                 className={`p-1 rounded ${theme.text} ${theme.iconHover}`}
                                 title={t('button.rename', currentLocale)}
@@ -630,7 +630,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                 <span className={`block w-[5px] h-[5px] rounded-full ${theme.saleBg}`}></span>
                               )}
                             </span>
-                            <span className="flex-1 text-xs min-w-0">{getLocalizedFolderName(folder.name, currentLocale)}</span>
+                            <span className="flex-1 text-xs min-w-0">{folder.name}</span>
                           </div>
                           <div className="flex items-center gap-1 transition-transform duration-300 group-hover:translate-x-0 translate-x-[60px]">
                             <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
@@ -638,7 +638,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setEditingFolderId(folder.id);
-                                setEditingFolderName(getLocalizedFolderName(folder.name, currentLocale));
+                                setEditingFolderName(folder.name);
                               }}
                               className={`p-1 rounded ${theme.text} ${theme.iconHover}`}
                               title={t('button.rename', currentLocale)}
@@ -724,7 +724,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                 <span className={`block w-[5px] h-[5px] rounded-full ${theme.saleBg}`}></span>
                               )}
                             </span>
-                            <span className="flex-1 text-xs min-w-0">{getLocalizedFolderName(ownedListFolder.name, currentLocale)}</span>
+                            <span className="flex-1 text-xs min-w-0">{ownedListFolder.name}</span>
                           </div>
                           <div className="flex items-center gap-1 transition-transform duration-300 group-hover:translate-x-0 translate-x-[60px]">
                             <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
@@ -732,7 +732,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setEditingFolderId(ownedListFolder.id);
-                                  setEditingFolderName(getLocalizedFolderName(ownedListFolder.name, currentLocale));
+                                  setEditingFolderName(ownedListFolder.name);
                                 }}
                                 className={`p-1 rounded ${theme.text} ${theme.iconHover}`}
                                 title={t('button.rename', currentLocale)}
@@ -764,7 +764,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
               <div className="flex-1 flex flex-col">
                 <div className={`px-4 py-3 border-b ${theme.border} flex items-center justify-between h-[46px]`}>
                   <h2 className="text-base font-bold">
-                    {selectedFolderId === TRASH_FOLDER_ID ? t('collection.trash', currentLocale) : (getLocalizedFolderName(folders.find(f => f.id === selectedFolderId)?.name, currentLocale) || t('collection.title', currentLocale))}
+                    {selectedFolderId === TRASH_FOLDER_ID ? t('collection.trash', currentLocale) : (folders.find(f => f.id === selectedFolderId)?.name || t('collection.title', currentLocale))}
                   </h2>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4">
@@ -876,7 +876,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                       }}
                                       className={`block w-full text-left px-3 py-2 text-sm ${theme.modalHover} whitespace-nowrap`}
                                     >
-                                      {getLocalizedFolderName(f.name, currentLocale)}
+                                      {f.name}
                                     </button>
                                   ))}
                                 </div>

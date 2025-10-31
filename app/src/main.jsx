@@ -411,40 +411,9 @@ function SteamPriceFilter({ initialData = null }) {
 
         db.close();
 
-        // Translate folder names if they are translation keys
-        const locale = currentLocale || "en";
-        const translatedFolders = existingFolders.map((folder) => {
-          // Check if folder name is a translation key
-          if (
-            folder.name === "folder.default.interested" ||
-            folder.name.includes("folder.default.interested")
-          ) {
-            return { ...folder, name: t("folder.default.interested", locale) };
-          } else if (
-            folder.name === "folder.default.wishlist" ||
-            folder.name.includes("folder.default.wishlist")
-          ) {
-            return { ...folder, name: t("folder.default.wishlist", locale) };
-          } else if (
-            folder.name === "folder.default.owned" ||
-            folder.name.includes("folder.default.owned")
-          ) {
-            return { ...folder, name: t("folder.default.owned", locale) };
-          }
-          return folder;
-        });
-
-        // Update folder names in database if they were translation keys
-        for (const folder of translatedFolders) {
-          const original = existingFolders.find((f) => f.id === folder.id);
-          if (original && original.name !== folder.name) {
-            await dbHelper.updateFolder(folder.id, folder.name);
-          }
-        }
-
-        setFolders(translatedFolders);
-        setSelectedFolderId(translatedFolders[0].id);
-        setTargetFolderId(translatedFolders[0].id);
+        setFolders(existingFolders);
+        setSelectedFolderId(existingFolders[0].id);
+        setTargetFolderId(existingFolders[0].id);
       }
     })();
   }, []);

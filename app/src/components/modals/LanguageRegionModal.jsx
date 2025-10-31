@@ -1,10 +1,24 @@
 import React from 'react';
 import { t, currentLocale, setLocale } from '../../i18n/index.js';
 import { dbHelper } from '../../db/index.js';
+import { FOLDER_NAME_TO_KEY } from '../../utils/format.js';
 
 export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, setForceUpdate, onClose, setMinPrice, setMaxPrice }) {
   const handleLanguageChange = async (locale) => {
     await setLocale(locale);
+
+    // Update IndexedDB folder names for 4 default folders
+    const folders = await dbHelper.getFolders();
+    const translationKeys = ['folder.default.interested', 'folder.default.wishlist', 'folder.default.sale_watch', 'folder.default.owned_list'];
+
+    for (const folder of folders) {
+      const key = FOLDER_NAME_TO_KEY[folder.name];
+      if (key && translationKeys.includes(key)) {
+        const newName = t(key, locale);
+        await dbHelper.updateFolder(folder.id, newName);
+      }
+    }
+
     setForceUpdate(prev => prev + 1);
   };
 
