@@ -19,7 +19,8 @@
 
 ### 1. /api/games-data テスト
 ### 2. /api/detect-locale テスト
-### 3. /api/submit-feedback テスト
+### 3. /api/feedback テスト
+### 4. /api/feedback-admin テスト
 
 ---
 
@@ -298,7 +299,7 @@ describe('API-LOCALE-002: ロケール検出（フォールバック）', () => 
 
 ---
 
-## 📧 3. /api/submit-feedback テスト
+## 💬 3. /api/feedback テスト
 
 ### API-FEEDBACK-001: フィードバック送信（正常系）
 
@@ -307,35 +308,38 @@ describe('API-LOCALE-002: ロケール検出（フォールバック）', () => 
 
 **前提条件**
 - FEEDBACK_KVが設定されている
+- MAILCHANNELS_API_KEYが設定されている
 
 **テスト内容**
-- POST /api/submit-feedback にデータを送信
-- フィードバックが保存される
+- POST /api/feedback にデータを送信
+- フィードバックがKVに保存される
+- メール通知が送信される
 
 **期待結果（正常系）**
 - ステータスコード: 200
 - success: true
-- idが返される
+- message: 'Feedback submitted successfully'
 
 **実装例**
 
 ```javascript
-// app/functions/__tests__/submit-feedback.test.js
-import { describe, it, expect } from 'vitest';
+// app/functions/__tests__/feedback.test.js
+import { describe, it, expect, vi } from 'vitest';
 import { env, createExecutionContext, waitOnExecutionContext } from 'cloudflare:test';
-import worker from '../api/submit-feedback';
+import worker from '../api/feedback';
 
 describe('API-FEEDBACK-001: フィードバック送信（正常系）', () => {
   it('正常系: フィードバックが保存される', async () => {
     // Arrange
     const feedbackData = {
-      type: 'inquiry',
-      title: 'テストタイトル',
-      content: 'テスト内容',
-      email: 'test@example.com'
+      category: 'bug',
+      title: 'テストバグ',
+      description: 'テスト詳細',
+      email: 'test@example.com',
+      timestamp: Date.now()
     };
-    
-    const request = new Request('http://localhost/api/submit-feedback', {
+
+    const request = new Request('http://localhost/api/feedback', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(feedbackData)
@@ -350,8 +354,11 @@ describe('API-FEEDBACK-001: フィードバック送信（正常系）', () => {
     // Assert
     expect(response.status).toBe(200);
     expect(data.success).toBe(true);
-    expect(data.id).toBeDefined();
-    expect(data.id).toMatch(/^feedback:/);
+    expect(data.message).toBe('Feedback submitted successfully');
+
+    // KVに保存されているか確認
+    const savedData = await env.FEEDBACK_KV.get(`feedback:${feedbackData.timestamp}`);
+    expect(savedData).toBeDefined();
   });
 });
 ```
@@ -381,12 +388,12 @@ describe('API-FEEDBACK-002: バリデーションエラー', () => {
   it('異常系: タイトルが空', async () => {
     // Arrange
     const feedbackData = {
-      type: 'inquiry',
+      category: 'bug',
       title: '',
-      content: 'テスト内容'
+      description: 'テスト詳細'
     };
-    
-    const request = new Request('http://localhost/api/submit-feedback', {
+
+    const request = new Request('http://localhost/api/feedback', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(feedbackData)
@@ -399,18 +406,19 @@ describe('API-FEEDBACK-002: バリデーションエラー', () => {
 
     // Assert
     expect(response.status).toBe(400);
-    expect(data.error).toBeDefined();
+    expect(data.success).toBe(false);
+    expect(data.error).toContain('title');
   });
 
-  it('異常系: 内容が2000文字超過', async () => {
+  it('異常系: 詳細が空', async () => {
     // Arrange
     const feedbackData = {
-      type: 'inquiry',
-      title: 'テスト',
-      content: 'あ'.repeat(2001)
+      category: 'bug',
+      title: 'テストバグ',
+      description: ''
     };
-    
-    const request = new Request('http://localhost/api/submit-feedback', {
+
+    const request = new Request('http://localhost/api/feedback', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(feedbackData)
@@ -423,36 +431,99 @@ describe('API-FEEDBACK-002: バリデーションエラー', () => {
 
     // Assert
     expect(response.status).toBe(400);
-    expect(data.error).toContain('2000');
+    expect(data.success).toBe(false);
+    expect(data.error).toContain('description');
   });
 });
 ```
 
 ---
 
-### API-FEEDBACK-003: 認証エラー
+## 🔐 4. /api/feedback-admin テスト
 
-**優先度**: Medium
+### API-ADMIN-001: フィードバック一覧取得（正常系）
+
+**優先度**: High
 **ステータス**: ⬜ 未実装
 
 **前提条件**
-- 管理者APIエンドポイントへのアクセス
+- FEEDBACK_KVにフィードバックデータが保存されている
+- FEEDBACK_ADMIN_SECRETが設定されている
 
 **テスト内容**
-- パスワードなしで管理者APIにアクセス
-- 認証エラーが返される
+- GET /api/feedback-admin?secret=XXX でフィードバック一覧を取得
 
 **期待結果（正常系）**
-- ステータスコード: 401
-- 認証エラーメッセージ
+- ステータスコード: 200
+- success: true
+- feedbacks配列が返される
 
 **実装例**
 
 ```javascript
-describe('API-FEEDBACK-003: 認証エラー', () => {
-  it('異常系: パスワードなしでアクセス', async () => {
+// app/functions/__tests__/feedback-admin.test.js
+import { describe, it, expect } from 'vitest';
+import { env, createExecutionContext, waitOnExecutionContext } from 'cloudflare:test';
+import worker from '../api/feedback-admin';
+
+describe('API-ADMIN-001: フィードバック一覧取得（正常系）', () => {
+  it('正常系: フィードバック一覧が取得できる', async () => {
     // Arrange
-    const request = new Request('http://localhost/api/admin/list-feedback');
+    const timestamp = Date.now();
+    const feedbackData = {
+      timestamp,
+      category: 'bug',
+      title: 'テストバグ',
+      description: 'テスト詳細',
+      email: 'test@example.com',
+      userAgent: 'Mozilla/5.0',
+      locale: 'ja'
+    };
+
+    await env.FEEDBACK_KV.put(`feedback:${timestamp}`, JSON.stringify(feedbackData));
+
+    const request = new Request('http://localhost/api/feedback-admin?secret=test-secret');
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    await waitOnExecutionContext(ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.feedbacks).toBeInstanceOf(Array);
+    expect(data.feedbacks.length).toBeGreaterThan(0);
+    expect(data.feedbacks[0].title).toBe('テストバグ');
+  });
+});
+```
+
+---
+
+### API-ADMIN-002: 認証エラー
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- なし
+
+**テスト内容**
+- シークレットキーなし、または誤ったシークレットキーでアクセス
+
+**期待結果（正常系）**
+- ステータスコード: 401
+- エラーメッセージが返される
+
+**実装例**
+
+```javascript
+describe('API-ADMIN-002: 認証エラー', () => {
+  it('異常系: シークレットキーなし', async () => {
+    // Arrange
+    const request = new Request('http://localhost/api/feedback-admin');
     const ctx = createExecutionContext();
 
     // Act
@@ -461,7 +532,84 @@ describe('API-FEEDBACK-003: 認証エラー', () => {
 
     // Assert
     expect(response.status).toBe(401);
-    expect(data.error).toContain('認証');
+    expect(data.success).toBe(false);
+    expect(data.error).toContain('Invalid secret key');
+  });
+
+  it('異常系: 誤ったシークレットキー', async () => {
+    // Arrange
+    const request = new Request('http://localhost/api/feedback-admin?secret=wrong-secret');
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(401);
+    expect(data.success).toBe(false);
+    expect(data.error).toContain('Invalid secret key');
+  });
+});
+```
+
+---
+
+### API-ADMIN-003: フィードバック削除
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- FEEDBACK_KVにフィードバックデータが保存されている
+- FEEDBACK_ADMIN_SECRETが設定されている
+
+**テスト内容**
+- DELETE /api/feedback-admin でフィードバックを削除
+
+**期待結果（正常系）**
+- ステータスコード: 200
+- success: true
+- KVからデータが削除される
+
+**実装例**
+
+```javascript
+describe('API-ADMIN-003: フィードバック削除', () => {
+  it('正常系: フィードバックが削除される', async () => {
+    // Arrange
+    const timestamp = Date.now();
+    const feedbackData = {
+      timestamp,
+      category: 'bug',
+      title: 'テストバグ',
+      description: 'テスト詳細'
+    };
+
+    await env.FEEDBACK_KV.put(`feedback:${timestamp}`, JSON.stringify(feedbackData));
+
+    const request = new Request('http://localhost/api/feedback-admin', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret: 'test-secret',
+        timestamp
+      })
+    });
+    const ctx = createExecutionContext();
+
+    // Act
+    const response = await worker.fetch(request, env, ctx);
+    await waitOnExecutionContext(ctx);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+
+    // KVから削除されているか確認
+    const deletedData = await env.FEEDBACK_KV.get(`feedback:${timestamp}`);
+    expect(deletedData).toBeNull();
   });
 });
 ```
@@ -479,10 +627,14 @@ describe('API-FEEDBACK-003: 認証エラー', () => {
 - [ ] API-LOCALE-001: ロケール検出（日本）
 - [ ] API-LOCALE-002: ロケール検出（フォールバック）
 
-### /api/submit-feedback
+### /api/feedback
 - [ ] API-FEEDBACK-001: フィードバック送信（正常系）
 - [ ] API-FEEDBACK-002: バリデーションエラー
-- [ ] API-FEEDBACK-003: 認証エラー
+
+### /api/feedback-admin
+- [ ] API-ADMIN-001: フィードバック一覧取得（正常系）
+- [ ] API-ADMIN-002: 認証エラー
+- [ ] API-ADMIN-003: フィードバック削除
 
 ---
 

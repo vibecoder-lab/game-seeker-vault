@@ -28,9 +28,12 @@ Game Seeker Vaultは、Steamゲームを検索・収集できるWebアプリケ�
 
 - Steamゲームの検索・閲覧
 - 価格情報・セール情報の表示（JPY/USD対応）
+- **マルチリージョン価格対応** - 日本（JPY）とアメリカ（USD）の価格を表示
 - ゲームのコレクション管理（IndexedDB使用）
+- **動画再生機能** - ゲームトレーラーをアプリ内で視聴（YouTube埋め込みプレーヤー）
 - 多言語対応（日本語/英語）
 - 自動データ更新（GitHub Actions）
+- **フィードバックシステム** - アプリからフィードバックを送信、管理画面で確認
 
 ### システムの特徴
 
@@ -91,8 +94,8 @@ graph TB
     end
 
     subgraph "Cloudflare"
-        E[Workers KV<br/>games-data<br/>id-map]
-        F[Pages Functions<br/>/api/games-data<br/>/api/detect-locale]
+        E[Workers KV<br/>games-data<br/>id-map<br/>feedback-data]
+        F[Pages Functions<br/>/api/games-data<br/>/api/detect-locale<br/>/api/feedback<br/>/api/feedback-admin]
         G[Cloudflare Pages<br/>React App]
     end
 
@@ -181,10 +184,14 @@ app/
 │   ├── components/           # Reactコンポーネント
 │   │   ├── Header.jsx        # ヘッダー
 │   │   ├── GameCard.jsx      # ゲームカード
+│   │   ├── AdminPanel.jsx    # 管理パネル
 │   │   └── modals/           # モーダル群
 │   │       ├── CollectionModal.jsx
 │   │       ├── SettingsModal.jsx
-│   │       └── ImportExportModal.jsx
+│   │       ├── ImportExportModal.jsx
+│   │       ├── VideoModal.jsx
+│   │       ├── FeedbackModal.jsx
+│   │       └── LanguageRegionModal.jsx
 │   ├── db/                   # IndexedDB操作
 │   │   ├── init.js           # DB初期化
 │   │   ├── folders.js        # フォルダCRUD
@@ -196,7 +203,9 @@ app/
 │   └── utils/                # ユーティリティ
 └── functions/api/            # Cloudflare Pages Functions
     ├── games-data.ts         # ゲームデータAPI
-    └── detect-locale.ts      # ロケール検出API
+    ├── detect-locale.ts      # ロケール検出API
+    ├── feedback.ts           # フィードバック送信API
+    └── feedback-admin.ts     # フィードバック管理API
 ```
 
 ### 2. バックエンド (`updater/`)
@@ -366,13 +375,21 @@ game-seeker-vault/
 | `CLOUDFLARE_API_TOKEN` | Cloudflare API トークン |
 | `CLOUDFLARE_ACCOUNT_ID` | CloudflareアカウントID |
 | `KV_NAMESPACE_ID` | KV Namespace ID |
+| `MAILCHANNELS_API_KEY` | MailChannels API キー（フィードバック通知） |
+| `FEEDBACK_ADMIN_SECRET` | フィードバック管理画面アクセスキー |
 
 ### Cloudflare KV Bindings
 
+**GSV_GAMES**（ゲームデータ用KV）:
 | KVキー | データ内容 |
 |--------|----------|
 | `games-data` | ゲーム一覧JSON配列 |
 | `id-map` | Steam App ID ↔ ITAD ID マッピング |
+
+**FEEDBACK_KV**（フィードバックデータ用KV）:
+| KVキー | データ内容 |
+|--------|----------|
+| `feedback:{timestamp}` | フィードバック送信データ（JSON） |
 
 ---
 

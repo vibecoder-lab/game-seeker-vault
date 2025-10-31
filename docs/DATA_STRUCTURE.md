@@ -152,6 +152,7 @@ interface Settings {
   enableScrollAnimation: boolean; // スクロールアニメーション
   hideOwnedTitles: boolean;       // 所有タイトル非表示
   locale: 'en' | 'ja';            // 言語設定
+  region: 'JPY' | 'USD';          // 価格表示リージョン
   settingsVersion: number;        // 設定バージョン
 }
 ```
@@ -174,6 +175,7 @@ interface Settings {
   "enableScrollAnimation": true,
   "hideOwnedTitles": false,
   "locale": "en",
+  "region": "JPY",
   "settingsVersion": 1
 }
 ```
@@ -264,6 +266,48 @@ type IdMap = IdMapEntry[];
 
 ---
 
+### KV Namespace: `FEEDBACK_KV`
+
+**用途**: フィードバックデータの保存
+
+---
+
+### Key: `feedback:{timestamp}`
+
+**構造**:
+
+```typescript
+interface FeedbackData {
+  timestamp: number;           // UNIXタイムスタンプ（ミリ秒）
+  category: string;            // カテゴリ（'bug' | 'feature' | 'other'）
+  title: string;               // フィードバックタイトル
+  description: string;         // 詳細説明
+  email?: string;              // メールアドレス（任意）
+  userAgent: string;           // ブラウザUA
+  locale: string;              // 送信時の言語設定
+}
+```
+
+**サンプル**:
+
+```json
+{
+  "timestamp": 1738137600000,
+  "category": "bug",
+  "title": "価格が正しく表示されない",
+  "description": "一部のゲームで価格が'-'と表示されます",
+  "email": "user@example.com",
+  "userAgent": "Mozilla/5.0 ...",
+  "locale": "ja"
+}
+```
+
+**KVキー命名規則**:
+- フォーマット: `feedback:{timestamp}`
+- 例: `feedback:1738137600000`
+
+---
+
 ## API構造
 
 ### Pages Function: `/api/games-data`
@@ -313,6 +357,122 @@ type IdMap = IdMapEntry[];
   "browserLang": "ja",
   "suggestedLang": "ja",
   "country": "JP"
+}
+```
+
+---
+
+### Pages Function: `/api/feedback`
+
+**メソッド**: POST
+
+**リクエストボディ**:
+
+```typescript
+{
+  category: string;            // 'bug' | 'feature' | 'other'
+  title: string;               // タイトル
+  description: string;         // 詳細説明
+  email?: string;              // メールアドレス（任意）
+  timestamp: number;           // UNIXタイムスタンプ
+}
+```
+
+**レスポンス**:
+
+```typescript
+{
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+```
+
+**成功例**:
+
+```json
+{
+  "success": true,
+  "message": "Feedback submitted successfully"
+}
+```
+
+**失敗例**:
+
+```json
+{
+  "success": false,
+  "error": "Invalid feedback data"
+}
+```
+
+---
+
+### Pages Function: `/api/feedback-admin`
+
+**メソッド**: GET
+
+**クエリパラメータ**:
+- `secret`: 管理者シークレットキー
+
+**レスポンス**:
+
+```typescript
+{
+  success: boolean;
+  feedbacks?: FeedbackData[];  // フィードバック一覧（タイムスタンプ降順）
+  error?: string;
+}
+```
+
+**成功例**:
+
+```json
+{
+  "success": true,
+  "feedbacks": [
+    {
+      "timestamp": 1738137600000,
+      "category": "bug",
+      "title": "価格が正しく表示されない",
+      "description": "一部のゲームで価格が'-'と表示されます",
+      "email": "user@example.com",
+      "userAgent": "Mozilla/5.0 ...",
+      "locale": "ja"
+    }
+  ]
+}
+```
+
+**認証失敗例**:
+
+```json
+{
+  "success": false,
+  "error": "Invalid secret key"
+}
+```
+
+---
+
+**メソッド**: DELETE
+
+**リクエストボディ**:
+
+```typescript
+{
+  secret: string;              // 管理者シークレットキー
+  timestamp: number;           // 削除対象のタイムスタンプ
+}
+```
+
+**レスポンス**:
+
+```typescript
+{
+  success: boolean;
+  message?: string;
+  error?: string;
 }
 ```
 

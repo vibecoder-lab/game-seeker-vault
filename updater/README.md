@@ -50,11 +50,25 @@ python3 updater/main.py <ITAD_API_KEY> --new-only
 
 #### --regions
 
-Specify regions to fetch prices for (default: JP)
+Specify regions to fetch prices for (default: JP,US)
 
 ```bash
+# Fetch prices for Japan and United States (default)
+python3 updater/main.py <ITAD_API_KEY>
+
+# Fetch prices for specific regions
 python3 updater/main.py <ITAD_API_KEY> --regions JP,US,UK,EU
 ```
+
+**Supported regions:**
+- `JP` - Japan (JPY)
+- `US` - United States (USD)
+- `UK` - United Kingdom (GBP)
+- `EU` - European Union (EUR)
+
+**Notes:**
+- Multi-region pricing requires additional Steam API calls (one per region per game)
+- Each region's price data is stored separately in the `deal` object (e.g., `deal.JPY`, `deal.USD`)
 
 #### --kv
 
@@ -96,11 +110,11 @@ updater/
 ```
 1. Get id-map from KV/local
 2. For each game ID:
-   - Fetch basic info from Steam API (appdetails)
-   - Fetch additional region prices from Steam API (if multiple regions specified)
+   - Fetch basic info from Steam API (appdetails) for primary region (JP)
+   - Fetch additional region prices from Steam API (default: US, or as specified via --regions)
    - Fetch review data from Steam API (appreviews)
-   - Fetch historical low from ITAD API (if ITAD ID exists)
-3. Create games.json
+   - Fetch historical low from ITAD API for each region (if ITAD ID exists)
+3. Create games.json with multi-region pricing data
 4. Save games-data to KV/local
 ```
 
@@ -112,13 +126,13 @@ updater/
 3. Match titles against Steam API (GetAppList) - searches entire list
    - Skip if multiple exact matches found (logged with all App IDs)
    - Skip if already exists in id-map
-4. Get itadId from ITAD API (lookup) for matched games
+4. Get itadId from ITAD API (lookup) for matched games (for each region)
 5. Get existing games-data from KV/local
 6. For each new game ID:
-   - Fetch basic info from Steam API (appdetails)
-   - Fetch additional region prices from Steam API (if multiple regions specified)
+   - Fetch basic info from Steam API (appdetails) for primary region (JP)
+   - Fetch additional region prices from Steam API (default: US, or as specified via --regions)
    - Fetch review data from Steam API (appreviews)
-   - Fetch historical low from ITAD API (if ITAD ID exists)
+   - Fetch historical low from ITAD API for each region (if ITAD ID exists)
 7. Merge existing data + new data
 8. Save id-map and games-data to KV/local atomically (only if all fetches succeed)
 9. Display newly added games (only on successful update)

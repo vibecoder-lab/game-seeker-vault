@@ -21,6 +21,9 @@
 ### 3. IndexedDB操作テスト
 ### 4. i18n（多言語対応）テスト
 ### 5. ユーティリティ関数テスト
+### 6. 動画再生機能テスト
+### 7. フィードバック機能テスト
+### 8. マルチリージョン価格テスト
 
 ---
 
@@ -985,6 +988,497 @@ describe('FE-UTIL-002: translateGenre()', () => {
 
 ---
 
+## 🎥 6. 動画再生機能テスト
+
+### FE-VIDEO-001: VideoModal表示
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- ゲームに動画データ（movies配列）が存在する
+
+**テスト手順**
+1. GameCardの動画アイコンをクリック
+
+**期待結果（正常系）**
+- VideoModalが表示される
+- 最初の動画が自動再生される
+- 動画タイトルが表示される
+
+**異常系**
+- 動画データが空の場合、スクリーンショットが表示される
+- 動画もスクリーンショットもない場合、"No media available"と表示される
+
+**実装例**
+```javascript
+// app/src/components/modals/__tests__/VideoModal.test.jsx
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { VideoModal } from '../VideoModal';
+
+describe('FE-VIDEO-001: VideoModal表示', () => {
+  it('正常系: 動画が表示される', () => {
+    // Arrange
+    const mockGame = {
+      id: '123456',
+      title: 'Test Game',
+      movies: [
+        {
+          id: 256712345,
+          name: 'Trailer',
+          thumbnail: 'https://example.com/thumb.jpg',
+          webm: 'https://example.com/video.webm',
+          mp4: 'https://example.com/video.mp4'
+        }
+      ]
+    };
+
+    // Act
+    render(
+      <VideoModal
+        game={mockGame}
+        theme={{}}
+        isClosing={false}
+        onClose={() => {}}
+      />
+    );
+
+    // Assert
+    expect(screen.getByText('Test Game')).toBeInTheDocument();
+    const video = screen.getByRole('video');
+    expect(video).toBeInTheDocument();
+  });
+
+  it('異常系: 動画がない場合スクリーンショット表示', () => {
+    // Arrange
+    const mockGame = {
+      id: '123456',
+      title: 'Test Game',
+      movies: [],
+      screenshot: {
+        full: 'https://example.com/screenshot.jpg'
+      }
+    };
+
+    // Act
+    render(
+      <VideoModal
+        game={mockGame}
+        theme={{}}
+        isClosing={false}
+        onClose={() => {}}
+      />
+    );
+
+    // Assert
+    const img = screen.getByAltText(/screenshot/i);
+    expect(img).toBeInTheDocument();
+  });
+});
+```
+
+---
+
+### FE-VIDEO-002: 動画切り替え
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- ゲームに複数の動画が存在する
+
+**テスト手順**
+1. VideoModalが開いている
+2. 右側エリアにホバー
+3. 2番目の動画サムネイルをクリック
+
+**期待結果（正常系）**
+- 動画リストが表示される
+- 2番目の動画に切り替わる
+- `selectedVideoIndex` stateが更新される
+
+**実装例**
+```javascript
+describe('FE-VIDEO-002: 動画切り替え', () => {
+  it('正常系: 動画が切り替わる', async () => {
+    const user = userEvent.setup();
+    const mockGame = {
+      id: '123456',
+      title: 'Test Game',
+      movies: [
+        { id: 1, name: 'Trailer 1', thumbnail: 'thumb1.jpg', webm: 'video1.webm', mp4: 'video1.mp4' },
+        { id: 2, name: 'Trailer 2', thumbnail: 'thumb2.jpg', webm: 'video2.webm', mp4: 'video2.mp4' }
+      ]
+    };
+
+    render(
+      <VideoModal
+        game={mockGame}
+        theme={{}}
+        isClosing={false}
+        onClose={() => {}}
+      />
+    );
+
+    // ホバーエリアにマウスを移動
+    const hoverArea = screen.getByRole('region', { name: /hover area/i });
+    await user.hover(hoverArea);
+
+    // 2番目の動画をクリック
+    const thumbnail2 = screen.getByAltText('Trailer 2');
+    await user.click(thumbnail2);
+
+    // Assert: video要素のkeyが変更されていることを確認
+    // 実際の実装ではvideo要素が再マウントされる
+  });
+});
+```
+
+---
+
+### FE-VIDEO-003: 動画クリーンアップ
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- VideoModalが開いており、動画が再生中
+
+**テスト手順**
+1. モーダルを閉じる
+
+**期待結果（正常系）**
+- 動画が停止する
+- `videoRef.current.pause()` が呼ばれる
+- `videoRef.current.currentTime = 0` が呼ばれる
+- `videoRef.current.load()` が呼ばれる
+
+**実装例**
+```javascript
+describe('FE-VIDEO-003: 動画クリーンアップ', () => {
+  it('正常系: モーダルclose時に動画が停止する', () => {
+    const mockGame = {
+      id: '123456',
+      title: 'Test Game',
+      movies: [
+        { id: 1, name: 'Trailer', thumbnail: 'thumb.jpg', webm: 'video.webm', mp4: 'video.mp4' }
+      ]
+    };
+
+    const { unmount } = render(
+      <VideoModal
+        game={mockGame}
+        theme={{}}
+        isClosing={false}
+        onClose={() => {}}
+      />
+    );
+
+    // Act: コンポーネントをアンマウント
+    const video = screen.getByRole('video');
+    const pauseSpy = vi.spyOn(video, 'pause');
+    const loadSpy = vi.spyOn(video, 'load');
+
+    unmount();
+
+    // Assert
+    expect(pauseSpy).toHaveBeenCalled();
+    expect(loadSpy).toHaveBeenCalled();
+  });
+});
+```
+
+---
+
+## 💬 7. フィードバック機能テスト
+
+### FE-FEEDBACK-001: フィードバックモーダル表示
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- なし
+
+**テスト手順**
+1. ヘッダーのフィードバックボタンをクリック
+
+**期待結果（正常系）**
+- FeedbackModalが表示される
+- カテゴリ選択欄が表示される
+- タイトル入力欄が表示される
+- 詳細入力欄が表示される
+
+**実装例**
+```javascript
+// app/src/components/modals/__tests__/FeedbackModal.test.jsx
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { FeedbackModal } from '../FeedbackModal';
+
+describe('FE-FEEDBACK-001: フィードバックモーダル表示', () => {
+  it('正常系: モーダルが表示される', () => {
+    render(
+      <FeedbackModal
+        isOpen={true}
+        onClose={() => {}}
+        theme={{}}
+        locale="ja"
+      />
+    );
+
+    expect(screen.getByText(/フィードバック/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/カテゴリ/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/タイトル/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/詳細/i)).toBeInTheDocument();
+  });
+});
+```
+
+---
+
+### FE-FEEDBACK-002: フィードバック送信
+
+**優先度**: Medium
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- FeedbackModalが開いている
+
+**テスト手順**
+1. カテゴリを「バグ報告」に選択
+2. タイトルに「テストバグ」を入力
+3. 詳細に「テスト詳細」を入力
+4. 送信ボタンをクリック
+
+**期待結果（正常系）**
+- `/api/feedback` にPOSTリクエストが送信される
+- 成功メッセージが表示される
+- モーダルが閉じる
+
+**異常系**
+- タイトルが空の場合、エラーメッセージが表示される
+- 詳細が空の場合、エラーメッセージが表示される
+
+**実装例**
+```javascript
+describe('FE-FEEDBACK-002: フィードバック送信', () => {
+  it('正常系: フィードバックが送信される', async () => {
+    const user = userEvent.setup();
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ success: true })
+      })
+    );
+
+    render(
+      <FeedbackModal
+        isOpen={true}
+        onClose={() => {}}
+        theme={{}}
+        locale="ja"
+      />
+    );
+
+    // カテゴリ選択
+    const categorySelect = screen.getByLabelText(/カテゴリ/i);
+    await user.selectOptions(categorySelect, 'bug');
+
+    // タイトル入力
+    const titleInput = screen.getByLabelText(/タイトル/i);
+    await user.type(titleInput, 'テストバグ');
+
+    // 詳細入力
+    const descriptionInput = screen.getByLabelText(/詳細/i);
+    await user.type(descriptionInput, 'テスト詳細');
+
+    // 送信
+    const submitButton = screen.getByRole('button', { name: /送信/i });
+    await user.click(submitButton);
+
+    // Assert
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/api/feedback', expect.objectContaining({
+        method: 'POST',
+        body: expect.stringContaining('テストバグ')
+      }));
+      expect(screen.getByText(/送信しました/i)).toBeInTheDocument();
+    });
+  });
+});
+```
+
+---
+
+## 💱 8. マルチリージョン価格テスト
+
+### FE-REGION-001: リージョン切り替え
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- ゲームにJPYとUSDの価格データが存在する
+
+**テスト手順**
+1. LanguageRegionModalを開く
+2. リージョンを「USD」に変更
+3. 保存ボタンをクリック
+
+**期待結果（正常系）**
+- `currentRegion` stateが「USD」に更新される
+- 価格表示が「$17.00」形式に変わる
+- IndexedDBに保存される
+
+**実装例**
+```javascript
+// app/src/components/modals/__tests__/LanguageRegionModal.test.jsx
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { LanguageRegionModal } from '../LanguageRegionModal';
+import * as dbHelper from '../../../db/index';
+
+describe('FE-REGION-001: リージョン切り替え', () => {
+  it('正常系: リージョンがUSDに切り替わる', async () => {
+    const user = userEvent.setup();
+    const onRegionChange = vi.fn();
+    vi.spyOn(dbHelper.dbHelper, 'saveSettings').mockResolvedValue();
+
+    render(
+      <LanguageRegionModal
+        isOpen={true}
+        onClose={() => {}}
+        theme={{}}
+        currentLocale="en"
+        currentRegion="JPY"
+        onLocaleChange={() => {}}
+        onRegionChange={onRegionChange}
+        isClosing={false}
+      />
+    );
+
+    // USD選択
+    const usdRadio = screen.getByLabelText(/USD/i);
+    await user.click(usdRadio);
+
+    // 保存
+    const saveButton = screen.getByRole('button', { name: /保存/i });
+    await user.click(saveButton);
+
+    // Assert
+    await waitFor(() => {
+      expect(onRegionChange).toHaveBeenCalledWith('USD');
+      expect(dbHelper.dbHelper.saveSettings).toHaveBeenCalled();
+    });
+  });
+});
+```
+
+---
+
+### FE-REGION-002: 価格フィルタリング（リージョン別）
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- ゲームにJPYとUSDの価格データが存在する
+
+**テスト手順**
+1. リージョンを「USD」に設定
+2. 最低価格を$10、最高価格を$30に設定
+
+**期待結果（正常系）**
+- USD価格で$10～$30のゲームのみが表示される
+- JPY価格ではなくUSD価格でフィルタされる
+
+**実装例**
+```javascript
+describe('FE-REGION-002: 価格フィルタリング（リージョン別）', () => {
+  it('正常系: USD価格でフィルタされる', () => {
+    const games = [
+      {
+        id: '1',
+        title: 'Game 1',
+        deal: {
+          JPY: { price: 1000 },
+          USD: { price: 15 }
+        }
+      },
+      {
+        id: '2',
+        title: 'Game 2',
+        deal: {
+          JPY: { price: 2000 },
+          USD: { price: 50 }
+        }
+      }
+    ];
+    const currentRegion = 'USD';
+    const minPrice = 10;
+    const maxPrice = 30;
+
+    // Act
+    const filtered = games.filter(game => {
+      const price = game.deal[currentRegion].price;
+      return price >= minPrice && price <= maxPrice;
+    });
+
+    // Assert
+    expect(filtered).toHaveLength(1);
+    expect(filtered[0].id).toBe('1');
+  });
+});
+```
+
+---
+
+### FE-REGION-003: formatPrice() マルチリージョン対応
+
+**優先度**: High
+**ステータス**: ⬜ 未実装
+
+**前提条件**
+- なし
+
+**テスト手順**
+1. formatPrice(2550, 'JPY', 'ja') を呼び出す
+2. formatPrice(17.99, 'USD', 'en') を呼び出す
+
+**期待結果（正常系)**
+- JPY: '¥2,550'
+- USD: '$17.99'
+
+**実装例**
+```javascript
+describe('FE-REGION-003: formatPrice() マルチリージョン対応', () => {
+  it('正常系: JPY価格フォーマット', () => {
+    const result = formatPrice(2550, 'JPY', 'ja');
+    expect(result).toBe('¥2,550');
+  });
+
+  it('正常系: USD価格フォーマット', () => {
+    const result = formatPrice(17.99, 'USD', 'en');
+    expect(result).toBe('$17.99');
+  });
+
+  it('正常系: 無料ゲーム（JPY）', () => {
+    const result = formatPrice(0, 'JPY', 'ja');
+    expect(result).toBe('無料');
+  });
+
+  it('正常系: 無料ゲーム（USD）', () => {
+    const result = formatPrice(0, 'USD', 'en');
+    expect(result).toBe('Free');
+  });
+});
+```
+
+---
+
 ## 📊 テスト実装状況サマリー
 
 ### コレクション機能テスト
@@ -1011,6 +1505,20 @@ describe('FE-UTIL-002: translateGenre()', () => {
 ### ユーティリティ関数テスト
 - [ ] FE-UTIL-001: formatPrice() - 価格フォーマット
 - [ ] FE-UTIL-002: translateGenre() - ジャンル翻訳
+
+### 動画再生機能テスト
+- [ ] FE-VIDEO-001: VideoModal表示
+- [ ] FE-VIDEO-002: 動画切り替え
+- [ ] FE-VIDEO-003: 動画クリーンアップ
+
+### フィードバック機能テスト
+- [ ] FE-FEEDBACK-001: フィードバックモーダル表示
+- [ ] FE-FEEDBACK-002: フィードバック送信
+
+### マルチリージョン価格テスト
+- [ ] FE-REGION-001: リージョン切り替え
+- [ ] FE-REGION-002: 価格フィルタリング（リージョン別）
+- [ ] FE-REGION-003: formatPrice() マルチリージョン対応
 
 ---
 

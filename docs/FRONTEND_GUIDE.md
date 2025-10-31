@@ -44,6 +44,7 @@ app/src/
 ├── components/             # Reactコンポーネント
 │   ├── Header.jsx          # ヘッダー（ロゴ、ボタン群）
 │   ├── GameCard.jsx        # ゲームカード（一覧表示）
+│   ├── AdminPanel.jsx      # 管理パネル（フィードバック管理）
 │   └── modals/             # モーダルコンポーネント
 │       ├── CollectionModal.jsx      # コレクション管理
 │       ├── SettingsModal.jsx        # 設定
@@ -51,7 +52,9 @@ app/src/
 │       ├── ImportExportModal.jsx    # インポート/エクスポート
 │       ├── MobileFilterModal.jsx    # モバイル用フィルタ
 │       ├── MobileGenreModal.jsx     # モバイル用ジャンル選択
-│       └── VideoModal.jsx           # トレーラー再生
+│       ├── VideoModal.jsx           # トレーラー再生
+│       ├── FeedbackModal.jsx        # フィードバック送信
+│       └── LanguageRegionModal.jsx  # 言語・リージョン切り替え
 │
 ├── db/                     # IndexedDB操作
 │   ├── index.js            # DB操作のエクスポート
@@ -254,7 +257,32 @@ const handleDragEnd = (event) => {
 
 ---
 
-### 5. モーダルコンポーネント群
+### 5. `AdminPanel.jsx` - 管理パネル
+
+**役割**: フィードバック管理、アクセス制御
+
+**主要機能**:
+- シークレットキー認証
+- フィードバック一覧表示
+- フィードバック削除
+- タイムスタンプでソート
+
+**認証フロー**:
+
+```javascript
+const handleAuth = async (secret) => {
+  const res = await fetch(`/api/feedback-admin?secret=${secret}`);
+  const data = await res.json();
+  if (data.success) {
+    setIsAuthed(true);
+    setFeedbackList(data.feedbacks);
+  }
+};
+```
+
+---
+
+### 6. モーダルコンポーネント群
 
 #### `SettingsModal.jsx` - 設定モーダル
 
@@ -267,6 +295,7 @@ const handleDragEnd = (event) => {
   alwaysShowStarIcon: boolean,    // スターアイコン常時表示
   theme: 'default' | 'steam',     // テーマ
   locale: 'en' | 'ja',            // 言語
+  region: 'JPY' | 'USD',          // 価格表示リージョン
   // ... その他
 }
 ```
@@ -283,6 +312,99 @@ const handleDragEnd = (event) => {
 **タブ**:
 - 免責事項タブ
 - 使い方ガイドタブ
+
+#### `VideoModal.jsx` - 動画再生モーダル
+
+**役割**: ゲームトレーラー再生、スクリーンショット表示
+
+**主要機能**:
+- 複数動画の切り替え（サムネイル表示）
+- ホバーで動画リスト表示（下100pxは除外）
+- 自動再生
+- 動画がない場合はスクリーンショット表示
+- モーダルclose時に動画クリーンアップ
+
+**Props**:
+
+```typescript
+interface VideoModalProps {
+  game: Game;              // ゲームオブジェクト（movies配列含む）
+  theme: Theme;
+  isClosing: boolean;
+  onClose: () => void;
+}
+```
+
+**クリーンアップ処理**:
+
+```javascript
+useEffect(() => {
+  return () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+      videoRef.current.load();
+    }
+  };
+}, []);
+```
+
+#### `FeedbackModal.jsx` - フィードバック送信モーダル
+
+**役割**: ユーザーフィードバック送信
+
+**主要機能**:
+- カテゴリ選択（バグ報告、機能要望、その他）
+- タイトル入力
+- 詳細入力
+- メールアドレス入力（任意）
+- Pages Functions経由でKVに保存、MailChannels経由でメール送信
+
+**送信フロー**:
+
+```javascript
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const res = await fetch('/api/feedback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      category,
+      title,
+      description,
+      email,
+      timestamp: Date.now()
+    })
+  });
+  const data = await res.json();
+  if (data.success) {
+    // 成功メッセージ表示
+  }
+};
+```
+
+#### `LanguageRegionModal.jsx` - 言語・リージョン切り替えモーダル
+
+**役割**: UIの言語と価格表示リージョンの切り替え
+
+**主要機能**:
+- 言語選択（日本語/English）
+- リージョン選択（JPY/USD）
+- 設定の保存（IndexedDB）
+
+**Props**:
+
+```typescript
+interface LanguageRegionModalProps {
+  theme: Theme;
+  currentLocale: string;
+  currentRegion: string;
+  onLocaleChange: (locale: string) => void;
+  onRegionChange: (region: string) => void;
+  isClosing: boolean;
+  onClose: () => void;
+}
+```
 
 ---
 
@@ -314,18 +436,18 @@ const games = React.useMemo(() => {
         if (!hasInclude) return false;
       }
 
-      // 価格フィルタ
-      const price = game.deal.JPY.price;
+      // 価格フィルタ（現在選択中のリージョン）
+      const price = game.deal[currentRegion].price;
       if (price < minPrice || price > maxPrice) return false;
 
       return true;
     })
     .sort((a, b) => {
-      const priceA = a.deal.JPY.price;
-      const priceB = b.deal.JPY.price;
+      const priceA = a.deal[currentRegion].price;
+      const priceB = b.deal[currentRegion].price;
       return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
     });
-}, [rawGames, selectedGenres, minPrice, maxPrice, sortOrder]);
+}, [rawGames, selectedGenres, minPrice, maxPrice, sortOrder, currentRegion]);
 ```
 
 #### useEffect使用例
@@ -390,14 +512,35 @@ import { t } from './i18n/index.js';
 // → locale='ja': "閉じる"
 ```
 
-#### `formatPrice(price, locale)` - 価格フォーマット
+#### `formatPrice(price, currency)` - 価格フォーマット
+
+**シグネチャ**: `formatPrice(price: number, currency: 'JPY' | 'USD'): string`
 
 ```javascript
-formatPrice(2550, 'ja')  // → "¥2,550"
-formatPrice(2550, 'en')  // → "$17.00" (JPY÷150で概算)
+// マルチリージョン対応版
+formatPrice(2550, 'JPY')  // → "¥2,550"
+formatPrice(17.99, 'USD') // → "$17.99"
+
+// 無料ゲーム
+formatPrice(0, 'JPY')     // → "無料" (locale='ja'の場合)
+formatPrice(0, 'USD')     // → "Free" (locale='en'の場合)
 ```
 
-**注**: 現在は概算USD。今後は`deal.USD`を使用予定。
+**実装**:
+
+```javascript
+import { t } from './i18n/index.js';
+
+export const formatPrice = (price, currency, locale) => {
+  if (price === 0) return t('price.free', locale);
+
+  if (currency === 'JPY') {
+    return `¥${Math.floor(price).toLocaleString('ja-JP')}`;
+  } else {
+    return `$${price.toFixed(2)}`;
+  }
+};
+```
 
 #### `translateGenre(genre, locale)` - ジャンル翻訳
 

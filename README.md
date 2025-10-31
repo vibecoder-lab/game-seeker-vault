@@ -22,13 +22,16 @@ The project consists of:
 ### Key Features
 - Search and browse a curated collection of Steam games
 - View the latest prices and discounts (via ITAD)
+- **Multi-region pricing support** — View prices in both JPY (Japan) and USD (United States)
 - Save favorite games to a local "Collection" (stored in IndexedDB as `GameSeekerVaultDB`)
+- **Video playback** — Watch game trailers directly in the app with embedded YouTube player
 - Fully client-side functionality — no login required
 - Automatically refreshed game data (via backend automation)
 - Multi-language support (English & Japanese) with automatic detection based on:
   - User's saved preference (localStorage)
   - Browser language settings
   - Geographic location (via Cloudflare's IP geolocation)
+- **Feedback system** — Submit feedback directly from the app (admin panel for review)
 
 ---
 
@@ -43,7 +46,12 @@ game-seeker-vault/
 │   │   ├── components/         # React components
 │   │   │   ├── GameCard.jsx    # Game card component
 │   │   │   ├── Header.jsx      # Header component
+│   │   │   ├── AdminPanel.jsx  # Admin panel component
 │   │   │   └── modals/         # Modal components
+│   │   │       ├── CollectionModal.jsx
+│   │   │       ├── VideoModal.jsx
+│   │   │       ├── FeedbackModal.jsx
+│   │   │       └── LanguageRegionModal.jsx
 │   │   ├── constants/          # Application constants
 │   │   │   ├── index.js        # General constants
 │   │   │   ├── genres.js       # Genre mappings
@@ -65,7 +73,9 @@ game-seeker-vault/
 │   ├── functions/              # Cloudflare Pages Functions (API)
 │   │   └── api/
 │   │       ├── games-data.ts   # Games data API endpoint
-│   │       └── detect-locale.ts # Locale detection API endpoint
+│   │       ├── detect-locale.ts # Locale detection API endpoint
+│   │       ├── feedback.ts     # Feedback submission endpoint
+│   │       └── feedback-admin.ts # Feedback admin endpoint
 │   ├── index.html              # Development HTML entry point
 │   ├── package.json            # Node.js dependencies
 │   ├── vite.config.js          # Vite configuration
@@ -97,6 +107,17 @@ game-seeker-vault/
 │   └── README.md               # Detailed updater documentation
 │
 ├── docs/                       # Project documentation
+│   ├── ARCHITECTURE.md         # System architecture
+│   ├── FRONTEND_GUIDE.md       # Frontend development guide
+│   ├── DATA_STRUCTURE.md       # Data structure specification
+│   ├── BATCH_PROCESSING.md     # Batch processing guide
+│   ├── features/               # Feature documentation
+│   │   ├── VIDEO_PLAYBACK.md
+│   │   ├── MULTI_REGION_PRICING.md
+│   │   └── STEAM_REVIEWS_IMPLEMENTATION.md
+│   ├── tests/                  # Test documentation
+│   │   ├── FRONTEND_TESTS.md
+│   │   └── API_TESTS.md
 │   └── tmp/                    # Documentation drafts
 │       ├── overview.md
 │       └── coding_rules.md
@@ -195,6 +216,8 @@ Required secrets for GitHub Actions workflows:
 | `CLOUDFLARE_API_TOKEN` | Cloudflare API token with Workers KV write access | Data pipeline (updater) |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Account ID | Data pipeline (updater) |
 | `KV_NAMESPACE_ID` | Cloudflare Workers KV Namespace ID | Data pipeline (updater) |
+| `MAILCHANNELS_API_KEY` | MailChannels API key for email notifications | Feedback system |
+| `FEEDBACK_ADMIN_SECRET` | Secret key for accessing feedback admin panel | Feedback system |
 
 ---
 
