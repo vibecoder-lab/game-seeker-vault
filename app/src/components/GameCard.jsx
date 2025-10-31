@@ -293,6 +293,10 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                onMouseEnter={(e) => {
                  setIsHovered(true);
                  setShiftPressed(e.shiftKey);
+                 // Remove focus from search input to enable shortcuts
+                 if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+                   document.activeElement.blur();
+                 }
                }}
                onMouseMove={(e) => {
                  setShiftPressed(e.shiftKey);
