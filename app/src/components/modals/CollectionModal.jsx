@@ -51,7 +51,7 @@ function SortableFolderItem({ id, folder, theme, isSpecialFolder, children }) {
         <div
           {...attributes}
           {...listeners}
-          className={`absolute left-1 top-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing p-1 z-10 transition-opacity duration-300 ${isHovering ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          className={`absolute left-1 top-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing pl-1 pr-1 z-10 transition-opacity duration-300 ${isHovering ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
           style={{ touchAction: 'none' }}
         >
           <svg
@@ -535,7 +535,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                   {/* Interested List (non-draggable) */}
                   {interestedListFolder && (
                     <div
-                      className={`group flex items-center px-3 py-2 rounded cursor-pointer mb-1 min-h-[36px] overflow-hidden relative ${selectedFolderId === interestedListFolder.id ? theme.folderSelected : theme.folderHover}`}
+                      className={`group flex items-center pl-5 pr-3 py-2 rounded cursor-pointer mb-1 min-h-[36px] overflow-hidden relative ${selectedFolderId === interestedListFolder.id ? theme.folderSelected : theme.folderHover}`}
                       onClick={() => editingFolderId !== interestedListFolder.id && setSelectedFolderId(interestedListFolder.id)}
                     >
                       {editingFolderId === interestedListFolder.id ? (
@@ -550,10 +550,10 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                         />
                       ) : (
                         <>
-                          <div className="flex items-center gap-2 flex-1 min-w-0">
-                            <span className="w-[5px] h-[5px] flex-shrink-0">
+                          <div className="flex items-center flex-1 min-w-0">
+                            <span className="w-4 flex-shrink-0 flex items-center justify-center">
                               {folderSaleStatus[interestedListFolder.id] && (
-                                <span className={`block w-full h-full rounded-full ${theme.saleBg}`}></span>
+                                <span className={`block w-[5px] h-[5px] rounded-full ${theme.saleBg}`}></span>
                               )}
                             </span>
                             <span className="flex-1 text-xs min-w-0">{getLocalizedFolderName(interestedListFolder.name, currentLocale)}</span>
@@ -609,7 +609,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                             isSpecialFolder={isSpecialFolder}
                           >
                             <div
-                              className={`group flex items-center px-3 py-2 rounded cursor-pointer mb-1 min-h-[36px] overflow-hidden relative ${selectedFolderId === folder.id ? theme.folderSelected : theme.folderHover}`}
+                              className={`group flex items-center pl-5 pr-3 py-2 rounded cursor-pointer mb-1 min-h-[36px] overflow-hidden relative ${selectedFolderId === folder.id ? theme.folderSelected : theme.folderHover}`}
                               onClick={() => editingFolderId !== folder.id && setSelectedFolderId(folder.id)}
                             >
                       {editingFolderId === folder.id ? (
@@ -624,10 +624,10 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                         />
                       ) : (
                         <>
-                          <div className="flex items-center gap-2 flex-1 min-w-0">
-                            <span className="w-[5px] h-[5px] flex-shrink-0">
+                          <div className="flex items-center flex-1 min-w-0">
+                            <span className="w-4 flex-shrink-0 flex items-center justify-center">
                               {folderSaleStatus[folder.id] && (
-                                <span className={`block w-full h-full rounded-full ${theme.saleBg}`}></span>
+                                <span className={`block w-[5px] h-[5px] rounded-full ${theme.saleBg}`}></span>
                               )}
                             </span>
                             <span className="flex-1 text-xs min-w-0">{getLocalizedFolderName(folder.name, currentLocale)}</span>
@@ -703,7 +703,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                   <div className={`px-2 border-t ${theme.border}`} style={{paddingTop: '3px', paddingBottom: '3px'}}>
                     <div
                       key={ownedListFolder.id}
-                      className={`group flex items-center px-3 py-2 rounded cursor-pointer min-h-[36px] overflow-hidden relative ${selectedFolderId === ownedListFolder.id ? theme.folderSelected : theme.folderHover}`}
+                      className={`group flex items-center pl-5 pr-3 py-2 rounded cursor-pointer min-h-[36px] overflow-hidden relative ${selectedFolderId === ownedListFolder.id ? theme.folderSelected : theme.folderHover}`}
                       onClick={() => editingFolderId !== ownedListFolder.id && setSelectedFolderId(ownedListFolder.id)}
                     >
                       {editingFolderId === ownedListFolder.id ? (
@@ -718,10 +718,10 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                         />
                       ) : (
                         <>
-                          <div className="flex items-center gap-2 flex-1 min-w-0">
-                            <span className="w-[5px] h-[5px] flex-shrink-0">
+                          <div className="flex items-center flex-1 min-w-0">
+                            <span className="w-4 flex-shrink-0 flex items-center justify-center">
                               {folderSaleStatus[ownedListFolder.id] && (
-                                <span className={`block w-full h-full rounded-full ${theme.saleBg}`}></span>
+                                <span className={`block w-[5px] h-[5px] rounded-full ${theme.saleBg}`}></span>
                               )}
                             </span>
                             <span className="flex-1 text-xs min-w-0">{getLocalizedFolderName(ownedListFolder.name, currentLocale)}</span>

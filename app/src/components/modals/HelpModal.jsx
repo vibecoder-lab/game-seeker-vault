@@ -13,7 +13,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
 
   return (
     <div className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'}`} onClick={onClose}>
-      <div className={`${theme.cardBg} rounded-2xl max-w-2xl w-full h-[80vh] flex flex-col ${theme.cardShadow}`} onClick={(e) => e.stopPropagation()}>
+      <div className={`${theme.cardBg} rounded-2xl max-w-2xl w-full h-[80vh] flex flex-col overflow-hidden ${theme.cardShadow}`} onClick={(e) => e.stopPropagation()}>
         <div className={`flex justify-between items-center px-4 py-3 border-b ${theme.border} h-[46px]`}>
           <h2 className="text-base font-bold">{t('help.title', currentLocale)}</h2>
           <button
@@ -170,7 +170,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                       value={feedbackTitle}
                       onChange={(e) => setFeedbackTitle(e.target.value)}
                       placeholder={t('feedback.titlePlaceholder', currentLocale)}
-                      className={`w-full px-3 py-2 border rounded-lg ${theme.cardBg} ${theme.border} ${errors.title ? 'border-red-500' : ''}`}
+                      className={`w-full px-3 py-2 border rounded-lg ${theme.cardBg} ${theme.border} focus:outline-none focus:ring-2 ${currentTheme === 'steam' ? 'focus:ring-[#4668FF]' : 'focus:ring-blue-500'} ${errors.title ? 'border-red-500' : ''}`}
                       maxLength={100}
                     />
                     {errors.title && (
@@ -187,8 +187,8 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                       value={feedbackContent}
                       onChange={(e) => setFeedbackContent(e.target.value)}
                       placeholder={t('feedback.contentPlaceholder', currentLocale)}
-                      className={`w-full px-3 py-2 border rounded-lg ${theme.cardBg} ${theme.border} ${errors.content ? 'border-red-500' : ''}`}
-                      rows={6}
+                      className={`w-full px-3 py-2 border rounded-lg ${theme.cardBg} ${theme.border} focus:outline-none focus:ring-2 ${currentTheme === 'steam' ? 'focus:ring-[#4668FF]' : 'focus:ring-blue-500'} ${errors.content ? 'border-red-500' : ''}`}
+                      style={{ height: 'calc(6 * 1.5em + 62px)' }}
                       maxLength={2000}
                     />
                     {errors.content && (
@@ -207,7 +207,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                       value={feedbackEmail}
                       onChange={(e) => setFeedbackEmail(e.target.value)}
                       placeholder={t('feedback.emailPlaceholder', currentLocale)}
-                      className={`w-full px-3 py-2 border rounded-lg ${theme.cardBg} ${theme.border} ${errors.email ? 'border-red-500' : ''}`}
+                      className={`w-full px-3 py-2 border rounded-lg ${theme.cardBg} ${theme.border} focus:outline-none focus:ring-2 ${currentTheme === 'steam' ? 'focus:ring-[#4668FF]' : 'focus:ring-blue-500'} ${errors.email ? 'border-red-500' : ''}`}
                     />
                     {errors.email && (
                       <p className="text-red-500 text-xs mt-1">{errors.email}</p>
