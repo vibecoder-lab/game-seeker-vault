@@ -334,6 +334,17 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                     <li>{t('help.guide.pc.basic5', currentLocale)}</li>
                   </ul>
 
+                  <h4 className="font-bold mt-4">{t('help.guide.pc.buttons', currentLocale)}</h4>
+                  <ul className="list-disc list-inside space-y-2 ml-4">
+                    <li>{t('help.guide.pc.buttons1', currentLocale)}</li>
+                    <li>{t('help.guide.pc.buttons2', currentLocale)}</li>
+                    <li>{t('help.guide.pc.buttons3', currentLocale)}</li>
+                    <li>{t('help.guide.pc.buttons4', currentLocale)}</li>
+                    <li>{t('help.guide.pc.buttons5', currentLocale)}</li>
+                    <li>{t('help.guide.pc.buttons6', currentLocale)}</li>
+                    <li>{t('help.guide.pc.buttons7', currentLocale)}</li>
+                  </ul>
+
                   <h4 className="font-bold mt-4">{t('help.guide.pc.collection', currentLocale)}</h4>
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li>{t('help.guide.pc.collection1', currentLocale)}</li>
