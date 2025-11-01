@@ -98,6 +98,23 @@
         user-select: none;
       }
 
+      /* Disable text selection globally (except input fields) */
+      body {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+      }
+
+      /* Allow text selection in input/textarea elements */
+      input,
+      textarea {
+        user-select: text;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+      }
+
       /* Star button hover effects */
       .star-button:hover .star-path {
         fill: var(--gradient-id) !important;
