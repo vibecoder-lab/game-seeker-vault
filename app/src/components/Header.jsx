@@ -88,7 +88,7 @@ export function Header({
               </span>
             </button>
             {showFolderDropdown && (
-              <div className={`absolute top-full left-1/2 -translate-x-1/2 ${theme.cardBg} ${theme.text} ${theme.cardShadow} rounded-lg overflow-hidden z-50 min-w-[160px] max-h-[200px] overflow-y-auto`}>
+              <div className={`absolute top-full left-1/2 -translate-x-1/2 ${theme.cardBg} ${theme.text} ${theme.cardShadow} rounded-lg overflow-hidden z-50 min-w-[160px] max-h-[200px] overflow-y-auto`} style={{ overscrollBehavior: "contain" }}>
                 {folders.map(folder => (
                   <button
                     key={folder.id}
