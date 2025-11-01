@@ -998,7 +998,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                   <div
                     onClick={() => setSelectedFolderId(TRASH_FOLDER_ID)}
                     className={`w-full rounded cursor-pointer text-xs min-h-[36px] flex items-center ${selectedFolderId === TRASH_FOLDER_ID ? theme.folderSelected : theme.folderHover}`}
-                    style={{paddingLeft: '24px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px'}}
+                    style={{paddingLeft: '36px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px'}}
                   >
                     {t('collection.trash', currentLocale)}
                   </div>
