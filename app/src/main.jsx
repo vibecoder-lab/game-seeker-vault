@@ -1861,6 +1861,7 @@ function SteamPriceFilter({ initialData = null }) {
             onClose={() => setShowLanguageRegionModal(false)}
             setMinPrice={setMinPrice}
             setMaxPrice={setMaxPrice}
+            setFolders={setFolders}
           />
         )}
 

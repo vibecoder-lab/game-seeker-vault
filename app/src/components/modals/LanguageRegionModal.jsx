@@ -3,7 +3,7 @@ import { t, currentLocale, setLocale } from '../../i18n/index.js';
 import { dbHelper } from '../../db/index.js';
 import { FOLDER_NAME_TO_KEY } from '../../utils/format.js';
 
-export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, setForceUpdate, onClose, setMinPrice, setMaxPrice }) {
+export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, setForceUpdate, onClose, setMinPrice, setMaxPrice, setFolders }) {
   const handleLanguageChange = async (locale) => {
     await setLocale(locale);
 
@@ -18,6 +18,10 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
         await dbHelper.updateFolder(folder.id, newName);
       }
     }
+
+    // Reload folders from IndexedDB to reflect updated names
+    const updatedFolders = await dbHelper.getFolders();
+    setFolders(updatedFolders);
 
     setForceUpdate(prev => prev + 1);
   };
