@@ -145,7 +145,16 @@ export function translateGenre(genre, locale = 'en') {
     'Early Access': 'genre.earlyAccess',
     'Other': 'genre.other',
     'Utilities': 'genre.utilities',
-    'Free': 'genre.free'
+    'Free': 'genre.free',
+    'Audio Production': 'genre.audioProduction',
+    'Animation & Modeling': 'genre.animationModeling',
+    'Design & Illustration': 'genre.designIllustration',
+    'Education': 'genre.education',
+    'Game Development': 'genre.gameDevelopment',
+    'Gore': 'genre.gore',
+    'Photo Editing': 'genre.photoEditing',
+    'Video Production': 'genre.videoProduction',
+    'Web Publishing': 'genre.webPublishing'
   };
   const key = genreKeyMap[genre];
   return key ? t(key, locale) : genre;

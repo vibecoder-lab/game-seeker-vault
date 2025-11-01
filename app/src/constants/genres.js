@@ -13,5 +13,14 @@ export const GENRE_MAPPING = {
   'Early Access': '早期アクセス',
   'Other': 'その他',
   'Utilities': '補助ツール',
-  'Free To Play': '無料'
+  'Free To Play': '無料',
+  'Audio Production': 'オーディオ制作',
+  'Animation & Modeling': 'アニメ・モデリング',
+  'Design & Illustration': 'デザイン・イラスト',
+  'Education': '教育',
+  'Game Development': 'ゲーム開発',
+  'Gore': 'ゴア',
+  'Photo Editing': '写真編集',
+  'Video Production': '動画制作',
+  'Web Publishing': 'Web出版'
 };
