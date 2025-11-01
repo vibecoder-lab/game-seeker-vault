@@ -2226,6 +2226,7 @@ function SteamPriceFilter({ initialData = null }) {
             style={{
               left: `${globalDropdownPosition.x}px`,
               top: `${globalDropdownPosition.y}px`,
+              overscrollBehavior: "contain"
             }}
             onMouseLeave={() => setShowGlobalFolderDropdown(false)}
             onClick={() => setShowGlobalFolderDropdown(false)}

@@ -559,6 +559,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
               style={{
                 left: `${dropdownPosition.x}px`,
                 top: `${dropdownPosition.y}px`,
+                overscrollBehavior: "contain"
               }}
               onMouseLeave={handleDropdownHoverOut}
             >
