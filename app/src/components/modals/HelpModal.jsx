@@ -29,7 +29,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
         <div className={`flex border-b ${theme.border}`}>
           <button
             onClick={() => setActiveTab('disclaimer')}
-            className={`px-6 py-3 font-medium transition-colors ${
+            className={`px-6 py-3 text-xs md:text-base font-medium transition-colors ${
               activeTab === 'disclaimer'
                 ? `${theme.text} border-b-2 ${currentTheme === 'steam' ? 'border-blue-500' : 'border-current'}`
                 : `${theme.subText} hover:${theme.text}`
@@ -39,7 +39,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
           </button>
           <button
             onClick={() => setActiveTab('guide')}
-            className={`px-6 py-3 font-medium transition-colors ${
+            className={`px-6 py-3 text-xs md:text-base font-medium transition-colors ${
               activeTab === 'guide'
                 ? `${theme.text} border-b-2 ${currentTheme === 'steam' ? 'border-blue-500' : 'border-current'}`
                 : `${theme.subText} hover:${theme.text}`
@@ -49,7 +49,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
           </button>
           <button
             onClick={() => setActiveTab('feedback')}
-            className={`px-6 py-3 font-medium transition-colors ${
+            className={`px-6 py-3 text-xs md:text-base font-medium transition-colors ${
               activeTab === 'feedback'
                 ? `${theme.text} border-b-2 ${currentTheme === 'steam' ? 'border-blue-500' : 'border-current'}`
                 : `${theme.subText} hover:${theme.text}`
