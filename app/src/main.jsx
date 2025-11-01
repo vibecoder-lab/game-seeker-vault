@@ -287,22 +287,21 @@ function SteamPriceFilter({ initialData = null }) {
       const detectedRegion = await detectRegion();
       setCurrentRegion(detectedRegion);
 
-      // Set initial price range based on region
-      if (detectedRegion === 'USD') {
+      // Load settings first to determine price limit
+      const loadedSettings = await dbHelper.loadSettings();
+      setSettings(loadedSettings);
+
+      // Set initial price range based on region and removePriceLimit setting
+      if (detectedRegion === 'USD' || detectedRegion === 'EUR' || detectedRegion === 'GBP') {
         setMinPrice(1);
-        setMaxPrice(50);
+        setMaxPrice(loadedSettings.removePriceLimit ? 200 : 50);
       } else if (detectedRegion === 'JPY') {
         setMinPrice(100);
-        setMaxPrice(3000);
-      } else if (detectedRegion === 'EUR' || detectedRegion === 'GBP') {
-        setMinPrice(1);
-        setMaxPrice(50);
+        setMaxPrice(loadedSettings.removePriceLimit ? 20000 : 3000);
       }
 
       setForceUpdate((prev) => prev + 1);
 
-      const loadedSettings = await dbHelper.loadSettings();
-      setSettings(loadedSettings);
       // Restore saved theme only when saveTheme is true
       if (loadedSettings.saveTheme && loadedSettings.theme) {
         setCurrentTheme(loadedSettings.theme);

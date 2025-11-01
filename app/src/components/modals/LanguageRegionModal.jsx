@@ -30,11 +30,11 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
     // Reset price range based on new region
     if (region === 'JPY') {
       setMinPrice(100);
-      setMaxPrice(3000);
+      setMaxPrice(settings.removePriceLimit ? 20000 : 3000);
     } else {
       // USD, EUR, GBP
       setMinPrice(1);
-      setMaxPrice(50);
+      setMaxPrice(settings.removePriceLimit ? 200 : 50);
     }
 
     setForceUpdate(prev => prev + 1);
