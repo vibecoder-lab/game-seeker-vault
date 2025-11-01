@@ -117,7 +117,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
         setStarClicked(null);
 
         // Show dropdown slightly offset from mouse position
-        setDropdownPosition({ x: clickX - 10, y: clickY - 10 });
+        setDropdownPosition({ x: clickX - 80, y: clickY - 20 });
         setShowFolderDropdown(true);
       }, 400);
       return;

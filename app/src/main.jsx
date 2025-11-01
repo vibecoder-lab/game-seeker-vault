@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createPortal } from "react-dom";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { VideoModal } from "./components/modals/VideoModal.jsx";
 import { AdminPanel } from "./components/AdminPanel.jsx";
@@ -115,6 +116,8 @@ function SteamPriceFilter({ initialData = null }) {
   }, [targetFolderId]);
 
   const [showFolderDropdown, setShowFolderDropdown] = React.useState(false);
+  const [showGlobalFolderDropdown, setShowGlobalFolderDropdown] = React.useState(false);
+  const [globalDropdownPosition, setGlobalDropdownPosition] = React.useState({ x: 0, y: 0 });
   const [clearButtonPressed, setClearButtonPressed] = React.useState(false);
   const [forceUpdate, setForceUpdate] = React.useState(0);
 
@@ -137,10 +140,32 @@ function SteamPriceFilter({ initialData = null }) {
   React.useEffect(() => {
     let shiftCPressed = false;
     let shiftTPressed = false;
+    let lastShiftTime = 0;
 
     const handleKeyDown = (e) => {
       if (e.key === "Shift") {
         setShiftPressedForDelete(true);
+
+        // Shift double press detection for global folder dropdown
+        const now = Date.now();
+        if (now - lastShiftTime < 500) {
+          // Double press detected
+          // Disable when any modal is open
+          if (showCollectionModal || showVideoModal || showHelpModal || showSettingsModal ||
+              showLanguageRegionModal || showImportExportModal || showMobileFilterModal || showMobileGenreModal) {
+            return;
+          }
+
+          // Get current mouse position
+          const mouseX = window.lastMouseX || window.innerWidth / 2;
+          const mouseY = window.lastMouseY || window.innerHeight / 2;
+
+          setGlobalDropdownPosition({ x: mouseX - 80, y: mouseY - 20 });
+          setShowGlobalFolderDropdown(true);
+          lastShiftTime = 0; // Reset
+          return;
+        }
+        lastShiftTime = now;
       }
 
       // Disable in input fields
@@ -237,7 +262,37 @@ function SteamPriceFilter({ initialData = null }) {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [settings?.useAlternativeKeys, settings?.keyboardLayout, showVideoModal]);
+  }, [settings?.useAlternativeKeys, settings?.keyboardLayout, showVideoModal, showCollectionModal, showHelpModal, showSettingsModal, showLanguageRegionModal, showImportExportModal, showMobileFilterModal, showMobileGenreModal]);
+
+  // Track mouse position for global folder dropdown
+  React.useEffect(() => {
+    const handleMouseMove = (e) => {
+      window.lastMouseX = e.clientX;
+      window.lastMouseY = e.clientY;
+
+      // Close global folder dropdown if mouse moves away
+      if (showGlobalFolderDropdown) {
+        const dropdownX = globalDropdownPosition.x;
+        const dropdownY = globalDropdownPosition.y;
+        const dropdownWidth = 160; // min-w-[160px]
+        const dropdownHeight = 200; // max-h-[200px]
+
+        const isOutside =
+          e.clientX < dropdownX ||
+          e.clientX > dropdownX + dropdownWidth ||
+          e.clientY < dropdownY ||
+          e.clientY > dropdownY + dropdownHeight;
+
+        if (isOutside) {
+          setShowGlobalFolderDropdown(false);
+        }
+      }
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [showGlobalFolderDropdown, globalDropdownPosition]);
 
   React.useEffect(() => {
     if (initialData) {
@@ -2163,6 +2218,33 @@ function SteamPriceFilter({ initialData = null }) {
             </div>
           </div>
         </footer>
+
+        {/* Global folder dropdown (Shift+Shift shortcut) */}
+        {showGlobalFolderDropdown && folders && createPortal(
+          <div
+            className={`fixed z-50 ${theme.cardBg} ${theme.text} ${theme.cardShadow} rounded-lg overflow-hidden min-w-[160px] max-h-[200px] overflow-y-auto`}
+            style={{
+              left: `${globalDropdownPosition.x}px`,
+              top: `${globalDropdownPosition.y}px`,
+            }}
+            onMouseLeave={() => setShowGlobalFolderDropdown(false)}
+            onClick={() => setShowGlobalFolderDropdown(false)}
+          >
+            {folders.map(folder => (
+              <button
+                key={folder.id}
+                onClick={() => {
+                  setTargetFolderId(folder.id);
+                  setShowGlobalFolderDropdown(false);
+                }}
+                className={`block w-full text-left px-4 py-2 text-sm whitespace-nowrap ${targetFolderId === folder.id ? theme.folderSelected : theme.modalHover}`}
+              >
+                {folder.name}
+              </button>
+            ))}
+          </div>,
+          document.body
+        )}
       </div>
     </>
   );
