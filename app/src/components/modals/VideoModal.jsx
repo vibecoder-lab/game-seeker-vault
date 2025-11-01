@@ -6,6 +6,15 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
   const videoRef = React.useRef(null);
   const hoverAreaRef = React.useRef(null);
 
+  // Disable page scroll when modal is open
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
   // Cleanup video when component unmounts
   useEffect(() => {
     return () => {

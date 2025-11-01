@@ -3,6 +3,14 @@ import { t, currentLocale } from '../../i18n/index.js';
 import { dbHelper } from '../../db/index.js';
 
 export function SettingsModal({ theme, currentTheme, settings, setSettings, onClose, currentRegion, maxPrice, setMaxPrice, setForceUpdate }) {
+  // Disable page scroll when modal is open
+  React.useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   return (

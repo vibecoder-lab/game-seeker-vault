@@ -4,6 +4,14 @@ import { dbHelper } from '../../db/index.js';
 import { FOLDER_NAME_TO_KEY } from '../../utils/format.js';
 
 export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, setForceUpdate, onClose, setMinPrice, setMaxPrice, setFolders }) {
+  // Disable page scroll when modal is open
+  React.useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   const handleLanguageChange = async (locale) => {
     await setLocale(locale);
 

@@ -1552,7 +1552,7 @@ function SteamPriceFilter({ initialData = null }) {
                       marginBottom: isTagSectionOpen ? "1rem" : "0px",
                     }}
                   >
-                    <div style={{ maxHeight: "200px", overflowY: "auto" }}>
+                    <div style={{ maxHeight: "200px", overflowY: "auto", overscrollBehavior: "contain" }}>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                         {allTags.map((tag) => {
                           const isSelected = selectedTags.includes(tag);

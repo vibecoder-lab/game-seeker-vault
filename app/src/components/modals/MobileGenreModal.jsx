@@ -14,6 +14,14 @@ export function MobileGenreModal({
   selectedTags,
   setSelectedTags,
 }) {
+  // Disable page scroll when modal is open
+  React.useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   const longPressTimerRef = React.useRef(null);
   const isLongPressRef = React.useRef(false);
   const touchStartPosRef = React.useRef({ x: 0, y: 0 });

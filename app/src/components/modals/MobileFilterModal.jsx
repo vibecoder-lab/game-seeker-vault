@@ -30,6 +30,14 @@ export function MobileFilterModal({
   settings,
   currentRegion
 }) {
+  // Disable page scroll when modal is open
+  React.useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   // Local state for immediate visual feedback
   const [localOnlySale, setLocalOnlySale] = React.useState(onlySale);
   const [localOnlyJP, setLocalOnlyJP] = React.useState(onlyJP);

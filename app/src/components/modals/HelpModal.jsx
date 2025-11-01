@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { t, currentLocale } from '../../i18n/index.js';
 
 export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
@@ -10,6 +10,14 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
   const [errors, setErrors] = useState({});
+
+  // Disable page scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   return (
     <div className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 ${isClosing ? 'modal-fade-out' : 'modal-fade-in'}`} onClick={onClose}>
