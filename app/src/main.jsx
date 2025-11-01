@@ -525,16 +525,39 @@ function SteamPriceFilter({ initialData = null }) {
   );
 
   const allGenres = React.useMemo(() => {
-    const allTags = unique(games.flatMap((g) => g.genres)).sort((a, b) =>
-      a.localeCompare(b),
-    );
+    // Count genre occurrences
+    const genreCounts = {};
+    games.forEach((g) => {
+      (g.genres || []).forEach((genre) => {
+        genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+      });
+    });
 
     // Separate genres and other tags
     const nonGenreTags = ["Casual", "Early Access", "Indie", "Free To Play"];
-    const genres = allTags.filter((tag) => !nonGenreTags.includes(tag));
-    const otherTags = allTags.filter((tag) => nonGenreTags.includes(tag));
 
-    return { genres, otherTags };
+    // Sort by count (descending), then alphabetically
+    const sortedGenres = Object.entries(genreCounts)
+      .filter(([tag]) => !nonGenreTags.includes(tag))
+      .sort((a, b) => {
+        if (b[1] !== a[1]) {
+          return b[1] - a[1]; // Primary sort: by count descending
+        }
+        return a[0].localeCompare(b[0]); // Secondary sort: alphabetically
+      })
+      .map(([genre]) => genre);
+
+    const sortedOtherTags = Object.entries(genreCounts)
+      .filter(([tag]) => nonGenreTags.includes(tag))
+      .sort((a, b) => {
+        if (b[1] !== a[1]) {
+          return b[1] - a[1]; // Primary sort: by count descending
+        }
+        return a[0].localeCompare(b[0]); // Secondary sort: alphabetically
+      })
+      .map(([tag]) => tag);
+
+    return { genres: sortedGenres, otherTags: sortedOtherTags };
   }, [games]);
 
   const allTags = React.useMemo(() => {
