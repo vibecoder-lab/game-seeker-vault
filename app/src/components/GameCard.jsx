@@ -419,7 +419,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
 
               <div className={`w-[calc(100%-200px)] md:flex-1 p-4 flex flex-col relative z-10 transition-transform duration-300 ease-in-out ${theme.cardBg}`}
                    style={{transform: (isHovered || isSticky) ? 'translateX(-100%)' : 'translateX(0)'}}>
-                <h3 className={`font-semibold text-base leading-tight pr-2 overflow-hidden text-ellipsis ${theme.text}`}
+                <h3 className={`font-semibold text-base leading-tight pr-2 mb-2 overflow-hidden text-ellipsis ${theme.text}`}
                     style={{
                       display: '-webkit-box',
                       WebkitLineClamp: 2,
@@ -428,14 +428,12 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                     }}>
                   {g.title}
                 </h3>
-                <div className="mt-2 flex flex-col gap-1">
-                  {genres.slice(0, 3).map((tag) => (
-                    <span key={tag} className={`text-[11px] ${theme.tagBg} ${theme.tagText} px-2 py-1 rounded-full whitespace-nowrap w-fit max-w-full overflow-hidden text-ellipsis block`}>{tag}</span>
-                  ))}
-                  {genres.length > 3 && (
-                    <span className={`text-[11px] ${theme.tagBg} ${theme.tagText} px-2 py-1 rounded-full whitespace-nowrap w-fit`}>…</span>
-                  )}
-                </div>
+                {genres.slice(0, 3).map((tag) => (
+                  <span key={tag} className={`text-[11px] ${theme.tagBg} ${theme.tagText} px-2 py-1 rounded-full whitespace-nowrap w-fit max-w-full overflow-hidden text-ellipsis block mb-1`}>{tag}</span>
+                ))}
+                {genres.length > 3 && (
+                  <span className={`text-[11px] ${theme.tagBg} ${theme.tagText} px-2 py-1 rounded-full whitespace-nowrap w-fit`}>…</span>
+                )}
                 <div className="mt-auto space-y-0.5">
                   <div className="flex items-end justify-between text-sm gap-2">
                     <div className="flex-1">
