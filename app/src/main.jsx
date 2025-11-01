@@ -59,8 +59,7 @@ import { GameCard } from "./components/GameCard.jsx";
 import { HelpModal } from "./components/modals/HelpModal.jsx";
 import { SettingsModal } from "./components/modals/SettingsModal.jsx";
 import { LanguageRegionModal } from "./components/modals/LanguageRegionModal.jsx";
-import { MobileFilterModal } from "./components/modals/MobileFilterModal.jsx";
-import { MobileGenreModal } from "./components/modals/MobileGenreModal.jsx";
+import { MobileUnifiedModal } from "./components/modals/MobileUnifiedModal.jsx";
 import { Header } from "./components/Header.jsx";
 
 function SteamPriceFilter({ initialData = null }) {
@@ -87,11 +86,9 @@ function SteamPriceFilter({ initialData = null }) {
   const [currentTheme, setCurrentTheme] = React.useState("default");
   const [showScrollTop, setShowScrollTop] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
-  const [showMobileFilterModal, setShowMobileFilterModal] =
+  const [showMobileUnifiedModal, setShowMobileUnifiedModal] =
     React.useState(false);
-  const [showMobileGenreModal, setShowMobileGenreModal] = React.useState(false);
-  const [isClosingFilterModal, setIsClosingFilterModal] = React.useState(false);
-  const [isClosingGenreModal, setIsClosingGenreModal] = React.useState(false);
+  const [isClosingUnifiedModal, setIsClosingUnifiedModal] = React.useState(false);
   const [isClosingHelpModal, setIsClosingHelpModal] = React.useState(false);
   const [showCollectionModal, setShowCollectionModal] = React.useState(false);
   const [shiftPressedForDelete, setShiftPressedForDelete] =
@@ -152,7 +149,7 @@ function SteamPriceFilter({ initialData = null }) {
           // Double press detected
           // Disable when any modal is open
           if (showCollectionModal || showVideoModal || showHelpModal || showSettingsModal ||
-              showLanguageRegionModal || showImportExportModal || showMobileFilterModal || showMobileGenreModal) {
+              showLanguageRegionModal || showImportExportModal || showMobileUnifiedModal) {
             return;
           }
 
@@ -262,7 +259,7 @@ function SteamPriceFilter({ initialData = null }) {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [settings?.useAlternativeKeys, settings?.keyboardLayout, showVideoModal, showCollectionModal, showHelpModal, showSettingsModal, showLanguageRegionModal, showImportExportModal, showMobileFilterModal, showMobileGenreModal]);
+  }, [settings?.useAlternativeKeys, settings?.keyboardLayout, showVideoModal, showCollectionModal, showHelpModal, showSettingsModal, showLanguageRegionModal, showImportExportModal, showMobileUnifiedModal]);
 
   // Track mouse position for global folder dropdown
   React.useEffect(() => {
@@ -827,20 +824,26 @@ function SteamPriceFilter({ initialData = null }) {
     [priceMode],
   );
 
-  const handleCloseMobileFilterModal = () => {
-    setIsClosingFilterModal(true);
+  const handleCloseMobileUnifiedModal = () => {
+    setIsClosingUnifiedModal(true);
     setTimeout(() => {
-      setShowMobileFilterModal(false);
-      setIsClosingFilterModal(false);
+      setShowMobileUnifiedModal(false);
+      setIsClosingUnifiedModal(false);
     }, 100);
   };
 
-  const handleCloseMobileGenreModal = () => {
-    setIsClosingGenreModal(true);
-    setTimeout(() => {
-      setShowMobileGenreModal(false);
-      setIsClosingGenreModal(false);
-    }, 100);
+  const handleClearFilters = () => {
+    setSelectedGenres({ include: [], exclude: [] });
+    setSelectedTags([]);
+    setOnlyJP(false);
+    setOnlySale(false);
+    setOnlyOverwhelming(false);
+    setOnlyMac(false);
+    setSelectedYear("all");
+    setMinPrice(100);
+    setMaxPrice(3000);
+    setPriceMode("current");
+    setSortOrder("asc");
   };
 
   const handleCloseHelpModal = () => {
@@ -932,12 +935,12 @@ function SteamPriceFilter({ initialData = null }) {
   return (
     <>
       {/* Mobile: Filter Modal (Bottom Sheet) */}
-      {showMobileFilterModal && (
-        <MobileFilterModal
+      {showMobileUnifiedModal && (
+        <MobileUnifiedModal
           theme={theme}
           currentTheme={currentTheme}
-          isClosing={isClosingFilterModal}
-          onClose={handleCloseMobileFilterModal}
+          isClosing={isClosingUnifiedModal}
+          onClose={handleCloseMobileUnifiedModal}
           selectedYear={selectedYear}
           setSelectedYear={setSelectedYear}
           showYearDropdown={showYearDropdown}
@@ -961,22 +964,13 @@ function SteamPriceFilter({ initialData = null }) {
           setSortOrder={setSortOrder}
           settings={settings}
           currentRegion={currentRegion}
-        />
-      )}
-
-      {/* Mobile: Genre Modal (Bottom Sheet) */}
-      {showMobileGenreModal && (
-        <MobileGenreModal
-          theme={theme}
-          currentTheme={currentTheme}
-          isClosing={isClosingGenreModal}
-          onClose={handleCloseMobileGenreModal}
           allGenres={allGenres}
           selectedGenres={selectedGenres}
           setSelectedGenres={setSelectedGenres}
           allTags={allTags}
           selectedTags={selectedTags}
           setSelectedTags={setSelectedTags}
+          onClearFilters={handleClearFilters}
         />
       )}
 
@@ -988,12 +982,6 @@ function SteamPriceFilter({ initialData = null }) {
           currentTheme={currentTheme}
           setCurrentTheme={setCurrentTheme}
           isScrolled={isScrolled}
-          showMobileFilterModal={showMobileFilterModal}
-          setShowMobileFilterModal={setShowMobileFilterModal}
-          handleCloseMobileFilterModal={handleCloseMobileFilterModal}
-          showMobileGenreModal={showMobileGenreModal}
-          setShowMobileGenreModal={setShowMobileGenreModal}
-          handleCloseMobileGenreModal={handleCloseMobileGenreModal}
           showHelpModal={showHelpModal}
           setShowHelpModal={setShowHelpModal}
           folders={folders}
@@ -2025,6 +2013,43 @@ function SteamPriceFilter({ initialData = null }) {
                 </button>
               </div>
 
+              {/* Settings button */}
+              <button
+                onClick={() => setShowSettingsModal(true)}
+                className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all ${showSettingsModal ? (currentTheme === "steam" ? "steam-blue-bg text-white" : `${theme.text}`) : `${theme.buttonBg}`}`}
+                style={
+                  showSettingsModal && currentTheme !== "steam"
+                    ? {
+                        backgroundColor: "currentColor",
+                        transition:
+                          "background-color 0.1s ease, color 0.1s ease",
+                      }
+                    : {
+                        transition:
+                          "background-color 0.1s ease, color 0.1s ease",
+                      }
+                }
+                title={t("header.settings.tooltip", currentLocale)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 transition-colors duration-100"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  style={
+                    showSettingsModal && currentTheme !== "steam"
+                      ? {
+                          color: theme.buttonBg.includes("bg-gray-100")
+                            ? "#f3f4f6"
+                            : "#475569",
+                        }
+                      : {}
+                  }
+                >
+                  <path fillRule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 00-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 00-2.282.819l-.922 1.597a1.875 1.875 0 00.432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 000 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 00-.432 2.385l.922 1.597a1.875 1.875 0 002.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.570.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 002.28-.819l.923-1.597a1.875 1.875 0 00-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 000-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 00-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 00-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 00-1.85-1.567h-1.843zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" clipRule="evenodd" />
+                </svg>
+              </button>
+
               {/* Language Region button */}
               <button
                 onClick={() => setShowLanguageRegionModal(true)}
@@ -2074,104 +2099,18 @@ function SteamPriceFilter({ initialData = null }) {
                 </svg>
               </button>
 
-              {/* Clear filters button */}
-              <button
-                onMouseDown={() => {
-                  setClearButtonPressed(true);
-                  setTimeout(() => setClearButtonPressed(false), 100);
-                }}
-                onClick={() => {
-                  setOnlySale(false);
-                  setOnlyOverwhelming(false);
-                  setOnlyJP(false);
-                  setOnlyMac(false);
-                  setSelectedGenres({ include: [], exclude: [] });
-                  setSelectedTags([]);
-                  // Reset price to default min and current max limit
-                  setMinPrice(priceSliderConfig.defaultMin);
-                  setMaxPrice(priceSliderConfig.max);
-                  setPriceMode("current");
-                  setSortOrder("asc");
-                  setSelectedYear("all");
-                  setSearchTitle("");
-                }}
-                className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all ${clearButtonPressed ? theme.buttonActive : theme.buttonBg}`}
-                title={t("filter.clearTooltip", currentLocale)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 100 100"
-                  fill="currentColor"
-                >
-                  <defs>
-                    <mask id="eraser-clear-mask">
-                      <rect width="100" height="100" fill="white" />
-                      <rect x="38" y="20" width="4" height="60" fill="black" />
-                      <rect x="58" y="20" width="4" height="60" fill="black" />
-                    </mask>
-                  </defs>
-                  <g transform="rotate(-35 50 50)" mask="url(#eraser-clear-mask)">
-                    <rect x="20" y="10" width="60" height="80" rx="10" ry="10" />
-                  </g>
-                </svg>
-              </button>
-
-              {/* Genre/Feature button */}
+              {/* Filter button (opens unified modal) */}
               <button
                 onClick={() => {
-                  if (showMobileGenreModal) {
-                    handleCloseMobileGenreModal();
+                  if (showMobileUnifiedModal) {
+                    handleCloseMobileUnifiedModal();
                   } else {
-                    setShowMobileGenreModal(true);
+                    setShowMobileUnifiedModal(true);
                   }
                 }}
-                className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all ${showMobileGenreModal ? (currentTheme === "steam" ? "steam-blue-bg text-white" : `${theme.text}`) : `${theme.buttonBg}`}`}
+                className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all ${showMobileUnifiedModal ? (currentTheme === "steam" ? "steam-blue-bg text-white" : `${theme.text}`) : `${theme.buttonBg}`}`}
                 style={
-                  showMobileGenreModal && currentTheme !== "steam"
-                    ? {
-                        backgroundColor: "currentColor",
-                        transition:
-                          "background-color 0.1s ease, color 0.1s ease",
-                      }
-                    : {
-                        transition:
-                          "background-color 0.1s ease, color 0.1s ease",
-                      }
-                }
-                title={t("filter.genre", currentLocale)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 transition-colors duration-100"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  style={
-                    showMobileGenreModal && currentTheme !== "steam"
-                      ? {
-                          color: theme.buttonBg.includes("bg-gray-100")
-                            ? "#f3f4f6"
-                            : "#475569",
-                        }
-                      : {}
-                  }
-                >
-                  <path d="M21.41 11.58L12.41 2.58C12.05 2.22 11.55 2 11 2H4C2.9 2 2 2.9 2 4V11C2 11.55 2.22 12.05 2.59 12.42L11.59 21.42C11.95 21.78 12.45 22 13 22C13.55 22 14.05 21.78 14.41 21.41L21.41 14.41C21.78 14.05 22 13.55 22 13C22 12.45 21.77 11.94 21.41 11.58ZM5.5 7C4.67 7 4 6.33 4 5.5C4 4.67 4.67 4 5.5 4C6.33 4 7 4.67 7 5.5C7 6.33 6.33 7 5.5 7Z" />
-                </svg>
-              </button>
-
-              {/* Filter button */}
-              <button
-                onClick={() => {
-                  if (showMobileFilterModal) {
-                    handleCloseMobileFilterModal();
-                  } else {
-                    setShowMobileFilterModal(true);
-                  }
-                }}
-                className={`p-2 rounded-lg ${theme.cardShadow} hover:scale-110 transition-all ${showMobileFilterModal ? (currentTheme === "steam" ? "steam-blue-bg text-white" : `${theme.text}`) : `${theme.buttonBg}`}`}
-                style={
-                  showMobileFilterModal && currentTheme !== "steam"
+                  showMobileUnifiedModal && currentTheme !== "steam"
                     ? {
                         backgroundColor: "currentColor",
                         transition:
@@ -2190,7 +2129,7 @@ function SteamPriceFilter({ initialData = null }) {
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   style={
-                    showMobileFilterModal && currentTheme !== "steam"
+                    showMobileUnifiedModal && currentTheme !== "steam"
                       ? {
                           color: theme.buttonBg.includes("bg-gray-100")
                             ? "#f3f4f6"
