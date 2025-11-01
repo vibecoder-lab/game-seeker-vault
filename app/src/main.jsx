@@ -483,6 +483,35 @@ function SteamPriceFilter({ initialData = null }) {
     }
   }, [folders, dbHelper]);
 
+  const handleAddToFolder = React.useCallback(async (game, folderId) => {
+    try {
+      const existing = await dbHelper.getCollectionByGameId(game.id);
+
+      if (existing) {
+        // Already in a folder - update folder
+        await dbHelper.updateCollectionFolder(existing.id, folderId);
+        setCollectionMap((prev) => ({
+          ...prev,
+          [game.id]: { ...existing, folderId },
+        }));
+      } else {
+        // Add new to folder
+        const newCollectionId = await dbHelper.addCollection(folderId, game.id);
+        setCollectionMap((prev) => ({
+          ...prev,
+          [game.id]: {
+            id: newCollectionId,
+            folderId,
+            gameId: game.id,
+            deleted: false,
+          },
+        }));
+      }
+    } catch (error) {
+      console.error('[handleAddToFolder] Error:', error);
+    }
+  }, [dbHelper]);
+
   const games = React.useMemo(
     () =>
       (rawGames || []).map((g) => {
@@ -1773,6 +1802,8 @@ function SteamPriceFilter({ initialData = null }) {
                             settings={settings}
                             locale={currentLocale}
                             currentRegion={currentRegion}
+                            folders={folders}
+                            onAddToFolder={handleAddToFolder}
                           />
                         );
                       })}

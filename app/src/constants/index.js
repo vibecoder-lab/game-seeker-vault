@@ -12,6 +12,7 @@ export const DEFAULT_SETTINGS = {
   showAllTags: false,              // Show all tags (default: top 50)
   enableScrollAnimation: true,     // Enable scroll-linked card animation on mobile
   hideOwnedTitles: false,          // Hide titles in owned list from search results
+  enableQuickRegister: false,      // Enable quick folder registration on star click
   locale: 'en',                    // Preferred locale
   region: 'USD',                   // Preferred region (USD, JPY, EUR, GBP)
   settingsVersion: 1

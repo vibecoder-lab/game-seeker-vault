@@ -1,9 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { t, currentLocale, formatPrice, formatDate } from '../i18n/index.js';
 import { normalizeGenres, formatReleaseDate, checkJapaneseSupport, cleanLanguageText, translateReviewScore, yen } from '../utils/format.js';
 import { steamCapsuleUrl, linkFor } from '../utils/steam.js';
 
-function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale, currentRegion }) {
+function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale, currentRegion, folders, onAddToFolder }) {
   const [isHovered, setIsHovered] = React.useState(false);
   const [shiftPressed, setShiftPressed] = React.useState(false);
   const [starButtonHovered, setStarButtonHovered] = React.useState(false);
@@ -12,9 +13,13 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
   const [sparkles, setSparkles] = React.useState([]);
   const [isSticky, setIsSticky] = React.useState(false);
   const [showDetailModal, setShowDetailModal] = React.useState(false);
+  const [showFolderDropdown, setShowFolderDropdown] = React.useState(false);
+  const [dropdownPosition, setDropdownPosition] = React.useState({ x: 0, y: 0 });
   const cardRef = React.useRef(null);
   const detailRef = React.useRef(null);
   const longPressTimer = React.useRef(null);
+  const dropdownRef = React.useRef(null);
+  const starButtonRef = React.useRef(null);
   const cap = steamCapsuleUrl(g);
   const genres = g.genres?.length ? normalizeGenres(g.genres) : ['(genre unknown)'];
   const isFavorite = collectionData && !collectionData.deleted;
@@ -90,6 +95,35 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
     e.stopPropagation();
 
     const wasAlreadyFavorite = isFavorite;
+
+    // Quick registration mode (only for non-favorited items)
+    if (settings?.enableQuickRegister && !wasAlreadyFavorite) {
+      // Save mouse position
+      const clickX = e.nativeEvent.clientX;
+      const clickY = e.nativeEvent.clientY;
+
+      // Play full registration animation
+      setStarClicked(true);
+      const newSparkles = Array.from({ length: 8 }, (_, i) => ({
+        id: Date.now() + i,
+        angle: (360 / 8) * i,
+      }));
+      setSparkles(newSparkles);
+      setTimeout(() => setSparkles([]), 600);
+
+      // After animation completes, show dropdown
+      setTimeout(() => {
+        // Reset star to normal size
+        setStarClicked(null);
+
+        // Show dropdown slightly offset from mouse position
+        setDropdownPosition({ x: clickX - 10, y: clickY - 10 });
+        setShowFolderDropdown(true);
+      }, 400);
+      return;
+    }
+
+    // Normal toggle mode
     setStarClicked(!wasAlreadyFavorite);
 
     if (!wasAlreadyFavorite) {
@@ -104,6 +138,47 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
     setTimeout(() => setStarClicked(null), wasAlreadyFavorite ? 300 : 400);
     onToggleFavorite(g);
   };
+
+  const handleFolderSelect = async (folderId) => {
+    setShowFolderDropdown(false);
+    await onAddToFolder(g, folderId);
+    // Keep star expanded and colored after registration
+    setStarClicked(null);
+  };
+
+  const handleDropdownHoverOut = async () => {
+    // Close dropdown
+    setShowFolderDropdown(false);
+    setIsDropdownHovered(false); // Remove hover state
+
+    // Unregister from favorites
+    if (collectionData && !collectionData.deleted) {
+      await onToggleFavorite(g.appid);
+    }
+
+    // Play reverse star animation
+    setStarClicked(false);
+    setTimeout(() => {
+      setStarClicked(null);
+      setSparkles([]);
+    }, 300);
+  };
+
+  // Handle click outside dropdown
+  React.useEffect(() => {
+    if (!showFolderDropdown) return;
+
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        handleDropdownHoverOut();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showFolderDropdown]);
 
   // Mobile long-press handlers
   const handleTouchStart = (e) => {
@@ -169,6 +244,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
           <div key={g.id} className="relative group">
             <div className="absolute top-2 right-2 z-20 hidden md:block">
               <button
+                ref={starButtonRef}
                 onClick={handleStarClick}
                 onMouseEnter={() => setStarButtonHovered(true)}
                 onMouseLeave={() => setStarButtonHovered(false)}
@@ -472,7 +548,36 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
               <div className="w-[200px] md:w-[220px] h-full relative z-0"></div>
             </div>
           </a>
+
           </div>
+
+          {/* Folder dropdown for quick registration - Portal to body */}
+          {showFolderDropdown && folders && ReactDOM.createPortal(
+            <div
+              ref={dropdownRef}
+              className={`fixed z-50 ${theme.cardBg} ${theme.cardShadow} rounded-lg overflow-hidden min-w-[160px] max-h-[200px] overflow-y-auto`}
+              style={{
+                left: `${dropdownPosition.x}px`,
+                top: `${dropdownPosition.y}px`,
+              }}
+              onMouseLeave={handleDropdownHoverOut}
+            >
+              {folders.map((folder) => (
+                <button
+                  key={folder.id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleFolderSelect(folder.id);
+                  }}
+                  className={`block w-full text-left px-4 py-2 text-sm whitespace-nowrap ${theme.text} ${theme.modalHover}`}
+                >
+                  {folder.name}
+                </button>
+              ))}
+            </div>,
+            document.body
+          )}
           </>
         );
 }
