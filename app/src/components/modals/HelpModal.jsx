@@ -3,7 +3,7 @@ import { t, currentLocale } from '../../i18n/index.js';
 
 export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
   const [activeTab, setActiveTab] = useState('disclaimer');
-  const [feedbackType, setFeedbackType] = useState('inquiry');
+  const [feedbackType, setFeedbackType] = useState('feedback');
   const [feedbackTitle, setFeedbackTitle] = useState('');
   const [feedbackContent, setFeedbackContent] = useState('');
   const [feedbackEmail, setFeedbackEmail] = useState('');
@@ -135,6 +135,17 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                       {t('feedback.category', currentLocale)}
                     </label>
                     <div className="flex gap-4">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="feedbackType"
+                          value="feedback"
+                          checked={feedbackType === 'feedback'}
+                          onChange={(e) => setFeedbackType(e.target.value)}
+                          className="mr-2"
+                        />
+                        {t('feedback.categoryFeedback', currentLocale)}
+                      </label>
                       <label className="flex items-center">
                         <input
                           type="radio"

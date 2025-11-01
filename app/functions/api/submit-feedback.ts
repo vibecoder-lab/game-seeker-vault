@@ -58,7 +58,7 @@ export async function onRequest(context): Promise<Response> {
 		const { type, title, content, email } = body;
 
 		// Validation
-		if (!type || (type !== 'inquiry' && type !== 'bug')) {
+		if (!type || (type !== 'feedback' && type !== 'inquiry' && type !== 'bug')) {
 			return new Response(JSON.stringify({ error: 'Invalid category' }), {
 				status: 400,
 				headers: { 'Content-Type': 'application/json', ...corsHeaders }
@@ -138,11 +138,12 @@ export async function onRequest(context): Promise<Response> {
 		try {
 			const adminEmail = env.ADMIN_EMAIL;
 			if (adminEmail) {
-				const emailSubject = `[Game Seeker Vault] 新規フィードバック: ${type === 'inquiry' ? 'お問い合わせ' : '不具合報告'}`;
+				const categoryLabel = type === 'feedback' ? 'ご意見・ご要望' : type === 'inquiry' ? 'お問い合わせ' : '不具合報告';
+				const emailSubject = `[Game Seeker Vault] 新規フィードバック: ${categoryLabel}`;
 				const emailBody = `
 新しいフィードバックが送信されました。
 
-カテゴリ: ${type === 'inquiry' ? 'お問い合わせ' : '不具合報告'}
+カテゴリ: ${categoryLabel}
 タイトル: ${feedbackData.title}
 詳細: ${feedbackData.content}
 メールアドレス: ${feedbackData.email || 'なし'}

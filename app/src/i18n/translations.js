@@ -225,6 +225,7 @@ const translations = {
     // Feedback Form
     'feedback.title': 'Feedback',
     'feedback.category': 'Category',
+    'feedback.categoryFeedback': 'Feedback/Suggestions',
     'feedback.categoryInquiry': 'Inquiry',
     'feedback.categoryBug': 'Bug Report',
     'feedback.titleLabel': 'Title',
@@ -686,6 +687,7 @@ const translations = {
     // Feedback Form
     'feedback.title': 'フィードバック',
     'feedback.category': 'カテゴリ',
+    'feedback.categoryFeedback': 'ご意見・ご要望',
     'feedback.categoryInquiry': 'お問い合わせ',
     'feedback.categoryBug': '不具合報告',
     'feedback.titleLabel': 'タイトル',

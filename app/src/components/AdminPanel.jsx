@@ -116,7 +116,7 @@ export function AdminPanel() {
   const handleExport = (format) => {
     const dataToExport = filteredList.map(f => ({
       ID: f.id,
-      カテゴリ: f.type === 'inquiry' ? 'お問い合わせ' : '不具合報告',
+      カテゴリ: f.type === 'feedback' ? 'ご意見・ご要望' : f.type === 'inquiry' ? 'お問い合わせ' : '不具合報告',
       タイトル: f.title,
       詳細: f.content,
       メールアドレス: f.email || '',
@@ -248,6 +248,7 @@ export function AdminPanel() {
               className="px-3 py-2 border border-gray-300 rounded-lg"
             >
               <option value="all">すべて</option>
+              <option value="feedback">ご意見・ご要望</option>
               <option value="inquiry">お問い合わせ</option>
               <option value="bug">不具合報告</option>
             </select>
@@ -279,9 +280,9 @@ export function AdminPanel() {
                     >
                       <div className="flex justify-between items-start mb-1">
                         <span className={`text-xs px-2 py-1 rounded ${
-                          feedback.type === 'inquiry' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+                          feedback.type === 'feedback' ? 'bg-green-100 text-green-800' : feedback.type === 'inquiry' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
                         }`}>
-                          {feedback.type === 'inquiry' ? 'お問い合わせ' : '不具合報告'}
+                          {feedback.type === 'feedback' ? 'ご意見・ご要望' : feedback.type === 'inquiry' ? 'お問い合わせ' : '不具合報告'}
                         </span>
                         <span className={`text-xs px-2 py-1 rounded ${
                           feedback.status === '未対応'
@@ -334,7 +335,7 @@ export function AdminPanel() {
               <div className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-gray-600">カテゴリ</label>
-                  <p>{selectedFeedback.type === 'inquiry' ? 'お問い合わせ' : '不具合報告'}</p>
+                  <p>{selectedFeedback.type === 'feedback' ? 'ご意見・ご要望' : selectedFeedback.type === 'inquiry' ? 'お問い合わせ' : '不具合報告'}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-600">タイトル</label>
