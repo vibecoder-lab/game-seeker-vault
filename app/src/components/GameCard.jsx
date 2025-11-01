@@ -461,7 +461,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                       {g.lowestPrice && g.lowestPrice !== '-' ? `${formatPrice(g.lowestPrice, currentRegion, currentLocale)}(${t('price.lowest', currentLocale)})` : t('price.unknown', currentLocale)}
                     </div>
                     {checkJapaneseSupport(g.supportedLanguages) === t('language.supported', currentLocale) && (
-                      <div className={`hidden md:block text-[11px] px-2 py-0.5 rounded-full whitespace-nowrap ${theme.jpBg} ${theme.jpText}`}>
+                      <div className={`hidden md:block text-[11px] px-2 py-0.5 rounded-full whitespace-nowrap ${theme.tagBg} ${theme.tagText}`}>
                         {t('card.japanese', currentLocale)}
                       </div>
                     )}
