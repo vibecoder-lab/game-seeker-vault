@@ -395,6 +395,9 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li>{t('help.guide.pc.basicUsage1', currentLocale)}</li>
                     <li>{t('help.guide.pc.basicUsage2', currentLocale)}</li>
+                    <li>{t('help.guide.pc.basicUsage3', currentLocale)}</li>
+                    <li>{t('help.guide.pc.basicUsage4', currentLocale)}</li>
+                    <li>{t('help.guide.pc.basicUsage5', currentLocale)}</li>
                   </ul>
 
                   <h4 className="font-bold mt-4">{t('help.guide.pc.shortcuts', currentLocale)}</h4>
@@ -405,6 +408,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
 
                   <h4 className="font-bold mt-4">{t('help.guide.pc.shiftKey', currentLocale)}</h4>
                   <ul className="list-disc list-inside space-y-2 ml-4">
+                    <li>{t('help.guide.pc.shiftKey0', currentLocale)}</li>
                     <li>{t('help.guide.pc.shiftKey1', currentLocale)}
                       <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
                         <li>{t('help.guide.pc.shiftKey1a', currentLocale)}</li>
