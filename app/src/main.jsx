@@ -1107,26 +1107,34 @@ function SteamPriceFilter({ initialData = null }) {
                     // Long press handling (using closure variables instead of refs)
                     let longPressTimer = null;
                     let isLongPress = false;
-                    let isTouchMove = false;
+                    let touchStartPos = { x: 0, y: 0 };
 
-                    const handleTouchStart = () => {
-                      isTouchMove = false;
+                    const handleTouchStart = (e) => {
+                      const touch = e.touches[0];
+                      touchStartPos = { x: touch.clientX, y: touch.clientY };
                       isLongPress = false;
+
                       longPressTimer = setTimeout(() => {
-                        if (!isTouchMove) {
-                          isLongPress = true;
+                        isLongPress = true;
+                        if (navigator.vibrate) {
+                          navigator.vibrate(50);
                         }
                       }, 500);
                     };
 
-                    const handleTouchMove = () => {
-                      isTouchMove = true;
-                      if (longPressTimer) clearTimeout(longPressTimer);
+                    const handleTouchMove = (e) => {
+                      const touch = e.touches[0];
+                      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+                      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+
+                      if (deltaX > 10 || deltaY > 10) {
+                        clearTimeout(longPressTimer);
+                        isLongPress = false;
+                      }
                     };
 
                     const handleTouchEnd = (e) => {
                       if (longPressTimer) clearTimeout(longPressTimer);
-                      if (isTouchMove) return;
 
                       e.preventDefault();
 
@@ -1250,27 +1258,34 @@ function SteamPriceFilter({ initialData = null }) {
                     // Long press handling (using closure variables instead of refs)
                     let longPressTimer = null;
                     let isLongPress = false;
-                    let isTouchMove = false;
+                    let touchStartPos = { x: 0, y: 0 };
 
-                    const handleTouchStart = () => {
-                      isTouchMove = false;
+                    const handleTouchStart = (e) => {
+                      const touch = e.touches[0];
+                      touchStartPos = { x: touch.clientX, y: touch.clientY };
                       isLongPress = false;
+
                       longPressTimer = setTimeout(() => {
-                        if (!isTouchMove) {
-                          isLongPress = true;
+                        isLongPress = true;
+                        if (navigator.vibrate) {
+                          navigator.vibrate(50);
                         }
                       }, 500);
                     };
 
-                    const handleTouchMove = () => {
-                      isTouchMove = true;
-                      if (longPressTimer) clearTimeout(longPressTimer);
+                    const handleTouchMove = (e) => {
+                      const touch = e.touches[0];
+                      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+                      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+
+                      if (deltaX > 10 || deltaY > 10) {
+                        clearTimeout(longPressTimer);
+                        isLongPress = false;
+                      }
                     };
 
                     const handleTouchEnd = (e) => {
                       if (longPressTimer) clearTimeout(longPressTimer);
-                      if (isTouchMove) return;
-
                       e.preventDefault();
 
                       React.startTransition(() => {
@@ -1311,8 +1326,7 @@ function SteamPriceFilter({ initialData = null }) {
                       });
                     };
 
-                    const handleGenreClick = (e) => {
-                      e.preventDefault();
+                    const handleClick = (e) => {
                       const isShiftClick = e.shiftKey;
 
                       React.startTransition(() => {
@@ -1356,7 +1370,7 @@ function SteamPriceFilter({ initialData = null }) {
                     return (
                       <button
                         key={g}
-                        onClick={handleGenreClick}
+                        onClick={handleClick}
                         onTouchStart={handleTouchStart}
                         onTouchMove={handleTouchMove}
                         onTouchEnd={handleTouchEnd}
