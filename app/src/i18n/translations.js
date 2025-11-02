@@ -85,8 +85,8 @@ const translations = {
     'card.languages': 'Languages',
     'card.releaseDate': 'Release Date',
     'card.overallRating': 'Overall Rating',
-    'card.addToFavorites': 'Add to Favorites',
-    'card.removeFromFavorites': 'Remove from Favorites',
+    'card.addToFavorites': 'Add to Collection',
+    'card.removeFromFavorites': 'Remove from Collection',
     'card.playVideo': 'Play Video',
 
     // Language Support
@@ -552,8 +552,8 @@ const translations = {
     'card.languages': '対応言語',
     'card.releaseDate': 'リリース日',
     'card.overallRating': '総合評価',
-    'card.addToFavorites': 'お気に入りに追加',
-    'card.removeFromFavorites': 'お気に入りから削除',
+    'card.addToFavorites': 'コレクションに追加',
+    'card.removeFromFavorites': 'コレクションから削除',
     'card.playVideo': '動画を再生',
 
     // Language Support

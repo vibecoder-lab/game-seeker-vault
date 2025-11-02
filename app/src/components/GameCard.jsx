@@ -104,9 +104,26 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
 
       // Play full registration animation
       setStarClicked(true);
-      const newSparkles = Array.from({ length: 8 }, (_, i) => ({
+
+      // Generate random sparkles
+      const rainbowColors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#4b0082', '#9400d3'];
+      const particleCount = Math.floor(Math.random() * 9) + 8; // 8-16 particles
+      const angles = [];
+
+      // Generate unique random angles
+      while (angles.length < particleCount) {
+        const angle = Math.random() * 360;
+        // Check if angle is unique (not within 10 degrees of existing angles)
+        if (!angles.some(existingAngle => Math.abs(existingAngle - angle) < 10)) {
+          angles.push(angle);
+        }
+      }
+
+      const newSparkles = angles.map((angle, i) => ({
         id: Date.now() + i,
-        angle: (360 / 8) * i,
+        angle: angle,
+        color: rainbowColors[Math.floor(Math.random() * rainbowColors.length)],
+        distance: Math.random() * 30 + 40, // 40-70px random distance
       }));
       setSparkles(newSparkles);
       setTimeout(() => setSparkles([]), 600);
@@ -127,9 +144,25 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
     setStarClicked(!wasAlreadyFavorite);
 
     if (!wasAlreadyFavorite) {
-      const newSparkles = Array.from({ length: 8 }, (_, i) => ({
+      // Generate random sparkles
+      const rainbowColors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#4b0082', '#9400d3'];
+      const particleCount = Math.floor(Math.random() * 9) + 8; // 8-16 particles
+      const angles = [];
+
+      // Generate unique random angles
+      while (angles.length < particleCount) {
+        const angle = Math.random() * 360;
+        // Check if angle is unique (not within 10 degrees of existing angles)
+        if (!angles.some(existingAngle => Math.abs(existingAngle - angle) < 10)) {
+          angles.push(angle);
+        }
+      }
+
+      const newSparkles = angles.map((angle, i) => ({
         id: Date.now() + i,
-        angle: (360 / 8) * i,
+        angle: angle,
+        color: rainbowColors[Math.floor(Math.random() * rainbowColors.length)],
+        distance: Math.random() * 30 + 40, // 40-70px random distance
       }));
       setSparkles(newSparkles);
       setTimeout(() => setSparkles([]), 600);
@@ -300,10 +333,11 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                   className="absolute top-1/2 left-1/2 pointer-events-none"
                   style={{
                     '--sparkle-angle': `${sparkle.angle}deg`,
+                    '--sparkle-distance': `${sparkle.distance}px`,
                     animation: 'sparkle-fade 600ms ease-out forwards',
                   }}
                 >
-                  <svg className="h-3 w-3" viewBox="0 0 24 24" fill="#facc15">
+                  <svg className="h-3 w-3" viewBox="0 0 24 24" fill={sparkle.color}>
                     <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
                   </svg>
                 </div>
