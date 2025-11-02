@@ -15,8 +15,8 @@ export function MobileUnifiedModal({
   allYears,
   onlySale,
   setOnlySale,
-  onlyOverwhelming,
-  setOnlyOverwhelming,
+  selectedReviewScores,
+  setSelectedReviewScores,
   onlyJP,
   setOnlyJP,
   onlyMac,
@@ -57,7 +57,7 @@ export function MobileUnifiedModal({
   // --- Filter tab local state ---
   const [localOnlySale, setLocalOnlySale] = useState(onlySale);
   const [localOnlyJP, setLocalOnlyJP] = useState(onlyJP);
-  const [localOnlyOverwhelming, setLocalOnlyOverwhelming] = useState(onlyOverwhelming);
+  const [localSelectedReviewScores, setLocalSelectedReviewScores] = useState(selectedReviewScores);
   const [localOnlyMac, setLocalOnlyMac] = useState(onlyMac);
   const [localMinPrice, setLocalMinPrice] = useState(minPrice);
   const [localMaxPrice, setLocalMaxPrice] = useState(maxPrice);
@@ -67,7 +67,7 @@ export function MobileUnifiedModal({
   // Sync local state with parent
   useEffect(() => { setLocalOnlySale(onlySale); }, [onlySale]);
   useEffect(() => { setLocalOnlyJP(onlyJP); }, [onlyJP]);
-  useEffect(() => { setLocalOnlyOverwhelming(onlyOverwhelming); }, [onlyOverwhelming]);
+  useEffect(() => { setLocalSelectedReviewScores(selectedReviewScores); }, [selectedReviewScores]);
   useEffect(() => { setLocalOnlyMac(onlyMac); }, [onlyMac]);
   useEffect(() => { setLocalMinPrice(minPrice); }, [minPrice]);
   useEffect(() => { setLocalMaxPrice(maxPrice); }, [maxPrice]);
@@ -85,9 +85,12 @@ export function MobileUnifiedModal({
     React.startTransition(() => setOnlyJP(checked));
   };
 
-  const handleOverwhelmingChange = (checked) => {
-    setLocalOnlyOverwhelming(checked);
-    React.startTransition(() => setOnlyOverwhelming(checked));
+  const handleReviewScoreToggle = (score) => {
+    const newScores = localSelectedReviewScores.includes(score)
+      ? localSelectedReviewScores.filter(s => s !== score)
+      : [...localSelectedReviewScores, score];
+    setLocalSelectedReviewScores(newScores);
+    React.startTransition(() => setSelectedReviewScores(newScores));
   };
 
   const handleMacChange = (checked) => {
@@ -382,16 +385,34 @@ export function MobileUnifiedModal({
                     <label htmlFor="unified-modal-saleOnly" className="text-sm">{t('filter.onlySale', currentLocale)}</label>
                   </div>
                   <div className="flex items-center gap-2">
-                    <input id="unified-modal-overwhelmingOnly" type="checkbox" checked={localOnlyOverwhelming} onChange={(e)=>handleOverwhelmingChange(e.target.checked)} className="h-4 w-4" />
-                    <label htmlFor="unified-modal-overwhelmingOnly" className="text-sm">{t('filter.onlyOverwhelming', currentLocale)}</label>
-                  </div>
-                  <div className="flex items-center gap-2">
                     <input id="unified-modal-jpOnly" type="checkbox" checked={localOnlyJP} onChange={(e)=>handleJPChange(e.target.checked)} className="h-4 w-4" />
                     <label htmlFor="unified-modal-jpOnly" className="text-sm">{t('filter.onlyJapanese', currentLocale)}</label>
                   </div>
                   <div className="flex items-center gap-2">
                     <input id="unified-modal-macOnly" type="checkbox" checked={localOnlyMac} onChange={(e)=>handleMacChange(e.target.checked)} className="h-4 w-4" />
                     <label htmlFor="unified-modal-macOnly" className="text-sm">{t('filter.onlyMac', currentLocale)}</label>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm font-semibold mb-2">{t('filter.reviewScore', currentLocale)}</div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex items-center gap-2">
+                    <input id="unified-modal-overwhelminglyPositive" type="checkbox" checked={localSelectedReviewScores.includes('Overwhelmingly Positive')} onChange={()=>handleReviewScoreToggle('Overwhelmingly Positive')} className="h-4 w-4" />
+                    <label htmlFor="unified-modal-overwhelminglyPositive" className="text-sm">{t('filter.overwhelminglyPositive', currentLocale)}</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input id="unified-modal-veryPositive" type="checkbox" checked={localSelectedReviewScores.includes('Very Positive')} onChange={()=>handleReviewScoreToggle('Very Positive')} className="h-4 w-4" />
+                    <label htmlFor="unified-modal-veryPositive" className="text-sm">{t('filter.veryPositive', currentLocale)}</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input id="unified-modal-positive" type="checkbox" checked={localSelectedReviewScores.includes('Positive')} onChange={()=>handleReviewScoreToggle('Positive')} className="h-4 w-4" />
+                    <label htmlFor="unified-modal-positive" className="text-sm">{t('filter.positive', currentLocale)}</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input id="unified-modal-mostlyPositive" type="checkbox" checked={localSelectedReviewScores.includes('Mostly Positive')} onChange={()=>handleReviewScoreToggle('Mostly Positive')} className="h-4 w-4" />
+                    <label htmlFor="unified-modal-mostlyPositive" className="text-sm">{t('filter.mostlyPositive', currentLocale)}</label>
                   </div>
                 </div>
               </div>

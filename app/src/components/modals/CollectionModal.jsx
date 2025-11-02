@@ -173,7 +173,8 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         const [folderSaleStatus, setFolderSaleStatus] = React.useState({});
         const [filterOnlySale, setFilterOnlySale] = React.useState(false);
         const [filterJapanese, setFilterJapanese] = React.useState(false);
-        const [filterOverwhelming, setFilterOverwhelming] = React.useState(false);
+        const [filterReviewScores, setFilterReviewScores] = React.useState([]);
+        const [showReviewMenu, setShowReviewMenu] = React.useState(false);
         const [searchQuery, setSearchQuery] = React.useState('');
         const [hoveredGame, setHoveredGame] = React.useState(null);
         const [shiftPressed, setShiftPressed] = React.useState(false);
@@ -259,12 +260,12 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
 
             if (filterOnlySale && !(gameData.salePrice != null && gameData.salePrice < gameData.regularPrice)) return false;
             if (filterJapanese && checkJapaneseSupport(gameData.supportedLanguages) !== t('language.supported', currentLocale)) return false;
-            if (filterOverwhelming && gameData.reviewScore !== 'Overwhelmingly Positive') return false;
+            if (filterReviewScores.length > 0 && !filterReviewScores.includes(gameData.reviewScore)) return false;
             if (searchQuery && !gameData.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
 
             return true;
           });
-        }, [collectionGames, games, filterOnlySale, filterJapanese, filterOverwhelming, searchQuery]);
+        }, [collectionGames, games, filterOnlySale, filterJapanese, filterReviewScores, searchQuery]);
 
         const handleClose = () => {
           setIsClosing(true);
@@ -1105,19 +1106,48 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                       <rect x="2" y="4" width="20" height="16" rx="2" fill="currentColor" mask="url(#jpMask)"/>
                     </svg>
                   </button>
-                  <button
-                    onClick={() => {
-                      if (collectionGames.length === 0) return;
-                      setFilterOverwhelming(!filterOverwhelming);
-                    }}
-                    className={`p-1 rounded transition-all ${collectionGames.length === 0 ? 'opacity-30 cursor-not-allowed' : (filterOverwhelming ? (currentTheme === 'default' ? 'bg-gray-900 text-gray-200' : 'bg-slate-900 text-slate-400') : `${theme.text} ${theme.iconHover}`)}`}
-                    title={t('filter.onlyOverwhelming', currentLocale)}
-                    disabled={collectionGames.length === 0}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" style={filterOverwhelming && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569', transition: 'color 0.1s ease'} : {transition: 'color 0.1s ease'}}>
-                      <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                    </svg>
-                  </button>
+                  <div className="relative">
+                    <button
+                      onClick={() => {
+                        if (collectionGames.length === 0) return;
+                        setShowReviewMenu(!showReviewMenu);
+                      }}
+                      className={`p-1 rounded transition-all ${collectionGames.length === 0 ? 'opacity-30 cursor-not-allowed' : (filterReviewScores.length > 0 ? (currentTheme === 'default' ? 'bg-gray-900 text-gray-200' : 'bg-slate-900 text-slate-400') : `${theme.text} ${theme.iconHover}`)}`}
+                      title={t('filter.reviewScore', currentLocale)}
+                      disabled={collectionGames.length === 0}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" style={filterReviewScores.length > 0 && currentTheme !== 'steam' ? {color: theme.buttonBg.includes('bg-gray-100') ? '#f3f4f6' : '#475569', transition: 'color 0.1s ease'} : {transition: 'color 0.1s ease'}}>
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                    </button>
+                    {showReviewMenu && (
+                      <div className={`absolute top-full left-0 mt-1 ${theme.cardBg} ${theme.border} border rounded-lg shadow-lg z-50 py-1 whitespace-nowrap`}>
+                        {['Overwhelmingly Positive', 'Very Positive', 'Positive', 'Mostly Positive'].map(score => (
+                          <button
+                            key={score}
+                            onClick={() => {
+                              const newScores = filterReviewScores.includes(score)
+                                ? filterReviewScores.filter(s => s !== score)
+                                : [...filterReviewScores, score];
+                              setFilterReviewScores(newScores);
+                            }}
+                            className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
+                              filterReviewScores.includes(score)
+                                ? currentTheme === 'steam'
+                                  ? 'steam-blue-bg text-white'
+                                  : 'bg-blue-500 text-white'
+                                : `${theme.text} hover:${theme.modalHover}`
+                            }`}
+                          >
+                            {score === 'Overwhelmingly Positive' && t('filter.overwhelminglyPositive', currentLocale)}
+                            {score === 'Very Positive' && t('filter.veryPositive', currentLocale)}
+                            {score === 'Positive' && t('filter.positive', currentLocale)}
+                            {score === 'Mostly Positive' && t('filter.mostlyPositive', currentLocale)}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <button
                     onClick={async () => {
                       if (collectionGames.length === 0) return;

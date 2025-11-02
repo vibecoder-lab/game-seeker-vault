@@ -78,7 +78,7 @@ function SteamPriceFilter({ initialData = null }) {
   const [isTagSectionOpen, setIsTagSectionOpen] = React.useState(false);
   const [onlyJP, setOnlyJP] = React.useState(false);
   const [onlySale, setOnlySale] = React.useState(false);
-  const [onlyOverwhelming, setOnlyOverwhelming] = React.useState(false);
+  const [selectedReviewScores, setSelectedReviewScores] = React.useState([]);
   const [onlyMac, setOnlyMac] = React.useState(false);
   const [selectedYear, setSelectedYear] = React.useState("all");
   const [showYearDropdown, setShowYearDropdown] = React.useState(false);
@@ -445,7 +445,7 @@ function SteamPriceFilter({ initialData = null }) {
               setIsTagSectionOpen(savedUIState.filters.isTagSectionOpen || false);
               setOnlyJP(savedUIState.filters.onlyJP || false);
               setOnlySale(savedUIState.filters.onlySale || false);
-              setOnlyOverwhelming(savedUIState.filters.onlyOverwhelming || false);
+              setSelectedReviewScores(savedUIState.filters.selectedReviewScores || []);
               setOnlyMac(savedUIState.filters.onlyMac || false);
               setSelectedYear(savedUIState.filters.selectedYear || 'all');
               setSearchTitle(savedUIState.filters.searchTitle || '');
@@ -861,9 +861,10 @@ function SteamPriceFilter({ initialData = null }) {
           t("language.supported", currentLocale)
         : true;
       const matchesSale = onlySale ? g.salePrice : true;
-      const matchesOverwhelming = onlyOverwhelming
-        ? g.reviewScore === "Overwhelmingly Positive"
-        : true;
+      const matchesReviewScore =
+        selectedReviewScores.length > 0
+          ? selectedReviewScores.includes(g.reviewScore)
+          : true;
       const matchesMac = onlyMac ? g.platforms?.mac === true : true;
 
       // Genre filter: consider include and exclude
@@ -926,7 +927,7 @@ function SteamPriceFilter({ initialData = null }) {
       return (
         matchesJP &&
         matchesSale &&
-        matchesOverwhelming &&
+        matchesReviewScore &&
         matchesMac &&
         matchesGenre &&
         matchesTags &&
@@ -940,7 +941,7 @@ function SteamPriceFilter({ initialData = null }) {
     games,
     onlyJP,
     onlySale,
-    onlyOverwhelming,
+    selectedReviewScores,
     onlyMac,
     selectedGenres,
     selectedTags,
@@ -1088,7 +1089,7 @@ function SteamPriceFilter({ initialData = null }) {
           isTagSectionOpen,
           onlyJP,
           onlySale,
-          onlyOverwhelming,
+          selectedReviewScores,
           onlyMac,
           selectedYear,
           searchTitle,
@@ -1119,7 +1120,7 @@ function SteamPriceFilter({ initialData = null }) {
     isTagSectionOpen,
     onlyJP,
     onlySale,
-    onlyOverwhelming,
+    selectedReviewScores,
     onlyMac,
     selectedYear,
     searchTitle,
@@ -1180,8 +1181,8 @@ function SteamPriceFilter({ initialData = null }) {
           allYears={allYears}
           onlySale={onlySale}
           setOnlySale={setOnlySale}
-          onlyOverwhelming={onlyOverwhelming}
-          setOnlyOverwhelming={setOnlyOverwhelming}
+          selectedReviewScores={selectedReviewScores}
+          setSelectedReviewScores={setSelectedReviewScores}
           onlyJP={onlyJP}
           setOnlyJP={setOnlyJP}
           onlyMac={onlyMac}
@@ -1277,9 +1278,10 @@ function SteamPriceFilter({ initialData = null }) {
               )}
             </div>
 
-            {/* Filter Checkboxes (Horizontal Scroll) */}
+            {/* Filter Checkboxes (2-Row Layout) */}
             <div>
               <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
+                {/* Row 1: Conditions */}
                 <div className="flex gap-2 min-w-max pb-2">
                   <button
                     onClick={() => handleFilterChange(setOnlySale)(!onlySale)}
@@ -1292,20 +1294,6 @@ function SteamPriceFilter({ initialData = null }) {
                     }`}
                   >
                     {t("filter.onlySale", currentLocale)}
-                  </button>
-                  <button
-                    onClick={() =>
-                      handleFilterChange(setOnlyOverwhelming)(!onlyOverwhelming)
-                    }
-                    className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
-                      onlyOverwhelming
-                        ? currentTheme === "steam"
-                          ? "steam-blue-bg text-white"
-                          : "bg-blue-500 text-white"
-                        : `${theme.tagBg} ${theme.tagText}`
-                    }`}
-                  >
-                    {t("filter.onlyOverwhelming", currentLocale)}
                   </button>
                   <button
                     onClick={() => handleFilterChange(setOnlyJP)(!onlyJP)}
@@ -1331,6 +1319,235 @@ function SteamPriceFilter({ initialData = null }) {
                   >
                     {t("filter.onlyMac", currentLocale)}
                   </button>
+                </div>
+                {/* Row 2: Review Scores */}
+                <div className="flex gap-2 min-w-max pb-2">
+                  <button
+                    onClick={() => {
+                      const newScores = selectedReviewScores.includes('Overwhelmingly Positive')
+                        ? selectedReviewScores.filter(s => s !== 'Overwhelmingly Positive')
+                        : [...selectedReviewScores, 'Overwhelmingly Positive'];
+                      handleFilterChange(setSelectedReviewScores)(newScores);
+                    }}
+                    className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
+                      selectedReviewScores.includes('Overwhelmingly Positive')
+                        ? currentTheme === "steam"
+                          ? "steam-blue-bg text-white"
+                          : "bg-blue-500 text-white"
+                        : `${theme.tagBg} ${theme.tagText}`
+                    }`}
+                  >
+                    {t("filter.overwhelminglyPositive", currentLocale)}
+                  </button>
+                  <button
+                    onClick={() => {
+                      const newScores = selectedReviewScores.includes('Very Positive')
+                        ? selectedReviewScores.filter(s => s !== 'Very Positive')
+                        : [...selectedReviewScores, 'Very Positive'];
+                      handleFilterChange(setSelectedReviewScores)(newScores);
+                    }}
+                    className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
+                      selectedReviewScores.includes('Very Positive')
+                        ? currentTheme === "steam"
+                          ? "steam-blue-bg text-white"
+                          : "bg-blue-500 text-white"
+                        : `${theme.tagBg} ${theme.tagText}`
+                    }`}
+                  >
+                    {t("filter.veryPositive", currentLocale)}
+                  </button>
+                  <button
+                    onClick={() => {
+                      const newScores = selectedReviewScores.includes('Positive')
+                        ? selectedReviewScores.filter(s => s !== 'Positive')
+                        : [...selectedReviewScores, 'Positive'];
+                      handleFilterChange(setSelectedReviewScores)(newScores);
+                    }}
+                    className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
+                      selectedReviewScores.includes('Positive')
+                        ? currentTheme === "steam"
+                          ? "steam-blue-bg text-white"
+                          : "bg-blue-500 text-white"
+                        : `${theme.tagBg} ${theme.tagText}`
+                    }`}
+                  >
+                    {t("filter.positive", currentLocale)}
+                  </button>
+                  <button
+                    onClick={() => {
+                      const newScores = selectedReviewScores.includes('Mostly Positive')
+                        ? selectedReviewScores.filter(s => s !== 'Mostly Positive')
+                        : [...selectedReviewScores, 'Mostly Positive'];
+                      handleFilterChange(setSelectedReviewScores)(newScores);
+                    }}
+                    className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
+                      selectedReviewScores.includes('Mostly Positive')
+                        ? currentTheme === "steam"
+                          ? "steam-blue-bg text-white"
+                          : "bg-blue-500 text-white"
+                        : `${theme.tagBg} ${theme.tagText}`
+                    }`}
+                  >
+                    {t("filter.mostlyPositive", currentLocale)}
+                  </button>
+                </div>
+                {/* Row 3: Genres */}
+                <div className="flex gap-2 min-w-max pb-2">
+                  {allGenres.genres.map((g) => {
+                    const translatedGenre = translateGenre(g, currentLocale);
+                    const displayName = truncateByWidth(translatedGenre, 20);
+                    const isIncluded = selectedGenres.include.includes(g);
+                    const isExcluded = selectedGenres.exclude.includes(g);
+
+                    // Long press handling (using closure variables instead of refs)
+                    let longPressTimer = null;
+                    let isLongPress = false;
+                    let touchStartPos = { x: 0, y: 0 };
+
+                    const handleTouchStart = (e) => {
+                      const touch = e.touches[0];
+                      touchStartPos = { x: touch.clientX, y: touch.clientY };
+                      isLongPress = false;
+
+                      longPressTimer = setTimeout(() => {
+                        isLongPress = true;
+                        if (navigator.vibrate) {
+                          navigator.vibrate(50);
+                        }
+                      }, 500);
+                    };
+
+                    const handleTouchMove = (e) => {
+                      const touch = e.touches[0];
+                      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+                      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+
+                      if (deltaX > 10 || deltaY > 10) {
+                        clearTimeout(longPressTimer);
+                        isLongPress = false;
+                      }
+                    };
+
+                    const handleTouchEnd = (e) => {
+                      if (longPressTimer) clearTimeout(longPressTimer);
+
+                      // Check if touch moved (swipe detection)
+                      const touch = e.changedTouches[0];
+                      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+                      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+
+                      // If moved more than 10px, it's a swipe - don't trigger selection
+                      if (deltaX > 10 || deltaY > 10) {
+                        return;
+                      }
+
+                      e.preventDefault();
+
+                      React.startTransition(() => {
+                        setSelectedGenres((prev) => {
+                          const currentlyIncluded = prev.include.includes(g);
+                          const currentlyExcluded = prev.exclude.includes(g);
+
+                          if (isLongPress) {
+                            // Long press: toggle exclude
+                            if (currentlyExcluded) {
+                              return {
+                                ...prev,
+                                exclude: prev.exclude.filter((x) => x !== g),
+                              };
+                            } else {
+                              return {
+                                include: prev.include.filter((x) => x !== g),
+                                exclude: [...prev.exclude, g],
+                              };
+                            }
+                          } else {
+                            // Normal tap: if excluded, remove from exclude (don't add to include)
+                            if (currentlyExcluded) {
+                              return {
+                                ...prev,
+                                exclude: prev.exclude.filter((x) => x !== g),
+                              };
+                            } else if (currentlyIncluded) {
+                              return {
+                                ...prev,
+                                include: prev.include.filter((x) => x !== g),
+                              };
+                            } else {
+                              return { ...prev, include: [...prev.include, g] };
+                            }
+                          }
+                        });
+                      });
+                    };
+
+                    const handleClick = (e) => {
+                      const isShiftClick = e.shiftKey;
+
+                      React.startTransition(() => {
+                        setSelectedGenres((prev) => {
+                          const currentlyIncluded = prev.include.includes(g);
+                          const currentlyExcluded = prev.exclude.includes(g);
+
+                          if (isShiftClick) {
+                            // Shift+click: toggle exclude
+                            if (currentlyExcluded) {
+                              return {
+                                ...prev,
+                                exclude: prev.exclude.filter((x) => x !== g),
+                              };
+                            } else {
+                              return {
+                                include: prev.include.filter((x) => x !== g),
+                                exclude: [...prev.exclude, g],
+                              };
+                            }
+                          } else {
+                            // Normal click: if excluded, remove from exclude (don't add to include)
+                            if (currentlyExcluded) {
+                              return {
+                                ...prev,
+                                exclude: prev.exclude.filter((x) => x !== g),
+                              };
+                            } else if (currentlyIncluded) {
+                              return {
+                                ...prev,
+                                include: prev.include.filter((x) => x !== g),
+                              };
+                            } else {
+                              return { ...prev, include: [...prev.include, g] };
+                            }
+                          }
+                        });
+                      });
+                    };
+
+                    return (
+                      <button
+                        key={g}
+                        onClick={handleClick}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                        onTouchCancel={() => { if (longPressTimer) clearTimeout(longPressTimer); }}
+                        className={`relative px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
+                          isIncluded
+                            ? currentTheme === "steam"
+                              ? "steam-blue-bg text-white"
+                              : "bg-blue-500 text-white"
+                            : isExcluded
+                              ? `${theme.saleBg} text-white`
+                              : `${theme.tagBg} ${theme.tagText}`
+                        }`}
+                      >
+                        {displayName}
+                        {isExcluded && <span className="ml-1">✕</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+                {/* Row 4: Features (Other Tags) */}
+                <div className="flex gap-2 min-w-max pb-2">
                   {allGenres.otherTags.map((g) => {
                     const translatedGenre = translateGenre(g, currentLocale);
                     const isIncluded = selectedGenres.include.includes(g);
@@ -1485,167 +1702,6 @@ function SteamPriceFilter({ initialData = null }) {
                 </div>
               </div>
             </div>
-
-            {/* Genre Filters (Horizontal Scroll) */}
-            <div>
-              <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
-                <div className="flex gap-2 min-w-max pb-2">
-                  {allGenres.genres.map((g) => {
-                    const translatedGenre = translateGenre(g, currentLocale);
-                    const displayName = truncateByWidth(translatedGenre, 20);
-                    const isIncluded = selectedGenres.include.includes(g);
-                    const isExcluded = selectedGenres.exclude.includes(g);
-                    const isChecked = isIncluded || isExcluded;
-
-                    // Long press handling (using closure variables instead of refs)
-                    let longPressTimer = null;
-                    let isLongPress = false;
-                    let touchStartPos = { x: 0, y: 0 };
-
-                    const handleTouchStart = (e) => {
-                      const touch = e.touches[0];
-                      touchStartPos = { x: touch.clientX, y: touch.clientY };
-                      isLongPress = false;
-
-                      longPressTimer = setTimeout(() => {
-                        isLongPress = true;
-                        if (navigator.vibrate) {
-                          navigator.vibrate(50);
-                        }
-                      }, 500);
-                    };
-
-                    const handleTouchMove = (e) => {
-                      const touch = e.touches[0];
-                      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
-                      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
-
-                      if (deltaX > 10 || deltaY > 10) {
-                        clearTimeout(longPressTimer);
-                        isLongPress = false;
-                      }
-                    };
-
-                    const handleTouchEnd = (e) => {
-                      if (longPressTimer) clearTimeout(longPressTimer);
-
-                      // Check if touch moved (swipe detection)
-                      const touch = e.changedTouches[0];
-                      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
-                      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
-
-                      // If moved more than 10px, it's a swipe - don't trigger selection
-                      if (deltaX > 10 || deltaY > 10) {
-                        return;
-                      }
-
-                      e.preventDefault();
-
-                      React.startTransition(() => {
-                        setSelectedGenres((prev) => {
-                          const currentlyIncluded = prev.include.includes(g);
-                          const currentlyExcluded = prev.exclude.includes(g);
-
-                          if (isLongPress) {
-                            // Long press: toggle exclude
-                            if (currentlyExcluded) {
-                              return {
-                                ...prev,
-                                exclude: prev.exclude.filter((x) => x !== g),
-                              };
-                            } else {
-                              return {
-                                include: prev.include.filter((x) => x !== g),
-                                exclude: [...prev.exclude, g],
-                              };
-                            }
-                          } else {
-                            // Normal tap: if excluded, remove from exclude (don't add to include)
-                            if (currentlyExcluded) {
-                              return {
-                                ...prev,
-                                exclude: prev.exclude.filter((x) => x !== g),
-                              };
-                            } else if (currentlyIncluded) {
-                              return {
-                                ...prev,
-                                include: prev.include.filter((x) => x !== g),
-                              };
-                            } else {
-                              return { ...prev, include: [...prev.include, g] };
-                            }
-                          }
-                        });
-                      });
-                    };
-
-                    const handleClick = (e) => {
-                      const isShiftClick = e.shiftKey;
-
-                      React.startTransition(() => {
-                        setSelectedGenres((prev) => {
-                          const currentlyIncluded = prev.include.includes(g);
-                          const currentlyExcluded = prev.exclude.includes(g);
-
-                          if (isShiftClick) {
-                            // Shift+click: toggle exclude
-                            if (currentlyExcluded) {
-                              return {
-                                ...prev,
-                                exclude: prev.exclude.filter((x) => x !== g),
-                              };
-                            } else {
-                              return {
-                                include: prev.include.filter((x) => x !== g),
-                                exclude: [...prev.exclude, g],
-                              };
-                            }
-                          } else {
-                            // Normal click: if excluded, remove from exclude (don't add to include)
-                            if (currentlyExcluded) {
-                              return {
-                                ...prev,
-                                exclude: prev.exclude.filter((x) => x !== g),
-                              };
-                            } else if (currentlyIncluded) {
-                              return {
-                                ...prev,
-                                include: prev.include.filter((x) => x !== g),
-                              };
-                            } else {
-                              return { ...prev, include: [...prev.include, g] };
-                            }
-                          }
-                        });
-                      });
-                    };
-
-                    return (
-                      <button
-                        key={g}
-                        onClick={handleClick}
-                        onTouchStart={handleTouchStart}
-                        onTouchMove={handleTouchMove}
-                        onTouchEnd={handleTouchEnd}
-                        onTouchCancel={() => { if (longPressTimer) clearTimeout(longPressTimer); }}
-                        className={`relative px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
-                          isIncluded
-                            ? currentTheme === "steam"
-                              ? "steam-blue-bg text-white"
-                              : "bg-blue-500 text-white"
-                            : isExcluded
-                              ? `${theme.saleBg} text-white`
-                              : `${theme.tagBg} ${theme.tagText}`
-                        }`}
-                      >
-                        {displayName}
-                        {isExcluded && <span className="ml-1">✕</span>}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
           </div>
 
           <style>{`
@@ -1663,9 +1719,9 @@ function SteamPriceFilter({ initialData = null }) {
               className={`${theme.cardBg} ${theme.cardShadow} rounded-2xl p-4 md:col-span-2 flex flex-col`}
             >
               <div className="text-sm font-semibold mb-3">
-                {t("filter.title", currentLocale)}
+                {t("filter.conditions", currentLocale)}
               </div>
-              <div className="flex items-center gap-4 flex-wrap mb-6">
+              <div className="flex items-center gap-4 flex-wrap mb-4">
                 <div className="flex items-center gap-2">
                   <input
                     id="saleOnly"
@@ -1681,23 +1737,6 @@ function SteamPriceFilter({ initialData = null }) {
                     className="text-sm whitespace-nowrap"
                   >
                     {t("filter.onlySale", currentLocale)}
-                  </label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    id="overwhelmingOnly"
-                    type="checkbox"
-                    checked={onlyOverwhelming}
-                    onChange={(e) =>
-                      handleFilterChange(setOnlyOverwhelming)(e.target.checked)
-                    }
-                    className="h-4 w-4 flex-shrink-0"
-                  />
-                  <label
-                    htmlFor="overwhelmingOnly"
-                    className="text-sm whitespace-nowrap"
-                  >
-                    {t("filter.onlyOverwhelming", currentLocale)}
                   </label>
                 </div>
                 <div className="flex items-center gap-2">
@@ -1729,6 +1768,92 @@ function SteamPriceFilter({ initialData = null }) {
                     className="text-sm whitespace-nowrap"
                   >
                     {t("filter.onlyMac", currentLocale)}
+                  </label>
+                </div>
+              </div>
+
+              <div className="text-sm font-semibold mb-3">
+                {t("filter.reviewScore", currentLocale)}
+              </div>
+              <div className="flex items-center gap-4 flex-wrap mb-6">
+                <div className="flex items-center gap-2">
+                  <input
+                    id="overwhelminglyPositive"
+                    type="checkbox"
+                    checked={selectedReviewScores.includes('Overwhelmingly Positive')}
+                    onChange={() => {
+                      const newScores = selectedReviewScores.includes('Overwhelmingly Positive')
+                        ? selectedReviewScores.filter(s => s !== 'Overwhelmingly Positive')
+                        : [...selectedReviewScores, 'Overwhelmingly Positive'];
+                      handleFilterChange(setSelectedReviewScores)(newScores);
+                    }}
+                    className="h-4 w-4 flex-shrink-0"
+                  />
+                  <label
+                    htmlFor="overwhelminglyPositive"
+                    className="text-sm whitespace-nowrap"
+                  >
+                    {t("filter.overwhelminglyPositive", currentLocale)}
+                  </label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="veryPositive"
+                    type="checkbox"
+                    checked={selectedReviewScores.includes('Very Positive')}
+                    onChange={() => {
+                      const newScores = selectedReviewScores.includes('Very Positive')
+                        ? selectedReviewScores.filter(s => s !== 'Very Positive')
+                        : [...selectedReviewScores, 'Very Positive'];
+                      handleFilterChange(setSelectedReviewScores)(newScores);
+                    }}
+                    className="h-4 w-4 flex-shrink-0"
+                  />
+                  <label
+                    htmlFor="veryPositive"
+                    className="text-sm whitespace-nowrap"
+                  >
+                    {t("filter.veryPositive", currentLocale)}
+                  </label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="positive"
+                    type="checkbox"
+                    checked={selectedReviewScores.includes('Positive')}
+                    onChange={() => {
+                      const newScores = selectedReviewScores.includes('Positive')
+                        ? selectedReviewScores.filter(s => s !== 'Positive')
+                        : [...selectedReviewScores, 'Positive'];
+                      handleFilterChange(setSelectedReviewScores)(newScores);
+                    }}
+                    className="h-4 w-4 flex-shrink-0"
+                  />
+                  <label
+                    htmlFor="positive"
+                    className="text-sm whitespace-nowrap"
+                  >
+                    {t("filter.positive", currentLocale)}
+                  </label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="mostlyPositive"
+                    type="checkbox"
+                    checked={selectedReviewScores.includes('Mostly Positive')}
+                    onChange={() => {
+                      const newScores = selectedReviewScores.includes('Mostly Positive')
+                        ? selectedReviewScores.filter(s => s !== 'Mostly Positive')
+                        : [...selectedReviewScores, 'Mostly Positive'];
+                      handleFilterChange(setSelectedReviewScores)(newScores);
+                    }}
+                    className="h-4 w-4 flex-shrink-0"
+                  />
+                  <label
+                    htmlFor="mostlyPositive"
+                    className="text-sm whitespace-nowrap"
+                  >
+                    {t("filter.mostlyPositive", currentLocale)}
                   </label>
                 </div>
               </div>
