@@ -220,7 +220,30 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             </div>
           )}
 
-          {/* 9. Navigate to Reviews */}
+          {/* 9. Wheel Click Shows Collection (PC only) */}
+          {!isMobile && (
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex-1">
+                <div className="text-sm font-medium">{t('settings.wheelClickShowsCollection', currentLocale)}</div>
+                <div className={`text-xs ${theme.subText}`}>{t('settings.wheelClickShowsCollectionDesc', currentLocale)}</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input
+                  type="checkbox"
+                  checked={settings.wheelClickShowsCollection}
+                  onChange={async (e) => {
+                    const newSettings = { ...settings, wheelClickShowsCollection: e.target.checked };
+                    setSettings(newSettings);
+                    await dbHelper.saveSettings(newSettings);
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          )}
+
+          {/* 10. Navigate to Reviews */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1">
               <div className="text-sm font-medium">{t('settings.navigateToReviews', currentLocale)}</div>
@@ -241,7 +264,7 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             </label>
           </div>
 
-          {/* 10. Alternative Key Bindings (PC only) */}
+          {/* 11. Alternative Key Bindings (PC only) */}
           {!isMobile && (
             <div className="flex items-center justify-between gap-3">
               <div className="flex-1">

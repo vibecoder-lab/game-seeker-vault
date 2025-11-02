@@ -292,6 +292,24 @@ function SteamPriceFilter({ initialData = null }) {
     };
   }, [showGlobalFolderDropdown, globalDropdownPosition]);
 
+  // Handle wheel click to toggle collection modal
+  React.useEffect(() => {
+    if (!settings?.wheelClickShowsCollection) return;
+
+    const handleMouseDown = (e) => {
+      // Check for wheel click (button 1 = middle mouse button)
+      if (e.button === 1) {
+        e.preventDefault();
+        setShowCollectionModal(prev => !prev);
+      }
+    };
+
+    window.addEventListener('mousedown', handleMouseDown);
+    return () => {
+      window.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, [settings?.wheelClickShowsCollection]);
+
   React.useEffect(() => {
     if (initialData) {
       return;
@@ -371,9 +389,6 @@ function SteamPriceFilter({ initialData = null }) {
         const navigationType = performance.getEntriesByType('navigation')[0]?.type ||
                               (performance.navigation?.type === 2 ? 'back_forward' : 'navigate');
 
-        console.log('[UI State] Navigation type:', navigationType);
-        console.log('[UI State] Referrer:', document.referrer);
-
         // Only restore if:
         // 1. User navigated back (back_forward)
         // 2. OR referrer is from Steam (user clicked back from Steam page)
@@ -382,17 +397,12 @@ function SteamPriceFilter({ initialData = null }) {
                                  document.referrer.includes('store.steampowered.com');
 
         if (isBackNavigation) {
-          console.log('[UI State] Back navigation detected, loading saved state...');
           const savedUIState = await dbHelper.loadUIState();
-          console.log('[UI State] Loaded state:', savedUIState);
 
           // Only restore if data is less than 24 hours old
           if (savedUIState && (Date.now() - savedUIState.timestamp < 24 * 60 * 60 * 1000)) {
-            console.log('[UI State] Restoring state (timestamp is valid)');
-
             // Restore filter conditions
             if (savedUIState.filters) {
-              console.log('[UI State] Restoring filters:', savedUIState.filters);
               setSelectedGenres(savedUIState.filters.selectedGenres || { include: [], exclude: [] });
               setSelectedTags(savedUIState.filters.selectedTags || []);
               setIsTagSectionOpen(savedUIState.filters.isTagSectionOpen || false);
@@ -410,7 +420,6 @@ function SteamPriceFilter({ initialData = null }) {
 
             // Restore modal states (only main modals, not temporary ones)
             if (savedUIState.modals) {
-              console.log('[UI State] Restoring modals:', savedUIState.modals);
               setShowCollectionModal(savedUIState.modals.showCollectionModal || false);
               setShowHelpModal(savedUIState.modals.showHelpModal || false);
               setShowSettingsModal(savedUIState.modals.showSettingsModal || false);
@@ -421,37 +430,28 @@ function SteamPriceFilter({ initialData = null }) {
 
             // Restore folder selection
             if (savedUIState.folders) {
-              console.log('[UI State] Restoring folders:', savedUIState.folders);
               if (savedUIState.folders.selectedFolderId) setSelectedFolderId(savedUIState.folders.selectedFolderId);
               if (savedUIState.folders.targetFolderId) setTargetFolderId(savedUIState.folders.targetFolderId);
             }
 
             // Restore scroll position after DOM is ready
             if (savedUIState.scrollPosition !== undefined) {
-              console.log('[UI State] Restoring scroll position:', savedUIState.scrollPosition);
               setTimeout(() => {
                 window.scrollTo(0, savedUIState.scrollPosition);
               }, 100);
             }
 
-            console.log('[UI State] State restoration complete');
-
             // Clear the saved state after restoration
             await dbHelper.clearUIState();
-            console.log('[UI State] Cleared saved state');
           } else if (savedUIState) {
-            console.log('[UI State] State found but timestamp is too old, skipping restoration');
             await dbHelper.clearUIState();
-          } else {
-            console.log('[UI State] No saved state found');
           }
         } else {
-          console.log('[UI State] Not a back navigation, skipping state restoration');
           // Clear any old saved state on normal navigation
           await dbHelper.clearUIState();
         }
       } catch (err) {
-        console.error('[UI State] Failed to restore UI state:', err);
+        console.error('Failed to restore UI state:', err);
       }
     })();
   }, []);
@@ -1028,9 +1028,7 @@ function SteamPriceFilter({ initialData = null }) {
         },
         timestamp: Date.now()
       };
-      console.log('[UI State] Saving state:', stateToSave);
       await dbHelper.saveUIState(stateToSave);
-      console.log('[UI State] State saved successfully');
     } catch (err) {
       console.error('Failed to save UI state:', err);
     }

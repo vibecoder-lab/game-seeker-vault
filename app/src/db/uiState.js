@@ -12,7 +12,6 @@ export const saveUIState = async (state) => {
 
       // Check if object store exists
       if (!db.objectStoreNames.contains(UI_STATE_STORE)) {
-        console.warn('[uiState] Object store not found. DB version might be outdated.');
         db.close();
         resolve(); // Resolve without error to avoid breaking the app
         return;
@@ -48,7 +47,6 @@ export const loadUIState = async () => {
 
       // Check if object store exists
       if (!db.objectStoreNames.contains(UI_STATE_STORE)) {
-        console.warn('[uiState] Object store not found. DB version might be outdated.');
         db.close();
         resolve(null); // Return null to indicate no state available
         return;
@@ -83,7 +81,6 @@ export const clearUIState = async () => {
 
       // Check if object store exists
       if (!db.objectStoreNames.contains(UI_STATE_STORE)) {
-        console.warn('[uiState] Object store not found. DB version might be outdated.');
         db.close();
         resolve(); // Resolve without error to avoid breaking the app
         return;
