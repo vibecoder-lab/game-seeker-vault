@@ -309,25 +309,27 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                     <li>{t('help.guide.mobile.basic1', currentLocale)}</li>
                     <li>{t('help.guide.mobile.basic2', currentLocale)}</li>
                     <li>{t('help.guide.mobile.basic3', currentLocale)}</li>
-                    <li>{t('help.guide.mobile.basic4', currentLocale)}
-                      <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
-                        <li>{t('help.guide.mobile.basic4a', currentLocale)}</li>
-                        <li>{t('help.guide.mobile.basic4b', currentLocale)}</li>
-                        <li>{t('help.guide.mobile.basic4c', currentLocale)}</li>
-                        <li>{t('help.guide.mobile.basic4d', currentLocale)}</li>
-                        <li>{t('help.guide.mobile.basic4e', currentLocale)}</li>
-                        <li>{t('help.guide.mobile.basic4f', currentLocale)}</li>
-                      </ul>
-                    </li>
-                    <li>{t('help.guide.mobile.basic5', currentLocale)}</li>
-                    <li>{t('help.guide.mobile.basic6', currentLocale)}</li>
                   </ul>
 
-                  <h4 className="font-bold mt-4">{t('help.guide.mobile.longTap', currentLocale)}</h4>
+                  <h4 className="font-bold mt-4">{t('help.guide.mobile.buttons', currentLocale)}</h4>
                   <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>{t('help.guide.mobile.longTap1', currentLocale)}
+                    <li>{t('help.guide.mobile.buttons1', currentLocale)}</li>
+                    <li>{t('help.guide.mobile.buttons2', currentLocale)}</li>
+                    <li>{t('help.guide.mobile.buttons3', currentLocale)}</li>
+                    <li>{t('help.guide.mobile.buttons4', currentLocale)}</li>
+                    <li>{t('help.guide.mobile.buttons5', currentLocale)}
                       <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
-                        <li>{t('help.guide.mobile.longTap1a', currentLocale)}</li>
+                        <li>{t('help.guide.mobile.buttons5a', currentLocale)}</li>
+                      </ul>
+                    </li>
+                  </ul>
+
+                  <h4 className="font-bold mt-4">{t('help.guide.mobile.longPress', currentLocale)}</h4>
+                  <ul className="list-disc list-inside space-y-2 ml-4">
+                    <li>{t('help.guide.mobile.longPress1', currentLocale)}</li>
+                    <li>{t('help.guide.mobile.longPress2', currentLocale)}
+                      <ul className="list-disc list-inside space-y-1 ml-6 mt-1">
+                        <li>{t('help.guide.mobile.longPress2a', currentLocale)}</li>
                       </ul>
                     </li>
                   </ul>
