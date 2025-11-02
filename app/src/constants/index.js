@@ -6,6 +6,7 @@ export const DEFAULT_SETTINGS = {
   permanentDelete: false,          // Permanently delete without using trash
   theme: 'default',                // 'default' | 'steam'
   useSelectedFolderAsTarget: false, // Use selected folder as target
+  navigateToReviews: true,         // Navigate to reviews section on Steam page
   keyboardLayout: 'ansi',          // 'ansi' | 'iso'
   useAlternativeKeys: false,       // Z/X instead of C/T
   saveTheme: false,                // Whether to save theme

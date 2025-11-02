@@ -398,7 +398,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
               </div>
             )}
 
-            <a href={linkFor(g)}
+            <a href={linkFor(g, settings.navigateToReviews)}
                ref={cardRef}
                className={`block rounded-2xl ${theme.cardShadow} overflow-hidden ${showDetailModal ? 'relative z-50' : ''}`}
                style={{

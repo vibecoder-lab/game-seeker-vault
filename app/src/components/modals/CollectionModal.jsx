@@ -840,7 +840,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                           <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center">
                             <span className={`absolute left-[-40px] text-sm font-semibold ${theme.subText} w-[24px] text-right transition-transform duration-300 ${showOrderMenuForGame !== null ? 'translate-x-[40px]' : 'translate-x-0'}`}>{game.sortOrder}</span>
                           </div>
-                          <a href={linkFor(gameData)} className="flex-1 min-w-0 pr-2 text-sm pl-6" onClick={(e) => handleGameClick(e, gameData)}>
+                          <a href={linkFor(gameData, settings.navigateToReviews)} className="flex-1 min-w-0 pr-2 text-sm pl-6" onClick={(e) => handleGameClick(e, gameData)}>
                             {gameData?.title || 'Unknown'}
                           </a>
                           <div className={`flex items-center gap-3 transition-transform duration-300 group-hover:translate-x-0 ${selectedFolderId === TRASH_FOLDER_ID ? 'translate-x-[80px]' : 'translate-x-[120px]'}`}>
