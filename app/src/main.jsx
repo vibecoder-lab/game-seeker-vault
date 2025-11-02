@@ -198,6 +198,16 @@ function SteamPriceFilter({ initialData = null }) {
       if (e.shiftKey && collectionKeys.includes(e.code) && !shiftCPressed) {
         e.preventDefault();
         shiftCPressed = true;
+
+        // Close other modals and dropdowns before toggling collection modal
+        setShowHelpModal(false);
+        setShowSettingsModal(false);
+        setShowLanguageRegionModal(false);
+        setShowImportExportModal(false);
+        setShowMobileUnifiedModal(false);
+        setShowGlobalFolderDropdown(false);
+        setShowFolderDropdown(false);
+
         setShowCollectionModal((prev) => !prev);
         return;
       }
@@ -300,6 +310,16 @@ function SteamPriceFilter({ initialData = null }) {
       // Check for wheel click (button 1 = middle mouse button)
       if (e.button === 1) {
         e.preventDefault();
+
+        // Close other modals and dropdowns before toggling collection modal
+        setShowHelpModal(false);
+        setShowSettingsModal(false);
+        setShowLanguageRegionModal(false);
+        setShowImportExportModal(false);
+        setShowMobileUnifiedModal(false);
+        setShowGlobalFolderDropdown(false);
+        setShowFolderDropdown(false);
+
         setShowCollectionModal(prev => !prev);
       }
     };
