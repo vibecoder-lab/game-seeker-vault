@@ -1136,6 +1136,16 @@ function SteamPriceFilter({ initialData = null }) {
                     const handleTouchEnd = (e) => {
                       if (longPressTimer) clearTimeout(longPressTimer);
 
+                      // Check if touch moved (swipe detection)
+                      const touch = e.changedTouches[0];
+                      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+                      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+
+                      // If moved more than 10px, it's a swipe - don't trigger selection
+                      if (deltaX > 10 || deltaY > 10) {
+                        return;
+                      }
+
                       e.preventDefault();
 
                       React.startTransition(() => {
@@ -1286,6 +1296,17 @@ function SteamPriceFilter({ initialData = null }) {
 
                     const handleTouchEnd = (e) => {
                       if (longPressTimer) clearTimeout(longPressTimer);
+
+                      // Check if touch moved (swipe detection)
+                      const touch = e.changedTouches[0];
+                      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+                      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+
+                      // If moved more than 10px, it's a swipe - don't trigger selection
+                      if (deltaX > 10 || deltaY > 10) {
+                        return;
+                      }
+
                       e.preventDefault();
 
                       React.startTransition(() => {
