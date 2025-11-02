@@ -4,7 +4,7 @@ import { t, currentLocale, formatPrice, formatDate } from '../i18n/index.js';
 import { normalizeGenres, formatReleaseDate, checkJapaneseSupport, cleanLanguageText, translateReviewScore, yen } from '../utils/format.js';
 import { steamCapsuleUrl, linkFor } from '../utils/steam.js';
 
-function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale, currentRegion, folders, onAddToFolder }) {
+function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale, currentRegion, folders, onAddToFolder, onSaveUIState }) {
   const [isHovered, setIsHovered] = React.useState(false);
   const [shiftPressed, setShiftPressed] = React.useState(false);
   const [starButtonHovered, setStarButtonHovered] = React.useState(false);
@@ -262,6 +262,11 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
       e.preventDefault();
       e.stopPropagation();
       onShowVideoModal(g);
+    } else {
+      // Normal click - save UI state before navigating to Steam
+      if (onSaveUIState) {
+        onSaveUIState();
+      }
     }
   };
 
@@ -393,7 +398,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
               </div>
             )}
 
-            <a href={linkFor(g)} target="_blank" rel="noreferrer noopener"
+            <a href={linkFor(g)}
                ref={cardRef}
                className={`block rounded-2xl ${theme.cardShadow} overflow-hidden ${showDetailModal ? 'relative z-50' : ''}`}
                style={{

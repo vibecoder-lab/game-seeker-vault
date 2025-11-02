@@ -3,6 +3,7 @@ import { initDB } from './init.js';
 import { addFolder, getFolders, updateFolder, deleteFolder, deleteAllFolders, updateFolderOrder } from './folders.js';
 import { addCollection, getCollectionsByFolder, getCollectionByGameId, updateCollectionFolder, deleteCollection, updateCollectionOrder, markAsDeleted, restoreFromTrash, getDeletedCollections, deleteAllCollections } from './collection.js';
 import { loadSettings, saveSettings, resetSettings } from './settings.js';
+import { saveUIState, loadUIState, clearUIState } from './uiState.js';
 
 // Delete all data (including settings)
 async function deleteAllData() {
@@ -43,7 +44,10 @@ export const dbHelper = {
   getDeletedCollections,
   loadSettings,
   saveSettings,
-  resetSettings
+  resetSettings,
+  saveUIState,
+  loadUIState,
+  clearUIState
 };
 
 // Also export initDB for direct use

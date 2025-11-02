@@ -1,6 +1,8 @@
 // Get store link for game
 export const linkFor = (g) => {
-  return g.storeUrl ? g.storeUrl : `https://store.steampowered.com/search/?term=${encodeURIComponent(g.title)}`;
+  const baseUrl = g.storeUrl ? g.storeUrl : `https://store.steampowered.com/search/?term=${encodeURIComponent(g.title)}`;
+  // Add anchor to reviews section if it's a direct store page
+  return g.storeUrl ? `${baseUrl}#app_reviews_hash` : baseUrl;
 };
 
 // Extract app ID from Steam URL

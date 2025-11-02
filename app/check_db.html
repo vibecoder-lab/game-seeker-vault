@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head><title>DB Check</title></head>
+<body>
+<h1>Check DB in console</h1>
+<script>
+indexedDB.open('GameSeekerVaultDB').onsuccess = (e) => {
+  const db = e.target.result;
+  console.log('DB Version:', db.version);
+  console.log('Object Stores:', Array.from(db.objectStoreNames));
+  db.close();
+};
+</script>
+</body>
+</html>

@@ -135,7 +135,7 @@ function SortableItem({ id, game, gameData, theme, currentTheme, selectedFolderI
   );
 }
 
-export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, setCollectionMap, settings, setTargetFolderId, showVideoModal, setShowVideoModal, setSelectedGameForVideo, setVideoModalClosing, currentRegion }) {
+export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, setCollectionMap, settings, setTargetFolderId, showVideoModal, setShowVideoModal, setSelectedGameForVideo, setVideoModalClosing, currentRegion, onSaveUIState, scrollTop, onScrollTopChange }) {
         const TRASH_FOLDER_ID = '__TRASH__';
 
         // Identify the owned list folder (created with translation key 'folder.default.owned_list')
@@ -180,6 +180,8 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         const hoveredGameRef = React.useRef(null);
         const detailPanelRef = React.useRef(null);
         const modalRef = React.useRef(null);
+        const gameListRef = React.useRef(null);
+        const isRestoringScroll = React.useRef(false);
 
         // Drag and drop sensors
         const sensors = useSensors(
@@ -279,6 +281,11 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
             setVideoModalClosing(false);
             setSelectedGameForVideo(gameData);
             setShowVideoModal(true);
+          } else {
+            // Normal click - save UI state before navigating to Steam
+            if (onSaveUIState) {
+              onSaveUIState();
+            }
           }
         };
 
@@ -375,6 +382,36 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
             })();
           }
         }, [selectedFolderId, folders, games]);
+
+        // Restore scroll position after collectionGames is loaded
+        React.useEffect(() => {
+          if (gameListRef.current && scrollTop > 0 && collectionGames.length > 0) {
+            isRestoringScroll.current = true;
+            requestAnimationFrame(() => {
+              if (gameListRef.current) {
+                gameListRef.current.scrollTop = scrollTop;
+                setTimeout(() => {
+                  isRestoringScroll.current = false;
+                }, 100);
+              }
+            });
+          }
+        }, [collectionGames]);
+
+        // Save scroll position when scrolling
+        React.useEffect(() => {
+          const gameList = gameListRef.current;
+          if (!gameList) return;
+
+          const handleScroll = () => {
+            if (!isRestoringScroll.current && onScrollTopChange) {
+              onScrollTopChange(gameList.scrollTop);
+            }
+          };
+
+          gameList.addEventListener('scroll', handleScroll);
+          return () => gameList.removeEventListener('scroll', handleScroll);
+        }, [onScrollTopChange]);
 
         // Sync selected folder and target folder when setting is enabled
         const isFirstRender = React.useRef(true);
@@ -767,7 +804,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                     {selectedFolderId === TRASH_FOLDER_ID ? t('collection.trash', currentLocale) : (folders.find(f => f.id === selectedFolderId)?.name || t('collection.title', currentLocale))}
                   </h2>
                 </div>
-                <div className="flex-1 overflow-y-auto p-4">
+                <div ref={gameListRef} className="flex-1 overflow-y-auto p-4">
                   {collectionGames.length === 0 ? (
                     <div className={`text-center ${theme.subText} py-8`}>
                       {selectedFolderId === TRASH_FOLDER_ID ? t('collection.trashEmpty', currentLocale) : t('collection.empty', currentLocale)}
@@ -803,7 +840,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                           <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center">
                             <span className={`absolute left-[-40px] text-sm font-semibold ${theme.subText} w-[24px] text-right transition-transform duration-300 ${showOrderMenuForGame !== null ? 'translate-x-[40px]' : 'translate-x-0'}`}>{game.sortOrder}</span>
                           </div>
-                          <a href={linkFor(gameData)} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-0 pr-2 text-sm pl-6" onClick={(e) => handleGameClick(e, gameData)}>
+                          <a href={linkFor(gameData)} className="flex-1 min-w-0 pr-2 text-sm pl-6" onClick={(e) => handleGameClick(e, gameData)}>
                             {gameData?.title || 'Unknown'}
                           </a>
                           <div className={`flex items-center gap-3 transition-transform duration-300 group-hover:translate-x-0 ${selectedFolderId === TRASH_FOLDER_ID ? 'translate-x-[80px]' : 'translate-x-[120px]'}`}>
