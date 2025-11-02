@@ -3,7 +3,7 @@ import { t, currentLocale, setLocale } from '../../i18n/index.js';
 import { dbHelper } from '../../db/index.js';
 import { FOLDER_NAME_TO_KEY } from '../../utils/format.js';
 
-export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, setForceUpdate, onClose, setMinPrice, setMaxPrice, setFolders }) {
+export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, setForceUpdate, onClose, setMinPrice, setMaxPrice, setFolders, settings, setSettings }) {
   // Disable page scroll when modal is open
   React.useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -13,7 +13,12 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
   }, []);
 
   const handleLanguageChange = async (locale) => {
-    await setLocale(locale);
+    setLocale(locale);
+
+    // Update settings state and save to IndexedDB
+    const newSettings = { ...settings, locale };
+    setSettings(newSettings);
+    await dbHelper.saveSettings(newSettings);
 
     // Update IndexedDB folder names for 4 default folders
     const folders = await dbHelper.getFolders();
@@ -36,17 +41,20 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
 
   const handleRegionChange = async (region) => {
     setCurrentRegion(region);
-    const settings = await dbHelper.loadSettings();
-    await dbHelper.saveSettings({ ...settings, region });
+
+    // Update settings state and save to IndexedDB
+    const newSettings = { ...settings, region };
+    setSettings(newSettings);
+    await dbHelper.saveSettings(newSettings);
 
     // Reset price range based on new region
     if (region === 'JPY') {
       setMinPrice(100);
-      setMaxPrice(settings.removePriceLimit ? 20000 : 3000);
+      setMaxPrice(newSettings.removePriceLimit ? 20000 : 3000);
     } else {
       // USD, EUR, GBP
       setMinPrice(1);
-      setMaxPrice(settings.removePriceLimit ? 200 : 50);
+      setMaxPrice(newSettings.removePriceLimit ? 200 : 50);
     }
 
     setForceUpdate(prev => prev + 1);

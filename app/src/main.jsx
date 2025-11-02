@@ -10,6 +10,7 @@ import "./index.css";
 import {
   t,
   currentLocale,
+  initLocale,
   setLocale,
   detectLocale,
   detectRegion,
@@ -67,6 +68,8 @@ function SteamPriceFilter({ initialData = null }) {
   const [metaData, setMetaData] = React.useState(null);
   const [loading, setLoading] = React.useState(!initialData);
   const [uiStateRestored, setUiStateRestored] = React.useState(false);
+  // Check if data was already loaded in this session (rely on bfcache for persistence)
+  const dataLoadedRef = React.useRef(!!initialData);
   const [selectedGenres, setSelectedGenres] = React.useState({
     include: [],
     exclude: [],
@@ -332,18 +335,17 @@ function SteamPriceFilter({ initialData = null }) {
   }, [settings?.wheelClickShowsCollection]);
 
   React.useEffect(() => {
-    if (initialData) {
-      return;
-    }
-
-    // Skip fetch if we already have game data
-    if (rawGames.length > 0) {
+    // Skip if data already loaded
+    if (dataLoadedRef.current) {
       return;
     }
 
     (async () => {
       try {
         setLoading(true);
+        dataLoadedRef.current = true;
+        sessionStorage.setItem('gamesDataLoaded', 'true');
+
         // Auto-detect data source: localhost/127.0.0.1 = local, otherwise = production
         const isLocal =
           window.location.hostname === "localhost" ||
@@ -363,19 +365,18 @@ function SteamPriceFilter({ initialData = null }) {
               : [];
         const meta =
           data && typeof data === "object" && "meta" in data ? data.meta : null;
+
         setRawGames(games);
         setMetaData(meta);
       } catch (e) {
         console.error('Failed to load game data:', e);
-        // Preserve existing data on error
-        if (rawGames.length === 0) {
-          setRawGames([]);
-        }
+        dataLoadedRef.current = false;
+        setRawGames([]);
       } finally {
         setLoading(false);
       }
     })();
-  }, [initialData, rawGames.length]);
+  }, []);
 
   // Load settings
   React.useEffect(() => {
@@ -392,9 +393,10 @@ function SteamPriceFilter({ initialData = null }) {
       const loadedSettings = await dbHelper.loadSettings();
       setSettings(loadedSettings);
 
-      // Initialize locale from settings
+      // Initialize locale from settings (don't call setLocale to avoid overwriting saved settings)
       const detected = loadedSettings.locale || await detectLocale();
-      setLocale(detected);
+      // Only set currentLocale directly, don't save to IndexedDB on initialization
+      initLocale(detected);
 
       // Initialize region from settings
       const detectedRegion = loadedSettings.region || await detectRegion();
@@ -2371,6 +2373,8 @@ function SteamPriceFilter({ initialData = null }) {
             setMinPrice={setMinPrice}
             setMaxPrice={setMaxPrice}
             setFolders={setFolders}
+            settings={settings}
+            setSettings={setSettings}
           />
         )}
 

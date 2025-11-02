@@ -1,8 +1,14 @@
 import translations from './translations.js';
-import { loadSettings, saveSettings } from '../db/settings.js';
+import { loadSettings } from '../db/settings.js';
 
 // Global locale state
 export let currentLocale = 'en';
+
+// Initialize locale without saving (for app initialization)
+export function initLocale(locale) {
+  currentLocale = locale;
+  document.documentElement.lang = locale;
+}
 
 // Translation helper function
 export function t(key, lang = 'en') {
@@ -53,17 +59,10 @@ export function formatDate(dateString, locale = 'en') {
   }
 }
 
-// Set locale and update document
-export async function setLocale(locale) {
+// Set locale and update document (without saving)
+export function setLocale(locale) {
   currentLocale = locale;
   document.documentElement.lang = locale;
-
-  // Save to settings store
-  const settings = await loadSettings();
-  await saveSettings({ ...settings, locale });
-
-  // Trigger re-render (will be handled by React state)
-  return locale;
 }
 
 // Get saved or detected locale
