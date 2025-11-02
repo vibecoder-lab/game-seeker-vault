@@ -876,16 +876,18 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                 </svg>
                               </button>
                               {showOrderMenuForGame === game.id && (
-                                <div className={`absolute left-1/2 -translate-x-1/2 mt-1 ${theme.cardBg} ${theme.text} ${theme.cardShadow} rounded-lg overflow-hidden z-50 min-w-[80px] max-h-[200px] overflow-y-auto`}>
-                                  {collectionGames.map((_, index) => (
-                                    <button
-                                      key={index}
-                                      onClick={() => handleChangeOrder(game.id, index)}
-                                      className={`block w-full text-center px-3 py-2 text-sm ${theme.modalHover}`}
-                                    >
-                                      {index + 1}
-                                    </button>
-                                  ))}
+                                <div className={`absolute left-1/2 -translate-x-1/2 mt-1 ${theme.cardBg} ${theme.cardShadow} rounded-lg overflow-hidden z-50 min-w-[80px]`}>
+                                  <div className={`${theme.text} max-h-[200px] overflow-y-auto`} style={{ overscrollBehavior: "contain" }}>
+                                    {collectionGames.map((_, index) => (
+                                      <button
+                                        key={index}
+                                        onClick={() => handleChangeOrder(game.id, index)}
+                                        className={`block w-full text-center px-3 py-2 text-sm ${theme.modalHover}`}
+                                      >
+                                        {index + 1}
+                                      </button>
+                                    ))}
+                                  </div>
                                 </div>
                               )}
                             </div>
@@ -903,19 +905,21 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                 </svg>
                               </button>
                               {showFolderMenuForGame === game.id && (
-                                <div className={`absolute left-1/2 -translate-x-[60%] mt-1 ${theme.cardBg} ${theme.text} ${theme.cardShadow} rounded-lg overflow-hidden z-50 max-h-[200px] overflow-y-auto`}>
-                                  {folders.filter(f => f.id !== selectedFolderId).map(f => (
-                                    <button
-                                      key={f.id}
-                                      onClick={() => {
-                                        handleMoveGame(game.id, f.id);
-                                        setShowFolderMenuForGame(null);
-                                      }}
-                                      className={`block w-full text-left px-3 py-2 text-sm ${theme.modalHover} whitespace-nowrap`}
-                                    >
-                                      {f.name}
-                                    </button>
-                                  ))}
+                                <div className={`absolute left-1/2 -translate-x-[60%] mt-1 ${theme.cardBg} ${theme.cardShadow} rounded-lg overflow-hidden z-50 min-w-[160px]`}>
+                                  <div className={`${theme.text} max-h-[200px] overflow-y-auto`} style={{ overscrollBehavior: "contain" }}>
+                                    {folders.filter(f => f.id !== selectedFolderId).map(f => (
+                                      <button
+                                        key={f.id}
+                                        onClick={() => {
+                                          handleMoveGame(game.id, f.id);
+                                          setShowFolderMenuForGame(null);
+                                        }}
+                                        className={`block w-full text-left px-3 py-2 text-sm ${theme.modalHover} whitespace-nowrap`}
+                                      >
+                                        {f.name}
+                                      </button>
+                                    ))}
+                                  </div>
                                 </div>
                               )}
                             </div>

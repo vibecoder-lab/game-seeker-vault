@@ -292,7 +292,7 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             <div className="flex items-center justify-between gap-3">
               <div className="flex-1">
                 <div className="text-sm font-medium">{t('settings.alternativeKeys', currentLocale)}</div>
-                <div className={`text-xs ${theme.subText}`}>Shift+C/T → Shift+Z/X</div>
+                <div className={`text-xs ${theme.subText}`}>{t('settings.alternativeKeysDesc', currentLocale)}</div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                 <input

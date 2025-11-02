@@ -2568,27 +2568,28 @@ function SteamPriceFilter({ initialData = null }) {
         {/* Global folder dropdown (Shift+Shift shortcut) */}
         {showGlobalFolderDropdown && folders && createPortal(
           <div
-            className={`fixed z-50 ${theme.cardBg} ${theme.text} ${theme.cardShadow} rounded-lg overflow-hidden min-w-[160px] max-h-[200px] overflow-y-auto`}
+            className={`fixed z-50 ${theme.cardBg} ${theme.cardShadow} rounded-lg overflow-hidden min-w-[160px]`}
             style={{
               left: `${globalDropdownPosition.x}px`,
-              top: `${globalDropdownPosition.y}px`,
-              overscrollBehavior: "contain"
+              top: `${globalDropdownPosition.y}px`
             }}
             onMouseLeave={() => setShowGlobalFolderDropdown(false)}
             onClick={() => setShowGlobalFolderDropdown(false)}
           >
-            {folders.map(folder => (
-              <button
-                key={folder.id}
-                onClick={() => {
-                  setTargetFolderId(folder.id);
-                  setShowGlobalFolderDropdown(false);
-                }}
-                className={`block w-full text-left px-4 py-2 text-sm whitespace-nowrap ${targetFolderId === folder.id ? theme.folderSelected : theme.modalHover}`}
-              >
-                {folder.name}
-              </button>
-            ))}
+            <div className={`${theme.text} max-h-[200px] overflow-y-auto`} style={{ overscrollBehavior: "contain" }}>
+              {folders.map(folder => (
+                <button
+                  key={folder.id}
+                  onClick={() => {
+                    setTargetFolderId(folder.id);
+                    setShowGlobalFolderDropdown(false);
+                  }}
+                  className={`block w-full text-left px-4 py-2 text-sm whitespace-nowrap ${targetFolderId === folder.id ? theme.folderSelected : theme.modalHover}`}
+                >
+                  {folder.name}
+                </button>
+              ))}
+            </div>
           </div>,
           document.body
         )}

@@ -142,7 +142,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                     <label className="block text-sm font-medium mb-2">
                       {t('feedback.category', currentLocale)}
                     </label>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-4">
                       <label className="flex items-center text-sm">
                         <input
                           type="radio"

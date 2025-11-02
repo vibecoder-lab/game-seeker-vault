@@ -595,27 +595,28 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
           {showFolderDropdown && folders && ReactDOM.createPortal(
             <div
               ref={dropdownRef}
-              className={`fixed z-50 ${theme.cardBg} ${theme.cardShadow} rounded-lg overflow-hidden min-w-[160px] max-h-[200px] overflow-y-auto`}
+              className={`fixed z-50 ${theme.cardBg} ${theme.cardShadow} rounded-lg overflow-hidden min-w-[160px]`}
               style={{
                 left: `${dropdownPosition.x}px`,
-                top: `${dropdownPosition.y}px`,
-                overscrollBehavior: "contain"
+                top: `${dropdownPosition.y}px`
               }}
               onMouseLeave={handleDropdownHoverOut}
             >
-              {folders.map((folder) => (
-                <button
-                  key={folder.id}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleFolderSelect(folder.id);
-                  }}
-                  className={`block w-full text-left px-4 py-2 text-sm whitespace-nowrap ${theme.text} ${theme.modalHover}`}
-                >
-                  {folder.name}
-                </button>
-              ))}
+              <div className={`${theme.text} max-h-[200px] overflow-y-auto`} style={{ overscrollBehavior: "contain" }}>
+                {folders.map((folder) => (
+                  <button
+                    key={folder.id}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleFolderSelect(folder.id);
+                    }}
+                    className={`block w-full text-left px-4 py-2 text-sm whitespace-nowrap ${theme.modalHover}`}
+                  >
+                    {folder.name}
+                  </button>
+                ))}
+              </div>
             </div>,
             document.body
           )}

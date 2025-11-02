@@ -72,19 +72,21 @@ export function Header({
               </span>
             </button>
             {showFolderDropdown && (
-              <div className={`absolute top-full left-1/2 -translate-x-1/2 ${theme.cardBg} ${theme.text} ${theme.cardShadow} rounded-lg overflow-hidden z-50 min-w-[160px] max-h-[200px] overflow-y-auto`} style={{ overscrollBehavior: "contain" }}>
-                {folders.map(folder => (
-                  <button
-                    key={folder.id}
-                    onClick={() => {
-                      setTargetFolderId(folder.id);
-                      setShowFolderDropdown(false);
-                    }}
-                    className={`block w-full text-left px-4 py-2 text-sm whitespace-nowrap ${targetFolderId === folder.id ? theme.folderSelected : theme.modalHover}`}
-                  >
-                    {getLocalizedFolderName(folder.name, currentLocale)}
-                  </button>
-                ))}
+              <div className={`absolute top-full left-1/2 -translate-x-1/2 ${theme.cardBg} ${theme.cardShadow} rounded-lg overflow-hidden z-50 min-w-[160px]`}>
+                <div className={`${theme.text} max-h-[200px] overflow-y-auto`} style={{ overscrollBehavior: "contain" }}>
+                  {folders.map(folder => (
+                    <button
+                      key={folder.id}
+                      onClick={() => {
+                        setTargetFolderId(folder.id);
+                        setShowFolderDropdown(false);
+                      }}
+                      className={`block w-full text-left px-4 py-2 text-sm whitespace-nowrap ${targetFolderId === folder.id ? theme.folderSelected : theme.modalHover}`}
+                    >
+                      {getLocalizedFolderName(folder.name, currentLocale)}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
