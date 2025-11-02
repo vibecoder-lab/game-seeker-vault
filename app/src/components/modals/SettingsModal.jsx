@@ -29,7 +29,7 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
         </div>
 
         <div className="p-4 overflow-y-auto flex-1 space-y-3">
-          {/* Remove Price Limit */}
+          {/* 1. Remove Price Limit */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1">
               <div className="text-sm font-medium">{t('settings.priceLimit', currentLocale)}</div>
@@ -61,30 +61,28 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             </label>
           </div>
 
-          {/* Show Total Price */}
-          {!isMobile && (
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex-1">
-                <div className="text-sm font-medium">{t('settings.showTotalPrice', currentLocale)}</div>
-                <div className={`text-xs ${theme.subText}`}>{t('settings.showTotalPriceDesc', currentLocale)}</div>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                <input
-                  type="checkbox"
-                  checked={settings.showTotalPrice}
-                  onChange={async (e) => {
-                    const newSettings = { ...settings, showTotalPrice: e.target.checked };
-                    setSettings(newSettings);
-                    await dbHelper.saveSettings(newSettings);
-                  }}
-                  className="sr-only peer"
-                />
-                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
-              </label>
+          {/* 2. Show All Tags */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1">
+              <div className="text-sm font-medium">{t('settings.showAllTags', currentLocale)}</div>
+              <div className={`text-xs ${theme.subText}`}>{t('settings.showAllTagsDesc', currentLocale)}</div>
             </div>
-          )}
+            <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+              <input
+                type="checkbox"
+                checked={settings.showAllTags}
+                onChange={async (e) => {
+                  const newSettings = { ...settings, showAllTags: e.target.checked };
+                  setSettings(newSettings);
+                  await dbHelper.saveSettings(newSettings);
+                }}
+                className="sr-only peer"
+              />
+              <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
 
-          {/* Always Show Star Icon */}
+          {/* 3. Always Show Star Icon (PC only) */}
           {!isMobile && (
             <div className="flex items-center justify-between gap-3">
               <div className="flex-1">
@@ -107,74 +105,7 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             </div>
           )}
 
-          {/* Show All Tags */}
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex-1">
-              <div className="text-sm font-medium">{t('settings.showAllTags', currentLocale)}</div>
-              <div className={`text-xs ${theme.subText}`}>{t('settings.showAllTagsDesc', currentLocale)}</div>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-              <input
-                type="checkbox"
-                checked={settings.showAllTags}
-                onChange={async (e) => {
-                  const newSettings = { ...settings, showAllTags: e.target.checked };
-                  setSettings(newSettings);
-                  await dbHelper.saveSettings(newSettings);
-                }}
-                className="sr-only peer"
-              />
-              <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-
-          {/* Enable Scroll Animation */}
-          {isMobile && (
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex-1">
-                <div className="text-sm font-medium">{t('settings.enableScrollAnimation', currentLocale)}</div>
-                <div className={`text-xs ${theme.subText}`}>{t('settings.enableScrollAnimationDesc', currentLocale)}</div>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                <input
-                  type="checkbox"
-                  checked={settings.enableScrollAnimation}
-                  onChange={async (e) => {
-                    const newSettings = { ...settings, enableScrollAnimation: e.target.checked };
-                    setSettings(newSettings);
-                    await dbHelper.saveSettings(newSettings);
-                  }}
-                  className="sr-only peer"
-                />
-                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
-              </label>
-            </div>
-          )}
-
-          {/* Hide Owned Titles */}
-          {!isMobile && (
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex-1">
-                <div className="text-sm font-medium">{t('settings.hideOwnedTitles', currentLocale)}</div>
-                <div className={`text-xs ${theme.subText}`}>{t('settings.hideOwnedTitlesDesc', currentLocale)}</div>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                <input
-                  type="checkbox"
-                  checked={settings.hideOwnedTitles}
-                  onChange={async (e) => {
-                    const newSettings = { ...settings, hideOwnedTitles: e.target.checked };
-                    setSettings(newSettings);
-                    await dbHelper.saveSettings(newSettings);
-                  }}
-                  className="sr-only peer"
-                />
-                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
-              </label>
-            </div>
-          )}
-
-          {/* Enable Quick Register */}
+          {/* 4. Enable Quick Register (PC only) */}
           {!isMobile && (
             <div className="flex items-center justify-between gap-3">
               <div className="flex-1">
@@ -197,7 +128,30 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             </div>
           )}
 
-          {/* Permanent Delete */}
+          {/* 5. Hide Owned Titles (PC only) */}
+          {!isMobile && (
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex-1">
+                <div className="text-sm font-medium">{t('settings.hideOwnedTitles', currentLocale)}</div>
+                <div className={`text-xs ${theme.subText}`}>{t('settings.hideOwnedTitlesDesc', currentLocale)}</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input
+                  type="checkbox"
+                  checked={settings.hideOwnedTitles}
+                  onChange={async (e) => {
+                    const newSettings = { ...settings, hideOwnedTitles: e.target.checked };
+                    setSettings(newSettings);
+                    await dbHelper.saveSettings(newSettings);
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          )}
+
+          {/* 6. Permanent Delete (PC only) */}
           {!isMobile && (
             <div className="flex items-center justify-between gap-3">
               <div className="flex-1">
@@ -220,7 +174,76 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             </div>
           )}
 
-          {/* Save Theme */}
+          {/* 7. Show Total Price (PC only) */}
+          {!isMobile && (
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex-1">
+                <div className="text-sm font-medium">{t('settings.showTotalPrice', currentLocale)}</div>
+                <div className={`text-xs ${theme.subText}`}>{t('settings.showTotalPriceDesc', currentLocale)}</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input
+                  type="checkbox"
+                  checked={settings.showTotalPrice}
+                  onChange={async (e) => {
+                    const newSettings = { ...settings, showTotalPrice: e.target.checked };
+                    setSettings(newSettings);
+                    await dbHelper.saveSettings(newSettings);
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          )}
+
+          {/* 8. Use Selected Folder as Target (PC only) */}
+          {!isMobile && (
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex-1">
+                <div className="text-sm font-medium">{t('settings.useSelectedFolder', currentLocale)}</div>
+                <div className={`text-xs ${theme.subText}`}>{t('settings.useSelectedFolderDesc', currentLocale)}</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input
+                  type="checkbox"
+                  checked={settings.useSelectedFolderAsTarget}
+                  onChange={async (e) => {
+                    const newSettings = { ...settings, useSelectedFolderAsTarget: e.target.checked };
+                    setSettings(newSettings);
+                    await dbHelper.saveSettings(newSettings);
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          )}
+
+          {/* 9. Alternative Key Bindings (PC only) */}
+          {!isMobile && (
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex-1">
+                <div className="text-sm font-medium">{t('settings.alternativeKeys', currentLocale)}</div>
+                <div className={`text-xs ${theme.subText}`}>Shift+C/T → Shift+Z/X</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input
+                  type="checkbox"
+                  checked={settings.useAlternativeKeys}
+                  onChange={async (e) => {
+                    const newSettings = { ...settings, useAlternativeKeys: e.target.checked };
+                    setSettings(newSettings);
+                    await dbHelper.saveSettings(newSettings);
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          )}
+
+          {/* 10. Save Theme */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1">
               <div className="text-sm font-medium">{t('settings.saveTheme', currentLocale)}</div>
@@ -244,42 +267,19 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             </label>
           </div>
 
-          {/* Use Selected Folder as Target */}
-          {!isMobile && (
+          {/* Enable Scroll Animation (Mobile only) */}
+          {isMobile && (
             <div className="flex items-center justify-between gap-3">
               <div className="flex-1">
-                <div className="text-sm font-medium">{t('settings.useSelectedFolder', currentLocale)}</div>
-                <div className={`text-xs ${theme.subText}`}>{t('settings.useSelectedFolderDesc', currentLocale)}</div>
+                <div className="text-sm font-medium">{t('settings.enableScrollAnimation', currentLocale)}</div>
+                <div className={`text-xs ${theme.subText}`}>{t('settings.enableScrollAnimationDesc', currentLocale)}</div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                 <input
                   type="checkbox"
-                  checked={settings.useSelectedFolderAsTarget}
+                  checked={settings.enableScrollAnimation}
                   onChange={async (e) => {
-                    const newSettings = { ...settings, useSelectedFolderAsTarget: e.target.checked };
-                    setSettings(newSettings);
-                    await dbHelper.saveSettings(newSettings);
-                  }}
-                  className="sr-only peer"
-                />
-                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
-              </label>
-            </div>
-          )}
-
-          {/* Alternative Key Bindings */}
-          {!isMobile && (
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex-1">
-                <div className="text-sm font-medium">{t('settings.alternativeKeys', currentLocale)}</div>
-                <div className={`text-xs ${theme.subText}`}>Shift+C/T → Shift+Z/X</div>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-                <input
-                  type="checkbox"
-                  checked={settings.useAlternativeKeys}
-                  onChange={async (e) => {
-                    const newSettings = { ...settings, useAlternativeKeys: e.target.checked };
+                    const newSettings = { ...settings, enableScrollAnimation: e.target.checked };
                     setSettings(newSettings);
                     await dbHelper.saveSettings(newSettings);
                   }}
