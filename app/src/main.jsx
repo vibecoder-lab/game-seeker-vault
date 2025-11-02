@@ -1102,37 +1102,133 @@ function SteamPriceFilter({ initialData = null }) {
                   {allGenres.otherTags.map((g) => {
                     const translatedGenre = translateGenre(g, currentLocale);
                     const isIncluded = selectedGenres.include.includes(g);
+                    const isExcluded = selectedGenres.exclude.includes(g);
+
+                    // Long press handling (using closure variables instead of refs)
+                    let longPressTimer = null;
+                    let isLongPress = false;
+                    let isTouchMove = false;
+
+                    const handleTouchStart = () => {
+                      isTouchMove = false;
+                      isLongPress = false;
+                      longPressTimer = setTimeout(() => {
+                        if (!isTouchMove) {
+                          isLongPress = true;
+                        }
+                      }, 500);
+                    };
+
+                    const handleTouchMove = () => {
+                      isTouchMove = true;
+                      if (longPressTimer) clearTimeout(longPressTimer);
+                    };
+
+                    const handleTouchEnd = (e) => {
+                      if (longPressTimer) clearTimeout(longPressTimer);
+                      if (isTouchMove) return;
+
+                      e.preventDefault();
+
+                      React.startTransition(() => {
+                        setSelectedGenres((prev) => {
+                          const currentlyIncluded = prev.include.includes(g);
+                          const currentlyExcluded = prev.exclude.includes(g);
+
+                          if (isLongPress) {
+                            // Long press: toggle exclude
+                            if (currentlyExcluded) {
+                              return {
+                                ...prev,
+                                exclude: prev.exclude.filter((x) => x !== g),
+                              };
+                            } else {
+                              return {
+                                include: prev.include.filter((x) => x !== g),
+                                exclude: [...prev.exclude, g],
+                              };
+                            }
+                          } else {
+                            // Normal tap: if excluded, remove from exclude (don't add to include)
+                            if (currentlyExcluded) {
+                              return {
+                                ...prev,
+                                exclude: prev.exclude.filter((x) => x !== g),
+                              };
+                            } else if (currentlyIncluded) {
+                              return {
+                                ...prev,
+                                include: prev.include.filter((x) => x !== g),
+                              };
+                            } else {
+                              return { ...prev, include: [...prev.include, g] };
+                            }
+                          }
+                        });
+                      });
+                    };
+
+                    const handleClick = (e) => {
+                      const isShiftClick = e.shiftKey;
+
+                      React.startTransition(() => {
+                        setSelectedGenres((prev) => {
+                          const currentlyIncluded = prev.include.includes(g);
+                          const currentlyExcluded = prev.exclude.includes(g);
+
+                          if (isShiftClick) {
+                            // Shift+click: toggle exclude
+                            if (currentlyExcluded) {
+                              return {
+                                ...prev,
+                                exclude: prev.exclude.filter((x) => x !== g),
+                              };
+                            } else {
+                              return {
+                                include: prev.include.filter((x) => x !== g),
+                                exclude: [...prev.exclude, g],
+                              };
+                            }
+                          } else {
+                            // Normal click: if excluded, remove from exclude (don't add to include)
+                            if (currentlyExcluded) {
+                              return {
+                                ...prev,
+                                exclude: prev.exclude.filter((x) => x !== g),
+                              };
+                            } else if (currentlyIncluded) {
+                              return {
+                                ...prev,
+                                include: prev.include.filter((x) => x !== g),
+                              };
+                            } else {
+                              return { ...prev, include: [...prev.include, g] };
+                            }
+                          }
+                        });
+                      });
+                    };
 
                     return (
                       <button
                         key={g}
-                        onClick={() => {
-                          React.startTransition(() => {
-                            setSelectedGenres((prev) => {
-                              const currentlyIncluded = prev.include.includes(g);
-                              if (currentlyIncluded) {
-                                return {
-                                  ...prev,
-                                  include: prev.include.filter((x) => x !== g),
-                                };
-                              } else {
-                                return {
-                                  ...prev,
-                                  include: [...prev.include, g],
-                                };
-                              }
-                            });
-                          });
-                        }}
+                        onClick={handleClick}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                        onTouchCancel={() => { if (longPressTimer) clearTimeout(longPressTimer); }}
                         className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
                           isIncluded
                             ? currentTheme === "steam"
                               ? "steam-blue-bg text-white"
                               : "bg-blue-500 text-white"
-                            : `${theme.tagBg} ${theme.tagText}`
+                            : isExcluded
+                              ? `${theme.saleBg} text-white`
+                              : `${theme.tagBg} ${theme.tagText}`
                         }`}
                       >
                         {translatedGenre}
+                        {isExcluded && <span className="ml-1">✕</span>}
                       </button>
                     );
                   })}
@@ -1150,6 +1246,70 @@ function SteamPriceFilter({ initialData = null }) {
                     const isIncluded = selectedGenres.include.includes(g);
                     const isExcluded = selectedGenres.exclude.includes(g);
                     const isChecked = isIncluded || isExcluded;
+
+                    // Long press handling (using closure variables instead of refs)
+                    let longPressTimer = null;
+                    let isLongPress = false;
+                    let isTouchMove = false;
+
+                    const handleTouchStart = () => {
+                      isTouchMove = false;
+                      isLongPress = false;
+                      longPressTimer = setTimeout(() => {
+                        if (!isTouchMove) {
+                          isLongPress = true;
+                        }
+                      }, 500);
+                    };
+
+                    const handleTouchMove = () => {
+                      isTouchMove = true;
+                      if (longPressTimer) clearTimeout(longPressTimer);
+                    };
+
+                    const handleTouchEnd = (e) => {
+                      if (longPressTimer) clearTimeout(longPressTimer);
+                      if (isTouchMove) return;
+
+                      e.preventDefault();
+
+                      React.startTransition(() => {
+                        setSelectedGenres((prev) => {
+                          const currentlyIncluded = prev.include.includes(g);
+                          const currentlyExcluded = prev.exclude.includes(g);
+
+                          if (isLongPress) {
+                            // Long press: toggle exclude
+                            if (currentlyExcluded) {
+                              return {
+                                ...prev,
+                                exclude: prev.exclude.filter((x) => x !== g),
+                              };
+                            } else {
+                              return {
+                                include: prev.include.filter((x) => x !== g),
+                                exclude: [...prev.exclude, g],
+                              };
+                            }
+                          } else {
+                            // Normal tap: if excluded, remove from exclude (don't add to include)
+                            if (currentlyExcluded) {
+                              return {
+                                ...prev,
+                                exclude: prev.exclude.filter((x) => x !== g),
+                              };
+                            } else if (currentlyIncluded) {
+                              return {
+                                ...prev,
+                                include: prev.include.filter((x) => x !== g),
+                              };
+                            } else {
+                              return { ...prev, include: [...prev.include, g] };
+                            }
+                          }
+                        });
+                      });
+                    };
 
                     const handleGenreClick = (e) => {
                       e.preventDefault();
@@ -1197,6 +1357,10 @@ function SteamPriceFilter({ initialData = null }) {
                       <button
                         key={g}
                         onClick={handleGenreClick}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                        onTouchCancel={() => { if (longPressTimer) clearTimeout(longPressTimer); }}
                         className={`relative px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
                           isIncluded
                             ? currentTheme === "steam"
