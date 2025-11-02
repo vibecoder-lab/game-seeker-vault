@@ -38,6 +38,8 @@ export function MobileUnifiedModal({
   allTags,
   selectedTags,
   setSelectedTags,
+  searchTitle,
+  setSearchTitle,
   // Clear tab props
   onClearFilters,
 }) {
@@ -262,6 +264,7 @@ export function MobileUnifiedModal({
     setPriceMode("current");
     setSortOrder("asc");
     setSelectedYear("all");
+    setSearchTitle("");
   };
 
   return (
@@ -430,7 +433,6 @@ export function MobileUnifiedModal({
                 <div className="grid grid-cols-2 gap-2">
                   {allGenres.genres.map((g) => {
                     const translatedGenre = translateGenre(g, currentLocale);
-                    const displayName = truncateByWidth(translatedGenre, 15);
                     const isIncluded = localSelectedGenres.include.includes(g);
                     const isExcluded = localSelectedGenres.exclude.includes(g);
 
@@ -463,9 +465,9 @@ export function MobileUnifiedModal({
                           )}
                         </div>
                         <span
-                          className={`truncate ${isExcluded ? theme.saleText : ''}`}
+                          className={`${isExcluded ? theme.saleText : ''}`}
                         >
-                          {displayName}
+                          {translatedGenre}
                         </span>
                       </div>
                     );

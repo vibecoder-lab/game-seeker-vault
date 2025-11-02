@@ -970,6 +970,8 @@ function SteamPriceFilter({ initialData = null }) {
           allTags={allTags}
           selectedTags={selectedTags}
           setSelectedTags={setSelectedTags}
+          searchTitle={searchTitle}
+          setSearchTitle={setSearchTitle}
           onClearFilters={handleClearFilters}
         />
       )}

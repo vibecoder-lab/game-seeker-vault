@@ -37,7 +37,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
         <div className={`flex border-b ${theme.border}`}>
           <button
             onClick={() => setActiveTab('disclaimer')}
-            className={`px-6 py-3 text-xs md:text-base font-medium transition-colors ${
+            className={`flex-1 py-3 text-xs md:text-base font-medium transition-colors ${
               activeTab === 'disclaimer'
                 ? `${theme.text} border-b-2 ${currentTheme === 'steam' ? 'border-blue-500' : 'border-current'}`
                 : `${theme.subText} hover:${theme.text}`
@@ -47,7 +47,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
           </button>
           <button
             onClick={() => setActiveTab('guide')}
-            className={`px-6 py-3 text-xs md:text-base font-medium transition-colors ${
+            className={`flex-1 py-3 text-xs md:text-base font-medium transition-colors ${
               activeTab === 'guide'
                 ? `${theme.text} border-b-2 ${currentTheme === 'steam' ? 'border-blue-500' : 'border-current'}`
                 : `${theme.subText} hover:${theme.text}`
@@ -57,7 +57,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
           </button>
           <button
             onClick={() => setActiveTab('feedback')}
-            className={`px-6 py-3 text-xs md:text-base font-medium transition-colors ${
+            className={`flex-1 py-3 text-xs md:text-base font-medium transition-colors ${
               activeTab === 'feedback'
                 ? `${theme.text} border-b-2 ${currentTheme === 'steam' ? 'border-blue-500' : 'border-current'}`
                 : `${theme.subText} hover:${theme.text}`
@@ -142,8 +142,8 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                     <label className="block text-sm font-medium mb-2">
                       {t('feedback.category', currentLocale)}
                     </label>
-                    <div className="flex gap-4">
-                      <label className="flex items-center">
+                    <div className="flex flex-col gap-2">
+                      <label className="flex items-center text-sm">
                         <input
                           type="radio"
                           name="feedbackType"
@@ -154,7 +154,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                         />
                         {t('feedback.categoryFeedback', currentLocale)}
                       </label>
-                      <label className="flex items-center">
+                      <label className="flex items-center text-sm">
                         <input
                           type="radio"
                           name="feedbackType"
@@ -165,7 +165,7 @@ export function HelpModal({ theme, currentTheme, isClosing, onClose }) {
                         />
                         {t('feedback.categoryInquiry', currentLocale)}
                       </label>
-                      <label className="flex items-center">
+                      <label className="flex items-center text-sm">
                         <input
                           type="radio"
                           name="feedbackType"
