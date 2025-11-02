@@ -171,8 +171,20 @@ export function MobileUnifiedModal({
   };
 
   const handleTouchEnd = (g) => (e) => {
-    e.preventDefault();
     clearTimeout(longPressTimerRef.current);
+
+    // Check if touch moved (swipe detection)
+    const touch = e.changedTouches[0];
+    const deltaX = Math.abs(touch.clientX - touchStartPosRef.current.x);
+    const deltaY = Math.abs(touch.clientY - touchStartPosRef.current.y);
+
+    // If moved more than 10px, it's a swipe - don't trigger selection
+    if (deltaX > 10 || deltaY > 10) {
+      isLongPressRef.current = false;
+      return;
+    }
+
+    e.preventDefault();
 
     const isLongPress = isLongPressRef.current;
     isLongPressRef.current = false;
