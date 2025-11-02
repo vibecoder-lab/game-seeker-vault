@@ -66,6 +66,7 @@ function SteamPriceFilter({ initialData = null }) {
   const [rawGames, setRawGames] = React.useState(initialData ?? []);
   const [metaData, setMetaData] = React.useState(null);
   const [loading, setLoading] = React.useState(!initialData);
+  const [uiStateRestored, setUiStateRestored] = React.useState(false);
   const [selectedGenres, setSelectedGenres] = React.useState({
     include: [],
     exclude: [],
@@ -379,20 +380,25 @@ function SteamPriceFilter({ initialData = null }) {
   // Load settings
   React.useEffect(() => {
     (async () => {
+      // Disable browser's default scroll restoration to prevent conflicts
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+
       // Initialize IndexedDB first to ensure migration to version 5
       await initDB(DB_VERSION);
 
-      // Initialize locale
-      const detected = await detectLocale();
-      setLocale(detected);
-
-      // Initialize region
-      const detectedRegion = await detectRegion();
-      setCurrentRegion(detectedRegion);
-
-      // Load settings first to determine price limit
+      // Load settings first
       const loadedSettings = await dbHelper.loadSettings();
       setSettings(loadedSettings);
+
+      // Initialize locale from settings
+      const detected = loadedSettings.locale || await detectLocale();
+      setLocale(detected);
+
+      // Initialize region from settings
+      const detectedRegion = loadedSettings.region || await detectRegion();
+      setCurrentRegion(detectedRegion);
 
       // Set initial price range based on region and removePriceLimit setting
       if (detectedRegion === 'USD' || detectedRegion === 'EUR' || detectedRegion === 'GBP') {
@@ -406,11 +412,11 @@ function SteamPriceFilter({ initialData = null }) {
       setForceUpdate((prev) => prev + 1);
 
       // Restore saved theme only when saveTheme is true
+      // If saveTheme is false, keep current theme (don't reset to default)
       if (loadedSettings.saveTheme && loadedSettings.theme) {
         setCurrentTheme(loadedSettings.theme);
-      } else {
-        setCurrentTheme("default");
       }
+      // Note: When saveTheme is false, we don't set theme here to preserve current session theme
 
       // Restore UI state from IndexedDB (only when navigating back from Steam)
       try {
@@ -480,32 +486,54 @@ function SteamPriceFilter({ initialData = null }) {
       } catch (err) {
         console.error('Failed to restore UI state:', err);
       }
+
+      // Mark UI state restoration as complete
+      setUiStateRestored(true);
     })();
   }, []);
 
-  // Restore scroll position after games are loaded
+  // Restore scroll position after games are loaded (with flag to ensure single execution)
+  const scrollRestoredRef = React.useRef(false);
   React.useEffect(() => {
-    if (window.__pendingScrollPosition !== undefined && rawGames.length > 0 && !loading) {
+    // Only execute if:
+    // 1. UI state restoration is complete
+    // 2. There's a pending scroll position
+    // 3. Games are loaded
+    // 4. Not currently loading
+    // 5. Haven't already restored scroll
+    if (uiStateRestored &&
+        window.__pendingScrollPosition !== undefined &&
+        rawGames.length > 0 &&
+        !loading &&
+        !scrollRestoredRef.current) {
+
       const scrollPos = window.__pendingScrollPosition;
 
-      // Wait for DOM to be fully rendered
+      // Set flag immediately to prevent duplicate execution
+      scrollRestoredRef.current = true;
+
+      // Clear the pending position
+      delete window.__pendingScrollPosition;
+
+      // Wait for DOM to be fully rendered, then scroll
       setTimeout(() => {
         window.scrollTo({ top: scrollPos, behavior: 'smooth' });
 
-        // Verify after a short delay and retry if needed
+        // Verify scroll succeeded after animation completes
         setTimeout(() => {
-          if (window.scrollY === 0 && scrollPos > 0) {
-            setTimeout(() => {
-              window.scrollTo({ top: scrollPos, behavior: 'smooth' });
-            }, 500);
-          }
-        }, 100);
+          const currentScroll = window.scrollY;
+          const tolerance = 10;
 
-        // Clear the pending scroll position
-        delete window.__pendingScrollPosition;
+          // If scroll failed, try one more time with smooth behavior
+          if (Math.abs(currentScroll - scrollPos) > tolerance) {
+            requestAnimationFrame(() => {
+              window.scrollTo({ top: scrollPos, behavior: 'smooth' });
+            });
+          }
+        }, 1200);
       }, 300);
     }
-  }, [rawGames, loading]);
+  }, [uiStateRestored, rawGames.length, loading]);
 
   // Update document title when locale changes
   React.useEffect(() => {
