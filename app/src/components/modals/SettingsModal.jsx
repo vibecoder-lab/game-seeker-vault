@@ -15,7 +15,7 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 modal-fade-in" onClick={onClose}>
-      <div className={`${theme.cardBg} rounded-2xl max-w-xl w-full max-h-[80vh] flex flex-col ${theme.cardShadow}`} onClick={(e) => e.stopPropagation()}>
+      <div className={`${theme.cardBg} rounded-2xl max-w-xl w-full max-h-[80vh] flex flex-col overflow-hidden ${theme.cardShadow}`} onClick={(e) => e.stopPropagation()}>
         <div className={`flex justify-between items-center px-4 py-3 border-b ${theme.border} h-[46px]`}>
           <h2 className="text-base font-bold">{t('settings.title', currentLocale)}</h2>
           <button
@@ -243,7 +243,30 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             </div>
           )}
 
-          {/* 10. Navigate to Reviews */}
+          {/* 10. Use In-Page Navigation (PC only) */}
+          {!isMobile && (
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex-1">
+                <div className="text-sm font-medium">{t('settings.useInPageNavigation', currentLocale)}</div>
+                <div className={`text-xs ${theme.subText}`}>{t('settings.useInPageNavigationDesc', currentLocale)}</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input
+                  type="checkbox"
+                  checked={settings.useInPageNavigation}
+                  onChange={async (e) => {
+                    const newSettings = { ...settings, useInPageNavigation: e.target.checked };
+                    setSettings(newSettings);
+                    await dbHelper.saveSettings(newSettings);
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          )}
+
+          {/* 11. Navigate to Reviews */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1">
               <div className="text-sm font-medium">{t('settings.navigateToReviews', currentLocale)}</div>

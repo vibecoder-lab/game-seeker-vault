@@ -263,8 +263,8 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
       e.stopPropagation();
       onShowVideoModal(g);
     } else {
-      // Normal click - save UI state before navigating to Steam
-      if (onSaveUIState) {
+      // Normal click - save UI state before navigating to Steam (only for in-page navigation)
+      if (onSaveUIState && settings.useInPageNavigation) {
         onSaveUIState();
       }
     }
@@ -399,6 +399,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
             )}
 
             <a href={linkFor(g, settings.navigateToReviews)}
+               target={settings.useInPageNavigation ? undefined : "_blank"}
                ref={cardRef}
                className={`block rounded-2xl ${theme.cardShadow} overflow-hidden ${showDetailModal ? 'relative z-50' : ''}`}
                style={{

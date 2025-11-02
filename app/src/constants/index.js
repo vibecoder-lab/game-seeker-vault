@@ -8,6 +8,7 @@ export const DEFAULT_SETTINGS = {
   useSelectedFolderAsTarget: false, // Use selected folder as target
   navigateToReviews: false,        // Navigate to reviews section on Steam page
   wheelClickShowsCollection: false, // Wheel click shows collection modal
+  useInPageNavigation: false,      // Use in-page navigation for Steam links
   keyboardLayout: 'ansi',          // 'ansi' | 'iso'
   useAlternativeKeys: false,       // Z/X instead of C/T
   saveTheme: false,                // Whether to save theme
