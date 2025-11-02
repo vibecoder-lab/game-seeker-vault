@@ -434,11 +434,9 @@ function SteamPriceFilter({ initialData = null }) {
               if (savedUIState.folders.targetFolderId) setTargetFolderId(savedUIState.folders.targetFolderId);
             }
 
-            // Restore scroll position after DOM is ready
+            // Store scroll position to restore later (after games are loaded)
             if (savedUIState.scrollPosition !== undefined) {
-              setTimeout(() => {
-                window.scrollTo(0, savedUIState.scrollPosition);
-              }, 100);
+              window.__pendingScrollPosition = savedUIState.scrollPosition;
             }
 
             // Clear the saved state after restoration
@@ -455,6 +453,30 @@ function SteamPriceFilter({ initialData = null }) {
       }
     })();
   }, []);
+
+  // Restore scroll position after games are loaded
+  React.useEffect(() => {
+    if (window.__pendingScrollPosition !== undefined && rawGames.length > 0 && !loading) {
+      const scrollPos = window.__pendingScrollPosition;
+
+      // Wait for DOM to be fully rendered
+      setTimeout(() => {
+        window.scrollTo(0, scrollPos);
+
+        // Verify after a short delay and retry if needed
+        setTimeout(() => {
+          if (window.scrollY === 0 && scrollPos > 0) {
+            setTimeout(() => {
+              window.scrollTo(0, scrollPos);
+            }, 500);
+          }
+        }, 100);
+
+        // Clear the pending scroll position
+        delete window.__pendingScrollPosition;
+      }, 300);
+    }
+  }, [rawGames, loading]);
 
   // Update document title when locale changes
   React.useEffect(() => {
