@@ -334,6 +334,12 @@ function SteamPriceFilter({ initialData = null }) {
     if (initialData) {
       return;
     }
+
+    // Skip fetch if we already have game data
+    if (rawGames.length > 0) {
+      return;
+    }
+
     (async () => {
       try {
         setLoading(true);
@@ -360,12 +366,15 @@ function SteamPriceFilter({ initialData = null }) {
         setMetaData(meta);
       } catch (e) {
         console.error('Failed to load game data:', e);
-        setRawGames([]);
+        // Preserve existing data on error
+        if (rawGames.length === 0) {
+          setRawGames([]);
+        }
       } finally {
         setLoading(false);
       }
     })();
-  }, [initialData]);
+  }, [initialData, rawGames.length]);
 
   // Load settings
   React.useEffect(() => {
@@ -481,13 +490,13 @@ function SteamPriceFilter({ initialData = null }) {
 
       // Wait for DOM to be fully rendered
       setTimeout(() => {
-        window.scrollTo(0, scrollPos);
+        window.scrollTo({ top: scrollPos, behavior: 'smooth' });
 
         // Verify after a short delay and retry if needed
         setTimeout(() => {
           if (window.scrollY === 0 && scrollPos > 0) {
             setTimeout(() => {
-              window.scrollTo(0, scrollPos);
+              window.scrollTo({ top: scrollPos, behavior: 'smooth' });
             }, 500);
           }
         }, 100);
