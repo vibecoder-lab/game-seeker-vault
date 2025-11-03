@@ -519,7 +519,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                           <div className="mt-1"></div>
                         </>
                       )}
-                      {(g.supportedLanguages || g.jp !== undefined) && (
+                      {currentLocale === 'ja' && (g.supportedLanguages || g.jp !== undefined) && (
                         <div>{t('card.japanese', currentLocale)}: {g.supportedLanguages ? checkJapaneseSupport(g.supportedLanguages) : (g.jp ? t('language.supported', currentLocale) : t('language.notSupported', currentLocale))}</div>
                       )}
                       {g.supportedLanguages && (
@@ -576,7 +576,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                     <div className={`text-[11px] ${theme.lowestText}`}>
                       {g.lowestPrice && g.lowestPrice !== '-' ? `${formatPrice(g.lowestPrice, currentRegion, currentLocale)}(${t('price.lowest', currentLocale)})` : t('price.unknown', currentLocale)}
                     </div>
-                    {checkJapaneseSupport(g.supportedLanguages) === t('language.supported', currentLocale) && (
+                    {currentLocale === 'ja' && checkJapaneseSupport(g.supportedLanguages) === t('language.supported', currentLocale) && (
                       <div className={`hidden md:block text-[11px] px-2 py-0.5 rounded-full whitespace-nowrap ${theme.tagBg} ${theme.tagText}`}>
                         {t('card.japanese', currentLocale)}
                       </div>

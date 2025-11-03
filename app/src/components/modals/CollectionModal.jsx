@@ -1087,6 +1087,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                       <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z" mask="url(#saleMask)"/>
                     </svg>
                   </button>
+                  {currentLocale === 'ja' && (
                   <button
                     onClick={() => {
                       if (collectionGames.length === 0) return;
@@ -1106,6 +1107,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                       <rect x="2" y="4" width="20" height="16" rx="2" fill="currentColor" mask="url(#jpMask)"/>
                     </svg>
                   </button>
+                  )}
                   <div className="relative">
                     <button
                       onClick={() => {
@@ -1243,10 +1245,10 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                   </div>
                   {settings.showTotalPrice && (
                     <div className="text-sm font-bold">
-                      {t('misc.total', currentLocale)}: ¥{filteredFavoriteGames.reduce((sum, game) => {
+                      {t('misc.total', currentLocale)}: {formatPrice(filteredFavoriteGames.reduce((sum, game) => {
                         const price = game.salePrice != null && game.salePrice < game.normalPrice ? game.salePrice : game.normalPrice;
                         return sum + (price || 0);
-                      }, 0).toLocaleString()}
+                      }, 0), currentRegion, currentLocale)}
                     </div>
                   )}
                 </div>
@@ -1313,7 +1315,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                       </div>
                     </div>
                   )}
-                  {hoveredGame.supportedLanguages && (
+                  {currentLocale === 'ja' && hoveredGame.supportedLanguages && (
                     <div>
                       <div className="font-semibold">{t('card.japanese', currentLocale)}:</div>
                       <div>{checkJapaneseSupport(hoveredGame.supportedLanguages)}</div>

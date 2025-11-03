@@ -384,10 +384,12 @@ export function MobileUnifiedModal({
                     <input id="unified-modal-saleOnly" type="checkbox" checked={localOnlySale} onChange={(e)=>handleSaleChange(e.target.checked)} className="h-4 w-4" />
                     <label htmlFor="unified-modal-saleOnly" className="text-sm">{t('filter.onlySale', currentLocale)}</label>
                   </div>
+                  {currentLocale === 'ja' && (
                   <div className="flex items-center gap-2">
                     <input id="unified-modal-jpOnly" type="checkbox" checked={localOnlyJP} onChange={(e)=>handleJPChange(e.target.checked)} className="h-4 w-4" />
                     <label htmlFor="unified-modal-jpOnly" className="text-sm">{t('filter.onlyJapanese', currentLocale)}</label>
                   </div>
+                  )}
                   <div className="flex items-center gap-2">
                     <input id="unified-modal-macOnly" type="checkbox" checked={localOnlyMac} onChange={(e)=>handleMacChange(e.target.checked)} className="h-4 w-4" />
                     <label htmlFor="unified-modal-macOnly" className="text-sm">{t('filter.onlyMac', currentLocale)}</label>

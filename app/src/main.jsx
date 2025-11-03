@@ -1294,6 +1294,7 @@ function SteamPriceFilter({ initialData = null }) {
                   >
                     {t("filter.onlySale", currentLocale)}
                   </button>
+                  {currentLocale === 'ja' && (
                   <button
                     onClick={() => handleFilterChange(setOnlyJP)(!onlyJP)}
                     className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
@@ -1306,6 +1307,7 @@ function SteamPriceFilter({ initialData = null }) {
                   >
                     {t("filter.onlyJapanese", currentLocale)}
                   </button>
+                  )}
                   <button
                     onClick={() => handleFilterChange(setOnlyMac)(!onlyMac)}
                     className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
@@ -1746,6 +1748,7 @@ function SteamPriceFilter({ initialData = null }) {
                     {t("filter.onlySale", currentLocale)}
                   </label>
                 </div>
+                {currentLocale === 'ja' && (
                 <div className="flex items-center gap-2">
                   <input
                     id="jpOnly"
@@ -1760,6 +1763,7 @@ function SteamPriceFilter({ initialData = null }) {
                     {t("filter.onlyJapanese", currentLocale)}
                   </label>
                 </div>
+                )}
                 <div className="flex items-center gap-2">
                   <input
                     id="macOnly"
