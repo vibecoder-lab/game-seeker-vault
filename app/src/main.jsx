@@ -1012,7 +1012,7 @@ function SteamPriceFilter({ initialData = null }) {
     setSelectedTags([]);
     setOnlyJP(false);
     setOnlySale(false);
-    setOnlyOverwhelming(false);
+    setSelectedReviewScores([]);
     setOnlyMac(false);
     setSelectedYear("all");
     setMinPrice(100);
@@ -2231,7 +2231,7 @@ function SteamPriceFilter({ initialData = null }) {
                   onClick={() => {
                     // Reset all filters
                     setOnlySale(false);
-                    setOnlyOverwhelming(false);
+                    setSelectedReviewScores([]);
                     setOnlyJP(false);
                     setOnlyMac(false);
                     setSelectedGenres({ include: [], exclude: [] });

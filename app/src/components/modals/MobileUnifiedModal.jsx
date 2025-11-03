@@ -269,7 +269,7 @@ export function MobileUnifiedModal({
 
     // Reset all filters (same as PC version)
     setOnlySale(false);
-    setOnlyOverwhelming(false);
+    setSelectedReviewScores([]);
     setOnlyJP(false);
     setOnlyMac(false);
     setSelectedGenres({ include: [], exclude: [] });
