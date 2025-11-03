@@ -280,13 +280,13 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
             />
           )}
           <div key={g.id} className="relative group">
-            <div className="absolute top-2 right-2 z-20 hidden md:block">
+            <div className="absolute top-0 right-0 z-20 hidden md:block">
               <button
                 ref={starButtonRef}
                 onClick={handleStarClick}
                 onMouseEnter={() => setStarButtonHovered(true)}
                 onMouseLeave={() => setStarButtonHovered(false)}
-                className={`star-button p-2 ${settings?.alwaysShowStarIcon ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                className={`star-button p-4 ${settings?.alwaysShowStarIcon ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
                 style={{
                   '--gradient-id': `url(#rainbow-gradient-${g.id})`,
                   transform: starClicked === true ? 'scale(2)' :
@@ -351,7 +351,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
 
             {/* Play Button (Bottom-Right, Hover Only) */}
             {g.movies && g.movies.length > 0 && (
-              <div className="absolute bottom-2 right-2 z-20 hidden md:block">
+              <div className="absolute bottom-0 right-0 z-20 hidden md:block">
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -360,7 +360,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                   }}
                   onMouseEnter={() => setPlayButtonHovered(true)}
                   onMouseLeave={() => setPlayButtonHovered(false)}
-                  className="play-button p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="play-button p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{
                     '--play-gradient-id': `url(#green-gradient-${g.id})`,
                     transform: playButtonHovered ? 'scale(1.1)' : 'scale(1)',
