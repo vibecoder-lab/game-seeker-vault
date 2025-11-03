@@ -1278,11 +1278,10 @@ function SteamPriceFilter({ initialData = null }) {
               )}
             </div>
 
-            {/* Filter Checkboxes (2-Row Layout) */}
-            <div>
-              <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
-                {/* Row 1: Conditions */}
-                <div className="flex gap-2 min-w-max pb-2">
+            {/* Filter Checkboxes */}
+            {/* Row 1: Conditions */}
+            <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
+              <div className="flex gap-2 min-w-max pb-2">
                   <button
                     onClick={() => handleFilterChange(setOnlySale)(!onlySale)}
                     className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
@@ -1319,9 +1318,12 @@ function SteamPriceFilter({ initialData = null }) {
                   >
                     {t("filter.onlyMac", currentLocale)}
                   </button>
-                </div>
-                {/* Row 2: Review Scores */}
-                <div className="flex gap-2 min-w-max pb-2">
+              </div>
+            </div>
+
+            {/* Row 2: Review Scores */}
+            <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
+              <div className="flex gap-2 min-w-max pb-2">
                   <button
                     onClick={() => {
                       const newScores = selectedReviewScores.includes('Overwhelmingly Positive')
@@ -1390,9 +1392,12 @@ function SteamPriceFilter({ initialData = null }) {
                   >
                     {t("filter.mostlyPositive", currentLocale)}
                   </button>
-                </div>
-                {/* Row 3: Genres */}
-                <div className="flex gap-2 min-w-max pb-2">
+              </div>
+            </div>
+
+            {/* Row 3: Genres */}
+            <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
+              <div className="flex gap-2 min-w-max pb-2">
                   {allGenres.genres.map((g) => {
                     const translatedGenre = translateGenre(g, currentLocale);
                     const displayName = truncateByWidth(translatedGenre, 20);
@@ -1545,9 +1550,12 @@ function SteamPriceFilter({ initialData = null }) {
                       </button>
                     );
                   })}
-                </div>
-                {/* Row 4: Features (Other Tags) */}
-                <div className="flex gap-2 min-w-max pb-2">
+              </div>
+            </div>
+
+            {/* Row 4: Features (Other Tags) */}
+            <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
+              <div className="flex gap-2 min-w-max pb-2">
                   {allGenres.otherTags.map((g) => {
                     const translatedGenre = translateGenre(g, currentLocale);
                     const isIncluded = selectedGenres.include.includes(g);
@@ -1699,7 +1707,6 @@ function SteamPriceFilter({ initialData = null }) {
                       </button>
                     );
                   })}
-                </div>
               </div>
             </div>
           </div>
