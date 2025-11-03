@@ -219,7 +219,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
         const handleDragStart = () => {
           setFilterOnlySale(false);
           setFilterJapanese(false);
-          setFilterOverwhelming(false);
+          setFilterReviewScores([]);
         };
 
         // Handle folder drag end
@@ -866,7 +866,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                   if (showOrderMenuForGame !== game.id) {
                                     setFilterOnlySale(false);
                                     setFilterJapanese(false);
-                                    setFilterOverwhelming(false);
+                                    setFilterReviewScores([]);
                                   }
                                 }}
                                 className={`p-1 rounded ${theme.text} ${theme.iconHover}`}
