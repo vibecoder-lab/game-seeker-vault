@@ -4,7 +4,7 @@ Script to rebuild games.json from scratch
 Fetches all data from Steam API and IsThereAnyDeal API
 
 Usage:
-  python3 updater/main.py [ITAD_API_KEY] [--append] [--regions JP,US,UK,EU] [--kv] [--reset-prices] [--delete]
+  python3 updater/main.py [ITAD_API_KEY] [--append] [--regions JP,US,UK,EU] [--kv] [--reset-prices] [--delete] [--extract]
 
 Options:
   --append: Add new titles + fetch data only for new additions
@@ -15,6 +15,11 @@ Options:
   --delete: Delete games specified in updater/data/refs/delete_appid_list.txt
     - Deletes from local files (games.json, id-map.json)
     - With --kv option: Also deletes from Cloudflare KV (games-data, id-map)
+  --extract: Extract games from HTML calendar and filter by review scores
+    - Reads HTML from updater/data/refs/*.html (must be only one file)
+    - Extracts App IDs and titles
+    - Filters by Steam review scores (Very Positive or better)
+    - Outputs: raw_game_title_list.txt and pre_game_title_list.txt
 
 Environment detection:
   - Github Actions environment: Automatically uses KV
@@ -31,6 +36,7 @@ from datetime import datetime
 from game_data_builder import GameDataBuilder
 from kv_helper import KVHelper
 from constants import DEFAULT_REGIONS, BATCH_LOCK_FILE
+from extract_games import extract_command
 
 # Log configuration (overwrite mode to rebuild.log)
 script_dir = Path(__file__).parent
@@ -295,9 +301,15 @@ def delete_games_command(kv_helper):
         logger.error(f"Delete list file not found: {delete_list_file}")
         return
 
-    # Read appids
+    # Read appids (supports both "appid" and "appid\ttitle" formats)
     with open(delete_list_file, 'r', encoding='utf-8') as f:
-        delete_appids = [line.strip() for line in f if line.strip()]
+        delete_appids = []
+        for line in f:
+            line = line.strip()
+            if line:
+                # Extract appid (first element before tab, or entire line if no tab)
+                app_id = line.split('\t')[0] if '\t' in line else line.split()[0] if ' ' in line else line
+                delete_appids.append(app_id)
 
     if not delete_appids:
         print(f"\n{'='*60}")
@@ -380,6 +392,7 @@ def main():
     use_kv_option = False
     reset_prices = False
     delete_mode = False
+    extract_mode = False
     regions = DEFAULT_REGIONS.copy()
 
     i = 1
@@ -393,6 +406,8 @@ def main():
             reset_prices = True
         elif arg == '--delete':
             delete_mode = True
+        elif arg == '--extract':
+            extract_mode = True
         elif arg == '--regions':
             if i + 1 < len(sys.argv):
                 regions = sys.argv[i + 1].split(',')
@@ -404,6 +419,29 @@ def main():
     # Ensure directories exist
     current_dir.mkdir(parents=True, exist_ok=True)
     tmp_dir.mkdir(parents=True, exist_ok=True)
+
+    # If extract mode, execute and exit
+    if extract_mode:
+        # Use dedicated log file for extract mode
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        extract_log_file = log_dir / f'extract_{timestamp}.log'
+
+        # Reconfigure logging for extract mode
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            handlers=[
+                logging.FileHandler(extract_log_file, mode='w', encoding='utf-8'),
+                logging.StreamHandler()
+            ]
+        )
+
+        logger.info(f"Extract mode: Logging to {extract_log_file}")
+        success = extract_command(refs_dir)
+        return 0 if success else 1
 
     # Determine KV usage
     # 1. With --kv option → Use KV

@@ -665,7 +665,18 @@ class GameDataBuilder:
         # 3. Don't save id-map yet - will save after successful games-data update
         logger.info("id-map updated (not saved to KV yet)")
 
-        # 4. Get newly mapped IDs from current run
+        # 4. Get all IDs from game_title_list.txt
+        title_list_ids = []
+        if title_list_path.exists():
+            with open(title_list_path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        app_id = line.split('\t')[0] if '\t' in line else line.split()[0]
+                        title_list_ids.append(app_id)
+        logger.info(f"IDs from game_title_list.txt: {len(title_list_ids)} items")
+
+        # 5. Get newly mapped IDs from current run
         newly_mapped_ids = []
         if mapping_result and mapping_result.get('mapped'):
             newly_mapped_ids = [item['appid'] for item in mapping_result['mapped']]
@@ -673,11 +684,12 @@ class GameDataBuilder:
         else:
             logger.info("No newly mapped IDs in this run")
 
-        # 5. Get existing games-data
+        # 6. Get existing games-data
         existing_games = kv_helper.get_games_data()
+        existing_game_ids = {g['id'] for g in existing_games}
         logger.info(f"Existing games-data: {len(existing_games)} items")
 
-        # 6. Determine IDs to process based on batch_in_progress.lock
+        # 7. Determine IDs to process based on batch_in_progress.lock
         lock_file_path = Path(BATCH_LOCK_FILE)
         is_resuming = lock_file_path.exists()
 
@@ -687,9 +699,9 @@ class GameDataBuilder:
             logger.info(f"Resume mode detected (batch_in_progress.lock exists). Processing all IDs from id-map: {len(new_ids)} items")
             logger.info("Checkpoint files will be used to skip already processed IDs")
         else:
-            # New mode: Process only newly mapped IDs
-            new_ids = newly_mapped_ids
-            logger.info(f"New batch mode. Processing newly mapped IDs: {len(new_ids)} items")
+            # New mode: Process IDs from game_title_list.txt that are not in existing games-data
+            new_ids = [app_id for app_id in title_list_ids if app_id not in existing_game_ids]
+            logger.info(f"New append mode. Processing IDs from game_title_list.txt not in existing games-data: {len(new_ids)} items")
 
         # 7. Auto-detect processing mode based on new_ids count
         new_ids_count = len(new_ids)
@@ -736,7 +748,7 @@ class GameDataBuilder:
 
         # Process new IDs
         for i, app_id in enumerate(target_ids, 1):
-            logger.info(f"[{start_index + i}/{len(new_ids)}] Processing App ID: {app_id}...")
+            logger.info(f"[{i}/{len(new_ids)}] Processing App ID: {app_id}...")
 
             # Fetch latest data from Steam API (Basic + Review)
             steam_data = self.steam_client.get_game_info_from_api(app_id, regions=regions)

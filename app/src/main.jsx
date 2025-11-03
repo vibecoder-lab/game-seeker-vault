@@ -105,6 +105,7 @@ function SteamPriceFilter({ initialData = null }) {
   const [showHelpModal, setShowHelpModal] = React.useState(false);
   const [showSettingsModal, setShowSettingsModal] = React.useState(false);
   const [showLanguageRegionModal, setShowLanguageRegionModal] = React.useState(false);
+  const [showAppIdSearch, setShowAppIdSearch] = React.useState(false);
   const [settings, setSettings] = React.useState(DEFAULT_SETTINGS);
   const [currentRegion, setCurrentRegion] = React.useState('USD');
   const [folders, setFolders] = React.useState([]);
@@ -216,6 +217,14 @@ function SteamPriceFilter({ initialData = null }) {
         return;
       }
 
+      // App ID Search toggle
+      // Shift+S
+      if (e.shiftKey && e.code === "KeyS") {
+        e.preventDefault();
+        setShowAppIdSearch((prev) => !prev);
+        return;
+      }
+
       // Scroll to page top
       // ANSI: Shift+T / Shift+> (Period)
       // ISO (JIS): Shift+? (Slash)
@@ -275,6 +284,13 @@ function SteamPriceFilter({ initialData = null }) {
       window.removeEventListener("keyup", handleKeyUp);
     };
   }, [settings?.useAlternativeKeys, settings?.keyboardLayout, showVideoModal, showCollectionModal, showHelpModal, showSettingsModal, showLanguageRegionModal, showImportExportModal, showMobileUnifiedModal]);
+
+  // Check URL path for /search
+  React.useEffect(() => {
+    if (window.location.pathname === '/search') {
+      setShowAppIdSearch(true);
+    }
+  }, []);
 
   // Track mouse position for global folder dropdown
   React.useEffect(() => {
@@ -1239,6 +1255,8 @@ function SteamPriceFilter({ initialData = null }) {
           setShowSettingsModal={setShowSettingsModal}
           showLanguageRegionModal={showLanguageRegionModal}
           setShowLanguageRegionModal={setShowLanguageRegionModal}
+          showAppIdSearch={showAppIdSearch}
+          setShowAppIdSearch={setShowAppIdSearch}
           setForceUpdate={setForceUpdate}
           settings={settings}
           setSettings={setSettings}

@@ -33,10 +33,22 @@ export function Header({
   setShowSettingsModal,
   showLanguageRegionModal,
   setShowLanguageRegionModal,
+  showAppIdSearch,
+  setShowAppIdSearch,
   setForceUpdate,
   settings,
   setSettings
 }) {
+  const [appIdInput, setAppIdInput] = React.useState('');
+
+  const handleAppIdSearch = (e) => {
+    e.preventDefault();
+    const appId = appIdInput.trim();
+    if (appId && /^\d+$/.test(appId)) {
+      window.open(`https://store.steampowered.com/app/${appId}`, '_blank');
+      setAppIdInput('');
+    }
+  };
   return (
     <header className={`md:fixed top-0 left-0 right-0 z-30 ${theme.bg} px-6 py-4 transition-shadow duration-100 ${isScrolled ? 'md:shadow-md' : ''}`}>
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
@@ -56,6 +68,31 @@ export function Header({
         </div>
 
         <div className="hidden md:flex items-center gap-3">
+          {showAppIdSearch && (
+            <form onSubmit={handleAppIdSearch} className="flex items-center gap-2">
+              <input
+                type="text"
+                value={appIdInput}
+                onChange={(e) => setAppIdInput(e.target.value)}
+                placeholder="App ID"
+                className={`${theme.cardBg} ${theme.text} ${theme.border} border rounded-lg px-3 py-2 text-sm w-32 focus:outline-none focus:ring-2 ${currentTheme === 'steam' ? 'focus:ring-[#4668FF]' : 'focus:ring-blue-500'}`}
+              />
+              <button
+                type="submit"
+                className={`px-3 py-2 rounded-lg ${theme.buttonBg} ${theme.cardShadow} hover:scale-105 transition-all text-sm`}
+              >
+                Search
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAppIdSearch(false)}
+                className={`px-2 py-2 rounded-lg ${theme.buttonBg} ${theme.cardShadow} hover:scale-105 transition-all text-sm`}
+                title="Close (Shift+S)"
+              >
+                ×
+              </button>
+            </form>
+          )}
           <div className="relative" onMouseEnter={() => setShowFolderDropdown(true)} onMouseLeave={() => setShowFolderDropdown(false)}>
             <button
               className={`px-3 py-2 rounded-lg ${theme.cardShadow} hover:scale-105 transition-all ${theme.buttonBg} text-sm flex items-center gap-2`}
