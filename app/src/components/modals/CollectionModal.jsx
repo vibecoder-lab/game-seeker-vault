@@ -1034,8 +1034,8 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
               </div>
               </div>
               {/* Footer */}
-              <div className={`border-t ${theme.border} flex items-center h-[46px] rounded-b-2xl overflow-hidden`}>
-                <div className={`w-64 ${theme.bg} border-r ${theme.border} h-full flex items-center py-1`} style={{paddingLeft: '8px', paddingRight: '8px'}}>
+              <div className={`border-t ${theme.border} flex items-center h-[46px] rounded-b-2xl overflow-visible`}>
+                <div className={`w-64 ${theme.bg} border-r ${theme.border} h-full flex items-center py-1 rounded-bl-2xl`} style={{paddingLeft: '8px', paddingRight: '8px'}}>
                   {/* Trash Folder */}
                   <div
                     onClick={() => setSelectedFolderId(TRASH_FOLDER_ID)}
@@ -1112,6 +1112,9 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                         if (collectionGames.length === 0) return;
                         setShowReviewMenu(!showReviewMenu);
                       }}
+                      onMouseEnter={() => {
+                        if (collectionGames.length > 0) setShowReviewMenu(true);
+                      }}
                       className={`p-1 rounded transition-all ${collectionGames.length === 0 ? 'opacity-30 cursor-not-allowed' : (filterReviewScores.length > 0 ? (currentTheme === 'default' ? 'bg-gray-900 text-gray-200' : 'bg-slate-900 text-slate-400') : `${theme.text} ${theme.iconHover}`)}`}
                       title={t('filter.reviewScore', currentLocale)}
                       disabled={collectionGames.length === 0}
@@ -1121,30 +1124,36 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                       </svg>
                     </button>
                     {showReviewMenu && (
-                      <div className={`absolute top-full left-0 mt-1 ${theme.cardBg} ${theme.border} border rounded-lg shadow-lg z-50 py-1 whitespace-nowrap`}>
-                        {['Overwhelmingly Positive', 'Very Positive', 'Positive', 'Mostly Positive'].map(score => (
-                          <button
-                            key={score}
-                            onClick={() => {
-                              const newScores = filterReviewScores.includes(score)
-                                ? filterReviewScores.filter(s => s !== score)
-                                : [...filterReviewScores, score];
-                              setFilterReviewScores(newScores);
-                            }}
-                            className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
-                              filterReviewScores.includes(score)
-                                ? currentTheme === 'steam'
-                                  ? 'steam-blue-bg text-white'
-                                  : 'bg-blue-500 text-white'
-                                : `${theme.text} hover:${theme.modalHover}`
-                            }`}
-                          >
-                            {score === 'Overwhelmingly Positive' && t('filter.overwhelminglyPositive', currentLocale)}
-                            {score === 'Very Positive' && t('filter.veryPositive', currentLocale)}
-                            {score === 'Positive' && t('filter.positive', currentLocale)}
-                            {score === 'Mostly Positive' && t('filter.mostlyPositive', currentLocale)}
-                          </button>
-                        ))}
+                      <div
+                        className={`absolute left-1/2 -translate-x-1/2 ${theme.cardBg} ${theme.cardShadow} rounded-lg overflow-hidden z-[9999]`}
+                        style={{bottom: '100%'}}
+                        onMouseLeave={() => setShowReviewMenu(false)}
+                      >
+                        <div className={`${theme.text} max-h-[200px] overflow-y-auto`}>
+                          {['Overwhelmingly Positive', 'Very Positive', 'Positive', 'Mostly Positive'].map(score => (
+                            <button
+                              key={score}
+                              onClick={() => {
+                                const newScores = filterReviewScores.includes(score)
+                                  ? filterReviewScores.filter(s => s !== score)
+                                  : [...filterReviewScores, score];
+                                setFilterReviewScores(newScores);
+                              }}
+                              className={`block w-full text-left px-3 py-2 text-sm transition-colors ${
+                                filterReviewScores.includes(score)
+                                  ? currentTheme === 'steam'
+                                    ? 'steam-blue-bg text-white'
+                                    : 'bg-blue-500 text-white'
+                                  : `${theme.modalHover}`
+                              } whitespace-nowrap`}
+                            >
+                              {score === 'Overwhelmingly Positive' && t('filter.overwhelminglyPositive', currentLocale)}
+                              {score === 'Very Positive' && t('filter.veryPositive', currentLocale)}
+                              {score === 'Positive' && t('filter.positive', currentLocale)}
+                              {score === 'Mostly Positive' && t('filter.mostlyPositive', currentLocale)}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
