@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { t, currentLocale, formatPrice, formatYear, translateGenre } from '../../i18n/index.js';
 import { truncateByWidth } from '../../utils/format.js';
+import { REVIEW_SCORE_MAPPING } from '../../constants/reviews.js';
 
 export function MobileUnifiedModal({
   theme,
@@ -17,6 +18,7 @@ export function MobileUnifiedModal({
   setOnlySale,
   selectedReviewScores,
   setSelectedReviewScores,
+  availableReviewScores,
   onlyJP,
   setOnlyJP,
   onlyMac,
@@ -400,22 +402,20 @@ export function MobileUnifiedModal({
               <div>
                 <div className="text-sm font-semibold mb-2">{t('filter.reviewScore', currentLocale)}</div>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="flex items-center gap-2">
-                    <input id="unified-modal-overwhelminglyPositive" type="checkbox" checked={localSelectedReviewScores.includes('Overwhelmingly Positive')} onChange={()=>handleReviewScoreToggle('Overwhelmingly Positive')} className="h-4 w-4" />
-                    <label htmlFor="unified-modal-overwhelminglyPositive" className="text-sm">{t('filter.overwhelminglyPositive', currentLocale)}</label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <input id="unified-modal-veryPositive" type="checkbox" checked={localSelectedReviewScores.includes('Very Positive')} onChange={()=>handleReviewScoreToggle('Very Positive')} className="h-4 w-4" />
-                    <label htmlFor="unified-modal-veryPositive" className="text-sm">{t('filter.veryPositive', currentLocale)}</label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <input id="unified-modal-positive" type="checkbox" checked={localSelectedReviewScores.includes('Positive')} onChange={()=>handleReviewScoreToggle('Positive')} className="h-4 w-4" />
-                    <label htmlFor="unified-modal-positive" className="text-sm">{t('filter.positive', currentLocale)}</label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <input id="unified-modal-mostlyPositive" type="checkbox" checked={localSelectedReviewScores.includes('Mostly Positive')} onChange={()=>handleReviewScoreToggle('Mostly Positive')} className="h-4 w-4" />
-                    <label htmlFor="unified-modal-mostlyPositive" className="text-sm">{t('filter.mostlyPositive', currentLocale)}</label>
-                  </div>
+                  {availableReviewScores.map((score) => (
+                    <div key={score} className="flex items-center gap-2">
+                      <input
+                        id={`unified-modal-${score.replace(/\s+/g, '')}`}
+                        type="checkbox"
+                        checked={localSelectedReviewScores.includes(score)}
+                        onChange={()=>handleReviewScoreToggle(score)}
+                        className="h-4 w-4"
+                      />
+                      <label htmlFor={`unified-modal-${score.replace(/\s+/g, '')}`} className="text-sm">
+                        {currentLocale === 'ja' ? REVIEW_SCORE_MAPPING[score] : score}
+                      </label>
+                    </div>
+                  ))}
                 </div>
               </div>
 

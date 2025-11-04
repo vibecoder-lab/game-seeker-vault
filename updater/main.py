@@ -4,7 +4,7 @@ Script to rebuild games.json from scratch
 Fetches all data from Steam API and IsThereAnyDeal API
 
 Usage:
-  python3 updater/main.py [ITAD_API_KEY] [--append] [--regions JP,US,UK,EU] [--kv] [--reset-prices] [--delete] [--extract]
+  python3 updater/main.py [ITAD_API_KEY] [--append] [--regions JP,US,UK,EU] [--kv] [--reset-prices] [--delete] [--extract] [--refetch SCORES]
 
 Options:
   --append: Add new titles + fetch data only for new additions
@@ -20,6 +20,17 @@ Options:
     - Extracts App IDs and titles
     - Filters by Steam review scores (Very Positive or better)
     - Outputs: raw_game_title_list.txt and pre_game_title_list.txt
+  --refetch: Re-fetch review scores for specified score types
+    - SCORES: Comma-separated list of review score numbers (0-9) and/or 'others'
+    - Score mapping: 9=Overwhelmingly Positive, 8=Very Positive, 7=Positive, 6=Mostly Positive,
+                     5=Mixed, 4=Mostly Negative, 3=Negative, 2=Very Negative, 1=Overwhelmingly Negative,
+                     0=No user reviews
+    - 'others': Invalid review scores not in REVIEW_SCORE_MAPPING
+    - Examples:
+      --refetch 0,1,2,3,4,5,others  (Re-fetch Mixed or worse + No reviews + invalid data)
+      --refetch 6,7,8,9             (Re-fetch Mostly Positive or better)
+      --refetch others              (Re-fetch only invalid review scores)
+      --refetch 0                   (Re-fetch only No user reviews)
 
 Environment detection:
   - Github Actions environment: Automatically uses KV
@@ -31,12 +42,15 @@ import json
 import sys
 import logging
 import os
+import time
+import random
+import uuid
 from pathlib import Path
 from datetime import datetime
 from game_data_builder import GameDataBuilder
 from kv_helper import KVHelper
 from constants import DEFAULT_REGIONS, BATCH_LOCK_FILE
-from extract_games import extract_command
+from extract_games import extract_command, GameExtractor
 
 # Log configuration (overwrite mode to rebuild.log)
 script_dir = Path(__file__).parent
@@ -384,6 +398,205 @@ def reset_prices_command(kv_helper):
     logger.info(f"Reset complete: {updated_count} games updated")
 
 
+def refetch_reviews_command(kv_helper, score_targets):
+    """Re-fetch review scores for games with specified score types
+
+    Args:
+        kv_helper: KVHelper instance
+        score_targets: Comma-separated string of score numbers (1-9) and/or 'others'
+    """
+    logger.info("=== Re-fetch Review Scores Mode ===")
+
+    # Valid review score mapping (from REVIEW_SCORE_MAPPING)
+    VALID_SCORES = {
+        'Overwhelmingly Positive',
+        'Very Positive',
+        'Positive',
+        'Mostly Positive',
+        'Mixed',
+        'Mostly Negative',
+        'Negative',
+        'Very Negative',
+        'Overwhelmingly Negative',
+        'No user reviews'
+    }
+
+    # Score number to description mapping
+    SCORE_NUMBER_TO_DESC = {
+        '9': 'Overwhelmingly Positive',
+        '8': 'Very Positive',
+        '7': 'Positive',
+        '6': 'Mostly Positive',
+        '5': 'Mixed',
+        '4': 'Mostly Negative',
+        '3': 'Negative',
+        '2': 'Very Negative',
+        '1': 'Overwhelmingly Negative',
+        '0': 'No user reviews'
+    }
+
+    # Parse score targets
+    targets = [t.strip() for t in score_targets.split(',')]
+    target_scores = set()
+    include_others = False
+
+    for target in targets:
+        if target == 'others':
+            include_others = True
+        elif target in SCORE_NUMBER_TO_DESC:
+            target_scores.add(SCORE_NUMBER_TO_DESC[target])
+        else:
+            print(f"\n{'='*60}")
+            print(f"✗ Invalid Score Target")
+            print(f"{'='*60}")
+            print(f"Error: Invalid target '{target}'")
+            print(f"Valid targets: 1-9, others")
+            print(f"{'='*60}")
+            logger.error(f"Invalid score target: {target}")
+            return
+
+    logger.info(f"Target scores: {target_scores}")
+    logger.info(f"Include others (invalid scores): {include_others}")
+
+    # Get existing games data
+    games_data = kv_helper.get_games_data()
+    logger.info(f"Loaded {len(games_data)} games from KV/file")
+
+    # Find games to re-fetch
+    games_to_refetch = []
+    for game in games_data:
+        score = game.get('reviewScore')
+
+        # Check if score matches target
+        if include_others and (not score or score not in VALID_SCORES):
+            games_to_refetch.append(game)
+        elif score in target_scores:
+            games_to_refetch.append(game)
+
+    if not games_to_refetch:
+        print(f"\n{'='*60}")
+        print(f"✓ No Games to Re-fetch")
+        print(f"{'='*60}")
+        print(f"No games found matching the specified criteria")
+        print(f"{'='*60}")
+        logger.info("No games to re-fetch")
+        return
+
+    print(f"\n{'='*60}")
+    print(f"Re-fetch Target Games: {len(games_to_refetch)}")
+    print(f"{'='*60}")
+    print(f"Target score types: {', '.join(target_scores) if target_scores else 'None'}")
+    if include_others:
+        print(f"Including: Invalid/other scores")
+    print(f"\nEstimated time: {len(games_to_refetch) * 1.25 / 60:.1f} minutes")
+    print(f"{'='*60}\n")
+
+    logger.info(f"Re-fetching reviews for {len(games_to_refetch)} games")
+
+    # Initialize extractor for get_review_score method
+    extractor = GameExtractor(refs_dir)
+
+    # Re-fetch review scores
+    updated_games = []
+    failed_games = []
+    score_changes = []
+
+    for i, game in enumerate(games_to_refetch, 1):
+        app_id = game['id']
+        title = game['title']
+        old_score = game.get('reviewScore', 'None')
+
+        logger.info(f"[{i}/{len(games_to_refetch)}] Re-fetching: {app_id} {title}")
+        print(f"[{i}/{len(games_to_refetch)}] {app_id} | {title[:50]}")
+        print(f"  Old score: {old_score}")
+
+        # Get new review score
+        new_score, total_reviews = extractor.get_review_score(app_id)
+
+        if new_score:
+            game['reviewScore'] = new_score
+            game['reviewsCount'] = total_reviews
+            updated_games.append(app_id)
+
+            if new_score != old_score:
+                score_changes.append({
+                    'appid': app_id,
+                    'title': title,
+                    'old_score': old_score,
+                    'new_score': new_score,
+                    'total_reviews': total_reviews
+                })
+
+            logger.info(f"  ✓ New score: {new_score}, {total_reviews} reviews")
+            print(f"  New score: {new_score}, {total_reviews} reviews")
+        else:
+            failed_games.append({
+                'appid': app_id,
+                'title': title,
+                'old_score': old_score
+            })
+            logger.warning(f"  ✗ Failed to fetch review score")
+            print(f"  ✗ Failed to fetch")
+
+        # Rate limiting
+        if i < len(games_to_refetch):
+            wait_time = random.uniform(1.0, 1.5)
+            time.sleep(wait_time)
+
+        print()
+
+    # Save updated data
+    if updated_games:
+        import shutil
+        import datetime
+
+        # Create backup before saving
+        if kv_helper.is_local_mode():
+            input_file = current_dir / 'games.json'
+            if input_file.exists():
+                backup_filename = f"games_{datetime.datetime.now():%Y_%m_%d_%H%M%S}.json"
+                backup_file = backups_dir / backup_filename
+                backups_dir.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(input_file, backup_file)
+                logger.info(f"Created backup: {backup_file}")
+
+        # Update metadata
+        if isinstance(games_data, dict) and 'meta' in games_data:
+            # If games_data has meta structure, it's already handled by KVHelper
+            pass
+
+        kv_helper.put_games_data(games_data, preserve_timestamp=False)
+        logger.info(f"Saved updated games data")
+
+    # Print summary report
+    print(f"\n{'='*60}")
+    print(f"✓ Re-fetch Complete")
+    print(f"{'='*60}")
+    print(f"Total processed: {len(games_to_refetch)} games")
+    print(f"Successfully updated: {len(updated_games)} games")
+    print(f"Failed: {len(failed_games)} games")
+    print(f"Score changed: {len(score_changes)} games")
+
+    if score_changes:
+        print(f"\n--- Score Changes ({len(score_changes)}) ---")
+        for change in score_changes[:20]:  # Show first 20
+            print(f"  • {change['appid']} | {change['title'][:40]}")
+            print(f"    {change['old_score']} → {change['new_score']} ({change['total_reviews']} reviews)")
+        if len(score_changes) > 20:
+            print(f"  ... and {len(score_changes) - 20} more")
+
+    if failed_games:
+        print(f"\n--- Failed Games ({len(failed_games)}) ---")
+        for failed in failed_games[:10]:  # Show first 10
+            print(f"  • {failed['appid']} | {failed['title'][:40]} (was: {failed['old_score']})")
+        if len(failed_games) > 10:
+            print(f"  ... and {len(failed_games) - 10} more")
+
+    print(f"{'='*60}")
+
+    logger.info(f"Re-fetch complete: {len(updated_games)} updated, {len(failed_games)} failed, {len(score_changes)} changed")
+
+
 def main():
     """Main entry point"""
     # Parse command line arguments
@@ -393,6 +606,8 @@ def main():
     reset_prices = False
     delete_mode = False
     extract_mode = False
+    refetch_mode = False
+    refetch_targets = None
     regions = DEFAULT_REGIONS.copy()
 
     i = 1
@@ -408,6 +623,14 @@ def main():
             delete_mode = True
         elif arg == '--extract':
             extract_mode = True
+        elif arg == '--refetch':
+            refetch_mode = True
+            if i + 1 < len(sys.argv):
+                refetch_targets = sys.argv[i + 1]
+                i += 1
+            else:
+                print("Error: --refetch requires SCORES argument")
+                sys.exit(1)
         elif arg == '--regions':
             if i + 1 < len(sys.argv):
                 regions = sys.argv[i + 1].split(',')
@@ -452,6 +675,29 @@ def main():
 
     # Initialize KVHelper
     kv_helper = KVHelper(use_kv=use_kv)
+
+    # If refetch mode, execute and exit
+    if refetch_mode:
+        # Use dedicated log file for refetch mode
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        refetch_log_file = log_dir / f'refetch_{timestamp}.log'
+
+        # Reconfigure logging for refetch mode
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            handlers=[
+                logging.FileHandler(refetch_log_file, mode='w', encoding='utf-8'),
+                logging.StreamHandler()
+            ]
+        )
+
+        logger.info(f"Refetch mode: Logging to {refetch_log_file}")
+        refetch_reviews_command(kv_helper, refetch_targets)
+        return
 
     # If delete mode, execute and exit
     if delete_mode:

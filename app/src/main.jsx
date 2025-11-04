@@ -870,6 +870,16 @@ function SteamPriceFilter({ initialData = null }) {
     return unique(years).sort((a, b) => b - a);
   }, [games]);
 
+  const availableReviewScores = React.useMemo(() => {
+    const scoresInData = unique(games.map(g => g.reviewScore).filter(Boolean));
+    const scoreOrder = Object.keys(REVIEW_SCORE_MAPPING);
+    return scoresInData.sort((a, b) => {
+      const indexA = scoreOrder.indexOf(a);
+      const indexB = scoreOrder.indexOf(b);
+      return indexA - indexB;
+    });
+  }, [games]);
+
   const filtered = React.useMemo(() => {
     return games.filter((g) => {
       const matchesJP = onlyJP
@@ -1199,6 +1209,7 @@ function SteamPriceFilter({ initialData = null }) {
           setOnlySale={setOnlySale}
           selectedReviewScores={selectedReviewScores}
           setSelectedReviewScores={setSelectedReviewScores}
+          availableReviewScores={availableReviewScores}
           onlyJP={onlyJP}
           setOnlyJP={setOnlyJP}
           onlyMac={onlyMac}
@@ -1344,74 +1355,26 @@ function SteamPriceFilter({ initialData = null }) {
             {/* Row 2: Review Scores */}
             <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
               <div className="flex gap-2 min-w-max pb-2">
+                {availableReviewScores.map((score) => (
                   <button
+                    key={score}
                     onClick={() => {
-                      const newScores = selectedReviewScores.includes('Overwhelmingly Positive')
-                        ? selectedReviewScores.filter(s => s !== 'Overwhelmingly Positive')
-                        : [...selectedReviewScores, 'Overwhelmingly Positive'];
+                      const newScores = selectedReviewScores.includes(score)
+                        ? selectedReviewScores.filter(s => s !== score)
+                        : [...selectedReviewScores, score];
                       handleFilterChange(setSelectedReviewScores)(newScores);
                     }}
                     className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
-                      selectedReviewScores.includes('Overwhelmingly Positive')
+                      selectedReviewScores.includes(score)
                         ? currentTheme === "steam"
                           ? "steam-blue-bg text-white"
                           : "bg-blue-500 text-white"
                         : `${theme.tagBg} ${theme.tagText}`
                     }`}
                   >
-                    {t("filter.overwhelminglyPositive", currentLocale)}
+                    {currentLocale === 'ja' ? REVIEW_SCORE_MAPPING[score] : score}
                   </button>
-                  <button
-                    onClick={() => {
-                      const newScores = selectedReviewScores.includes('Very Positive')
-                        ? selectedReviewScores.filter(s => s !== 'Very Positive')
-                        : [...selectedReviewScores, 'Very Positive'];
-                      handleFilterChange(setSelectedReviewScores)(newScores);
-                    }}
-                    className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
-                      selectedReviewScores.includes('Very Positive')
-                        ? currentTheme === "steam"
-                          ? "steam-blue-bg text-white"
-                          : "bg-blue-500 text-white"
-                        : `${theme.tagBg} ${theme.tagText}`
-                    }`}
-                  >
-                    {t("filter.veryPositive", currentLocale)}
-                  </button>
-                  <button
-                    onClick={() => {
-                      const newScores = selectedReviewScores.includes('Positive')
-                        ? selectedReviewScores.filter(s => s !== 'Positive')
-                        : [...selectedReviewScores, 'Positive'];
-                      handleFilterChange(setSelectedReviewScores)(newScores);
-                    }}
-                    className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
-                      selectedReviewScores.includes('Positive')
-                        ? currentTheme === "steam"
-                          ? "steam-blue-bg text-white"
-                          : "bg-blue-500 text-white"
-                        : `${theme.tagBg} ${theme.tagText}`
-                    }`}
-                  >
-                    {t("filter.positive", currentLocale)}
-                  </button>
-                  <button
-                    onClick={() => {
-                      const newScores = selectedReviewScores.includes('Mostly Positive')
-                        ? selectedReviewScores.filter(s => s !== 'Mostly Positive')
-                        : [...selectedReviewScores, 'Mostly Positive'];
-                      handleFilterChange(setSelectedReviewScores)(newScores);
-                    }}
-                    className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
-                      selectedReviewScores.includes('Mostly Positive')
-                        ? currentTheme === "steam"
-                          ? "steam-blue-bg text-white"
-                          : "bg-blue-500 text-white"
-                        : `${theme.tagBg} ${theme.tagText}`
-                    }`}
-                  >
-                    {t("filter.mostlyPositive", currentLocale)}
-                  </button>
+                ))}
               </div>
             </div>
 
@@ -1805,86 +1768,28 @@ function SteamPriceFilter({ initialData = null }) {
                 {t("filter.reviewScore", currentLocale)}
               </div>
               <div className="flex items-center gap-4 flex-wrap mb-6">
-                <div className="flex items-center gap-2">
-                  <input
-                    id="overwhelminglyPositive"
-                    type="checkbox"
-                    checked={selectedReviewScores.includes('Overwhelmingly Positive')}
-                    onChange={() => {
-                      const newScores = selectedReviewScores.includes('Overwhelmingly Positive')
-                        ? selectedReviewScores.filter(s => s !== 'Overwhelmingly Positive')
-                        : [...selectedReviewScores, 'Overwhelmingly Positive'];
-                      handleFilterChange(setSelectedReviewScores)(newScores);
-                    }}
-                    className="h-4 w-4 flex-shrink-0"
-                  />
-                  <label
-                    htmlFor="overwhelminglyPositive"
-                    className="text-sm whitespace-nowrap"
-                  >
-                    {t("filter.overwhelminglyPositive", currentLocale)}
-                  </label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    id="veryPositive"
-                    type="checkbox"
-                    checked={selectedReviewScores.includes('Very Positive')}
-                    onChange={() => {
-                      const newScores = selectedReviewScores.includes('Very Positive')
-                        ? selectedReviewScores.filter(s => s !== 'Very Positive')
-                        : [...selectedReviewScores, 'Very Positive'];
-                      handleFilterChange(setSelectedReviewScores)(newScores);
-                    }}
-                    className="h-4 w-4 flex-shrink-0"
-                  />
-                  <label
-                    htmlFor="veryPositive"
-                    className="text-sm whitespace-nowrap"
-                  >
-                    {t("filter.veryPositive", currentLocale)}
-                  </label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    id="positive"
-                    type="checkbox"
-                    checked={selectedReviewScores.includes('Positive')}
-                    onChange={() => {
-                      const newScores = selectedReviewScores.includes('Positive')
-                        ? selectedReviewScores.filter(s => s !== 'Positive')
-                        : [...selectedReviewScores, 'Positive'];
-                      handleFilterChange(setSelectedReviewScores)(newScores);
-                    }}
-                    className="h-4 w-4 flex-shrink-0"
-                  />
-                  <label
-                    htmlFor="positive"
-                    className="text-sm whitespace-nowrap"
-                  >
-                    {t("filter.positive", currentLocale)}
-                  </label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    id="mostlyPositive"
-                    type="checkbox"
-                    checked={selectedReviewScores.includes('Mostly Positive')}
-                    onChange={() => {
-                      const newScores = selectedReviewScores.includes('Mostly Positive')
-                        ? selectedReviewScores.filter(s => s !== 'Mostly Positive')
-                        : [...selectedReviewScores, 'Mostly Positive'];
-                      handleFilterChange(setSelectedReviewScores)(newScores);
-                    }}
-                    className="h-4 w-4 flex-shrink-0"
-                  />
-                  <label
-                    htmlFor="mostlyPositive"
-                    className="text-sm whitespace-nowrap"
-                  >
-                    {t("filter.mostlyPositive", currentLocale)}
-                  </label>
-                </div>
+                {availableReviewScores.map((score) => (
+                  <div key={score} className="flex items-center gap-2">
+                    <input
+                      id={`reviewScore-${score.replace(/\s+/g, '')}`}
+                      type="checkbox"
+                      checked={selectedReviewScores.includes(score)}
+                      onChange={() => {
+                        const newScores = selectedReviewScores.includes(score)
+                          ? selectedReviewScores.filter(s => s !== score)
+                          : [...selectedReviewScores, score];
+                        handleFilterChange(setSelectedReviewScores)(newScores);
+                      }}
+                      className="h-4 w-4 flex-shrink-0"
+                    />
+                    <label
+                      htmlFor={`reviewScore-${score.replace(/\s+/g, '')}`}
+                      className="text-sm whitespace-nowrap"
+                    >
+                      {currentLocale === 'ja' ? REVIEW_SCORE_MAPPING[score] : score}
+                    </label>
+                  </div>
+                ))}
               </div>
 
               <div className="text-sm font-semibold">
@@ -2480,6 +2385,7 @@ function SteamPriceFilter({ initialData = null }) {
             onSaveUIState={saveCurrentUIState}
             scrollTop={collectionModalScrollTop}
             onScrollTopChange={setCollectionModalScrollTop}
+            availableReviewScores={availableReviewScores}
           />
         )}
 

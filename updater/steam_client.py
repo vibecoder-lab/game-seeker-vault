@@ -470,7 +470,7 @@ class SteamClient:
     def _extract_review_score(self, app_id):
         """Get review score"""
         try:
-            review_url = f"https://store.steampowered.com/appreviews/{app_id}?json=1"
+            review_url = f"https://store.steampowered.com/appreviews/{app_id}?json=1&purchase_type=all&language=all"
             response = self._request_with_retry(review_url)
 
             if not response:

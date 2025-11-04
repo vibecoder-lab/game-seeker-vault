@@ -2,6 +2,7 @@ import React from 'react';
 import { t, currentLocale, formatPrice } from '../../i18n/index.js';
 import { normalizeGenres, checkJapaneseSupport, cleanLanguageText, translateReviewScore, formatReleaseDate } from '../../utils/format.js';
 import { linkFor } from '../../utils/steam.js';
+import { REVIEW_SCORE_MAPPING } from '../../constants/reviews.js';
 import { dbHelper } from '../../db/index.js';
 import {
   DndContext,
@@ -135,7 +136,7 @@ function SortableItem({ id, game, gameData, theme, currentTheme, selectedFolderI
   );
 }
 
-export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, setCollectionMap, settings, setTargetFolderId, showVideoModal, setShowVideoModal, setSelectedGameForVideo, setVideoModalClosing, currentRegion, onSaveUIState, scrollTop, onScrollTopChange }) {
+export function CollectionModal({ theme, currentTheme, folders, setFolders, selectedFolderId, setSelectedFolderId, onClose, games, setCollectionMap, settings, setTargetFolderId, showVideoModal, setShowVideoModal, setSelectedGameForVideo, setVideoModalClosing, currentRegion, onSaveUIState, scrollTop, onScrollTopChange, availableReviewScores }) {
         const TRASH_FOLDER_ID = '__TRASH__';
 
         // Identify the owned list folder (created with translation key 'folder.default.owned_list')
@@ -1108,14 +1109,11 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                     </svg>
                   </button>
                   )}
-                  <div className="relative">
+                  <div className="relative" onMouseEnter={() => { if (collectionGames.length > 0) setShowReviewMenu(true); }} onMouseLeave={() => setShowReviewMenu(false)}>
                     <button
                       onClick={() => {
                         if (collectionGames.length === 0) return;
                         setShowReviewMenu(!showReviewMenu);
-                      }}
-                      onMouseEnter={() => {
-                        if (collectionGames.length > 0) setShowReviewMenu(true);
                       }}
                       className={`p-1 rounded transition-all ${collectionGames.length === 0 ? 'opacity-30 cursor-not-allowed' : (filterReviewScores.length > 0 ? (currentTheme === 'default' ? 'bg-gray-900 text-gray-200' : 'bg-slate-900 text-slate-400') : `${theme.text} ${theme.iconHover}`)}`}
                       title={t('filter.reviewScore', currentLocale)}
@@ -1129,10 +1127,9 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                       <div
                         className={`absolute left-1/2 -translate-x-1/2 ${theme.cardBg} ${theme.cardShadow} rounded-lg overflow-hidden z-[9999]`}
                         style={{bottom: '100%'}}
-                        onMouseLeave={() => setShowReviewMenu(false)}
                       >
                         <div className={`${theme.text} max-h-[200px] overflow-y-auto`}>
-                          {['Overwhelmingly Positive', 'Very Positive', 'Positive', 'Mostly Positive'].map(score => (
+                          {availableReviewScores.map(score => (
                             <button
                               key={score}
                               onClick={() => {
@@ -1149,10 +1146,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                   : `${theme.modalHover}`
                               } whitespace-nowrap`}
                             >
-                              {score === 'Overwhelmingly Positive' && t('filter.overwhelminglyPositive', currentLocale)}
-                              {score === 'Very Positive' && t('filter.veryPositive', currentLocale)}
-                              {score === 'Positive' && t('filter.positive', currentLocale)}
-                              {score === 'Mostly Positive' && t('filter.mostlyPositive', currentLocale)}
+                              {currentLocale === 'ja' ? REVIEW_SCORE_MAPPING[score] : score}
                             </button>
                           ))}
                         </div>

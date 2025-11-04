@@ -91,7 +91,7 @@ class GameExtractor:
         Returns:
             tuple: (review_score_desc, total_reviews) or (None, None)
         """
-        url = f"https://store.steampowered.com/appreviews/{app_id}?json=1&language=all"
+        url = f"https://store.steampowered.com/appreviews/{app_id}?json=1&purchase_type=all&language=all"
 
         max_retries = 3
         for attempt in range(max_retries):
