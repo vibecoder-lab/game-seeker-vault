@@ -2355,6 +2355,7 @@ function SteamPriceFilter({ initialData = null }) {
           <VideoModal
             game={selectedGameForVideo}
             theme={theme}
+            currentTheme={currentTheme}
             isClosing={videoModalClosing}
             onClose={handleVideoModalClose}
           />

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-export function VideoModal({ game, theme, isClosing, onClose }) {
+export function VideoModal({ game, theme, currentTheme, isClosing, onClose }) {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [failedVideos, setFailedVideos] = useState(new Set());
   const videoRef = React.useRef(null);
   const hoverAreaRef = React.useRef(null);
 
@@ -33,8 +34,38 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
   const hasMovies = game.movies && game.movies.length > 0;
   const hasScreenshot = game.screenshot && game.screenshot.full;
 
+  // Filter out failed videos
+  const availableMovies = hasMovies
+    ? game.movies.filter((_, index) => !failedVideos.has(index))
+    : [];
+  const hasAvailableMovies = availableMovies.length > 0;
+
   const currentMovie = hasMovies ? game.movies[selectedVideoIndex] : null;
   const currentScreenshot = game.screenshot;
+
+  // Handle video error (404, etc.)
+  const handleVideoError = () => {
+    setFailedVideos(prev => new Set([...prev, selectedVideoIndex]));
+
+    // Find next available video
+    const nextAvailableIndex = game.movies.findIndex(
+      (_, index) => index > selectedVideoIndex && !failedVideos.has(index)
+    );
+
+    if (nextAvailableIndex !== -1) {
+      setSelectedVideoIndex(nextAvailableIndex);
+    } else {
+      // Try to find any available video from the beginning
+      const anyAvailableIndex = game.movies.findIndex(
+        (_, index) => !failedVideos.has(index) && index !== selectedVideoIndex
+      );
+
+      if (anyAvailableIndex !== -1) {
+        setSelectedVideoIndex(anyAvailableIndex);
+      }
+      // If no videos available, component will fallback to screenshot
+    }
+  };
 
   return (
     <div
@@ -62,7 +93,7 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
         <div className="p-6 overflow-y-auto flex-1">
           {/* Video Player or Screenshot Display */}
           <div className="relative">
-            {hasMovies ? (
+            {hasAvailableMovies ? (
               <div className="aspect-video bg-black rounded-lg overflow-hidden">
                 <video
                   ref={videoRef}
@@ -71,6 +102,7 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
                   autoPlay
                   className="w-full h-full"
                   poster={currentMovie.thumbnail}
+                  onError={handleVideoError}
                 >
                   <source src={currentMovie.webm} type="video/webm" />
                   <source src={currentMovie.mp4} type="video/mp4" />
@@ -86,8 +118,8 @@ export function VideoModal({ game, theme, isClosing, onClose }) {
                 />
               </div>
             ) : (
-              <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
-                <p className={theme.subText}>No media available</p>
+              <div className={`aspect-video rounded-lg flex items-center justify-center ${currentTheme === 'default' ? 'bg-gray-200' : 'bg-black'}`}>
+                <p className={currentTheme === 'default' ? 'text-slate-300' : 'text-gray-600'}>No media available</p>
               </div>
             )}
 
