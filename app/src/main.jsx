@@ -58,6 +58,7 @@ import { CollectionModal } from "./components/modals/CollectionModal.jsx";
 import { ImportExportModal } from "./components/modals/ImportExportModal.jsx";
 import { GameCard } from "./components/GameCard.jsx";
 import { HelpModal } from "./components/modals/HelpModal.jsx";
+import { PriceRangeSlider } from "./components/PriceRangeSlider.jsx";
 import { SettingsModal } from "./components/modals/SettingsModal.jsx";
 import { LanguageRegionModal } from "./components/modals/LanguageRegionModal.jsx";
 import { MobileUnifiedModal } from "./components/modals/MobileUnifiedModal.jsx";
@@ -1796,43 +1797,20 @@ function SteamPriceFilter({ initialData = null }) {
                 {t("filter.price.title", currentLocale)}
               </div>
               <div className="mt-2 space-y-2">
-                <div
-                  className={`flex items-center justify-between text-sm ${theme.subText}`}
-                >
-                  <span>
-                    {t("filter.priceMin", currentLocale)}{" "}
-                    {formatPrice(minPrice, currentRegion, currentLocale)}
-                  </span>
-                  <span>
-                    {t("filter.priceMax", currentLocale)}{" "}
-                    {formatPrice(maxPrice, currentRegion, currentLocale)}
-                  </span>
-                </div>
-                <input
-                  type="range"
+                <PriceRangeSlider
                   min={priceSliderConfig.min}
                   max={priceSliderConfig.max}
                   step={priceSliderConfig.step}
-                  value={minPrice}
-                  onChange={(e) =>
-                    handleFilterChange(setMinPrice)(
-                      Math.min(Number(e.target.value), maxPrice),
-                    )
-                  }
-                  className={`w-full ${currentTheme === "steam" ? "steam-blue" : ""}`}
-                />
-                <input
-                  type="range"
-                  min={priceSliderConfig.min}
-                  max={priceSliderConfig.max}
-                  step={priceSliderConfig.step}
-                  value={maxPrice}
-                  onChange={(e) =>
-                    handleFilterChange(setMaxPrice)(
-                      Math.max(Number(e.target.value), minPrice),
-                    )
-                  }
-                  className={`w-full ${currentTheme === "steam" ? "steam-blue" : ""}`}
+                  value={[minPrice, maxPrice]}
+                  onChange={(values) => {
+                    React.startTransition(() => {
+                      setMinPrice(values[0]);
+                      setMaxPrice(values[1]);
+                    });
+                  }}
+                  formatPrice={(price) => formatPrice(price, currentRegion, currentLocale)}
+                  currentTheme={currentTheme}
+                  theme={theme}
                 />
                 <div className="mt-4 space-y-3">
                   <div>

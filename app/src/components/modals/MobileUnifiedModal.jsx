@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { t, currentLocale, formatPrice, formatYear, translateGenre } from '../../i18n/index.js';
 import { truncateByWidth } from '../../utils/format.js';
 import { REVIEW_SCORE_MAPPING } from '../../constants/reviews.js';
+import { PriceRangeSlider } from '../PriceRangeSlider.jsx';
 
 export function MobileUnifiedModal({
   theme,
@@ -422,12 +423,19 @@ export function MobileUnifiedModal({
               <div>
                 <div className="text-sm font-semibold mb-2">{t('filter.price.title', currentLocale)}</div>
                 <div className="space-y-2">
-                  <div className={`flex items-center justify-between text-sm ${theme.subText}`}>
-                    <span>{t('filter.priceMin', currentLocale)} {formatPrice(localMinPrice, currentRegion, currentLocale)}</span>
-                    <span>{t('filter.priceMax', currentLocale)} {formatPrice(localMaxPrice, currentRegion, currentLocale)}</span>
-                  </div>
-                  <input type="range" min={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).min} max={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).max} step={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).step} value={localMinPrice} onChange={(e)=>handleMinPriceChange(Math.min(Number(e.target.value), localMaxPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
-                  <input type="range" min={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).min} max={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).max} step={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).step} value={localMaxPrice} onChange={(e)=>handleMaxPriceChange(Math.max(Number(e.target.value), localMinPrice))} className={`w-full ${currentTheme==='steam'?'steam-blue':''}`} />
+                  <PriceRangeSlider
+                    min={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).min}
+                    max={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).max}
+                    step={getPriceSliderConfig(currentRegion, settings?.removePriceLimit).step}
+                    value={[localMinPrice, localMaxPrice]}
+                    onChange={(values) => {
+                      handleMinPriceChange(values[0]);
+                      handleMaxPriceChange(values[1]);
+                    }}
+                    formatPrice={(price) => formatPrice(price, currentRegion, currentLocale)}
+                    currentTheme={currentTheme}
+                    theme={theme}
+                  />
                 </div>
               </div>
 
