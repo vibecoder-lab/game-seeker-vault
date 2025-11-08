@@ -2417,9 +2417,58 @@ function SteamPriceFilter({ initialData = null }) {
           />
         )}
 
+        {/* Mobile scroll to top button */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className={`fixed bottom-8 right-8 ${theme.cardBg} ${theme.cardShadow} rounded-full p-4 transition-opacity duration-500 hover:opacity-80 ${showScrollTop ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          className={`md:hidden fixed bottom-8 right-8 ${theme.cardBg} ${theme.cardShadow} rounded-full p-4 transition-opacity duration-500 hover:opacity-80 z-10 ${showScrollTop ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          aria-label={t("button.scrollToTop", currentLocale)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 10l7-7m0 0l7 7m-7-7v18"
+            />
+          </svg>
+        </button>
+
+        {/* Desktop scroll to top button (1472px+) */}
+        <div className="hidden min-[1472px]:block fixed bottom-0 left-0 right-0 pointer-events-none z-30">
+          <div className="max-w-7xl mx-auto px-6 relative h-0">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className={`absolute bottom-8 -right-16 ${theme.cardBg} ${theme.cardShadow} rounded-full p-4 transition-opacity duration-500 hover:opacity-80 pointer-events-auto ${showScrollTop ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+              aria-label={t("button.scrollToTop", currentLocale)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 10l7-7m0 0l7 7m-7-7v18"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop scroll to top button (<1472px) */}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className={`hidden md:block min-[1472px]:hidden fixed bottom-8 right-7 ${theme.cardBg} ${theme.cardShadow} rounded-full p-4 transition-opacity duration-500 hover:opacity-80 z-30 ${showScrollTop ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           aria-label={t("button.scrollToTop", currentLocale)}
         >
           <svg
