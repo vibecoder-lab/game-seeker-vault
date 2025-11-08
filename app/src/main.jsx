@@ -535,17 +535,17 @@ function SteamPriceFilter({ initialData = null }) {
 
       // Wait for DOM to be fully rendered, then scroll
       setTimeout(() => {
-        window.scrollTo({ top: scrollPos, behavior: 'smooth' });
+        window.scrollTo({ top: scrollPos, behavior: 'auto' });
 
         // Verify scroll succeeded after animation completes
         setTimeout(() => {
           const currentScroll = window.scrollY;
           const tolerance = 10;
 
-          // If scroll failed, try one more time with smooth behavior
+          // If scroll failed, try one more time with auto behavior
           if (Math.abs(currentScroll - scrollPos) > tolerance) {
             requestAnimationFrame(() => {
-              window.scrollTo({ top: scrollPos, behavior: 'smooth' });
+              window.scrollTo({ top: scrollPos, behavior: 'auto' });
             });
           }
         }, 1200);
