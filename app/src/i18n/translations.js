@@ -200,6 +200,8 @@ const translations = {
     'languageRegion.region': 'Region',
     'languageRegion.japanese': 'Japanese',
     'languageRegion.english': 'English',
+    'languageRegion.usd': 'USD',
+    'languageRegion.jpy': 'JPY',
 
     // Import/Export Modal
     'importExport.title': 'Import/Export',
@@ -479,7 +481,7 @@ const translations = {
   },
   ja: {
     // Page & Header
-    'page.title': 'Game Seeker Vault - Steamで楽しく安いゲームを見つけよう',
+    'page.title': 'Game Seeker Vault - Find fun & cheap games on Steam',
     'header.title': 'Game Seeker Vault',
     'header.collection.tooltip': 'コレクション',
     'header.collection.openModal': 'コレクションモーダル',
@@ -677,6 +679,8 @@ const translations = {
     'languageRegion.region': 'リージョン',
     'languageRegion.japanese': '日本語',
     'languageRegion.english': '英語',
+    'languageRegion.usd': '米国ドル',
+    'languageRegion.jpy': '日本円',
 
     // Import/Export Modal
     'importExport.title': 'インポート/エクスポート',

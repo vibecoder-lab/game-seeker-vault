@@ -317,9 +317,10 @@ graph TD
 ```
 
 **バッチモード特徴**:
-- 1000件ごとにチェックポイント保存
+- **100件ごと**にチェックポイント保存 (定数: `CHECKPOINT_INTERVAL = 100`)
 - 中断しても再開可能
 - `updater/data/batch/batch_in_progress.lock` でロック管理
+- ログファイルは `batch_rebuild.log` に切替 (完了後にリネーム)
 
 **ログ例（通常モード）**:
 
@@ -335,13 +336,44 @@ Fetching ITAD deals for 50 new games...
 
 ---
 
+### チェックポイントファイル構造
+
+**保存場所**: `updater/data/batch/checkpoints/`
+
+**ファイル命名規則**:
+- `games_checkpoint_1000.json` (1-1000件目)
+- `games_checkpoint_2000.json` (1001-2000件目)
+- `games_checkpoint_3000.json` (2001-3000件目)
+- 番号は1000の倍数で付与
+
+**保存タイミング**:
+- 100件処理するごとにチェックポイント保存
+- ただしファイル番号は1000の倍数
+
+**再開処理**:
+1. 全チェックポイントファイルを番号順に読み込み
+2. 処理済みApp ID集合を構築
+3. `id-map.json` の全IDと比較してresume_index決定
+4. 未処理分のみを対象に処理再開
+
+**マッピング結果の復元**:
+- `updater/data/batch/mapping_result.txt` から既存マッピングを復元
+- 形式: `<App ID>\t<ITAD ID or "none">`
+
+---
+
 ## ログの見方
 
 ### ログファイル
 
-**場所**: `updater/log/rebuild_YYYYMMDD_HHMMSS.log`
+**通常モード**:
+- **場所**: `updater/log/rebuild_YYYYMMDD_HHMMSS.log`
+- **例**: `updater/log/rebuild_20251025_021000.log`
 
-**例**: `updater/log/rebuild_20251025_021000.log`
+**バッチモード**:
+- **処理中**: `updater/log/batch_rebuild.log`
+- **完了後**: `updater/log/rebuild_YYYYMMDD_HHMMSS_to_YYYYMMDD_HHMMSS.log`
+  - 例: `rebuild_20251025_021000_to_20251025_103000.log` (開始時刻_終了時刻)
 
 ---
 
@@ -575,6 +607,34 @@ jobs:
 - `✓ KV Update Success`
 - `Updated games count: XXXXX`
 - エラーがないか
+
+---
+
+## バッチ処理で使用されるファイル
+
+### ディレクトリ構成
+
+```
+updater/data/batch/
+├── batch_in_progress.lock      # バッチ処理中フラグ
+├── mapping_result.txt          # App ID → ITAD ID マッピング結果 (TSV)
+└── checkpoints/                # チェックポイント格納ディレクトリ
+    ├── games_checkpoint_1000.json
+    ├── games_checkpoint_2000.json
+    └── games_checkpoint_3000.json
+```
+
+### ファイル詳細
+
+| ファイルパス | 用途 | 形式 |
+|-------------|------|------|
+| `updater/data/batch/batch_in_progress.lock` | バッチ処理中を示すロックファイル | JSON |
+| `updater/data/batch/mapping_result.txt` | App IDとITAD IDのマッピング結果 | TSV (App ID\tITAD ID) |
+| `updater/data/batch/checkpoints/games_checkpoint_*.json` | チェックポイントファイル | JSON配列 |
+| `updater/log/batch_rebuild.log` | バッチ処理中のログ | テキスト |
+| `updater/log/rebuild_*_to_*.log` | 完了後のログ (リネーム後) | テキスト |
+
+**注意**: `processed_ids.txt` は定数定義されているが、実装では使用されていません。
 
 ---
 

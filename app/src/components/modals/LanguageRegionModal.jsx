@@ -115,7 +115,7 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
                     : `${theme.buttonBg} ${theme.text} hover:opacity-80`
                 }`}
               >
-                USD
+                {t('languageRegion.usd', currentLocale)}
               </button>
               <button
                 onClick={() => handleRegionChange('JPY')}
@@ -125,7 +125,7 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
                     : `${theme.buttonBg} ${theme.text} hover:opacity-80`
                 }`}
               >
-                JPY
+                {t('languageRegion.jpy', currentLocale)}
               </button>
             </div>
           </div>
