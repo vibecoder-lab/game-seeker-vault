@@ -109,40 +109,40 @@ def print_mapping_report(mapping_result):
     skipped_existing = mapping_result.get('skipped_existing', [])
     skipped_multiple = mapping_result.get('skipped_multiple', [])
 
-    print(f"{'='*60}")
-    print("Auto-mapping Results")
-    print(f"{'='*60}\n")
-    print(f"Success: {len(mapped)} items")
-    print(f"Skipped (Already exists): {len(skipped_existing)} items")
-    print(f"Skipped (Multiple matches): {len(skipped_multiple)} items")
-    print(f"Failed: {len(failed)} items")
+    logger.info(f"{'='*60}")
+    logger.info("Auto-mapping Results")
+    logger.info(f"{'='*60}\n")
+    logger.info(f"Success: {len(mapped)} items")
+    logger.info(f"Skipped (Already exists): {len(skipped_existing)} items")
+    logger.info(f"Skipped (Multiple matches): {len(skipped_multiple)} items")
+    logger.info(f"Failed: {len(failed)} items")
 
     if mapped:
-        print(f"\n--- Successfully Mapped ({len(mapped)}) ---")
+        logger.info(f"\n--- Successfully Mapped ({len(mapped)}) ---")
         for item in mapped:
             itad_info = f", ITAD ID: {item['itadId']}" if item.get('itadId') else ", ITAD ID: None"
             score_info = f", Score: {item['score']}" if 'score' in item else ""
-            print(f"  • {item['name']} (App ID: {item['appid']}{score_info}){itad_info}")
+            logger.info(f"  • {item['name']} (App ID: {item['appid']}{score_info}){itad_info}")
 
     if skipped_existing:
-        print(f"\n--- Skipped - Already Exists ({len(skipped_existing)}) ---")
+        logger.info(f"\n--- Skipped - Already Exists ({len(skipped_existing)}) ---")
         for item in skipped_existing:
-            print(f"  • {item['title']} → {item['name']} (App ID: {item['appid']})")
+            logger.info(f"  • {item['title']} → {item['name']} (App ID: {item['appid']})")
 
     if skipped_multiple:
-        print(f"\n--- Skipped - Multiple Matches ({len(skipped_multiple)}) ---")
+        logger.info(f"\n--- Skipped - Multiple Matches ({len(skipped_multiple)}) ---")
         for item in skipped_multiple:
-            print(f"  • {item['title']}")
+            logger.info(f"  • {item['title']}")
             for match in item['matches']:
-                print(f"    - {match['name']} (App ID: {match['appid']})")
+                logger.info(f"    - {match['name']} (App ID: {match['appid']})")
 
     if failed:
-        print(f"\n--- Mapping Failed ({len(failed)}) ---")
+        logger.info(f"\n--- Mapping Failed ({len(failed)}) ---")
         for title in failed:
-            print(f"  • {title}")
-        print(f"\nNote: Mapping failures won't block KV updates")
+            logger.info(f"  • {title}")
+        logger.info(f"\nNote: Mapping failures won't block KV updates")
 
-    print(f"\n{'='*60}\n")
+    logger.info(f"\n{'='*60}\n")
 
 
 def print_rebuild_report(result):
@@ -154,40 +154,40 @@ def print_rebuild_report(result):
     games_without_itad = result.get('games_without_itad', [])
     games_with_image_fallback = result.get('games_with_image_fallback', [])
 
-    print(f"\n{'='*60}")
-    print(f"Data Fetch Results")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"Data Fetch Results")
+    logger.info(f"{'='*60}")
     success_with_itad = len(rebuilt_games) - len(games_without_itad)
-    print(f"Success with ITAD data: {success_with_itad} items")
+    logger.info(f"Success with ITAD data: {success_with_itad} items")
     if games_without_itad:
-        print(f"Success without ITAD data (Steam API only): {len(games_without_itad)} items")
-        print(f"  App IDs: {games_without_itad}")
+        logger.info(f"Success without ITAD data (Steam API only): {len(games_without_itad)} items")
+        logger.info(f"  App IDs: {games_without_itad}")
     if games_with_image_fallback:
-        print(f"Games using fallback image (not capsule_616x353): {len(games_with_image_fallback)} items")
-        print(f"  App IDs: {games_with_image_fallback}")
-    print(f"Failed: {len(failed_games)} items")
+        logger.info(f"Games using fallback image (not capsule_616x353): {len(games_with_image_fallback)} items")
+        logger.info(f"  App IDs: {games_with_image_fallback}")
+    logger.info(f"Failed: {len(failed_games)} items")
 
     if failed_games:
-        print(f"\n【Data Fetch Failures】")
+        logger.info(f"\n【Data Fetch Failures】")
         for failed in failed_games:
-            print(f"  - App ID: {failed['app_id']}, Reason: {failed['reason']}")
+            logger.info(f"  - App ID: {failed['app_id']}, Reason: {failed['reason']}")
 
     if mapping_result and mapping_result.get('failed'):
         failed_mappings = mapping_result['failed']
-        print(f"\n【Mapping Failures】")
-        print(f"Failed to map {len(failed_mappings)} titles:")
+        logger.info(f"\n【Mapping Failures】")
+        logger.info(f"Failed to map {len(failed_mappings)} titles:")
         for title in failed_mappings:
-            print(f"  - {title}")
+            logger.info(f"  - {title}")
 
     if missing_data:
-        print(f"\n{'='*60}")
-        print(f"【Partial Data Retrieval】")
-        print(f"{'='*60}")
-        print(f"Games with missing optional data: {len(missing_data)} items\n")
+        logger.info(f"\n{'='*60}")
+        logger.info(f"【Partial Data Retrieval】")
+        logger.info(f"{'='*60}")
+        logger.info(f"Games with missing optional data: {len(missing_data)} items\n")
         for item in missing_data:
-            print(f"  - App ID: {item['app_id']}")
-            print(f"    Missing data: {item['missing']}")
-            print()
+            logger.info(f"  - App ID: {item['app_id']}")
+            logger.info(f"    Missing data: {item['missing']}")
+            logger.info()
 
 
 def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_only, kv_helper):
@@ -224,80 +224,80 @@ def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_
                     backup_file = backups_dir / backup_filename
                     backups_dir.mkdir(parents=True, exist_ok=True)
                     shutil.copy2(input_file, backup_file)
-                    print(f"\n{'='*60}")
-                    print(f"✓ KV Update Success")
-                    print(f"{'='*60}")
-                    print(f"Backup created: {backup_file}")
-                    print(f"Updated: {input_file}")
-                    print(f"Updated games count: {len(rebuilt_games)}")
+                    logger.info(f"\n{'='*60}")
+                    logger.info(f"✓ KV Update Success")
+                    logger.info(f"{'='*60}")
+                    logger.info(f"Backup created: {backup_file}")
+                    logger.info(f"Updated: {input_file}")
+                    logger.info(f"Updated games count: {len(rebuilt_games)}")
 
                     # Display newly added games in --new-only mode
                     if new_only and len(newly_added_games) > 0:
-                        print(f"\nNewly Added Games ({len(newly_added_games)}):")
+                        logger.info(f"\nNewly Added Games ({len(newly_added_games)}):")
                         for game in newly_added_games:
-                            print(f"  • {game['title']} (App ID: {game['id']})")
+                            logger.info(f"  • {game['title']} (App ID: {game['id']})")
 
                     # Display failed games summary
                     if len(failed_games) > 0:
-                        print(f"\n{'='*60}")
-                        print(f"⚠ WARNING: Failed Games Summary")
-                        print(f"{'='*60}")
-                        print(f"Total failed: {len(failed_games)} game(s)")
-                        print(f"\nFailed App IDs:")
+                        logger.info(f"\n{'='*60}")
+                        logger.info(f"⚠ WARNING: Failed Games Summary")
+                        logger.info(f"{'='*60}")
+                        logger.info(f"Total failed: {len(failed_games)} game(s)")
+                        logger.info(f"\nFailed App IDs:")
                         failed_ids = [str(f['app_id']) for f in failed_games]
                         for i in range(0, len(failed_ids), 10):
-                            print(f"  {', '.join(failed_ids[i:i+10])}")
-                        print(f"\nDetails:")
+                            logger.info(f"  {', '.join(failed_ids[i:i+10])}")
+                        logger.info(f"\nDetails:")
                         for failed in failed_games:
-                            print(f"  - App ID {failed['app_id']}: {failed['reason']}")
+                            logger.info(f"  - App ID {failed['app_id']}: {failed['reason']}")
 
-                    print(f"{'='*60}")
+                    logger.info(f"{'='*60}")
             else:
-                print(f"\n{'='*60}")
-                print(f"✓ KV Update Success")
-                print(f"{'='*60}")
-                print(f"Updated games-data to KV")
-                print(f"Updated games count: {len(rebuilt_games)}")
+                logger.info(f"\n{'='*60}")
+                logger.info(f"✓ KV Update Success")
+                logger.info(f"{'='*60}")
+                logger.info(f"Updated games-data to KV")
+                logger.info(f"Updated games count: {len(rebuilt_games)}")
 
                 # Display newly added games in --new-only mode
                 if new_only and len(newly_added_games) > 0:
-                    print(f"\nNewly Added Games ({len(newly_added_games)}):")
+                    logger.info(f"\nNewly Added Games ({len(newly_added_games)}):")
                     for game in newly_added_games:
-                        print(f"  • {game['title']} (App ID: {game['id']})")
+                        logger.info(f"  • {game['title']} (App ID: {game['id']})")
 
                 # Display failed games summary
                 if len(failed_games) > 0:
-                    print(f"\n{'='*60}")
-                    print(f"⚠ WARNING: Failed Games Summary")
-                    print(f"{'='*60}")
-                    print(f"Total failed: {len(failed_games)} game(s)")
-                    print(f"\nFailed App IDs:")
+                    logger.info(f"\n{'='*60}")
+                    logger.info(f"⚠ WARNING: Failed Games Summary")
+                    logger.info(f"{'='*60}")
+                    logger.info(f"Total failed: {len(failed_games)} game(s)")
+                    logger.info(f"\nFailed App IDs:")
                     failed_ids = [str(f['app_id']) for f in failed_games]
                     for i in range(0, len(failed_ids), 10):
-                        print(f"  {', '.join(failed_ids[i:i+10])}")
-                    print(f"\nDetails:")
+                        logger.info(f"  {', '.join(failed_ids[i:i+10])}")
+                    logger.info(f"\nDetails:")
                     for failed in failed_games:
-                        print(f"  - App ID {failed['app_id']}: {failed['reason']}")
+                        logger.info(f"  - App ID {failed['app_id']}: {failed['reason']}")
 
-                print(f"{'='*60}")
+                logger.info(f"{'='*60}")
         except Exception as e:
-            print(f"\n{'='*60}")
-            print(f"✗ KV Update Failed")
-            print(f"{'='*60}")
-            print(f"Error: {e}")
-            print(f"Temporary file saved: {output_file}")
-            print(f"{'='*60}")
+            logger.info(f"\n{'='*60}")
+            logger.info(f"✗ KV Update Failed")
+            logger.info(f"{'='*60}")
+            logger.info(f"Error: {e}")
+            logger.info(f"Temporary file saved: {output_file}")
+            logger.info(f"{'='*60}")
     else:
-        print(f"\n{'='*60}")
-        print(f"✗ KV Update Skipped")
-        print(f"{'='*60}")
+        logger.info(f"\n{'='*60}")
+        logger.info(f"✗ KV Update Skipped")
+        logger.info(f"{'='*60}")
         if len(failed_games) > 0:
-            print(f"Reason: {len(failed_games)} game(s) failed data fetch")
-            print(f"Failed App IDs: {', '.join([str(f['app_id']) for f in failed_games])}")
+            logger.info(f"Reason: {len(failed_games)} game(s) failed data fetch")
+            logger.info(f"Failed App IDs: {', '.join([str(f['app_id']) for f in failed_games])}")
         elif len(rebuilt_games) == 0:
-            print(f"Reason: No games to update")
-        print(f"Temporary file saved: {output_file}")
-        print(f"{'='*60}")
+            logger.info(f"Reason: No games to update")
+        logger.info(f"Temporary file saved: {output_file}")
+        logger.info(f"{'='*60}")
 
 
 def delete_games_command(kv_helper):
@@ -307,11 +307,11 @@ def delete_games_command(kv_helper):
     # Read delete target appids from file
     delete_list_file = refs_dir / 'delete_appid_list.txt'
     if not delete_list_file.exists():
-        print(f"\n{'='*60}")
-        print(f"✗ Delete Failed")
-        print(f"{'='*60}")
-        print(f"Error: {delete_list_file} not found")
-        print(f"{'='*60}")
+        logger.info(f"\n{'='*60}")
+        logger.info(f"✗ Delete Failed")
+        logger.info(f"{'='*60}")
+        logger.info(f"Error: {delete_list_file} not found")
+        logger.info(f"{'='*60}")
         logger.error(f"Delete list file not found: {delete_list_file}")
         return
 
@@ -326,18 +326,18 @@ def delete_games_command(kv_helper):
                 delete_appids.append(app_id)
 
     if not delete_appids:
-        print(f"\n{'='*60}")
-        print(f"✗ Delete Failed")
-        print(f"{'='*60}")
-        print(f"Error: No appids found in {delete_list_file}")
-        print(f"{'='*60}")
+        logger.info(f"\n{'='*60}")
+        logger.info(f"✗ Delete Failed")
+        logger.info(f"{'='*60}")
+        logger.info(f"Error: No appids found in {delete_list_file}")
+        logger.info(f"{'='*60}")
         logger.error(f"No appids found in delete list file")
         return
 
     logger.info(f"Delete targets: {len(delete_appids)} appids")
-    print(f"\nDelete targets ({len(delete_appids)} appids):")
+    logger.info(f"\nDelete targets ({len(delete_appids)} appids):")
     for appid in delete_appids:
-        print(f"  • {appid}")
+        logger.info(f"  • {appid}")
 
     # Get existing data
     games_data = kv_helper.get_games_data()
@@ -358,14 +358,14 @@ def delete_games_command(kv_helper):
     kv_helper.put_games_data(games_data)
     kv_helper.put_id_map(id_map_data)
 
-    print(f"\n{'='*60}")
-    print(f"✓ Delete Complete")
-    print(f"{'='*60}")
-    print(f"Deleted from games-data: {deleted_games_count} games")
-    print(f"Deleted from id-map: {deleted_map_count} entries")
-    print(f"Remaining games: {len(games_data)}")
-    print(f"Remaining id-map entries: {len(id_map_data)}")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"✓ Delete Complete")
+    logger.info(f"{'='*60}")
+    logger.info(f"Deleted from games-data: {deleted_games_count} games")
+    logger.info(f"Deleted from id-map: {deleted_map_count} entries")
+    logger.info(f"Remaining games: {len(games_data)}")
+    logger.info(f"Remaining id-map entries: {len(id_map_data)}")
+    logger.info(f"{'='*60}")
 
     logger.info(f"Delete complete: {deleted_games_count} games, {deleted_map_count} id-map entries deleted")
 
@@ -388,12 +388,12 @@ def reset_prices_command(kv_helper):
     # Save back
     kv_helper.put_games_data(games_data)
 
-    print(f"\n{'='*60}")
-    print(f"✓ Reset Prices Complete")
-    print(f"{'='*60}")
-    print(f"Updated {updated_count} games")
-    print(f"All deal.JPY.price set to 1")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"✓ Reset Prices Complete")
+    logger.info(f"{'='*60}")
+    logger.info(f"Updated {updated_count} games")
+    logger.info(f"All deal.JPY.price set to 1")
+    logger.info(f"{'='*60}")
 
     logger.info(f"Reset complete: {updated_count} games updated")
 
@@ -446,12 +446,12 @@ def refetch_reviews_command(kv_helper, score_targets):
         elif target in SCORE_NUMBER_TO_DESC:
             target_scores.add(SCORE_NUMBER_TO_DESC[target])
         else:
-            print(f"\n{'='*60}")
-            print(f"✗ Invalid Score Target")
-            print(f"{'='*60}")
-            print(f"Error: Invalid target '{target}'")
-            print(f"Valid targets: 1-9, others")
-            print(f"{'='*60}")
+            logger.info(f"\n{'='*60}")
+            logger.info(f"✗ Invalid Score Target")
+            logger.info(f"{'='*60}")
+            logger.info(f"Error: Invalid target '{target}'")
+            logger.info(f"Valid targets: 1-9, others")
+            logger.info(f"{'='*60}")
             logger.error(f"Invalid score target: {target}")
             return
 
@@ -474,22 +474,22 @@ def refetch_reviews_command(kv_helper, score_targets):
             games_to_refetch.append(game)
 
     if not games_to_refetch:
-        print(f"\n{'='*60}")
-        print(f"✓ No Games to Re-fetch")
-        print(f"{'='*60}")
-        print(f"No games found matching the specified criteria")
-        print(f"{'='*60}")
+        logger.info(f"\n{'='*60}")
+        logger.info(f"✓ No Games to Re-fetch")
+        logger.info(f"{'='*60}")
+        logger.info(f"No games found matching the specified criteria")
+        logger.info(f"{'='*60}")
         logger.info("No games to re-fetch")
         return
 
-    print(f"\n{'='*60}")
-    print(f"Re-fetch Target Games: {len(games_to_refetch)}")
-    print(f"{'='*60}")
-    print(f"Target score types: {', '.join(target_scores) if target_scores else 'None'}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"Re-fetch Target Games: {len(games_to_refetch)}")
+    logger.info(f"{'='*60}")
+    logger.info(f"Target score types: {', '.join(target_scores) if target_scores else 'None'}")
     if include_others:
-        print(f"Including: Invalid/other scores")
-    print(f"\nEstimated time: {len(games_to_refetch) * 1.25 / 60:.1f} minutes")
-    print(f"{'='*60}\n")
+        logger.info(f"Including: Invalid/other scores")
+    logger.info(f"\nEstimated time: {len(games_to_refetch) * 1.25 / 60:.1f} minutes")
+    logger.info(f"{'='*60}\n")
 
     logger.info(f"Re-fetching reviews for {len(games_to_refetch)} games")
 
@@ -507,8 +507,8 @@ def refetch_reviews_command(kv_helper, score_targets):
         old_score = game.get('reviewScore', 'None')
 
         logger.info(f"[{i}/{len(games_to_refetch)}] Re-fetching: {app_id} {title}")
-        print(f"[{i}/{len(games_to_refetch)}] {app_id} | {title[:50]}")
-        print(f"  Old score: {old_score}")
+        logger.info(f"[{i}/{len(games_to_refetch)}] {app_id} | {title[:50]}")
+        logger.info(f"  Old score: {old_score}")
 
         # Get new review score
         new_score, total_reviews = extractor.get_review_score(app_id)
@@ -528,7 +528,7 @@ def refetch_reviews_command(kv_helper, score_targets):
                 })
 
             logger.info(f"  ✓ New score: {new_score}, {total_reviews} reviews")
-            print(f"  New score: {new_score}, {total_reviews} reviews")
+            logger.info(f"  New score: {new_score}, {total_reviews} reviews")
         else:
             failed_games.append({
                 'appid': app_id,
@@ -536,14 +536,14 @@ def refetch_reviews_command(kv_helper, score_targets):
                 'old_score': old_score
             })
             logger.warning(f"  ✗ Failed to fetch review score")
-            print(f"  ✗ Failed to fetch")
+            logger.info(f"  ✗ Failed to fetch")
 
         # Rate limiting
         if i < len(games_to_refetch):
             wait_time = random.uniform(1.0, 1.5)
             time.sleep(wait_time)
 
-        print()
+        logger.info()
 
     # Save updated data
     if updated_games:
@@ -569,30 +569,30 @@ def refetch_reviews_command(kv_helper, score_targets):
         logger.info(f"Saved updated games data")
 
     # Print summary report
-    print(f"\n{'='*60}")
-    print(f"✓ Re-fetch Complete")
-    print(f"{'='*60}")
-    print(f"Total processed: {len(games_to_refetch)} games")
-    print(f"Successfully updated: {len(updated_games)} games")
-    print(f"Failed: {len(failed_games)} games")
-    print(f"Score changed: {len(score_changes)} games")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"✓ Re-fetch Complete")
+    logger.info(f"{'='*60}")
+    logger.info(f"Total processed: {len(games_to_refetch)} games")
+    logger.info(f"Successfully updated: {len(updated_games)} games")
+    logger.info(f"Failed: {len(failed_games)} games")
+    logger.info(f"Score changed: {len(score_changes)} games")
 
     if score_changes:
-        print(f"\n--- Score Changes ({len(score_changes)}) ---")
+        logger.info(f"\n--- Score Changes ({len(score_changes)}) ---")
         for change in score_changes[:20]:  # Show first 20
-            print(f"  • {change['appid']} | {change['title'][:40]}")
-            print(f"    {change['old_score']} → {change['new_score']} ({change['total_reviews']} reviews)")
+            logger.info(f"  • {change['appid']} | {change['title'][:40]}")
+            logger.info(f"    {change['old_score']} → {change['new_score']} ({change['total_reviews']} reviews)")
         if len(score_changes) > 20:
-            print(f"  ... and {len(score_changes) - 20} more")
+            logger.info(f"  ... and {len(score_changes) - 20} more")
 
     if failed_games:
-        print(f"\n--- Failed Games ({len(failed_games)}) ---")
+        logger.info(f"\n--- Failed Games ({len(failed_games)}) ---")
         for failed in failed_games[:10]:  # Show first 10
-            print(f"  • {failed['appid']} | {failed['title'][:40]} (was: {failed['old_score']})")
+            logger.info(f"  • {failed['appid']} | {failed['title'][:40]} (was: {failed['old_score']})")
         if len(failed_games) > 10:
-            print(f"  ... and {len(failed_games) - 10} more")
+            logger.info(f"  ... and {len(failed_games) - 10} more")
 
-    print(f"{'='*60}")
+    logger.info(f"{'='*60}")
 
     logger.info(f"Re-fetch complete: {len(updated_games)} updated, {len(failed_games)} failed, {len(score_changes)} changed")
 
@@ -629,7 +629,7 @@ def main():
                 refetch_targets = sys.argv[i + 1]
                 i += 1
             else:
-                print("Error: --refetch requires SCORES argument")
+                logger.info("Error: --refetch requires SCORES argument")
                 sys.exit(1)
         elif arg == '--regions':
             if i + 1 < len(sys.argv):

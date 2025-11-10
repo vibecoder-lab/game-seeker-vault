@@ -1112,10 +1112,22 @@ class GameDataBuilder:
             rebuilt_games.append(new_game)
             logger.info(f"  ✓ Success (App ID: {app_id})")
 
-            # Save checkpoint every CHECKPOINT_INTERVAL games
+            # Save checkpoint every CHECKPOINT_INTERVAL games (based on total processed count)
             checkpoint_number = start_index + i
-            if checkpoint_number % CHECKPOINT_INTERVAL == 0:
+            if checkpoint_number % CHECKPOINT_INTERVAL == 0 and len(rebuilt_games) > 0:
                 # Save checkpoint (auto-detects append vs new file)
+                checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number)
+                # Save id-map at checkpoint
+                kv_helper.put_id_map(id_map)
+                logger.info(f"✓ Checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games in this batch, id-map updated)")
+
+                # Clear memory after saving checkpoint
+                rebuilt_games = []
+                logger.info("Memory cleared after checkpoint save")
+            # Also check if we have accumulated CHECKPOINT_INTERVAL games in memory
+            elif len(rebuilt_games) >= CHECKPOINT_INTERVAL:
+                # Save checkpoint even if not at exact boundary
+                checkpoint_number = start_index + i
                 checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number)
                 # Save id-map at checkpoint
                 kv_helper.put_id_map(id_map)
