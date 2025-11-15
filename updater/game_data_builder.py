@@ -1117,9 +1117,7 @@ class GameDataBuilder:
             if checkpoint_number % CHECKPOINT_INTERVAL == 0 and len(rebuilt_games) > 0:
                 # Save checkpoint (auto-detects append vs new file)
                 checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number)
-                # Save id-map at checkpoint
-                kv_helper.put_id_map(id_map)
-                logger.info(f"✓ Checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games in this batch, id-map updated)")
+                logger.info(f"✓ Checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games in this batch)")
 
                 # Clear memory after saving checkpoint
                 rebuilt_games = []
@@ -1129,9 +1127,7 @@ class GameDataBuilder:
                 # Save checkpoint even if not at exact boundary
                 checkpoint_number = start_index + i
                 checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number)
-                # Save id-map at checkpoint
-                kv_helper.put_id_map(id_map)
-                logger.info(f"✓ Checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games in this batch, id-map updated)")
+                logger.info(f"✓ Checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games in this batch)")
 
                 # Clear memory after saving checkpoint
                 rebuilt_games = []
@@ -1141,8 +1137,7 @@ class GameDataBuilder:
         if len(rebuilt_games) > 0:
             checkpoint_number = start_index + len(target_ids)
             checkpoint_path = self._save_checkpoint(rebuilt_games, checkpoint_number)
-            kv_helper.put_id_map(id_map)
-            logger.info(f"✓ Final checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games remaining, id-map updated)")
+            logger.info(f"✓ Final checkpoint saved: {checkpoint_path} ({len(rebuilt_games)} games remaining)")
             rebuilt_games = []
 
         # 6. Load all checkpoint files and merge

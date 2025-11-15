@@ -208,10 +208,6 @@ def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_
 
     if should_update:
         try:
-            # Save id-map first (atomic update with games-data)
-            kv_helper.put_id_map(id_map)
-            logger.info(f"Saved id-map to KV ({len(id_map)} items)")
-
             # Save games-data
             # In append mode (new_only=True), preserve existing timestamp
             kv_helper.put_games_data(rebuilt_games, preserve_timestamp=new_only)
@@ -356,7 +352,6 @@ def delete_games_command(kv_helper):
 
     # Save back
     kv_helper.put_games_data(games_data)
-    kv_helper.put_id_map(id_map_data)
 
     logger.info(f"\n{'='*60}")
     logger.info(f"✓ Delete Complete")

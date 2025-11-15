@@ -69,8 +69,8 @@ describe('API-GAMES-001: /api/games-data 正常レスポンス', () => {
         reviewScore: 'Very Positive'
       }
     ];
-    
-    env.GSV_GAMES.put('games-data', JSON.stringify(mockGamesData));
+
+    env.GSV_GAMES.put('games', JSON.stringify(mockGamesData));
   });
 
   it('正常系: ゲームデータが取得できる', async () => {
@@ -186,8 +186,8 @@ describe('API-GAMES-003: データ形式検証', () => {
         platforms: { windows: true, mac: true }
       }
     ];
-    
-    await env.GSV_GAMES.put('games-data', JSON.stringify(mockGamesData));
+
+    await env.GSV_GAMES.put('games', JSON.stringify(mockGamesData));
     const request = new Request('http://localhost/api/games-data');
     const ctx = createExecutionContext();
 

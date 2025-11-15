@@ -44,7 +44,7 @@ export async function onRequest(context): Promise<Response> {
 	}
 
 	try {
-		const raw = await env.GSV_GAMES.get("games-data");
+		const raw = await env.GSV_GAMES.get("games");
 		if (!raw) {
 			return new Response("No data found", {
 				status: 404,
@@ -53,7 +53,7 @@ export async function onRequest(context): Promise<Response> {
 		}
 		const data = JSON.parse(raw);
 
-		console.log("KV games-data head:", raw?.slice(0, 120));
+		console.log("KV games head:", raw?.slice(0, 120));
 
 		return new Response(JSON.stringify(data), {
 			headers: {

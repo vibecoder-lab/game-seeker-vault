@@ -1,0 +1,29 @@
+{
+	"name": "gameseekervault",
+	"compatibility_date": "2025-10-07",
+	"pages_build_output_dir": "dist",
+	"kv_namespaces": [
+		{
+			"binding": "GSV_GAMES",
+			"id": "d0226a9ed9f44c6ba8bb14bcf4dd7eb8"
+		},
+		{
+			"binding": "FEEDBACK_KV",
+			"id": "60e75ed5209d480894702e57641eee35"
+		}
+	],
+	"env": {
+		"preview": {
+			"kv_namespaces": [
+				{
+					"binding": "GSV_GAMES",
+					"id": "24a25926efaf4b1296fc131672054500"
+				},
+				{
+					"binding": "FEEDBACK_KV",
+					"id": "60e75ed5209d480894702e57641eee35"
+				}
+			]
+		}
+	}
+}

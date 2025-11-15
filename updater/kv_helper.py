@@ -66,81 +66,18 @@ class KVHelper:
         """Check if in local file mode"""
         return not self.use_kv
 
-    def get_id_map(self, local_file_path='updater/data/current/id-map.json'):
-        """Get id-map
-
-        Args:
-            local_file_path: File path for local mode
+    def get_id_map(self):
+        """Get id-map extracted from games-data
 
         Returns:
             list: id-map list [{"id": "xxx", "itadId": "yyy"}, ...]
         """
-        if self.is_local_mode():
-            # Local file mode: read from file
-            file_path = Path(local_file_path)
-            if file_path.exists():
-                logger.info(f"Local file mode: Reading id-map from {local_file_path}")
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    return json.load(f)
-            else:
-                logger.warning(f"Local file mode: {local_file_path} not found. Returning empty list")
-                return []
-        else:
-            # KV mode: fetch from KV
-            try:
-                logger.info(f"KV mode: Fetching id-map from KV...")
-                result = subprocess.run(
-                    ['wrangler', 'kv', 'key', 'get', 'id-map', f'--namespace-id={self.namespace_id}', '--remote'],
-                    capture_output=True,
-                    text=True,
-                    check=True
-                )
-                data = json.loads(result.stdout)
-                logger.info(f"KV mode: Fetched id-map from KV ({len(data)} items)")
-                return data
-            except subprocess.CalledProcessError as e:
-                logger.error(f"KV fetch error: {e.stderr}")
-                return []
-            except json.JSONDecodeError as e:
-                logger.error(f"JSON parsing error: {e}")
-                return []
+        logger.info("Extracting id-map from games-data...")
+        games = self.get_games_data()
+        id_map = [{"id": game["id"], "itadId": game.get("itadId")} for game in games]
+        logger.info(f"Extracted id-map: {len(id_map)} items")
+        return id_map
 
-    def put_id_map(self, id_map_data, local_file_path='updater/data/current/id-map.json'):
-        """Save id-map
-
-        Args:
-            id_map_data: id-map list to save
-            local_file_path: File path for local mode
-        """
-        # Always save to local file (for backup and verification)
-        file_path = Path(local_file_path)
-        file_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(id_map_data, f, ensure_ascii=False, indent=2)
-        logger.info(f"Saved id-map to {local_file_path} ({len(id_map_data)} items)")
-
-        # In KV mode, also save to KV
-        if not self.is_local_mode():
-            try:
-                # Write to temporary file
-                temp_file = Path(TEMP_DIR) / TEMP_ID_MAP_FILE
-                with open(temp_file, 'w', encoding='utf-8') as f:
-                    json.dump(id_map_data, f, ensure_ascii=False, indent=2)
-
-                logger.info(f"KV mode: Saving id-map to KV... ({len(id_map_data)} items)")
-                subprocess.run(
-                    ['wrangler', 'kv', 'key', 'put', 'id-map', f'--namespace-id={self.namespace_id}', f'--path={temp_file}', '--remote'],
-                    check=True,
-                    capture_output=True,
-                    text=True
-                )
-                logger.info(f"KV mode: Saved id-map to KV")
-
-                # Delete temporary file
-                temp_file.unlink()
-            except subprocess.CalledProcessError as e:
-                logger.error(f"KV save error: {e.stderr}")
-                raise
 
     def get_games_data(self, local_file_path='updater/data/current/games.json'):
         """Get games-data
@@ -169,9 +106,9 @@ class KVHelper:
         else:
             # KV mode: fetch from KV
             try:
-                logger.info(f"KV mode: Fetching games-data from KV...")
+                logger.info(f"KV mode: Fetching games from KV...")
                 result = subprocess.run(
-                    ['wrangler', 'kv', 'key', 'get', 'games-data', f'--namespace-id={self.namespace_id}', '--remote'],
+                    ['wrangler', 'kv', 'key', 'get', 'games', f'--namespace-id={self.namespace_id}', '--remote'],
                     capture_output=True,
                     text=True,
                     check=True
@@ -179,10 +116,10 @@ class KVHelper:
                 data = json.loads(result.stdout)
                 # Support new structure with meta block
                 if isinstance(data, dict) and 'games' in data:
-                    logger.info(f"KV mode: Fetched games-data from KV ({len(data['games'])} items)")
+                    logger.info(f"KV mode: Fetched games from KV ({len(data['games'])} items)")
                     return data['games']
                 # Backward compatibility: return entire data if old structure
-                logger.info(f"KV mode: Fetched games-data from KV ({len(data)} items)")
+                logger.info(f"KV mode: Fetched games from KV ({len(data)} items)")
                 return data
             except subprocess.CalledProcessError as e:
                 logger.error(f"KV fetch error: {e.stderr}")
@@ -218,7 +155,7 @@ class KVHelper:
                 else:
                     # KV mode: fetch from KV
                     result = subprocess.run(
-                        ['wrangler', 'kv', 'key', 'get', 'games-data', f'--namespace-id={self.namespace_id}', '--remote'],
+                        ['wrangler', 'kv', 'key', 'get', 'games', f'--namespace-id={self.namespace_id}', '--remote'],
                         capture_output=True,
                         text=True,
                         check=True
@@ -266,14 +203,14 @@ class KVHelper:
                 with open(temp_file, 'w', encoding='utf-8') as f:
                     json.dump(output_data, f, ensure_ascii=False, indent=2)
 
-                logger.info(f"KV mode: Saving games-data to KV... ({len(games_data)} items)")
+                logger.info(f"KV mode: Saving games to KV... ({len(games_data)} items)")
                 subprocess.run(
-                    ['wrangler', 'kv', 'key', 'put', 'games-data', f'--namespace-id={self.namespace_id}', f'--path={temp_file}', '--remote'],
+                    ['wrangler', 'kv', 'key', 'put', 'games', f'--namespace-id={self.namespace_id}', f'--path={temp_file}', '--remote'],
                     check=True,
                     capture_output=True,
                     text=True
                 )
-                logger.info(f"KV mode: Saved games-data to KV")
+                logger.info(f"KV mode: Saved games to KV")
 
                 # Delete temporary file
                 temp_file.unlink()
