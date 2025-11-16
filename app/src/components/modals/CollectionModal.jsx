@@ -284,9 +284,17 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
             setSelectedGameForVideo(gameData);
             setShowVideoModal(true);
           } else {
-            // Normal click - save UI state before navigating to Steam
-            if (onSaveUIState) {
-              onSaveUIState();
+            // Check if useInPageNavigation is disabled
+            if (!settings?.useInPageNavigation) {
+              e.preventDefault();
+              e.stopPropagation();
+              // Open in new tab when useInPageNavigation is OFF
+              window.open(linkFor(gameData, settings.navigateToReviews), '_blank', 'noopener,noreferrer');
+            } else {
+              // Normal click - save UI state before navigating to Steam
+              if (onSaveUIState) {
+                onSaveUIState();
+              }
             }
           }
         };
