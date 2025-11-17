@@ -187,7 +187,7 @@ def print_rebuild_report(result):
         for item in missing_data:
             logger.info(f"  - App ID: {item['app_id']}")
             logger.info(f"    Missing data: {item['missing']}")
-            logger.info()
+            logger.info("")
 
 
 def save_and_backup(rebuilt_games, failed_games, id_map, newly_added_games, new_only, kv_helper):
