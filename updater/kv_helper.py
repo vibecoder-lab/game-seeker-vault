@@ -173,47 +173,127 @@ class KVHelper:
             last_updated = datetime.datetime.now(datetime.UTC).replace(tzinfo=None).isoformat(timespec="seconds") + "Z"
             logger.info(f"Creating new timestamp: {last_updated}")
 
-        # Add meta block
-        output_data = {
-            "meta": {
-                "last_updated": last_updated,
-                "data_version": "1.0.0",
-                "source": {
-                    "steam": True,
-                    "itad": True
-                },
-                "build_id": str(uuid.uuid4()),
-                "record_count": len(games_data)
+        # Create meta block
+        meta = {
+            "last_updated": last_updated,
+            "data_version": "2.0.0",
+            "source": {
+                "steam": True,
+                "itad": True
             },
-            "games": games_data
+            "build_id": str(uuid.uuid4()),
+            "record_count": len(games_data)
         }
 
-        # Always save to local file (for backup and verification)
+        # Split data into basic and details
+        basic_games = []
+        details_games = {}
+
+        for game in games_data:
+            # Basic info (for filtering and list display)
+            basic_info = {
+                "id": game.get("id"),
+                "title": game.get("title"),
+                "storeUrl": game.get("storeUrl"),
+                "imageUrl": game.get("imageUrl"),
+                "deal": game.get("deal"),
+                "genres": game.get("genres"),
+                "tags": game.get("tags"),
+                "reviewScore": game.get("reviewScore"),
+                "releaseDate": game.get("releaseDate"),
+                "platforms": game.get("platforms")
+            }
+            basic_games.append(basic_info)
+
+            # Detail info (for modal display)
+            detail_info = {
+                "movies": game.get("movies"),
+                "developers": game.get("developers"),
+                "publishers": game.get("publishers"),
+                "supportedLanguages": game.get("supportedLanguages"),
+                "itadId": game.get("itadId")
+            }
+            details_games[game.get("id")] = detail_info
+
+        # Create output data structures
+        basic_output = {
+            "meta": meta,
+            "games": basic_games
+        }
+
+        details_output = details_games
+
+        # Save basic data to local file
         file_path = Path(local_file_path)
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(output_data, f, ensure_ascii=False, indent=2)
-        logger.info(f"Saved games-data to {local_file_path} ({len(games_data)} items)")
+        basic_file_path = file_path.parent / f"{file_path.stem}-basic{file_path.suffix}"
+        with open(basic_file_path, 'w', encoding='utf-8') as f:
+            json.dump(basic_output, f, ensure_ascii=False, indent=2)
+        logger.info(f"Saved basic games-data to {basic_file_path} ({len(basic_games)} items)")
 
-        # In KV mode, also save to KV
+        # Save details data to local file
+        details_file_path = file_path.parent / f"{file_path.stem}-details{file_path.suffix}"
+        with open(details_file_path, 'w', encoding='utf-8') as f:
+            json.dump(details_output, f, ensure_ascii=False, indent=2)
+        logger.info(f"Saved details games-data to {details_file_path} ({len(details_games)} items)")
+
+        # Also save combined data for backward compatibility
+        combined_output = {
+            "meta": meta,
+            "games": games_data
+        }
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(combined_output, f, ensure_ascii=False, indent=2)
+        logger.info(f"Saved combined games-data to {local_file_path} ({len(games_data)} items)")
+
+        # In KV mode, save both basic and details to KV
         if not self.is_local_mode():
             try:
-                # Write to temporary file
+                # Save basic data to KV
+                temp_basic_file = Path(TEMP_DIR) / 'temp_games_basic.json'
+                with open(temp_basic_file, 'w', encoding='utf-8') as f:
+                    json.dump(basic_output, f, ensure_ascii=False, indent=2)
+
+                logger.info(f"KV mode: Saving basic games to KV... ({len(basic_games)} items)")
+                subprocess.run(
+                    ['wrangler', 'kv', 'key', 'put', 'games-basic', f'--namespace-id={self.namespace_id}', f'--path={temp_basic_file}', '--remote'],
+                    check=True,
+                    capture_output=True,
+                    text=True
+                )
+                logger.info(f"KV mode: Saved basic games to KV")
+                temp_basic_file.unlink()
+
+                # Save details data to KV
+                temp_details_file = Path(TEMP_DIR) / 'temp_games_details.json'
+                with open(temp_details_file, 'w', encoding='utf-8') as f:
+                    json.dump(details_output, f, ensure_ascii=False, indent=2)
+
+                logger.info(f"KV mode: Saving details games to KV... ({len(details_games)} items)")
+                subprocess.run(
+                    ['wrangler', 'kv', 'key', 'put', 'games-details', f'--namespace-id={self.namespace_id}', f'--path={temp_details_file}', '--remote'],
+                    check=True,
+                    capture_output=True,
+                    text=True
+                )
+                logger.info(f"KV mode: Saved details games to KV")
+                temp_details_file.unlink()
+
+                # Also save combined data for backward compatibility
                 temp_file = Path(TEMP_DIR) / TEMP_GAMES_FILE
                 with open(temp_file, 'w', encoding='utf-8') as f:
-                    json.dump(output_data, f, ensure_ascii=False, indent=2)
+                    json.dump(combined_output, f, ensure_ascii=False, indent=2)
 
-                logger.info(f"KV mode: Saving games to KV... ({len(games_data)} items)")
+                logger.info(f"KV mode: Saving combined games to KV... ({len(games_data)} items)")
                 subprocess.run(
                     ['wrangler', 'kv', 'key', 'put', 'games', f'--namespace-id={self.namespace_id}', f'--path={temp_file}', '--remote'],
                     check=True,
                     capture_output=True,
                     text=True
                 )
-                logger.info(f"KV mode: Saved games to KV")
-
-                # Delete temporary file
+                logger.info(f"KV mode: Saved combined games to KV")
                 temp_file.unlink()
+
             except subprocess.CalledProcessError as e:
                 logger.error(f"KV save error: {e.stderr}")
                 raise

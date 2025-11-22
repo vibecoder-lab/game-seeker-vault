@@ -368,28 +368,51 @@ function SteamPriceFilter({ initialData = null }) {
           window.location.hostname === "localhost" ||
           window.location.hostname === "127.0.0.1" ||
           window.location.hostname === "";
-        const url = isLocal
-          ? "../../updater/data/current/games.json"
-          : "/api/games-data";
-        const res = await fetch(url, { cache: "no-store" });
-        const data = await res.json();
+
+        // Fetch basic data first
+        const basicUrl = isLocal
+          ? "../../updater/data/current/games-basic.json"
+          : "/api/games-basic";
+        const basicRes = await fetch(basicUrl);
+        const basicData = await basicRes.json();
+
         // Support new structure with meta block
-        const games =
-          data && typeof data === "object" && "games" in data
-            ? data.games
-            : Array.isArray(data)
-              ? data
+        const basicGames =
+          basicData && typeof basicData === "object" && "games" in basicData
+            ? basicData.games
+            : Array.isArray(basicData)
+              ? basicData
               : [];
         const meta =
-          data && typeof data === "object" && "meta" in data ? data.meta : null;
+          basicData && typeof basicData === "object" && "meta" in basicData ? basicData.meta : null;
 
-        setRawGames(games);
+        setRawGames(basicGames);
         setMetaData(meta);
+        setLoading(false);
+
+        // Fetch details data asynchronously (non-blocking)
+        const detailsUrl = isLocal
+          ? "../../updater/data/current/games-details.json"
+          : "/api/games-details";
+        fetch(detailsUrl)
+          .then(res => res.json())
+          .then(detailsData => {
+            // Merge details into basic games
+            const mergedGames = basicGames.map(game => {
+              const details = detailsData[game.id];
+              return details ? { ...game, ...details } : game;
+            });
+            setRawGames(mergedGames);
+            console.log('Details data loaded and merged');
+          })
+          .catch(e => {
+            console.error('Failed to load details data:', e);
+          });
+
       } catch (e) {
         console.error('Failed to load game data:', e);
         dataLoadedRef.current = false;
         setRawGames([]);
-      } finally {
         setLoading(false);
       }
     })();
