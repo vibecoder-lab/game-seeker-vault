@@ -203,11 +203,9 @@ export function Header({
             <button
               onClick={async ()=>{
                 setCurrentTheme('default');
-                if (settings.saveTheme) {
-                  const newSettings = { ...settings, theme: 'default' };
-                  setSettings(newSettings);
-                  await dbHelper.saveSettings(newSettings);
-                }
+                const newSettings = { ...settings, theme: 'default' };
+                setSettings(newSettings);
+                await dbHelper.saveSettings(newSettings);
               }}
               className={`p-2 rounded-lg transition-all duration-100 ${currentTheme==='default'?theme.buttonActive:''}`}
               title={t('theme.default.tooltip', currentLocale)}
@@ -219,11 +217,9 @@ export function Header({
           <button
             onClick={async ()=>{
               setCurrentTheme('steam');
-              if (settings.saveTheme) {
-                const newSettings = { ...settings, theme: 'steam' };
-                setSettings(newSettings);
-                await dbHelper.saveSettings(newSettings);
-              }
+              const newSettings = { ...settings, theme: 'steam' };
+              setSettings(newSettings);
+              await dbHelper.saveSettings(newSettings);
             }}
             className={`p-2 rounded-lg transition-all duration-100 ${currentTheme==='steam'?theme.buttonActive:''}`}
             title={t('theme.dark.tooltip', currentLocale)}

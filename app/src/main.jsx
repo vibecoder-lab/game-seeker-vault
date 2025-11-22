@@ -453,12 +453,10 @@ function SteamPriceFilter({ initialData = null }) {
 
       setForceUpdate((prev) => prev + 1);
 
-      // Restore saved theme only when saveTheme is true
-      // If saveTheme is false, keep current theme (don't reset to default)
-      if (loadedSettings.saveTheme && loadedSettings.theme) {
+      // Restore saved theme
+      if (loadedSettings.theme) {
         setCurrentTheme(loadedSettings.theme);
       }
-      // Note: When saveTheme is false, we don't set theme here to preserve current session theme
 
       // Restore UI state from IndexedDB (only when navigating back from Steam)
       try {
@@ -2522,11 +2520,9 @@ function SteamPriceFilter({ initialData = null }) {
                 <button
                   onClick={async () => {
                     setCurrentTheme("default");
-                    if (settings.saveTheme) {
-                      const newSettings = { ...settings, theme: "default" };
-                      setSettings(newSettings);
-                      await dbHelper.saveSettings(newSettings);
-                    }
+                    const newSettings = { ...settings, theme: "default" };
+                    setSettings(newSettings);
+                    await dbHelper.saveSettings(newSettings);
                   }}
                   className={`p-2 rounded-lg transition-all duration-100 ${currentTheme === "default" ? theme.buttonActive : ""}`}
                   title={t("theme.default.tooltip", currentLocale)}
@@ -2543,11 +2539,9 @@ function SteamPriceFilter({ initialData = null }) {
                 <button
                   onClick={async () => {
                     setCurrentTheme("steam");
-                    if (settings.saveTheme) {
-                      const newSettings = { ...settings, theme: "steam" };
-                      setSettings(newSettings);
-                      await dbHelper.saveSettings(newSettings);
-                    }
+                    const newSettings = { ...settings, theme: "steam" };
+                    setSettings(newSettings);
+                    await dbHelper.saveSettings(newSettings);
                   }}
                   className={`p-2 rounded-lg transition-all duration-100 ${currentTheme === "steam" ? theme.buttonActive : ""}`}
                   title={t("theme.dark.tooltip", currentLocale)}
