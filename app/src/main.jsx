@@ -81,6 +81,7 @@ function SteamPriceFilter({ initialData = null }) {
   const [onlySale, setOnlySale] = React.useState(false);
   const [selectedReviewScores, setSelectedReviewScores] = React.useState([]);
   const [onlyMac, setOnlyMac] = React.useState(false);
+  const [recentOnly, setRecentOnly] = React.useState(false);
   const [selectedYear, setSelectedYear] = React.useState("all");
   const [showYearDropdown, setShowYearDropdown] = React.useState(false);
   const [searchTitle, setSearchTitle] = React.useState("");
@@ -485,6 +486,7 @@ function SteamPriceFilter({ initialData = null }) {
               setOnlySale(savedUIState.filters.onlySale || false);
               setSelectedReviewScores(savedUIState.filters.selectedReviewScores || []);
               setOnlyMac(savedUIState.filters.onlyMac || false);
+              setRecentOnly(savedUIState.filters.recentOnly || false);
               setSelectedYear(savedUIState.filters.selectedYear || 'all');
               setSearchTitle(savedUIState.filters.searchTitle || '');
               if (savedUIState.filters.minPrice !== undefined) setMinPrice(savedUIState.filters.minPrice);
@@ -939,7 +941,26 @@ function SteamPriceFilter({ initialData = null }) {
           : selectedTags.every((tag) => g.tags?.includes(tag));
 
       const matchesYear =
-        selectedYear === "all"
+        recentOnly
+          ? (() => {
+              if (!g.releaseDate) return false;
+              // Calculate 30 days ago
+              const thirtyDaysAgo = new Date();
+              thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+              // Parse release date (YYYY-MM-DD or "DD MMM, YYYY")
+              let releaseDate;
+              if (g.releaseDate.includes("-")) {
+                // YYYY-MM-DD format
+                releaseDate = new Date(g.releaseDate);
+              } else {
+                // "DD MMM, YYYY" format
+                releaseDate = new Date(g.releaseDate);
+              }
+
+              return releaseDate >= thirtyDaysAgo;
+            })()
+          : selectedYear === "all"
           ? true
           : (() => {
               if (!g.releaseDate) return false;
@@ -991,6 +1012,7 @@ function SteamPriceFilter({ initialData = null }) {
     onlySale,
     selectedReviewScores,
     onlyMac,
+    recentOnly,
     selectedGenres,
     selectedTags,
     selectedYear,
@@ -1139,6 +1161,7 @@ function SteamPriceFilter({ initialData = null }) {
           onlySale,
           selectedReviewScores,
           onlyMac,
+          recentOnly,
           selectedYear,
           searchTitle,
           minPrice,
@@ -1170,6 +1193,7 @@ function SteamPriceFilter({ initialData = null }) {
     onlySale,
     selectedReviewScores,
     onlyMac,
+    recentOnly,
     selectedYear,
     searchTitle,
     minPrice,
@@ -1236,6 +1260,8 @@ function SteamPriceFilter({ initialData = null }) {
           setOnlyJP={setOnlyJP}
           onlyMac={onlyMac}
           setOnlyMac={setOnlyMac}
+          recentOnly={recentOnly}
+          setRecentOnly={setRecentOnly}
           minPrice={minPrice}
           setMinPrice={setMinPrice}
           maxPrice={maxPrice}
@@ -1370,6 +1396,18 @@ function SteamPriceFilter({ initialData = null }) {
                     }`}
                   >
                     {t("filter.onlyMac", currentLocale)}
+                  </button>
+                  <button
+                    onClick={() => handleFilterChange(setRecentOnly)(!recentOnly)}
+                    className={`px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all ${
+                      recentOnly
+                        ? currentTheme === "steam"
+                          ? "steam-blue-bg text-white"
+                          : "bg-blue-500 text-white"
+                        : `${theme.tagBg} ${theme.tagText}`
+                    }`}
+                  >
+                    {t("filter.recent30Days", currentLocale)}
                   </button>
               </div>
             </div>
@@ -1784,6 +1822,23 @@ function SteamPriceFilter({ initialData = null }) {
                     {t("filter.onlyMac", currentLocale)}
                   </label>
                 </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="recentOnly"
+                    type="checkbox"
+                    checked={recentOnly}
+                    onChange={(e) =>
+                      handleFilterChange(setRecentOnly)(e.target.checked)
+                    }
+                    className="h-4 w-4 flex-shrink-0"
+                  />
+                  <label
+                    htmlFor="recentOnly"
+                    className="text-sm whitespace-nowrap"
+                  >
+                    {t("filter.recent30Days", currentLocale)}
+                  </label>
+                </div>
               </div>
 
               <div className="text-sm font-semibold mb-3">
@@ -2167,6 +2222,7 @@ function SteamPriceFilter({ initialData = null }) {
                     setSelectedReviewScores([]);
                     setOnlyJP(false);
                     setOnlyMac(false);
+                    setRecentOnly(false);
                     setSelectedGenres({ include: [], exclude: [] });
                     setSelectedTags([]);
                     // Reset price to default min and current max limit
@@ -2187,8 +2243,9 @@ function SteamPriceFilter({ initialData = null }) {
                   onMouseLeave={() => setShowYearDropdown(false)}
                 >
                   <button
-                    onClick={() => setShowYearDropdown(!showYearDropdown)}
-                    className={`${theme.cardBg} ${theme.text} ${theme.border} border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 ${currentTheme === "steam" ? "focus:ring-[#4668FF]" : "focus:ring-blue-500"} w-full flex items-center justify-between`}
+                    onClick={() => !recentOnly && setShowYearDropdown(!showYearDropdown)}
+                    disabled={recentOnly}
+                    className={`${theme.cardBg} ${theme.text} ${theme.border} border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 ${currentTheme === "steam" ? "focus:ring-[#4668FF]" : "focus:ring-blue-500"} w-full flex items-center justify-between ${recentOnly ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     <span className="flex-1 text-center">
                       {selectedYear === "all"

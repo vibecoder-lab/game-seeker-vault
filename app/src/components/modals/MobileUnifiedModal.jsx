@@ -24,6 +24,8 @@ export function MobileUnifiedModal({
   setOnlyJP,
   onlyMac,
   setOnlyMac,
+  recentOnly,
+  setRecentOnly,
   minPrice,
   setMinPrice,
   maxPrice,
@@ -62,6 +64,7 @@ export function MobileUnifiedModal({
   const [localOnlyJP, setLocalOnlyJP] = useState(onlyJP);
   const [localSelectedReviewScores, setLocalSelectedReviewScores] = useState(selectedReviewScores);
   const [localOnlyMac, setLocalOnlyMac] = useState(onlyMac);
+  const [localRecentOnly, setLocalRecentOnly] = useState(recentOnly);
   const [localMinPrice, setLocalMinPrice] = useState(minPrice);
   const [localMaxPrice, setLocalMaxPrice] = useState(maxPrice);
   const [localPriceMode, setLocalPriceMode] = useState(priceMode);
@@ -72,6 +75,7 @@ export function MobileUnifiedModal({
   useEffect(() => { setLocalOnlyJP(onlyJP); }, [onlyJP]);
   useEffect(() => { setLocalSelectedReviewScores(selectedReviewScores); }, [selectedReviewScores]);
   useEffect(() => { setLocalOnlyMac(onlyMac); }, [onlyMac]);
+  useEffect(() => { setLocalRecentOnly(recentOnly); }, [recentOnly]);
   useEffect(() => { setLocalMinPrice(minPrice); }, [minPrice]);
   useEffect(() => { setLocalMaxPrice(maxPrice); }, [maxPrice]);
   useEffect(() => { setLocalPriceMode(priceMode); }, [priceMode]);
@@ -99,6 +103,11 @@ export function MobileUnifiedModal({
   const handleMacChange = (checked) => {
     setLocalOnlyMac(checked);
     React.startTransition(() => setOnlyMac(checked));
+  };
+
+  const handleRecentOnlyChange = (checked) => {
+    setLocalRecentOnly(checked);
+    React.startTransition(() => setRecentOnly(checked));
   };
 
   const handleMinPriceChange = (value) => {
@@ -275,6 +284,7 @@ export function MobileUnifiedModal({
     setSelectedReviewScores([]);
     setOnlyJP(false);
     setOnlyMac(false);
+    setRecentOnly(false);
     setSelectedGenres({ include: [], exclude: [] });
     setSelectedTags([]);
     setMinPrice(priceSliderConfig.min === 0 ? (currentRegion === 'JPY' ? 100 : 1) : priceSliderConfig.min);
@@ -344,8 +354,9 @@ export function MobileUnifiedModal({
                 <div className="text-sm font-semibold mb-2">{t('filter.period', currentLocale)}</div>
                 <div className="relative">
                   <button
-                    onClick={() => setShowYearDropdown(!showYearDropdown)}
-                    className={`${theme.cardBg} ${theme.text} ${theme.border} border rounded-lg px-3 py-2 text-sm w-full flex items-center justify-between`}
+                    onClick={() => !recentOnly && setShowYearDropdown(!showYearDropdown)}
+                    disabled={recentOnly}
+                    className={`${theme.cardBg} ${theme.text} ${theme.border} border rounded-lg px-3 py-2 text-sm w-full flex items-center justify-between ${recentOnly ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     <span className="flex-1 text-center">{selectedYear === 'all' ? t('filter.allPeriod', currentLocale) : formatYear(selectedYear, currentLocale)}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 transition-transform ${showYearDropdown ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
@@ -396,6 +407,10 @@ export function MobileUnifiedModal({
                   <div className="flex items-center gap-2">
                     <input id="unified-modal-macOnly" type="checkbox" checked={localOnlyMac} onChange={(e)=>handleMacChange(e.target.checked)} className="h-4 w-4" />
                     <label htmlFor="unified-modal-macOnly" className="text-sm">{t('filter.onlyMac', currentLocale)}</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input id="unified-modal-recentOnly" type="checkbox" checked={localRecentOnly} onChange={(e)=>handleRecentOnlyChange(e.target.checked)} className="h-4 w-4" />
+                    <label htmlFor="unified-modal-recentOnly" className="text-sm">{t('filter.recent30Days', currentLocale)}</label>
                   </div>
                 </div>
               </div>
