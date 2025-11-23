@@ -89,10 +89,35 @@ class KVHelper:
             list: games data list
         """
         if self.is_local_mode():
-            # Local file mode: read from file
+            # Local file mode: read from basic and details files
             file_path = Path(local_file_path)
-            if file_path.exists():
-                logger.info(f"Local file mode: Reading games-data from {local_file_path}")
+            basic_file_path = file_path.parent / f"{file_path.stem}-basic{file_path.suffix}"
+            details_file_path = file_path.parent / f"{file_path.stem}-details{file_path.suffix}"
+
+            # Try to read from basic and details files first
+            if basic_file_path.exists() and details_file_path.exists():
+                logger.info(f"Local file mode: Reading games-data from {basic_file_path} and {details_file_path}")
+                with open(basic_file_path, 'r', encoding='utf-8') as f:
+                    basic_data = json.load(f)
+                with open(details_file_path, 'r', encoding='utf-8') as f:
+                    details_data = json.load(f)
+
+                # Extract games from basic data
+                basic_games = basic_data.get('games', []) if isinstance(basic_data, dict) else basic_data
+
+                # Merge basic and details
+                merged_games = []
+                for game in basic_games:
+                    game_id = game.get('id')
+                    details = details_data.get(game_id, {}) if isinstance(details_data, dict) else {}
+                    merged_game = {**game, **details}
+                    merged_games.append(merged_game)
+
+                logger.info(f"Local file mode: Merged {len(merged_games)} games from basic and details files")
+                return merged_games
+            # Fallback to old games.json for backward compatibility
+            elif file_path.exists():
+                logger.info(f"Local file mode: Reading games-data from {local_file_path} (fallback)")
                 with open(file_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     # Support new structure with meta block
@@ -101,26 +126,42 @@ class KVHelper:
                     # Backward compatibility: return entire data if old structure
                     return data
             else:
-                logger.warning(f"Local file mode: {local_file_path} not found. Returning empty list")
+                logger.warning(f"Local file mode: No games data files found. Returning empty list")
                 return []
         else:
-            # KV mode: fetch from KV
+            # KV mode: fetch from games-basic and games-details
             try:
-                logger.info(f"KV mode: Fetching games from KV...")
-                result = subprocess.run(
-                    ['wrangler', 'kv', 'key', 'get', 'games', f'--namespace-id={self.namespace_id}', '--remote'],
+                logger.info(f"KV mode: Fetching games-basic from KV...")
+                basic_result = subprocess.run(
+                    ['wrangler', 'kv', 'key', 'get', 'games-basic', f'--namespace-id={self.namespace_id}', '--remote'],
                     capture_output=True,
                     text=True,
                     check=True
                 )
-                data = json.loads(result.stdout)
-                # Support new structure with meta block
-                if isinstance(data, dict) and 'games' in data:
-                    logger.info(f"KV mode: Fetched games from KV ({len(data['games'])} items)")
-                    return data['games']
-                # Backward compatibility: return entire data if old structure
-                logger.info(f"KV mode: Fetched games from KV ({len(data)} items)")
-                return data
+                basic_data = json.loads(basic_result.stdout)
+                basic_games = basic_data.get('games', []) if isinstance(basic_data, dict) else basic_data
+                logger.info(f"KV mode: Fetched {len(basic_games)} games from games-basic")
+
+                logger.info(f"KV mode: Fetching games-details from KV...")
+                details_result = subprocess.run(
+                    ['wrangler', 'kv', 'key', 'get', 'games-details', f'--namespace-id={self.namespace_id}', '--remote'],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                details_data = json.loads(details_result.stdout)
+                logger.info(f"KV mode: Fetched {len(details_data)} game details from games-details")
+
+                # Merge basic and details
+                merged_games = []
+                for game in basic_games:
+                    game_id = game.get('id')
+                    details = details_data.get(game_id, {}) if isinstance(details_data, dict) else {}
+                    merged_game = {**game, **details}
+                    merged_games.append(merged_game)
+
+                logger.info(f"KV mode: Merged {len(merged_games)} games from basic and details")
+                return merged_games
             except subprocess.CalledProcessError as e:
                 logger.error(f"KV fetch error: {e.stderr}")
                 return []
@@ -146,16 +187,17 @@ class KVHelper:
             existing_timestamp = None
             try:
                 if self.is_local_mode():
-                    # Local mode: read from file
-                    if file_path.exists():
-                        with open(file_path, 'r', encoding='utf-8') as f:
+                    # Local mode: read from basic file
+                    basic_file_path = file_path.parent / f"{file_path.stem}-basic{file_path.suffix}"
+                    if basic_file_path.exists():
+                        with open(basic_file_path, 'r', encoding='utf-8') as f:
                             raw_data = json.load(f)
                         if isinstance(raw_data, dict) and 'meta' in raw_data:
                             existing_timestamp = raw_data['meta'].get('last_updated')
                 else:
-                    # KV mode: fetch from KV
+                    # KV mode: fetch from games-basic
                     result = subprocess.run(
-                        ['wrangler', 'kv', 'key', 'get', 'games', f'--namespace-id={self.namespace_id}', '--remote'],
+                        ['wrangler', 'kv', 'key', 'get', 'games-basic', f'--namespace-id={self.namespace_id}', '--remote'],
                         capture_output=True,
                         text=True,
                         check=True
@@ -278,21 +320,6 @@ class KVHelper:
                 )
                 logger.info(f"KV mode: Saved details games to KV")
                 temp_details_file.unlink()
-
-                # Also save combined data for backward compatibility
-                temp_file = Path(TEMP_DIR) / TEMP_GAMES_FILE
-                with open(temp_file, 'w', encoding='utf-8') as f:
-                    json.dump(combined_output, f, ensure_ascii=False, indent=2)
-
-                logger.info(f"KV mode: Saving combined games to KV... ({len(games_data)} items)")
-                subprocess.run(
-                    ['wrangler', 'kv', 'key', 'put', 'games', f'--namespace-id={self.namespace_id}', f'--path={temp_file}', '--remote'],
-                    check=True,
-                    capture_output=True,
-                    text=True
-                )
-                logger.info(f"KV mode: Saved combined games to KV")
-                temp_file.unlink()
 
             except subprocess.CalledProcessError as e:
                 logger.error(f"KV save error: {e.stderr}")
