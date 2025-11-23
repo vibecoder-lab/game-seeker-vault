@@ -149,6 +149,9 @@ function SteamPriceFilter({ initialData = null }) {
 
     const handleKeyDown = (e) => {
       if (e.key === "Shift") {
+        // Ignore key repeat events (Windows long press)
+        if (e.repeat) return;
+
         setShiftPressedForDelete(true);
 
         // Shift double press detection for global folder dropdown
