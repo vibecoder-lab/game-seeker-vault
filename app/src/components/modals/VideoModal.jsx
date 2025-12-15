@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import Hls from 'hls.js';
 
 export function VideoModal({ game, theme, currentTheme, isClosing, onClose }) {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
@@ -6,45 +7,24 @@ export function VideoModal({ game, theme, currentTheme, isClosing, onClose }) {
   const [failedVideos, setFailedVideos] = useState(new Set());
   const videoRef = React.useRef(null);
   const hoverAreaRef = React.useRef(null);
-
-  // Disable page scroll when modal is open
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, []);
-
-  // Cleanup video when component unmounts
-  useEffect(() => {
-    return () => {
-      if (videoRef.current) {
-        try {
-          videoRef.current.pause();
-          videoRef.current.currentTime = 0;
-          videoRef.current.load();
-        } catch (e) {
-          // Ignore errors if element is already removed
-        }
-      }
-    };
-  }, []);
+  const hlsRef = React.useRef(null);
 
   const hasMovies = game.movies && game.movies.length > 0;
   const hasScreenshot = game.screenshot && game.screenshot.full;
 
   // Filter out failed videos
-  const availableMovies = hasMovies
-    ? game.movies.filter((_, index) => !failedVideos.has(index))
-    : [];
-  const hasAvailableMovies = availableMovies.length > 0;
+  const availableMovies = useMemo(() => {
+    return hasMovies
+      ? game.movies.filter((_, index) => !failedVideos.has(index))
+      : [];
+  }, [hasMovies, game.movies, failedVideos]);
 
+  const hasAvailableMovies = availableMovies.length > 0;
   const currentMovie = hasMovies ? game.movies[selectedVideoIndex] : null;
   const currentScreenshot = game.screenshot;
 
   // Handle video error (404, etc.)
-  const handleVideoError = () => {
+  const handleVideoError = useCallback(() => {
     setFailedVideos(prev => new Set([...prev, selectedVideoIndex]));
 
     // Find next available video
@@ -65,7 +45,129 @@ export function VideoModal({ game, theme, currentTheme, isClosing, onClose }) {
       }
       // If no videos available, component will fallback to screenshot
     }
-  };
+  }, [selectedVideoIndex, game.movies]);
+
+  // Disable page scroll when modal is open
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  // Setup HLS.js for video playback
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !hasAvailableMovies || !currentMovie) return;
+
+    // Cleanup previous HLS instance
+    if (hlsRef.current) {
+      hlsRef.current.destroy();
+      hlsRef.current = null;
+    }
+
+    // Detect video format from URLs
+    // HLS format (webm field may contain .m3u8 URL)
+    const hlsUrl = currentMovie.webm && currentMovie.webm.includes('.m3u8') ? currentMovie.webm : null;
+    // DASH format (mp4 field may contain .mpd URL)
+    const dashUrl = currentMovie.mp4 && currentMovie.mp4.includes('.mpd') ? currentMovie.mp4 : null;
+    // Legacy formats: actual mp4/webm files (for backward compatibility)
+    const legacyMp4Url = currentMovie.mp4 && !currentMovie.mp4.includes('.mpd') && (currentMovie.mp4.includes('.mp4') || currentMovie.mp4.match(/\.mp4(\?|$)/)) ? currentMovie.mp4 : null;
+    const legacyWebmUrl = currentMovie.webm && !currentMovie.webm.includes('.m3u8') && (currentMovie.webm.includes('.webm') || currentMovie.webm.match(/\.webm(\?|$)/)) ? currentMovie.webm : null;
+
+    // Priority: HLS (with HLS.js) > HLS (native Safari) > DASH > Legacy MP4 > Legacy WebM
+    if (hlsUrl && Hls.isSupported()) {
+      // Use HLS.js for HLS format
+      const hls = new Hls({
+        enableWorker: true,
+        lowLatencyMode: false,
+      });
+      hlsRef.current = hls;
+      hls.loadSource(hlsUrl);
+      hls.attachMedia(video);
+      
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(err => {
+          console.warn('Auto-play prevented:', err);
+        });
+      });
+
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        if (data.fatal) {
+          switch (data.type) {
+            case Hls.ErrorTypes.NETWORK_ERROR:
+              console.error('HLS network error, trying to recover...');
+              hls.startLoad();
+              break;
+            case Hls.ErrorTypes.MEDIA_ERROR:
+              console.error('HLS media error, trying to recover...');
+              hls.recoverMediaError();
+              break;
+            default:
+              console.error('HLS fatal error, destroying instance');
+              hls.destroy();
+              handleVideoError();
+              break;
+          }
+        }
+      });
+
+      return () => {
+        if (hls) {
+          hls.destroy();
+        }
+      };
+    } else if (hlsUrl && video.canPlayType('application/vnd.apple.mpegurl')) {
+      // Native HLS support (Safari)
+      video.src = hlsUrl;
+      video.play().catch(err => {
+        console.warn('Auto-play prevented:', err);
+      });
+    } else if (dashUrl) {
+      // DASH format - browser native support is limited, but try anyway
+      video.src = dashUrl;
+      video.play().catch(err => {
+        console.warn('Auto-play prevented:', err);
+      });
+    } else if (legacyMp4Url) {
+      // Legacy MP4 format (backward compatibility)
+      video.src = legacyMp4Url;
+      video.play().catch(err => {
+        console.warn('Auto-play prevented:', err);
+      });
+    } else if (legacyWebmUrl) {
+      // Legacy WebM format (backward compatibility)
+      video.src = legacyWebmUrl;
+      video.play().catch(err => {
+        console.warn('Auto-play prevented:', err);
+      });
+    } else {
+      // No valid video URL
+      handleVideoError();
+    }
+  }, [selectedVideoIndex, hasAvailableMovies, currentMovie, handleVideoError]);
+
+  // Cleanup video when component unmounts
+  useEffect(() => {
+    return () => {
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+        hlsRef.current = null;
+      }
+      if (videoRef.current) {
+        try {
+          videoRef.current.pause();
+          videoRef.current.currentTime = 0;
+          videoRef.current.src = '';
+          videoRef.current.load();
+        } catch (e) {
+          // Ignore errors if element is already removed
+        }
+      }
+    };
+  }, []);
+
 
   return (
     <div
@@ -99,13 +201,10 @@ export function VideoModal({ game, theme, currentTheme, isClosing, onClose }) {
                   ref={videoRef}
                   key={currentMovie.id}
                   controls
-                  autoPlay
                   className="w-full h-full"
                   poster={currentMovie.thumbnail}
                   onError={handleVideoError}
                 >
-                  <source src={currentMovie.webm} type="video/webm" />
-                  <source src={currentMovie.mp4} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>

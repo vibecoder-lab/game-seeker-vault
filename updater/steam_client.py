@@ -389,15 +389,21 @@ class SteamClient:
             if not movies:
                 return []
 
-            # Extract webm URL (480p) and mp4 URL from each movie
+            # Extract DASH/HLS URLs from each movie
+            # Steam API now returns dash_h264, dash_av1, and hls_h264 instead of webm/mp4
             result = []
             for movie in movies:
+                # Try to get DASH H.264 (most compatible), fallback to HLS H.264
+                dash_h264 = movie.get('dash_h264', '')
+                hls_h264 = movie.get('hls_h264', '')
+                
+                # For backward compatibility, use mp4 field for DASH and webm field for HLS
                 movie_data = {
                     'id': movie.get('id'),
                     'name': movie.get('name', ''),
                     'thumbnail': movie.get('thumbnail', ''),
-                    'webm': movie.get('webm', {}).get('480', ''),
-                    'mp4': movie.get('mp4', {}).get('480', '')
+                    'webm': hls_h264,  # HLS format for fallback
+                    'mp4': dash_h264   # DASH format (most compatible)
                 }
                 result.append(movie_data)
 

@@ -11,7 +11,7 @@ Options:
   --regions: Regions to fetch prices for (default: JP)
     Example: --regions JP,US,UK,EU
   --kv: Use KV in local environment (for testing)
-  --reset-prices: Reset all prices to 0 in games.json (for testing differential updates)
+  --reset-prices: Reset all prices to 1 in games.json (for testing differential updates)
   --delete: Delete games specified in updater/data/refs/delete_appid_list.txt
     - Deletes from local files (games.json, id-map.json)
     - With --kv option: Also deletes from Cloudflare KV (games-data, id-map)
@@ -366,19 +366,35 @@ def delete_games_command(kv_helper):
 
 
 def reset_prices_command(kv_helper):
-    """Reset all prices to 1 in games.json"""
+    """Reset all prices to 1 in games.json
+    
+    Note: Prices are reset to 1 (not 0) to avoid issues with differential update batch.
+    Free games already have price=0, so resetting to 0 would make it impossible to detect
+    price changes for free games in the update batch.
+    """
     logger.info("=== Reset Prices Mode ===")
 
     # Get existing games data
     games_data = kv_helper.get_games_data()
     logger.info(f"Loaded {len(games_data)} games from KV/file")
 
-    # Reset all prices to 1
+    # Reset all prices to 1 (not 0, to distinguish from free games)
     updated_count = 0
     for game in games_data:
-        if 'deal' in game and 'JPY' in game['deal']:
-            game['deal']['JPY']['price'] = 1
-            updated_count += 1
+        deal = game.get('deal')
+        if deal and isinstance(deal, dict):
+            # Reset JP price if exists (current format)
+            if 'JP' in deal and isinstance(deal['JP'], dict):
+                deal['JP']['price'] = 1
+                updated_count += 1
+            # Reset US price if exists (current format)
+            if 'US' in deal and isinstance(deal['US'], dict):
+                deal['US']['price'] = 1
+            # Also check for old JPY/USD keys (legacy format for backward compatibility)
+            if 'JPY' in deal and isinstance(deal['JPY'], dict):
+                deal['JPY']['price'] = 1
+            if 'USD' in deal and isinstance(deal['USD'], dict):
+                deal['USD']['price'] = 1
 
     # Save back
     kv_helper.put_games_data(games_data)
@@ -387,7 +403,7 @@ def reset_prices_command(kv_helper):
     logger.info(f"✓ Reset Prices Complete")
     logger.info(f"{'='*60}")
     logger.info(f"Updated {updated_count} games")
-    logger.info(f"All deal.JPY.price set to 1")
+    logger.info(f"All deal.JP.price and deal.US.price set to 1")
     logger.info(f"{'='*60}")
 
     logger.info(f"Reset complete: {updated_count} games updated")

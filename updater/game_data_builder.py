@@ -406,7 +406,12 @@ class GameDataBuilder:
         # Identify games with noItadData flag (need Steam API comparison)
         games_with_no_itad_flag = set()
         for game in existing_games:
-            deal = game.get('deal', {}).get('JPY', {})
+            # Check first region (usually 'JP') for noItadData flag
+            first_region = regions[0] if regions else 'JP'
+            deal = game.get('deal', {}).get(first_region, {})
+            # Fallback to legacy 'JPY' key for backward compatibility
+            if not deal and first_region == 'JP':
+                deal = game.get('deal', {}).get('JPY', {})
             if deal.get('noItadData'):
                 games_with_no_itad_flag.add(game['id'])
 
@@ -484,8 +489,30 @@ class GameDataBuilder:
                 itad_price = itad_deal.get('price')
                 itad_cut = itad_deal.get('cut', 0)
 
-                # Compare price and cut
-                if itad_price != kv_price or itad_cut != kv_cut:
+                # Normalize prices for comparison (handle type differences: int vs float, etc.)
+                # Convert to float for comparison, but preserve original values for logging
+                kv_price_normalized = float(kv_price) if kv_price not in (None, '-', '') else None
+                itad_price_normalized = float(itad_price) if itad_price not in (None, '-', '') else None
+                
+                # Normalize cut values (should be integers, but handle float cases)
+                kv_cut_normalized = int(kv_cut) if kv_cut not in (None, '-', '') else 0
+                itad_cut_normalized = int(itad_cut) if itad_cut not in (None, '-', '') else 0
+
+                # Compare price and cut (handle None and '-' cases)
+                price_diff = False
+                if kv_price_normalized is None and itad_price_normalized is None:
+                    # Both are None or '-', consider as same
+                    price_diff = False
+                elif kv_price_normalized is None or itad_price_normalized is None:
+                    # One is None/'-' and the other is not, consider as different
+                    price_diff = True
+                else:
+                    # Both are numeric, compare values
+                    price_diff = abs(kv_price_normalized - itad_price_normalized) > 0.01  # Allow small floating point differences
+                
+                cut_diff = kv_cut_normalized != itad_cut_normalized
+                
+                if price_diff or cut_diff:
                     price_changed = True
                     changed_regions.append(f"{region}(KV: price={kv_price}, cut={kv_cut} / ITAD: price={itad_price}, cut={itad_cut})")
 

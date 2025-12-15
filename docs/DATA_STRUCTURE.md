@@ -511,10 +511,14 @@ interface Movie {
   id: number;           // 動画ID
   name: string;         // 動画名
   thumbnail: string;    // サムネイルURL
-  webm: string;         // WebM URL (480p)
-  mp4: string;          // MP4 URL (480p)
+  webm: string;         // HLS形式URL (.m3u8) - フォールバック用
+  mp4: string;          // DASH形式URL (.mpd) - 優先的に使用
 }
 ```
+
+**注意**: Steam APIの仕様変更により、従来のWebM/MP4形式からDASH/HLS形式に変更されました。
+- `mp4`フィールドにはDASH形式（`.mpd`）のURLが保存されます
+- `webm`フィールドにはHLS形式（`.m3u8`）のURLが保存されます（フォールバック用）
 
 ---
 
