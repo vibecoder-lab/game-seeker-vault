@@ -1154,7 +1154,7 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
                                   : `${theme.modalHover}`
                               } whitespace-nowrap`}
                             >
-                              {currentLocale === 'ja' ? REVIEW_SCORE_MAPPING[score] : score}
+                              {currentLocale === 'ja' ? (REVIEW_SCORE_MAPPING[score] || score) : score}
                             </button>
                           ))}
                         </div>

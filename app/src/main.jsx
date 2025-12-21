@@ -898,11 +898,20 @@ function SteamPriceFilter({ initialData = null }) {
   }, [games]);
 
   const availableReviewScores = React.useMemo(() => {
-    const scoresInData = unique(games.map(g => g.reviewScore).filter(Boolean));
+    // Filter out falsy values, "-", and values not in REVIEW_SCORE_MAPPING
+    const scoresInData = unique(
+      games
+        .map(g => g.reviewScore)
+        .filter(score => score && score !== '-' && score !== 'None' && REVIEW_SCORE_MAPPING.hasOwnProperty(score))
+    );
     const scoreOrder = Object.keys(REVIEW_SCORE_MAPPING);
     return scoresInData.sort((a, b) => {
       const indexA = scoreOrder.indexOf(a);
       const indexB = scoreOrder.indexOf(b);
+      // Put unmapped scores at the end
+      if (indexA === -1 && indexB === -1) return 0;
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
       return indexA - indexB;
     });
   }, [games]);
@@ -1435,7 +1444,7 @@ function SteamPriceFilter({ initialData = null }) {
                         : `${theme.tagBg} ${theme.tagText}`
                     }`}
                   >
-                    {currentLocale === 'ja' ? REVIEW_SCORE_MAPPING[score] : score}
+                    {currentLocale === 'ja' ? (REVIEW_SCORE_MAPPING[score] || score) : score}
                   </button>
                 ))}
               </div>
@@ -1866,7 +1875,7 @@ function SteamPriceFilter({ initialData = null }) {
                       htmlFor={`reviewScore-${score.replace(/\s+/g, '')}`}
                       className="text-sm whitespace-nowrap"
                     >
-                      {currentLocale === 'ja' ? REVIEW_SCORE_MAPPING[score] : score}
+                      {currentLocale === 'ja' ? (REVIEW_SCORE_MAPPING[score] || score) : score}
                     </label>
                   </div>
                 ))}

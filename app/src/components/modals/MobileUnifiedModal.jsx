@@ -428,7 +428,7 @@ export function MobileUnifiedModal({
                         className="h-4 w-4"
                       />
                       <label htmlFor={`unified-modal-${score.replace(/\s+/g, '')}`} className="text-sm">
-                        {currentLocale === 'ja' ? REVIEW_SCORE_MAPPING[score] : score}
+                        {currentLocale === 'ja' ? (REVIEW_SCORE_MAPPING[score] || score) : score}
                       </label>
                     </div>
                   ))}
