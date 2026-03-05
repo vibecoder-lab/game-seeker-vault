@@ -4,7 +4,7 @@ Script to rebuild games.json from scratch
 Fetches all data from Steam API and IsThereAnyDeal API
 
 Usage:
-  python3 updater/main.py [ITAD_API_KEY] [--append] [--regions JP,US,UK,EU] [--kv] [--reset-prices] [--delete] [--extract] [--refetch SCORES]
+  python3 updater/main.py [ITAD_API_KEY] [--append] [--regions JP,US,UK,EU] [--kv] [--reset-prices] [--delete] [--extract] [--refetch SCORES] [--dedupe]
 
 Options:
   --append: Add new titles + fetch data only for new additions
@@ -31,6 +31,10 @@ Options:
       --refetch 6,7,8,9             (Re-fetch Mostly Positive or better)
       --refetch others              (Re-fetch only invalid review scores)
       --refetch 0                   (Re-fetch only No user reviews)
+  --dedupe: Remove duplicate games from games-basic.json and games-details.json (local files only)
+    - Deduplicates by game id (keeps first occurrence)
+    - Updates meta.record_count and trims details to match
+    - Creates timestamped backup before overwriting
 
 Environment detection:
   - Github Actions environment: Automatically uses KV
@@ -409,6 +413,103 @@ def reset_prices_command(kv_helper):
     logger.info(f"Reset complete: {updated_count} games updated")
 
 
+def dedupe_command():
+    """Remove duplicate games from games-basic.json and games-details.json (local files only).
+
+    Deduplicates by game id (keeps first occurrence). Updates meta.record_count
+    and trims details to match. Creates timestamped backup before overwriting.
+    """
+    import shutil
+    import datetime
+
+    logger.info("=== Dedupe Mode (remove duplicate games from local JSON) ===")
+
+    basic_file = current_dir / 'games-basic.json'
+    details_file = current_dir / 'games-details.json'
+
+    if not basic_file.exists() or not details_file.exists():
+        logger.info(f"\n{'='*60}")
+        logger.info(f"✗ Dedupe Failed")
+        logger.info(f"{'='*60}")
+        logger.info(f"Error: Required files not found in {current_dir}")
+        if not basic_file.exists():
+            logger.info(f"  Missing: {basic_file.name}")
+        if not details_file.exists():
+            logger.info(f"  Missing: {details_file.name}")
+        logger.info(f"{'='*60}")
+        return
+
+    with open(basic_file, 'r', encoding='utf-8') as f:
+        basic_data = json.load(f)
+    with open(details_file, 'r', encoding='utf-8') as f:
+        details_data = json.load(f)
+
+    games = basic_data.get('games', []) if isinstance(basic_data, dict) else basic_data
+    if not isinstance(basic_data, dict) or 'meta' not in basic_data:
+        logger.info(f"\n{'='*60}")
+        logger.info(f"✗ Dedupe Failed")
+        logger.info(f"{'='*60}")
+        logger.info(f"Error: games-basic.json must have 'meta' and 'games' structure")
+        logger.info(f"{'='*60}")
+        return
+
+    before_count = len(games)
+    seen_ids = set()
+    deduplicated = []
+    duplicate_ids = []
+
+    for game in games:
+        gid = game.get('id')
+        if gid is None:
+            deduplicated.append(game)
+            continue
+        if gid in seen_ids:
+            duplicate_ids.append(gid)
+            continue
+        seen_ids.add(gid)
+        deduplicated.append(game)
+
+    removed_count = before_count - len(deduplicated)
+    if removed_count == 0:
+        logger.info(f"\n{'='*60}")
+        logger.info(f"✓ Dedupe Complete (no duplicates found)")
+        logger.info(f"{'='*60}")
+        logger.info(f"Total games: {before_count}")
+        logger.info(f"{'='*60}")
+        return
+
+    basic_data['games'] = deduplicated
+    if 'meta' in basic_data and isinstance(basic_data['meta'], dict):
+        basic_data['meta']['record_count'] = len(deduplicated)
+
+    valid_ids = set(deduplicated[i].get('id') for i in range(len(deduplicated)) if deduplicated[i].get('id') is not None)
+    details_deduped = {k: v for k, v in details_data.items() if k in valid_ids} if isinstance(details_data, dict) else details_data
+
+    backups_dir.mkdir(parents=True, exist_ok=True)
+    ts = datetime.datetime.now().strftime('%Y_%m_%d_%H%M%S')
+    backup_basic = backups_dir / f"games-basic_{ts}.json"
+    backup_details = backups_dir / f"games-details_{ts}.json"
+    shutil.copy2(basic_file, backup_basic)
+    shutil.copy2(details_file, backup_details)
+    logger.info(f"Backup created: {backup_basic.name}, {backup_details.name}")
+
+    with open(basic_file, 'w', encoding='utf-8') as f:
+        json.dump(basic_data, f, ensure_ascii=False, indent=2)
+    with open(details_file, 'w', encoding='utf-8') as f:
+        json.dump(details_deduped, f, ensure_ascii=False, indent=2)
+
+    logger.info(f"\n{'='*60}")
+    logger.info(f"✓ Dedupe Complete")
+    logger.info(f"{'='*60}")
+    logger.info(f"Before: {before_count} games")
+    logger.info(f"After: {len(deduplicated)} games")
+    logger.info(f"Removed: {removed_count} duplicate(s)")
+    if duplicate_ids:
+        logger.info(f"Duplicate ID(s): {duplicate_ids}")
+    logger.info(f"Updated: {basic_file.name}, {details_file.name}")
+    logger.info(f"{'='*60}")
+
+
 def refetch_reviews_command(kv_helper, score_targets):
     """Re-fetch review scores for games with specified score types
 
@@ -619,6 +720,7 @@ def main():
     extract_mode = False
     refetch_mode = False
     refetch_targets = None
+    dedupe_mode = False
     regions = DEFAULT_REGIONS.copy()
 
     i = 1
@@ -634,6 +736,8 @@ def main():
             delete_mode = True
         elif arg == '--extract':
             extract_mode = True
+        elif arg == '--dedupe':
+            dedupe_mode = True
         elif arg == '--refetch':
             refetch_mode = True
             if i + 1 < len(sys.argv):
@@ -653,6 +757,11 @@ def main():
     # Ensure directories exist
     current_dir.mkdir(parents=True, exist_ok=True)
     tmp_dir.mkdir(parents=True, exist_ok=True)
+
+    # If dedupe mode, execute and exit (local files only, no KV)
+    if dedupe_mode:
+        dedupe_command()
+        return
 
     # If extract mode, execute and exit
     if extract_mode:

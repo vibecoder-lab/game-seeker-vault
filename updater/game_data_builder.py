@@ -692,16 +692,19 @@ class GameDataBuilder:
         # 3. Don't save id-map yet - will save after successful games-data update
         logger.info("id-map updated (not saved to KV yet)")
 
-        # 4. Get all IDs from game_title_list.txt
+        # 4. Get all IDs from game_title_list.txt (deduplicate to avoid processing same game twice)
         title_list_ids = []
+        seen_ids = set()
         if title_list_path.exists():
             with open(title_list_path, 'r', encoding='utf-8') as f:
                 for line in f:
                     line = line.strip()
                     if line:
                         app_id = line.split('\t')[0] if '\t' in line else line.split()[0]
-                        title_list_ids.append(app_id)
-        logger.info(f"IDs from game_title_list.txt: {len(title_list_ids)} items")
+                        if app_id not in seen_ids:
+                            seen_ids.add(app_id)
+                            title_list_ids.append(app_id)
+        logger.info(f"IDs from game_title_list.txt: {len(title_list_ids)} items (after deduplication)")
 
         # 5. Get newly mapped IDs from current run
         newly_mapped_ids = []
@@ -871,12 +874,12 @@ class GameDataBuilder:
         # Track newly added games
         newly_added_games = []
 
-        # Existing data + new data (skip duplicates)
+        # Existing data + new data (skip duplicates; track added ids so same id in rebuilt_games is not added twice)
         final_games = existing_games.copy()
         for new_game in rebuilt_games:
             if new_game['id'] not in existing_ids:
                 final_games.append(new_game)
-                # Record actually added games
+                existing_ids.add(new_game['id'])
                 newly_added_games.append({
                     'id': new_game['id'],
                     'title': new_game['title']
@@ -1195,11 +1198,12 @@ class GameDataBuilder:
         # Track newly added games
         newly_added_games = []
 
-        # Existing data + new data (skip duplicates)
+        # Existing data + new data (skip duplicates; track added ids so same id is not added twice)
         final_games = existing_games.copy()
         for new_game in all_new_games:
             if new_game['id'] not in existing_ids:
                 final_games.append(new_game)
+                existing_ids.add(new_game['id'])
                 newly_added_games.append({
                     'id': new_game['id'],
                     'title': new_game['title']
