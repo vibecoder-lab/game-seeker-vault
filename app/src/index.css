@@ -100,7 +100,6 @@
 
       /* Disable text selection globally (except input fields) */
       body {
-        font-family: 'Noto Sans', 'Zen Kaku Gothic New', sans-serif;
         user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;

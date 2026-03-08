@@ -64,16 +64,6 @@ import { LanguageRegionModal } from "./components/modals/LanguageRegionModal.jsx
 import { MobileUnifiedModal } from "./components/modals/MobileUnifiedModal.jsx";
 import { Header } from "./components/Header.jsx";
 
-const script = document.createElement("script");
-script.defer = true;
-script.src = "https://static.cloudflareinsights.com/beacon.min.js";
-script.setAttribute(
-  "data-cf-beacon",
-  '{"token": "6ebc5c1699a542fabf593d41935a2331"}'
-);
-
-document.head.appendChild(script);
-
 function SteamPriceFilter({ initialData = null }) {
   const [rawGames, setRawGames] = React.useState(initialData ?? []);
   const [metaData, setMetaData] = React.useState(null);
