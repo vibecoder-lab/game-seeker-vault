@@ -100,6 +100,26 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
               >
                 {t('languageRegion.japanese', currentLocale)}
               </button>
+              <button
+                onClick={() => handleLanguageChange('de')}
+                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
+                  currentLocale === 'de'
+                    ? 'bg-blue-600 text-white'
+                    : `${theme.buttonBg} ${theme.text} hover:opacity-80`
+                }`}
+              >
+                {t('languageRegion.german', currentLocale)}
+              </button>
+              <button
+                onClick={() => handleLanguageChange('fr')}
+                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
+                  currentLocale === 'fr'
+                    ? 'bg-blue-600 text-white'
+                    : `${theme.buttonBg} ${theme.text} hover:opacity-80`
+                }`}
+              >
+                {t('languageRegion.french', currentLocale)}
+              </button>
             </div>
           </div>
 
@@ -126,6 +146,16 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
                 }`}
               >
                 {t('languageRegion.jpy', currentLocale)}
+              </button>
+              <button
+                onClick={() => handleRegionChange('EUR')}
+                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
+                  currentRegion === 'EUR'
+                    ? 'bg-blue-600 text-white'
+                    : `${theme.buttonBg} ${theme.text} hover:opacity-80`
+                }`}
+              >
+                {t('languageRegion.eur', currentLocale)}
               </button>
             </div>
           </div>

@@ -27,11 +27,11 @@ Game Seeker Vaultは、Steamゲームを検索・収集できるWebアプリケ�
 ### 主要機能
 
 - Steamゲームの検索・閲覧
-- 価格情報・セール情報の表示（JPY/USD対応）
-- **マルチリージョン価格対応** - 日本（JPY）とアメリカ（USD）の価格を表示
+- 価格情報・セール情報の表示（JPY/USD/EUR対応）
+- **マルチリージョン価格対応** - 日本（JPY）、アメリカ（USD）、EU（EUR）の価格を表示
 - ゲームのコレクション管理（IndexedDB使用）
 - **動画再生機能** - ゲームトレーラーをアプリ内で視聴（YouTube埋め込みプレーヤー）
-- 多言語対応（日本語/英語）
+- 多言語対応（日本語/英語/ドイツ語/フランス語）
 - 自動データ更新（GitHub Actions）
 - **フィードバックシステム** - アプリからフィードバックを送信、管理画面で確認
 
@@ -94,8 +94,8 @@ graph TB
     end
 
     subgraph "Cloudflare"
-        E[Workers KV<br/>games-data<br/>id-map<br/>feedback-data]
-        F[Pages Functions<br/>/api/games-data<br/>/api/detect-locale<br/>/api/feedback<br/>/api/feedback-admin]
+        E[Workers KV<br/>games-basic<br/>games-details<br/>games-movies<br/>id-map<br/>feedback-data]
+        F[Pages Functions<br/>/api/games-basic<br/>/api/games-details<br/>/api/games-movies<br/>/api/detect-locale<br/>/api/feedback<br/>/api/feedback-admin]
         G[Cloudflare Pages<br/>React App]
     end
 
@@ -136,14 +136,16 @@ sequenceDiagram
     Steam-->>Updater: App IDs
 
     loop For each game
-        Updater->>Steam: Get game details (JP, US)
+        Updater->>Steam: Get game details (JP, US, EU)
         Steam-->>Updater: Title, genres, prices, etc.
-        Updater->>ITAD: Get deal data (JPY, USD)
+        Updater->>ITAD: Get deal data (JPY, USD, EUR)
         ITAD-->>Updater: Price, storeLow, etc.
     end
 
-    Updater->>Updater: Build games.json
-    Updater->>KV: Upload games-data
+    Updater->>Updater: Build games-basic/details/movies.json
+    Updater->>KV: Upload games-basic
+    Updater->>KV: Upload games-details
+    Updater->>KV: Upload games-movies
     Updater->>KV: Upload id-map
 
     Note over KV: Data available globally
@@ -155,12 +157,17 @@ sequenceDiagram
 graph LR
     A[User Access] --> B[Cloudflare Pages]
     B --> C[React App Load]
-    C --> D[Call /api/games-data]
+    C --> D[Call /api/games-basic<br/>同期・ブロッキング]
     D --> E[Pages Function]
     E --> F[Cloudflare KV]
     F --> E
     E --> C
     C --> G[Display Games]
+
+    C --> D2[Call /api/games-details<br/>/api/games-movies<br/>非同期・並行]
+    D2 --> E
+    E --> C2[idでマージしてrawGames更新]
+    C2 --> G
 
     C --> H[User Interaction]
     H --> I[Add to Collection]
@@ -198,14 +205,16 @@ app/
 │   │   └── collection.js     # コレクションCRUD
 │   ├── i18n/                 # 多言語化
 │   │   ├── index.js          # i18nヘルパー
-│   │   └── translations.js   # 翻訳辞書（en/ja）
+│   │   └── translations.js   # 翻訳辞書（en/ja/de/fr）
 │   ├── constants/            # 定数定義
 │   └── utils/                # ユーティリティ
 └── functions/api/            # Cloudflare Pages Functions
-    ├── games-data.ts         # ゲームデータAPI
+    ├── games-basic.ts        # ゲーム基本情報API（一覧・フィルタ用）
+    ├── games-details.ts      # ゲーム詳細情報API（モーダル用）
+    ├── games-movies.ts       # ゲーム動画情報API（モーダル用）
     ├── detect-locale.ts      # ロケール検出API
-    ├── feedback.ts           # フィードバック送信API
-    └── feedback-admin.ts     # フィードバック管理API
+    ├── submit-feedback.ts    # フィードバック送信API
+    └── admin/                 # フィードバック管理API
 ```
 
 ### 2. バックエンド (`updater/`)
@@ -237,8 +246,8 @@ graph TD
     C -->|デフォルト| D[差分更新モード]
     C -->|--append| E[新規追加モード]
 
-    D --> F[既存データ取得<br/>from KV]
-    F --> G[ITAD APIで価格比較<br/>JPY/USD]
+    D --> F[既存データ取得<br/>from KV: basic+details+movies]
+    F --> G[ITAD APIで価格比較<br/>JPY/USD/EUR]
     G --> H{価格変更あり?}
     H -->|Yes| I[Steam API取得]
     H -->|No| J[既存データ維持]
@@ -247,11 +256,11 @@ graph TD
     K --> L[Steam APIで<br/>App ID検索]
     L --> I
 
-    I --> M[ITAD APIで<br/>価格取得 JPY/USD]
-    M --> N[games.json構築]
+    I --> M[ITAD APIで<br/>価格取得 JPY/USD/EUR]
+    M --> N[games-basic/details/movies.json構築]
     J --> N
 
-    N --> O[Cloudflare KV<br/>アップロード]
+    N --> O[Cloudflare KV<br/>アップロード（3ファイル）]
     O --> P[完了]
 ```
 
@@ -260,10 +269,11 @@ graph TD
 ```mermaid
 graph TD
     A[ユーザーアクセス] --> B[React App起動]
-    B --> C[/api/games-data呼び出し]
+    B --> C[/api/games-basic呼び出し<br/>同期]
     C --> D[Pages Function]
     D --> E[KVからデータ取得]
     E --> F[ゲーム一覧表示]
+    F --> F2[/api/games-details, /api/games-movies<br/>非同期で取得・マージ]
 
     F --> G[ユーザー操作]
 
@@ -383,7 +393,9 @@ game-seeker-vault/
 **GSV_GAMES**（ゲームデータ用KV）:
 | KVキー | データ内容 |
 |--------|----------|
-| `games-data` | ゲーム一覧JSON配列 |
+| `games-basic` | 一覧・フィルタ用の基本情報（id, title, deal, genres, tags等） |
+| `games-details` | 詳細モーダル用情報（developers, publishers, supportedLanguages, itadId） |
+| `games-movies` | トレーラー動画情報（movies） |
 | `id-map` | Steam App ID ↔ ITAD ID マッピング |
 
 **FEEDBACK_KV**（フィードバックデータ用KV）:

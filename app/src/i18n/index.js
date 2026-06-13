@@ -51,6 +51,10 @@ export function formatDate(dateString, locale = 'en') {
 
     if (locale === 'ja') {
       return date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+    } else if (locale === 'de') {
+      return date.toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+    } else if (locale === 'fr') {
+      return date.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
     } else {
       return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     }

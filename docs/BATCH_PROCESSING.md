@@ -68,7 +68,7 @@
 
 **特徴**:
 - 差分更新のテストに使用
-- `deal.JPY.price` を全て1に変更
+- `deal.JP.price` を全て1に変更
 
 **実行タイミング**: テスト時のみ
 
@@ -127,14 +127,14 @@ python3 main.py <ITAD_API_KEY> --kv
 
 ```mermaid
 graph TD
-    A[main.py実行] --> B[KVから既存データ取得]
-    B --> C[ITAD APIでJPY/USD価格取得]
+    A[main.py実行] --> B[KVから既存データ取得<br/>basic+details+movies]
+    B --> C[ITAD APIでJPY/USD/EUR価格取得]
     C --> D{価格変更あり?}
     D -->|Yes| E[Steam APIで最新データ取得]
     D -->|No| F[既存データ維持]
-    E --> G[games.json構築]
+    E --> G[games-basic/details/movies.json構築]
     F --> G
-    G --> H[KVアップロード]
+    G --> H[KVアップロード（3ファイル）]
 ```
 
 ---
@@ -165,9 +165,9 @@ graph TD
     B --> C[Steam APIでApp ID検索]
     C --> D[ITAD APIでITAD ID取得]
     D --> E[Steam APIでゲームデータ取得]
-    E --> F[ITAD APIでJPY/USD価格取得]
-    F --> G[既存games.jsonに追加]
-    G --> H[KVアップロード]
+    E --> F[ITAD APIでJPY/USD/EUR価格取得]
+    F --> G[既存games-basic/details/movies.jsonに追加]
+    G --> H[KVアップロード（3ファイル）]
 ```
 
 **ログ例**:
@@ -207,7 +207,7 @@ python3 main.py <ITAD_API_KEY> --delete --kv
 
 ### 5. 地域指定
 
-**デフォルト**: JPY + USD
+**デフォルト**: JPY + USD + EUR
 
 **カスタム地域指定**:
 
@@ -278,12 +278,12 @@ Phase 1.5 complete: 45 noItadData games need update
 
 ```mermaid
 graph TD
-    A[更新対象ゲーム] --> B[Steam APIでゲームデータ取得<br/>JP/US地域]
-    B --> C[ITAD APIでJPY/USD価格取得]
+    A[更新対象ゲーム] --> B[Steam APIでゲームデータ取得<br/>JP/US/EU地域]
+    B --> C[ITAD APIでJPY/USD/EUR価格取得]
     C --> D{ITADデータあり?}
     D -->|Yes| E[ITAD価格使用]
     D -->|No| F[Steam API価格使用<br/>noItadData=true]
-    E --> G[games.json構築]
+    E --> G[games-basic/details/movies.json構築]
     F --> G
 ```
 
@@ -526,7 +526,7 @@ wrangler kv:namespace list
 grep "USD" rebuild_20251025_021000.log
 
 # games.jsonで確認
-jq '.games[0].deal.USD' updater/data/current/games.json
+jq '.games[0].deal.US' updater/data/current/games.json
 ```
 
 **期待する出力**:

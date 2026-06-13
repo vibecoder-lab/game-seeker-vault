@@ -25,8 +25,8 @@
 ### 主要機能
 
 1. **複数リージョンの価格取得**
-   - デフォルト: 日本（JPY）、アメリカ（USD）
-   - 追加対応可能: イギリス（GBP）、EU（EUR）
+   - デフォルト: 日本（JPY）、アメリカ（USD）、EU（EUR）
+   - 追加対応可能: イギリス（GBP）
 
 2. **リージョン切り替え**
    - ユーザーが表示リージョンを選択可能
@@ -49,13 +49,13 @@
 |----------------|-----|-----|---------------|
 | JP | JPY | 日本 | jp |
 | US | USD | アメリカ | us |
+| EU | EUR | EU（ドイツ代表） | de |
 
 ### 追加対応可能リージョン
 
 | リージョンコード | 通貨 | 国 | Steam Store CC |
 |----------------|-----|-----|---------------|
 | UK | GBP | イギリス | uk |
-| EU | EUR | EU（ドイツ代表） | de |
 
 **備考**: `--regions` オプションで指定可能
 
@@ -69,8 +69,9 @@
 
 ```typescript
 interface Deal {
-  JPY: PriceData;
-  USD: PriceData;
+  JP: PriceData;
+  US: PriceData;
+  EU: PriceData;
 }
 
 interface PriceData {
@@ -87,17 +88,23 @@ interface PriceData {
 ```json
 {
   "deal": {
-    "JPY": {
+    "JP": {
       "price": 2550,
       "regular": 5100,
       "cut": 50,
       "storeLow": 1530
     },
-    "USD": {
+    "US": {
       "price": 17,
       "regular": 34,
       "cut": 50,
       "storeLow": 10
+    },
+    "EU": {
+      "price": 16,
+      "regular": 32,
+      "cut": 50,
+      "storeLow": 9
     }
   }
 }
@@ -110,14 +117,21 @@ interface PriceData {
 ```json
 {
   "deal": {
-    "JPY": {
+    "JP": {
       "price": 590,
       "regular": 590,
       "cut": 0,
       "storeLow": "-",
       "noItadData": true
     },
-    "USD": {
+    "US": {
+      "price": 4,
+      "regular": 4,
+      "cut": 0,
+      "storeLow": "-",
+      "noItadData": true
+    },
+    "EU": {
       "price": 4,
       "regular": 4,
       "cut": 0,
@@ -138,17 +152,17 @@ interface PriceData {
 
 ```mermaid
 graph TD
-    A[main.py実行] --> B[--regions JP,US 指定<br/>デフォルト: JP,US]
+    A[main.py実行] --> B[--regions JP,US,EU 指定<br/>デフォルト: JP,US,EU]
     B --> C[Steam API<br/>JP地域でゲーム詳細取得]
-    C --> D[Steam API<br/>US地域で価格取得]
+    C --> D[Steam API<br/>US,EU地域で価格取得]
     D --> E[ITAD API<br/>JPY地域で価格取得]
-    E --> F[ITAD API<br/>USD地域で価格取得]
+    E --> F[ITAD API<br/>USD,EUR地域で価格取得]
     F --> G{ITAD データあり?}
     G -->|Yes| H[ITAD価格使用]
     G -->|No| I[Steam API価格使用<br/>noItadData=true]
-    H --> J[deal.JPY, deal.USD構築]
+    H --> J[deal.JP, deal.US, deal.EU構築]
     I --> J
-    J --> K[games.json出力]
+    J --> K[games-basic.json出力]
 ```
 
 ---
@@ -163,7 +177,7 @@ graph TD
 
 ```python
 # デフォルト対応地域
-DEFAULT_REGIONS = ['JP', 'US']
+DEFAULT_REGIONS = ['JP', 'US', 'EU']
 
 # 地域コード → Steamストア国コードのマッピング
 REGION_TO_CC = {
@@ -268,7 +282,7 @@ def _construct_deal_object(steam_prices: dict, itad_deals: dict, regions: list[s
 
 ### 実行例
 
-**デフォルト（JP, US）**:
+**デフォルト（JP, US, EU）**:
 
 ```bash
 python3 updater/main.py <ITAD_API_KEY>
@@ -298,9 +312,11 @@ python3 updater/main.py <ITAD_API_KEY> --regions JP,US,UK,EU
 │                              │
 │ 言語:                        │
 │  ◉ 日本語  ○ English         │
+│  ○ Deutsch  ○ Français       │
 │                              │
 │ 価格表示リージョン:          │
 │  ◉ 日本 (JPY)  ○ 米国 (USD)  │
+│  ○ EU (EUR)                  │
 │                              │
 │        [保存して閉じる]       │
 └──────────────────────────────┘
@@ -457,7 +473,7 @@ Lowest Price: $10.00
 
 ```bash
 # games.jsonでUSDデータ確認
-jq '.games[0].deal.USD' updater/data/current/games.json
+jq '.games[0].deal.US' updater/data/current/games.json
 
 # ログでUSD取得確認
 grep "USD" updater/log/rebuild_*.log

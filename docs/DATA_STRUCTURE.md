@@ -151,8 +151,8 @@ interface Settings {
   showAllTags: boolean;           // 全タグ表示
   enableScrollAnimation: boolean; // スクロールアニメーション
   hideOwnedTitles: boolean;       // 所有タイトル非表示
-  locale: 'en' | 'ja';            // 言語設定
-  region: 'JPY' | 'USD';          // 価格表示リージョン
+  locale: 'en' | 'ja' | 'de' | 'fr';  // 言語設定
+  region: 'JPY' | 'USD' | 'EUR';  // 価格表示リージョン
   settingsVersion: number;        // 設定バージョン
 }
 ```
@@ -190,15 +190,17 @@ interface Settings {
 
 ---
 
-### Key: `games-data`
+### Key: `games-basic`
+
+**用途**: 一覧表示・フィルタリングに必要な基本情報（同期ロード、クリティカルパス）
 
 **構造**:
 
 ```typescript
-interface GamesData {
+interface GamesBasicData {
   meta: {
     last_updated: string;        // ISO 8601形式 (e.g., "2025-10-25T07:27:13Z")
-    data_version: string;         // バージョン (e.g., "1.0.0")
+    data_version: string;         // バージョン (e.g., "2.0.0")
     source: {
       steam: boolean;             // Steam APIデータ含む
       itad: boolean;              // ITAD APIデータ含む
@@ -206,7 +208,20 @@ interface GamesData {
     build_id: string;             // ビルドID (UUID)
     record_count: number;         // ゲーム数
   };
-  games: Game[];                  // ゲームデータ配列
+  games: BasicGame[];              // ゲームデータ配列
+}
+
+interface BasicGame {
+  id: string;
+  title: string;
+  storeUrl: string;
+  imageUrl: string;
+  deal: Deal;                     // 価格情報 (JP/US/EU)
+  genres: string[];
+  tags: string[];
+  reviewScore: string;
+  releaseDate: string;
+  platforms: Platform;
 }
 ```
 
@@ -216,7 +231,7 @@ interface GamesData {
 {
   "meta": {
     "last_updated": "2025-10-25T07:27:13Z",
-    "data_version": "1.0.0",
+    "data_version": "2.0.0",
     "source": {
       "steam": true,
       "itad": true
@@ -228,6 +243,43 @@ interface GamesData {
     { ... }
   ]
 }
+```
+
+---
+
+### Key: `games-details`
+
+**用途**: 詳細モーダル表示用の追加情報（非同期ロード、basicとidでマージ）
+
+**構造**:
+
+```typescript
+// id をキーとしたマップ
+type GamesDetailsData = {
+  [id: string]: {
+    developers: string[];
+    publishers: string[];
+    supportedLanguages: string;
+    itadId: string | null;
+  };
+};
+```
+
+---
+
+### Key: `games-movies`
+
+**用途**: トレーラー動画情報（非同期ロード、basicとidでマージ）。詳細データの中で容量が大きい`movies`フィールドを分離したファイル
+
+**構造**:
+
+```typescript
+// id をキーとしたマップ
+type GamesMoviesData = {
+  [id: string]: {
+    movies: Movie[];
+  };
+};
 ```
 
 ---
@@ -310,28 +362,17 @@ interface FeedbackData {
 
 ## API構造
 
-### Pages Function: `/api/games-data`
+### Pages Function: `/api/games-basic`, `/api/games-details`, `/api/games-movies`
 
 **メソッド**: GET
 
-**レスポンス**:
-
-```typescript
-{
-  success: boolean;
-  data: GamesData | null;     // games-dataの内容
-  error?: string;
-}
-```
+**レスポンス**: 対応するKVキー（`games-basic` / `games-details` / `games-movies`）の内容をそのままJSONで返す
 
 **エラー例**:
 
-```json
-{
-  "success": false,
-  "data": null,
-  "error": "Failed to fetch games data from KV"
-}
+```
+404 Not Found: "No data found"
+500 Internal Server Error
 ```
 
 ---
@@ -538,20 +579,21 @@ interface Platform {
 
 ### Deal オブジェクト
 
-**v1.0 (旧構造 - JPYのみ)**:
+**v1.0 (旧構造 - JPのみ)**:
 
 ```typescript
 interface Deal {
-  JPY: PriceData;
+  JP: PriceData;
 }
 ```
 
-**v2.0 (現在 - JPY + USD対応)**:
+**v2.0 (現在 - JP + US + EU対応)**:
 
 ```typescript
 interface Deal {
-  JPY: PriceData;
-  USD: PriceData;
+  JP: PriceData;
+  US: PriceData;
+  EU: PriceData;
 }
 ```
 
@@ -578,17 +620,23 @@ interface PriceData {
 ```json
 {
   "deal": {
-    "JPY": {
+    "JP": {
       "price": 2550,
       "regular": 5100,
       "cut": 50,
       "storeLow": 1530
     },
-    "USD": {
+    "US": {
       "price": 17,
       "regular": 34,
       "cut": 50,
       "storeLow": 10
+    },
+    "EU": {
+      "price": 16,
+      "regular": 32,
+      "cut": 50,
+      "storeLow": 9
     }
   }
 }
@@ -599,16 +647,23 @@ interface PriceData {
 ```json
 {
   "deal": {
-    "JPY": {
+    "JP": {
       "price": 2550,
       "regular": 5100,
       "cut": 50,
       "storeLow": "-",
       "noItadData": true
     },
-    "USD": {
+    "US": {
       "price": 17,
       "regular": 34,
+      "cut": 50,
+      "storeLow": "-",
+      "noItadData": true
+    },
+    "EU": {
+      "price": 16,
+      "regular": 32,
       "cut": 50,
       "storeLow": "-",
       "noItadData": true
@@ -622,14 +677,21 @@ interface PriceData {
 ```json
 {
   "deal": {
-    "JPY": {
+    "JP": {
       "price": 0,
       "regular": 0,
       "cut": 0,
       "storeLow": "-",
       "noItadData": true
     },
-    "USD": {
+    "US": {
+      "price": 0,
+      "regular": 0,
+      "cut": 0,
+      "storeLow": "-",
+      "noItadData": true
+    },
+    "EU": {
       "price": 0,
       "regular": 0,
       "cut": 0,
@@ -753,8 +815,9 @@ interface ExportGame {
 
 | Version | 変更内容 |
 |---------|---------|
-| 1.0 | `deal.JPY` のみ |
-| 2.0 | `deal.JPY` + `deal.USD` 対応 |
+| 1.0 | `deal.JP` のみ |
+| 2.0 | `deal.JP` + `deal.US` 対応、`games-basic`/`games-details`に分割 |
+| 2.0 (拡張) | `deal.EU` 追加、`movies`を`games-movies`に分離 |
 
 ---
 

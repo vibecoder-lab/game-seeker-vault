@@ -401,16 +401,33 @@ function SteamPriceFilter({ initialData = null }) {
         fetch(detailsUrl)
           .then(res => res.json())
           .then(detailsData => {
-            // Merge details into basic games
-            const mergedGames = basicGames.map(game => {
+            // Merge details into current games state
+            setRawGames(prevGames => prevGames.map(game => {
               const details = detailsData[game.id];
               return details ? { ...game, ...details } : game;
-            });
-            setRawGames(mergedGames);
+            }));
             console.log('Details data loaded and merged');
           })
           .catch(e => {
             console.error('Failed to load details data:', e);
+          });
+
+        // Fetch movies data asynchronously (non-blocking)
+        const moviesUrl = isLocal
+          ? "../../updater/data/current/games-movies.json"
+          : "/api/games-movies";
+        fetch(moviesUrl)
+          .then(res => res.json())
+          .then(moviesData => {
+            // Merge movies into current games state
+            setRawGames(prevGames => prevGames.map(game => {
+              const movies = moviesData[game.id];
+              return movies ? { ...game, ...movies } : game;
+            }));
+            console.log('Movies data loaded and merged');
+          })
+          .catch(e => {
+            console.error('Failed to load movies data:', e);
           });
 
       } catch (e) {
@@ -793,8 +810,8 @@ function SteamPriceFilter({ initialData = null }) {
         };
         const dealKey = regionMap[currentRegion] || 'JP';
 
-        // Get deal data with fallback to JP
-        const deal = g.deal?.[dealKey] || g.deal?.JP || {};
+        // Get deal data with fallback (US is currency-scale-compatible with EUR/GBP, unlike JP)
+        const deal = g.deal?.[dealKey] || g.deal?.US || g.deal?.JP || {};
         const regular =
           deal.regular !== "-" && deal.regular !== undefined ? deal.regular : 0;
         const price =

@@ -4,12 +4,15 @@ Script to rebuild games.json from scratch
 Fetches all data from Steam API and IsThereAnyDeal API
 
 Usage:
-  python3 updater/main.py [ITAD_API_KEY] [--append] [--regions JP,US,UK,EU] [--kv] [--reset-prices] [--delete] [--extract] [--refetch SCORES] [--dedupe]
+  python3 updater/main.py [ITAD_API_KEY] [--append] [--regions JP,US,UK,EU] [--limit N] [--kv] [--reset-prices] [--delete] [--extract] [--refetch SCORES] [--dedupe]
 
 Options:
   --append: Add new titles + fetch data only for new additions
   --regions: Regions to fetch prices for (default: JP)
     Example: --regions JP,US,UK,EU
+  --limit: Differential update mode only. Limit the number of games processed for
+    ITAD comparison/Steam refetch to the first N games (for testing). Other games
+    are kept unchanged. Example: --limit 10
   --kv: Use KV in local environment (for testing)
   --reset-prices: Reset all prices to 1 in games.json (for testing differential updates)
   --delete: Delete games specified in updater/data/refs/delete_appid_list.txt
@@ -414,10 +417,10 @@ def reset_prices_command(kv_helper):
 
 
 def dedupe_command():
-    """Remove duplicate games from games-basic.json and games-details.json (local files only).
+    """Remove duplicate games from games-basic.json, games-details.json and games-movies.json (local files only).
 
     Deduplicates by game id (keeps first occurrence). Updates meta.record_count
-    and trims details to match. Creates timestamped backup before overwriting.
+    and trims details/movies to match. Creates timestamped backup before overwriting.
     """
     import shutil
     import datetime
@@ -426,6 +429,7 @@ def dedupe_command():
 
     basic_file = current_dir / 'games-basic.json'
     details_file = current_dir / 'games-details.json'
+    movies_file = current_dir / 'games-movies.json'
 
     if not basic_file.exists() or not details_file.exists():
         logger.info(f"\n{'='*60}")
@@ -443,6 +447,11 @@ def dedupe_command():
         basic_data = json.load(f)
     with open(details_file, 'r', encoding='utf-8') as f:
         details_data = json.load(f)
+
+    movies_data = None
+    if movies_file.exists():
+        with open(movies_file, 'r', encoding='utf-8') as f:
+            movies_data = json.load(f)
 
     games = basic_data.get('games', []) if isinstance(basic_data, dict) else basic_data
     if not isinstance(basic_data, dict) or 'meta' not in basic_data:
@@ -484,6 +493,9 @@ def dedupe_command():
 
     valid_ids = set(deduplicated[i].get('id') for i in range(len(deduplicated)) if deduplicated[i].get('id') is not None)
     details_deduped = {k: v for k, v in details_data.items() if k in valid_ids} if isinstance(details_data, dict) else details_data
+    movies_deduped = None
+    if isinstance(movies_data, dict):
+        movies_deduped = {k: v for k, v in movies_data.items() if k in valid_ids}
 
     backups_dir.mkdir(parents=True, exist_ok=True)
     ts = datetime.datetime.now().strftime('%Y_%m_%d_%H%M%S')
@@ -491,12 +503,27 @@ def dedupe_command():
     backup_details = backups_dir / f"games-details_{ts}.json"
     shutil.copy2(basic_file, backup_basic)
     shutil.copy2(details_file, backup_details)
-    logger.info(f"Backup created: {backup_basic.name}, {backup_details.name}")
+    backup_names = f"{backup_basic.name}, {backup_details.name}"
+
+    if movies_deduped is not None:
+        backup_movies = backups_dir / f"games-movies_{ts}.json"
+        shutil.copy2(movies_file, backup_movies)
+        backup_names += f", {backup_movies.name}"
+
+    logger.info(f"Backup created: {backup_names}")
 
     with open(basic_file, 'w', encoding='utf-8') as f:
         json.dump(basic_data, f, ensure_ascii=False, indent=2)
     with open(details_file, 'w', encoding='utf-8') as f:
         json.dump(details_deduped, f, ensure_ascii=False, indent=2)
+
+    updated_files = f"{basic_file.name}, {details_file.name}"
+    if movies_deduped is not None:
+        with open(movies_file, 'w', encoding='utf-8') as f:
+            json.dump(movies_deduped, f, ensure_ascii=False, indent=2)
+        updated_files += f", {movies_file.name}"
+    else:
+        logger.warning(f"  ⚠ {movies_file.name} not found, skipped")
 
     logger.info(f"\n{'='*60}")
     logger.info(f"✓ Dedupe Complete")
@@ -506,7 +533,7 @@ def dedupe_command():
     logger.info(f"Removed: {removed_count} duplicate(s)")
     if duplicate_ids:
         logger.info(f"Duplicate ID(s): {duplicate_ids}")
-    logger.info(f"Updated: {basic_file.name}, {details_file.name}")
+    logger.info(f"Updated: {updated_files}")
     logger.info(f"{'='*60}")
 
 
@@ -722,6 +749,7 @@ def main():
     refetch_targets = None
     dedupe_mode = False
     regions = DEFAULT_REGIONS.copy()
+    limit = None
 
     i = 1
     while i < len(sys.argv):
@@ -749,6 +777,10 @@ def main():
         elif arg == '--regions':
             if i + 1 < len(sys.argv):
                 regions = sys.argv[i + 1].split(',')
+                i += 1
+        elif arg == '--limit':
+            if i + 1 < len(sys.argv):
+                limit = int(sys.argv[i + 1])
                 i += 1
         else:
             itad_key = arg
@@ -843,7 +875,8 @@ def main():
     result = builder.rebuild_games_data(
         new_only=new_only,
         regions=regions,
-        kv_helper=kv_helper
+        kv_helper=kv_helper,
+        limit=limit
     )
 
     # Display mapping results

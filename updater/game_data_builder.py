@@ -377,12 +377,14 @@ class GameDataBuilder:
 
         return game
 
-    def _rebuild_differential_update(self, regions, kv_helper):
+    def _rebuild_differential_update(self, regions, kv_helper, limit=None):
         """Mode B: Differential update (daily batch)
 
         Args:
             regions: List of regions to fetch prices for
             kv_helper: KVHelper instance
+            limit: If set, only the first N games (by id-map order) are compared/refetched.
+                Remaining games are kept unchanged (for testing).
 
         Returns:
             dict: Processing result
@@ -403,6 +405,11 @@ class GameDataBuilder:
         id_map_dict = {item['id']: item.get('itadId') for item in id_map}
         existing_games_dict = {game['id']: game for game in existing_games}
 
+        # Limit mode: only process the first N games, keep the rest unchanged
+        test_app_ids = set(all_app_ids[:limit]) if limit else None
+        if test_app_ids is not None:
+            logger.info(f"  → --limit specified: only processing first {len(test_app_ids)} games, rest kept unchanged")
+
         # Identify games with noItadData flag (need Steam API comparison)
         games_with_no_itad_flag = set()
         for game in existing_games:
@@ -416,7 +423,7 @@ class GameDataBuilder:
                 games_with_no_itad_flag.add(game['id'])
 
         # Fetch ITAD deals in batch (200 items per request) - only for games without noItadData flag
-        itad_enabled_ids = [item.get('itadId') for item in id_map if item.get('itadId') and item['id'] not in games_with_no_itad_flag]
+        itad_enabled_ids = [item.get('itadId') for item in id_map if item.get('itadId') and item['id'] not in games_with_no_itad_flag and (test_app_ids is None or item['id'] in test_app_ids)]
         itad_deal_maps = {}
         if itad_enabled_ids and self.itad_client:
             logger.info(f"  → Fetching ITAD deals for {len(itad_enabled_ids)} games (excluding {len(games_with_no_itad_flag)} noItadData games)...")
@@ -441,6 +448,11 @@ class GameDataBuilder:
             existing_game = existing_games_dict.get(app_id)
             if not existing_game:
                 logger.warning(f"  ✗ App ID {app_id} exists in id-map but not in games-data, skipping...")
+                continue
+
+            # Limit mode: skip comparison for games outside the test set, keep unchanged
+            if test_app_ids is not None and app_id not in test_app_ids:
+                games_no_change.append(app_id)
                 continue
 
             # Check if this game has noItadData flag (check first region)
@@ -1301,13 +1313,15 @@ class GameDataBuilder:
 
         return checkpoint_file
 
-    def rebuild_games_data(self, new_only=False, regions=None, kv_helper=None):
+    def rebuild_games_data(self, new_only=False, regions=None, kv_helper=None, limit=None):
         """Build games.json
 
         Args:
             new_only: If True, add new titles + fetch data only for new additions
             regions: List of regions to fetch prices for (e.g., ['JP', 'US', 'UK', 'EU'])
             kv_helper: KVHelper instance
+            limit: Differential update mode only. Limit ITAD comparison/Steam refetch
+                to the first N games (for testing). Other games are kept unchanged.
 
         Returns:
             dict: Processing result (rebuilt_games, failed_games, missing_data, mapping_result, id_map)
@@ -1322,4 +1336,4 @@ class GameDataBuilder:
         if new_only:
             return self._rebuild_new_only(regions, kv_helper)
         else:
-            return self._rebuild_differential_update(regions, kv_helper)
+            return self._rebuild_differential_update(regions, kv_helper, limit=limit)

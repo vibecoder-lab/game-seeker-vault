@@ -93,6 +93,7 @@ class KVHelper:
             file_path = Path(local_file_path)
             basic_file_path = file_path.parent / f"{file_path.stem}-basic{file_path.suffix}"
             details_file_path = file_path.parent / f"{file_path.stem}-details{file_path.suffix}"
+            movies_file_path = file_path.parent / f"{file_path.stem}-movies{file_path.suffix}"
 
             # Try to read from basic and details files first
             if basic_file_path.exists() and details_file_path.exists():
@@ -102,18 +103,24 @@ class KVHelper:
                 with open(details_file_path, 'r', encoding='utf-8') as f:
                     details_data = json.load(f)
 
+                movies_data = {}
+                if movies_file_path.exists():
+                    with open(movies_file_path, 'r', encoding='utf-8') as f:
+                        movies_data = json.load(f)
+
                 # Extract games from basic data
                 basic_games = basic_data.get('games', []) if isinstance(basic_data, dict) else basic_data
 
-                # Merge basic and details
+                # Merge basic, details and movies
                 merged_games = []
                 for game in basic_games:
                     game_id = game.get('id')
                     details = details_data.get(game_id, {}) if isinstance(details_data, dict) else {}
-                    merged_game = {**game, **details}
+                    movies = movies_data.get(game_id, {}) if isinstance(movies_data, dict) else {}
+                    merged_game = {**game, **details, **movies}
                     merged_games.append(merged_game)
 
-                logger.info(f"Local file mode: Merged {len(merged_games)} games from basic and details files")
+                logger.info(f"Local file mode: Merged {len(merged_games)} games from basic, details and movies files")
                 return merged_games
             # Fallback to old games.json for backward compatibility
             elif file_path.exists():
@@ -152,15 +159,26 @@ class KVHelper:
                 details_data = json.loads(details_result.stdout)
                 logger.info(f"KV mode: Fetched {len(details_data)} game details from games-details")
 
-                # Merge basic and details
+                logger.info(f"KV mode: Fetching games-movies from KV...")
+                movies_result = subprocess.run(
+                    ['wrangler', 'kv', 'key', 'get', 'games-movies', f'--namespace-id={self.namespace_id}', '--remote'],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                movies_data = json.loads(movies_result.stdout)
+                logger.info(f"KV mode: Fetched {len(movies_data)} game movies from games-movies")
+
+                # Merge basic, details and movies
                 merged_games = []
                 for game in basic_games:
                     game_id = game.get('id')
                     details = details_data.get(game_id, {}) if isinstance(details_data, dict) else {}
-                    merged_game = {**game, **details}
+                    movies = movies_data.get(game_id, {}) if isinstance(movies_data, dict) else {}
+                    merged_game = {**game, **details, **movies}
                     merged_games.append(merged_game)
 
-                logger.info(f"KV mode: Merged {len(merged_games)} games from basic and details")
+                logger.info(f"KV mode: Merged {len(merged_games)} games from basic, details and movies")
                 return merged_games
             except subprocess.CalledProcessError as e:
                 logger.error(f"KV fetch error: {e.stderr}")
@@ -227,9 +245,10 @@ class KVHelper:
             "record_count": len(games_data)
         }
 
-        # Split data into basic and details
+        # Split data into basic, details and movies
         basic_games = []
         details_games = {}
+        movies_games = {}
 
         for game in games_data:
             # Basic info (for filtering and list display)
@@ -249,13 +268,18 @@ class KVHelper:
 
             # Detail info (for modal display)
             detail_info = {
-                "movies": game.get("movies"),
                 "developers": game.get("developers"),
                 "publishers": game.get("publishers"),
                 "supportedLanguages": game.get("supportedLanguages"),
                 "itadId": game.get("itadId")
             }
             details_games[game.get("id")] = detail_info
+
+            # Movie info (trailers/videos for modal display)
+            movie_info = {
+                "movies": game.get("movies")
+            }
+            movies_games[game.get("id")] = movie_info
 
         # Create output data structures
         basic_output = {
@@ -264,6 +288,7 @@ class KVHelper:
         }
 
         details_output = details_games
+        movies_output = movies_games
 
         # Save basic data to local file
         file_path = Path(local_file_path)
@@ -278,6 +303,12 @@ class KVHelper:
         with open(details_file_path, 'w', encoding='utf-8') as f:
             json.dump(details_output, f, ensure_ascii=False, indent=2)
         logger.info(f"Saved details games-data to {details_file_path} ({len(details_games)} items)")
+
+        # Save movies data to local file
+        movies_file_path = file_path.parent / f"{file_path.stem}-movies{file_path.suffix}"
+        with open(movies_file_path, 'w', encoding='utf-8') as f:
+            json.dump(movies_output, f, ensure_ascii=False, indent=2)
+        logger.info(f"Saved movies games-data to {movies_file_path} ({len(movies_games)} items)")
 
         # Also save combined data for backward compatibility
         combined_output = {
@@ -320,6 +351,21 @@ class KVHelper:
                 )
                 logger.info(f"KV mode: Saved details games to KV")
                 temp_details_file.unlink()
+
+                # Save movies data to KV
+                temp_movies_file = Path(TEMP_DIR) / 'temp_games_movies.json'
+                with open(temp_movies_file, 'w', encoding='utf-8') as f:
+                    json.dump(movies_output, f, ensure_ascii=False, indent=2)
+
+                logger.info(f"KV mode: Saving movies games to KV... ({len(movies_games)} items)")
+                subprocess.run(
+                    ['wrangler', 'kv', 'key', 'put', 'games-movies', f'--namespace-id={self.namespace_id}', f'--path={temp_movies_file}', '--remote'],
+                    check=True,
+                    capture_output=True,
+                    text=True
+                )
+                logger.info(f"KV mode: Saved movies games to KV")
+                temp_movies_file.unlink()
 
             except subprocess.CalledProcessError as e:
                 logger.error(f"KV save error: {e.stderr}")
