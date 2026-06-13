@@ -447,7 +447,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                 />
                 <div ref={detailRef} className={`absolute inset-0 ${theme.cardBg} ${theme.text} p-4 overflow-y-auto z-20 transition-transform duration-300 ease-in-out`}
                      style={{
-                       transform: (isHovered && shiftPressed) || showDetailModal ? 'translateX(0)' : 'translateX(-100%)',
+                       transform: (isHovered && shiftPressed) || showDetailModal ? 'translateX(0)' : 'translateX(calc(-100% - 2px))',
                        touchAction: showDetailModal ? 'pan-y' : 'auto'
                      }}
                      onTouchStart={(e) => {
