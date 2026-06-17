@@ -144,6 +144,8 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
           return folders.find(f =>
             f.name === t('folder.default.owned_list', 'en') ||
             f.name === t('folder.default.owned_list', 'ja') ||
+            f.name === t('folder.default.owned_list', 'de') ||
+            f.name === t('folder.default.owned_list', 'fr') ||
             f.name === 'Owned List' ||
             f.name === '所有リスト'
           );
@@ -154,6 +156,8 @@ export function CollectionModal({ theme, currentTheme, folders, setFolders, sele
           return folders.find(f =>
             f.name === t('folder.default.interested', 'en') ||
             f.name === t('folder.default.interested', 'ja') ||
+            f.name === t('folder.default.interested', 'de') ||
+            f.name === t('folder.default.interested', 'fr') ||
             f.name === 'Interested List' ||
             f.name === '気になるリスト'
           );

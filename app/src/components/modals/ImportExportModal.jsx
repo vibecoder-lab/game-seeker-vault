@@ -173,9 +173,8 @@ export function ImportExportModal({ theme, currentTheme, folders, setFolders, se
 
                 // Translation key match
                 if (translationKey) {
-                  const enName = t(translationKey, 'en');
-                  const jaName = t(translationKey, 'ja');
-                  return existing.name === enName || existing.name === jaName;
+                  const existingKey = FOLDER_NAME_TO_KEY[existing.name];
+                  return existingKey === translationKey;
                 }
 
                 return false;

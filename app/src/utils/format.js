@@ -113,7 +113,15 @@ export const FOLDER_NAME_TO_KEY = {
   'Sale Watch List': 'folder.default.sale_watch',
   'セール待ちリスト': 'folder.default.sale_watch',
   'Owned List': 'folder.default.owned_list',
-  '所有リスト': 'folder.default.owned_list'
+  '所有リスト': 'folder.default.owned_list',
+  'Interessenliste': 'folder.default.interested',
+  'Wunschliste': 'folder.default.wishlist',
+  'Angebots-Beobachtungsliste': 'folder.default.sale_watch',
+  'Besitzliste': 'folder.default.owned_list',
+  "Liste d'intérêt": 'folder.default.interested',
+  'Liste de souhaits': 'folder.default.wishlist',
+  'Liste de surveillance des promotions': 'folder.default.sale_watch',
+  'Liste des jeux possédés': 'folder.default.owned_list'
 };
 
 // Get localized folder name for initial folders
