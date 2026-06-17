@@ -772,6 +772,7 @@ class GameDataBuilder:
         missing_data = []
         games_without_itad = []
         games_with_image_fallback = []
+        excluded_games = []
 
         # Batch fetch ITAD deal data for new games
         new_itad_ids = [id_map_dict.get(app_id) for app_id in target_ids if id_map_dict.get(app_id)]
@@ -850,6 +851,14 @@ class GameDataBuilder:
             # Build game data using common method
             new_game = self._build_game_data_from_steam(app_id, steam_data, itad_id, itad_deal_dict, tags)
 
+            # Filter by review score
+            from constants import ALLOWED_REVIEW_SCORES
+            review_score = new_game.get('reviewScore', '')
+            if review_score not in ALLOWED_REVIEW_SCORES:
+                excluded_games.append({'app_id': app_id, 'title': new_game.get('title', 'Unknown'), 'reviewScore': review_score})
+                logger.info(f"  ✗ Excluded (reviewScore: {review_score}, App ID: {app_id}, Title: {new_game.get('title', 'Unknown')})")
+                continue
+
             # Check if image URL conversion failed (using fallback)
             # If imageUrl doesn't contain 'capsule_616x353', it's using fallback
             image_url = new_game.get('imageUrl', '')
@@ -915,7 +924,8 @@ class GameDataBuilder:
             'id_map': id_map,
             'newly_added_games': newly_added_games,
             'games_without_itad': games_without_itad,
-            'games_with_image_fallback': games_with_image_fallback
+            'games_with_image_fallback': games_with_image_fallback,
+            'excluded_games': excluded_games
         }
 
     def _process_batch_mode(self, new_ids, regions, kv_helper, id_map, mapping_result, existing_games):
@@ -1063,6 +1073,7 @@ class GameDataBuilder:
         missing_data = []
         games_without_itad = []
         games_with_image_fallback = []
+        excluded_games = []
 
         # Calculate starting index for checkpoint naming
         # If resuming, start_index = resume_index. Otherwise, start from 0.
@@ -1128,6 +1139,14 @@ class GameDataBuilder:
 
             # Build game data using common method
             new_game = self._build_game_data_from_steam(app_id, steam_data, itad_id, itad_deal_dict, tags)
+
+            # Filter by review score
+            from constants import ALLOWED_REVIEW_SCORES
+            review_score = new_game.get('reviewScore', '')
+            if review_score not in ALLOWED_REVIEW_SCORES:
+                excluded_games.append({'app_id': app_id, 'title': new_game.get('title', 'Unknown'), 'reviewScore': review_score})
+                logger.info(f"  ✗ Excluded (reviewScore: {review_score}, App ID: {app_id}, Title: {new_game.get('title', 'Unknown')})")
+                continue
 
             # Check if image URL conversion failed
             image_url = new_game.get('imageUrl', '')
@@ -1269,7 +1288,8 @@ class GameDataBuilder:
             'id_map': id_map,
             'newly_added_games': newly_added_games,
             'games_without_itad': games_without_itad,
-            'games_with_image_fallback': games_with_image_fallback
+            'games_with_image_fallback': games_with_image_fallback,
+            'excluded_games': excluded_games
         }
 
     def _save_checkpoint(self, games, count):

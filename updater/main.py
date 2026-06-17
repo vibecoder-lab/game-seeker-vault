@@ -186,6 +186,15 @@ def print_rebuild_report(result):
         for title in failed_mappings:
             logger.info(f"  - {title}")
 
+    excluded_games = result.get('excluded_games', [])
+    if excluded_games:
+        logger.info(f"\n{'='*60}")
+        logger.info(f"【Excluded by Review Score】")
+        logger.info(f"{'='*60}")
+        logger.info(f"Excluded: {len(excluded_games)} items\n")
+        for item in excluded_games:
+            logger.info(f"  - App ID: {item['app_id']}, Score: {item['reviewScore']}, Title: {item['title']}")
+
     if missing_data:
         logger.info(f"\n{'='*60}")
         logger.info(f"【Partial Data Retrieval】")

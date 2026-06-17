@@ -30,6 +30,9 @@ REGIONS = {
 # Default region for price fetching
 DEFAULT_REGIONS = ['JP', 'US', 'EU']
 
+# Review score filtering: only allow these scores for new additions
+ALLOWED_REVIEW_SCORES = {'Very Positive', 'Overwhelmingly Positive'}
+
 # Title filtering: exclude keywords
 EXCLUDE_KEYWORDS = [
     'Soundtrack', 'OST', 'Original Soundtrack', 'Music',

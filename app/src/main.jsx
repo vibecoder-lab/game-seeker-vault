@@ -717,6 +717,46 @@ function SteamPriceFilter({ initialData = null }) {
     })();
   }, [folders]);
 
+  // Cleanup orphaned collections (IndexedDB entries referencing games no longer in JSON)
+  const collectionCleanupDone = React.useRef(false);
+  React.useEffect(() => {
+    if (collectionCleanupDone.current || rawGames.length === 0 || folders.length === 0) return;
+    collectionCleanupDone.current = true;
+
+    (async () => {
+      const validGameIds = new Set(rawGames.map(g => g.id));
+      let removedCount = 0;
+
+      for (const folder of folders) {
+        const collections = await dbHelper.getCollectionsByFolder(folder.id);
+        for (const collection of collections) {
+          if (!validGameIds.has(collection.gameId)) {
+            await dbHelper.deleteCollection(collection.id);
+            removedCount++;
+          }
+        }
+      }
+
+      const deletedCollections = await dbHelper.getDeletedCollections();
+      for (const collection of deletedCollections) {
+        if (!validGameIds.has(collection.gameId)) {
+          await dbHelper.deleteCollection(collection.id);
+          removedCount++;
+        }
+      }
+
+      if (removedCount > 0) {
+        console.log(`Cleaned up ${removedCount} orphaned collection(s)`);
+        const allCollections = {};
+        for (const folder of folders) {
+          const collections = await dbHelper.getCollectionsByFolder(folder.id);
+          collections.forEach(c => { allCollections[c.gameId] = c; });
+        }
+        setCollectionMap(allCollections);
+      }
+    })();
+  }, [rawGames, folders]);
+
   const handleToggleFavorite = React.useCallback(async (game) => {
     // Wait for folders to be initialized
     if (folders.length === 0) {

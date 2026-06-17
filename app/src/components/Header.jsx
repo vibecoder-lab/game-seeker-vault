@@ -52,7 +52,7 @@ export function Header({
   return (
     <header className={`md:fixed top-0 left-0 right-0 z-30 ${theme.bg} px-6 py-4 transition-shadow duration-100 ${isScrolled ? 'md:shadow-md' : ''}`}>
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        <div className="flex flex-col md:flex-row md:items-end md:gap-3">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:gap-3">
           <div>
             <style>{`
               @keyframes gradient-move {
@@ -65,6 +65,7 @@ export function Header({
               {t('header.title', currentLocale)}
             </h1>
           </div>
+          <span className={`text-xs ${theme.subText} lg:self-end lg:mb-0.5`}>Only Very Positive and Overwhelmingly Positive Steam titles.</span>
         </div>
 
         <div className="hidden md:flex items-center gap-3">
