@@ -21,12 +21,12 @@ class ITADClient:
             'User-Agent': USER_AGENT_ITAD
         })
 
-    def _request_with_retry(self, url, max_retries=3, method='get', **kwargs):
+    def _request_with_retry(self, url, max_retries=5, method='get', **kwargs):
         """Execute HTTP request with exponential backoff retry
 
         Args:
             url: Request URL
-            max_retries: Maximum retry count (default: 3)
+            max_retries: Maximum retry count (default: 5)
             method: HTTP method ('get' or 'post')
             **kwargs: Additional arguments to pass to requests
 
@@ -75,18 +75,20 @@ class ITADClient:
             region: Region code ('JP', 'US', 'UK', 'EU')
 
         Returns:
-            dict: Map of {itad_id: {price, regular, cut, storeLow}}
+            tuple: (dict of {itad_id: {price, regular, cut, storeLow}}, set of itad_ids
+                whose batch request failed this run - e.g. rate limited - and therefore
+                have no reliable data, as opposed to ids ITAD genuinely has no listing for)
         """
         if not self.api_key:
             logger.warning("ITAD API key not provided")
-            return {}
+            return {}, set()
 
         if region not in REGIONS:
             logger.error(f"ITAD: Unknown region: {region}")
-            return {}
+            return {}, set()
 
         if not itad_ids:
-            return {}
+            return {}, set()
 
         region_config = REGIONS[region]
         country = region_config['itad_country']
@@ -96,6 +98,7 @@ class ITADClient:
             # Split into chunks of 200
             chunk_size = 200
             all_deals = {}
+            failed_ids = set()
 
             for i in range(0, len(itad_ids), chunk_size):
                 chunk = itad_ids[i:i + chunk_size]
@@ -109,25 +112,29 @@ class ITADClient:
 
                 if not response:
                     logger.warning(f"ITAD: Failed to fetch batch deals for region: {region}")
+                    failed_ids.update(chunk)
                     continue
 
                 # Rate limiting protection (wait after API request)
-                time.sleep(random.uniform(1.0, 1.3))
+                time.sleep(random.uniform(2.0, 3.0))
 
                 try:
                     data = response.json()
                 except Exception as json_err:
                     logger.error(f"ITAD: Failed to parse JSON response: {json_err}")
                     logger.debug(f"Response content: {response.text[:500]}")
+                    failed_ids.update(chunk)
                     continue
 
                 if not data:
                     logger.warning(f"ITAD: No data returned for batch")
+                    failed_ids.update(chunk)
                     continue
 
                 # Ensure data is a list
                 if not isinstance(data, list):
                     logger.error(f"ITAD: Expected list response, got {type(data)}")
+                    failed_ids.update(chunk)
                     continue
 
                 # Process each game in response
@@ -188,11 +195,13 @@ class ITADClient:
                         }
 
             logger.info(f"ITAD: Batch fetch complete ({len(all_deals)}/{len(itad_ids)} games)")
-            return all_deals
+            return all_deals, failed_ids
 
         except Exception as e:
             logger.error(f"ITAD: Batch API error (region: {region}): {e}")
-            return {}
+            # Treat any id not yet fetched as failed (transient), not as "no data"
+            failed_ids.update(set(itad_ids) - set(all_deals.keys()))
+            return all_deals, failed_ids
 
     def get_batch_prices(self, itad_ids, region='JP'):
         """Fetch historical low prices for multiple games in batch

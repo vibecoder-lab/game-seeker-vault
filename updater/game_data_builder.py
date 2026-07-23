@@ -425,11 +425,17 @@ class GameDataBuilder:
         # Fetch ITAD deals in batch (200 items per request) - only for games without noItadData flag
         itad_enabled_ids = [item.get('itadId') for item in id_map if item.get('itadId') and item['id'] not in games_with_no_itad_flag and (test_app_ids is None or item['id'] in test_app_ids)]
         itad_deal_maps = {}
+        itad_failed_ids_by_region = {}
         if itad_enabled_ids and self.itad_client:
             logger.info(f"  → Fetching ITAD deals for {len(itad_enabled_ids)} games (excluding {len(games_with_no_itad_flag)} noItadData games)...")
             for region in regions:
-                itad_deal_maps[region] = self.itad_client.get_batch_deals(itad_enabled_ids, region=region)
+                itad_deal_maps[region], itad_failed_ids_by_region[region] = self.itad_client.get_batch_deals(itad_enabled_ids, region=region)
                 logger.info(f"  → ITAD batch fetch ({region}) complete: {len(itad_deal_maps[region])} deals retrieved")
+                if itad_failed_ids_by_region[region]:
+                    logger.warning(f"  ⚠ ITAD batch fetch failed for {len(itad_failed_ids_by_region[region])} ids in region {region} (will keep existing data for these)")
+                # Pause between regions to avoid cumulative ITAD rate limiting
+                if region != regions[-1]:
+                    time.sleep(5)
 
             # Check if ITAD API failed completely (0 deals retrieved for first region)
             first_region = regions[0]
@@ -479,6 +485,11 @@ class GameDataBuilder:
             for region in regions:
                 itad_deal = itad_deal_maps.get(region, {}).get(itad_id)
                 if not itad_deal:
+                    if itad_id in itad_failed_ids_by_region.get(region, set()):
+                        # ITAD batch fetch failed this run (e.g. rate limited) - not a real
+                        # signal of a price change, so keep existing data and check other regions
+                        logger.warning(f"  ⚠ ITAD batch fetch failed this run for ITAD ID {itad_id} (App ID: {app_id}, Region: {region}), skipping comparison for this region")
+                        continue
                     # No ITAD data for this region - will need to update
                     logger.warning(f"  ✗ No ITAD deal data for ITAD ID {itad_id} (App ID: {app_id}, Region: {region}), will fetch from Steam API only")
                     price_changed = True
@@ -780,8 +791,11 @@ class GameDataBuilder:
         if new_itad_ids and self.itad_client:
             logger.info(f"Fetching ITAD deals for {len(new_itad_ids)} new games...")
             for region in regions:
-                itad_deal_maps[region] = self.itad_client.get_batch_deals(new_itad_ids, region=region)
+                itad_deal_maps[region], _ = self.itad_client.get_batch_deals(new_itad_ids, region=region)
                 logger.info(f"  → ITAD batch fetch ({region}) complete: {len(itad_deal_maps[region])} deals retrieved")
+                # Pause between regions to avoid cumulative ITAD rate limiting
+                if region != regions[-1]:
+                    time.sleep(5)
 
             # Check if ITAD API failed completely (0 deals retrieved for first region)
             first_region = regions[0]
@@ -1058,8 +1072,11 @@ class GameDataBuilder:
         if new_itad_ids and self.itad_client:
             logger.info(f"Fetching ITAD deals for {len(new_itad_ids)} games...")
             for region in regions:
-                itad_deal_maps[region] = self.itad_client.get_batch_deals(new_itad_ids, region=region)
+                itad_deal_maps[region], _ = self.itad_client.get_batch_deals(new_itad_ids, region=region)
                 logger.info(f"  → ITAD batch fetch ({region}) complete: {len(itad_deal_maps[region])} deals retrieved")
+                # Pause between regions to avoid cumulative ITAD rate limiting
+                if region != regions[-1]:
+                    time.sleep(5)
 
             # Check if ITAD API failed completely (0 deals retrieved for first region)
             first_region = regions[0]
