@@ -238,15 +238,15 @@ class SteamClient:
             # Set regular price
             if initial_price > 0:
                 # Has initial = regular price is initial
-                price_info['price'] = int(initial_price)
+                price_info['price'] = round(initial_price, 2)
             else:
                 # initial is 0 = regular price is final
-                price_info['price'] = int(final_price)
+                price_info['price'] = round(final_price, 2)
 
             # Check if on sale
             if initial_price > final_price and final_price > 0:
                 # On sale
-                price_info['salePrice'] = int(final_price)
+                price_info['salePrice'] = round(final_price, 2)
                 price_info['discountPercent'] = discount_percent
 
         except Exception as e:

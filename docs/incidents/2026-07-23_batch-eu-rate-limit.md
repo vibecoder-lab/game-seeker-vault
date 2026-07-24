@@ -105,7 +105,33 @@ JP→US→EUと3リージョン分のITADバッチ取得を約5〜6分の間に�
 
 ---
 
-## 7. 関連ファイル
+## 8. 追加バグ修正（2026-07-24）: EU/US価格の小数点切り捨て
+
+### 事象
+
+方針1・2の対応後、2026-07-23の実行ではレート制限はほぼ解消（EU取得成功率 5471/10078 → 10070/10078）したものの、依然として6時間を超過。
+
+### 原因
+
+`updater/steam_client.py` の `_extract_price_from_api` が、Steam APIから取得した価格を`int()`で整数に切り捨てていた（`price_info['price'] = int(initial_price)` 等）。日本円（JPY）は小数点がないため問題にならないが、USD/EUR/GBPではセント/セント未満が切り捨てられる。
+
+このバグは2025-10-13の最初のマルチリージョン対応コミットから存在（git履歴で確認済み）。ITADにデータがない場合のSteam APIフォールバック経由でのみ顕在化するため、レート制限修正でEUのITAD取得成功率が上がったことで、過去に切り捨てられて保存されたEU価格と正しいITAD小数価格との差分が大量に検出され、Phase 2（Steam再取得）の対象が膨れ上がる一因となっていた。
+
+### 修正内容
+
+`updater/steam_client.py` の `_extract_price_from_api` 内、`price`・`salePrice`の`int()`切り捨てを`round(x, 2)`に変更（小数点2桁を保持）。
+
+### 動作確認
+- `python -m py_compile` で構文エラーがないことを確認
+- 単体実行で JPY=2500.0（整数のまま）、USD=19.99/9.99（セント保持）、EUR=24.5（小数保持）となることを確認
+
+### 補足
+
+既にKVに保存されている過去の切り捨て済みEU価格は、このコード修正だけでは直らない。該当ゲームのITAD取得が次回以降成功した時点で、Phase 2の上書き保存により順次正しい値に修正される（自然に解消していく想定）。
+
+---
+
+## 9. 関連ファイル
 
 - `updater/constants.py` — `DEFAULT_REGIONS`, `REGIONS`
 - `updater/itad_client.py` — `get_batch_deals`, `_request_with_retry`
