@@ -80,16 +80,19 @@ CHECKPOINT_INTERVAL = 100
 # Steam Web API (IStoreService) - new-game discovery
 STEAM_APPLIST_URL = 'https://api.steampowered.com/IStoreService/GetAppList/v1/'
 STEAM_APPLIST_MAX_RESULTS = 50000
-STEAM_APPLIST_SNAPSHOT_FILE = 'updater/data/refs/steam_applist_snapshot.json'
+# Lives outside updater/data/ (which is entirely gitignored) because a
+# gitignore'd parent directory can't be selectively un-ignored per file --
+# git never descends into it to test the negation patterns.
+STEAM_APPLIST_SNAPSHOT_FILE = 'discovery-data/refs/steam_applist_snapshot.json'
 
 # New-game discovery pipeline: pending review outputs and persistent lists
-PENDING_NEW_GAMES_DIR = 'updater/data/pending_new_games'
-PENDING_REVIEW_CANDIDATES_FILE = 'updater/data/refs/pending_review_candidates.json'
+PENDING_NEW_GAMES_DIR = 'discovery-data/pending_new_games'
+PENDING_REVIEW_CANDIDATES_FILE = 'discovery-data/refs/pending_review_candidates.json'
 # Candidates that passed their final (180-day) milestone check and still
 # didn't qualify: moved here out of PENDING_REVIEW_CANDIDATES_FILE so the
 # pending list only ever contains candidates still being actively monitored.
-EXHAUSTED_REVIEW_CANDIDATES_FILE = 'updater/data/refs/exhausted_review_candidates.json'
-REJECTED_APPIDS_FILE = 'updater/data/refs/rejected_appids.txt'
+EXHAUSTED_REVIEW_CANDIDATES_FILE = 'discovery-data/refs/exhausted_review_candidates.json'
+REJECTED_APPIDS_FILE = 'discovery-data/refs/rejected_appids.txt'
 
 # Discovery review gate: minimum total review count required, in addition to
 # ALLOWED_REVIEW_SCORES, before a candidate proceeds to the full Steam+ITAD

@@ -9,14 +9,11 @@ wrangler.jsonc
 updater/data/
 updater/log/
 
-# New-game discovery pipeline: these must stay git-tracked (audited across
-# independent GitHub Actions runs, and reviewed as part of the PR diff)
-!updater/data/refs/steam_applist_snapshot.json
-!updater/data/refs/pending_review_candidates.json
-!updater/data/refs/exhausted_review_candidates.json
-!updater/data/refs/rejected_appids.txt
-!updater/data/pending_new_games/
-!updater/data/pending_new_games/**
+# New-game discovery pipeline's bookkeeping/PR-review files live in
+# discovery-data/ (project root, NOT under updater/data/) and are git-tracked
+# by default -- a negation pattern (!) cannot re-include files inside a
+# directory that is itself gitignored (updater/data/ above), so they can't
+# live there.
 
 # Generated data files
 **/games*.json

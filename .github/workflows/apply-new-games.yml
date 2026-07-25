@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     paths:
-      - 'updater/data/pending_new_games/**'
+      - 'discovery-data/pending_new_games/**'
 
 permissions:
   contents: write  # push the clean-up commit back to main
@@ -38,13 +38,13 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           KV_NAMESPACE_ID: ${{ secrets.KV_NAMESPACE_ID }}
         run: |
-          python updater/main.py --apply-pending updater/data/pending_new_games/candidates.json
+          python updater/main.py --apply-pending discovery-data/pending_new_games/candidates.json
 
       - name: Clean up applied candidates file
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          rm -f updater/data/pending_new_games/candidates.json updater/data/pending_new_games/pr_summary.md
-          git add updater/data/pending_new_games/
+          rm -f discovery-data/pending_new_games/candidates.json discovery-data/pending_new_games/pr_summary.md
+          git add discovery-data/pending_new_games/
           git diff --cached --quiet || git commit -m "chore: clean up applied new-game candidates"
           git push

@@ -481,7 +481,7 @@ def _write_pr_summary(passed_games, pending_entries, pre_filter_excluded, summar
         "titles that slipped through the suffix filter (known gap: mid-title occurrences like "
         "\"X - Soundtrack and Bonus Content\" won't be caught). To reject an entry, remove it from "
         "`candidates.json` in this PR before merging. To permanently block an App ID from ever being "
-        "suggested again, add it to `updater/data/refs/rejected_appids.txt` in the same commit. To "
+        "suggested again, add it to `discovery-data/refs/rejected_appids.txt` in the same commit. To "
         "rescue a wrongly-excluded title from the Pending or pre-filter tables (e.g. a legitimate "
         "game caught by the suffix heuristic), run `python updater/main.py --force-include <appid>` "
         "before the next scheduled run; it will be fetched fresh and re-evaluated on the next "

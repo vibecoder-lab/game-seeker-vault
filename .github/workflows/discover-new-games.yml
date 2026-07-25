@@ -54,7 +54,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add updater/data/refs/steam_applist_snapshot.json updater/data/refs/pending_review_candidates.json updater/data/refs/exhausted_review_candidates.json
+          git add discovery-data/refs/steam_applist_snapshot.json discovery-data/refs/pending_review_candidates.json discovery-data/refs/exhausted_review_candidates.json
           git diff --cached --quiet || git commit -m "chore: update Steam catalog snapshot and pending-review list"
           git push
 
@@ -65,8 +65,8 @@ jobs:
           commit-message: "discover: new game candidates"
           branch: discovery/new-games-${{ github.run_number }}
           title: "New game candidates for review — run ${{ github.run_id }}"
-          body-path: updater/data/pending_new_games/pr_summary.md
+          body-path: discovery-data/pending_new_games/pr_summary.md
           add-paths: |
-            updater/data/pending_new_games/candidates.json
-            updater/data/pending_new_games/pr_summary.md
+            discovery-data/pending_new_games/candidates.json
+            discovery-data/pending_new_games/pr_summary.md
           labels: new-game-review
