@@ -61,7 +61,7 @@ jobs:
           git push
 
       - name: Open PR with new candidates (if any)
-        if: success()
+        if: success() && hashFiles('discovery-data/pending_new_games/pr_summary.md') != ''
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: "discover: new game candidates"
