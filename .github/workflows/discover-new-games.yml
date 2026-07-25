@@ -54,7 +54,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add updater/data/refs/steam_applist_snapshot.json updater/data/refs/pending_review_candidates.json
+          git add updater/data/refs/steam_applist_snapshot.json updater/data/refs/pending_review_candidates.json updater/data/refs/exhausted_review_candidates.json
           git diff --cached --quiet || git commit -m "chore: update Steam catalog snapshot and pending-review list"
           git push
 
