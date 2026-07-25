@@ -76,3 +76,21 @@ PROCESSED_IDS_FILE = 'updater/data/batch/processed_ids.txt'
 MAPPING_RESULT_FILE = 'updater/data/batch/mapping_result.txt'
 BATCH_LOCK_FILE = 'updater/data/batch/batch_in_progress.lock'
 CHECKPOINT_INTERVAL = 100
+
+# Steam Web API (IStoreService) - new-game discovery
+STEAM_APPLIST_URL = 'https://api.steampowered.com/IStoreService/GetAppList/v1/'
+STEAM_APPLIST_MAX_RESULTS = 50000
+STEAM_APPLIST_SNAPSHOT_FILE = 'updater/data/refs/steam_applist_snapshot.json'
+
+# New-game discovery pipeline: pending review outputs and persistent lists
+PENDING_NEW_GAMES_DIR = 'updater/data/pending_new_games'
+PENDING_REVIEW_CANDIDATES_FILE = 'updater/data/refs/pending_review_candidates.json'
+REJECTED_APPIDS_FILE = 'updater/data/refs/rejected_appids.txt'
+
+# Discovery pre-filter: suffix/bracket-anchored exclusion (separate from
+# EXCLUDE_KEYWORDS, which is unanchored substring matching used only by the
+# legacy fuzzy-title-matching path in build_id_map_from_titles)
+DISCOVERY_EXCLUDE_SUFFIXES = [
+    'Soundtrack', 'OST', 'Original Soundtrack',
+    'Demo', 'Playtest', 'Beta Test', 'Tech Demo',
+]

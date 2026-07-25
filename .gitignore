@@ -9,6 +9,14 @@ wrangler.jsonc
 updater/data/
 updater/log/
 
+# New-game discovery pipeline: these must stay git-tracked (audited across
+# independent GitHub Actions runs, and reviewed as part of the PR diff)
+!updater/data/refs/steam_applist_snapshot.json
+!updater/data/refs/pending_review_candidates.json
+!updater/data/refs/rejected_appids.txt
+!updater/data/pending_new_games/
+!updater/data/pending_new_games/**
+
 # Generated data files
 **/games*.json
 **/id-map.json

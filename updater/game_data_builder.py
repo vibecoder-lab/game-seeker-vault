@@ -5,6 +5,7 @@ Integrates data from Steam API and ITAD API to build games.json
 """
 
 import json
+import re
 import time
 import random
 import difflib
@@ -12,6 +13,7 @@ import logging
 import requests
 from pathlib import Path
 from steam_client import SteamClient
+from steam_catalog import SteamCatalogClient
 from itad_client import ITADClient
 from kv_helper import KVHelper
 from constants import (
@@ -21,23 +23,53 @@ from constants import (
     SCORE_PARTIAL_MATCH_BASE,
     SCORE_SIMILARITY_MULTIPLIER,
     SCORE_AUTO_ACCEPT_THRESHOLD,
-    SCORE_CANDIDATE_THRESHOLD
+    SCORE_CANDIDATE_THRESHOLD,
+    DISCOVERY_EXCLUDE_SUFFIXES
 )
 
 logger = logging.getLogger(__name__)
 
 
+def is_leaked_non_game_title(title, suffixes=DISCOVERY_EXCLUDE_SUFFIXES):
+    """Suffix/bracket-anchored check for demo/soundtrack leakage from
+    IStoreService/GetAppList's include_games=true results.
+
+    Only matches at the END of the title (optionally inside brackets), so
+    legitimate titles containing these words mid-name ('Democracy 4',
+    'The Testament of Sherlock Holmes', 'Beta Colony') are correctly kept.
+    Unlike GameDataBuilder.should_exclude(), which does unanchored substring
+    matching and is not safe for this purpose (verified against real data).
+
+    Known residual gap: a keyword that isn't at the very end (e.g. "X -
+    Soundtrack and Bonus Content") won't be caught here; the PR review step
+    in the discovery pipeline is the backstop for that case.
+    """
+    title_stripped = title.strip()
+    for kw in suffixes:
+        pattern = r'[\s\-:\(\[]' + re.escape(kw) + r'[\)\]]?\s*$'
+        if re.search(pattern, title_stripped, re.IGNORECASE):
+            return True
+    return False
+
+
 class GameDataBuilder:
     """Game data construction class"""
 
-    def __init__(self, itad_api_key=None):
+    def __init__(self, itad_api_key=None, steam_web_api_key=None):
         """
         Args:
             itad_api_key: ITAD API key (if None, use existing data)
+            steam_web_api_key: Steam Web API key, used only by
+                build_id_map_from_titles() to fetch the full catalog for its
+                app-existence check and fuzzy title-matching fallback (both
+                effectively unused in practice today, since game_title_list.txt
+                lines are always appid-first). If not provided, that catalog
+                fetch is skipped gracefully (see build_id_map_from_titles).
         """
         self.steam_client = SteamClient()
         self.itad_client = ITADClient(itad_api_key) if itad_api_key else None
         self.itad_api_key = itad_api_key
+        self.steam_web_api_key = steam_web_api_key
 
     def should_exclude(self, title):
         """Check if title should be excluded"""
@@ -166,20 +198,26 @@ class GameDataBuilder:
                 existing_ids.add(app_id)
                 logger.info(f"  → Restored from mapping_result.txt: App ID {app_id}, ITAD ID: {itad_id if itad_id else 'None'}")
 
-        # Fetch App ID list from Steam Web API
-        try:
-            logger.info("Fetching App ID list from Steam Web API...")
-            response = requests.get(
-                'https://api.steampowered.com/ISteamApps/GetAppList/v2/',
-                timeout=30
+        # Fetch App ID list from Steam Web API (IStoreService/GetAppList;
+        # ISteamApps/GetAppList/v2 is deprecated as of Nov 2025)
+        game_id_list = []
+        if self.steam_web_api_key:
+            try:
+                logger.info("Fetching App ID list from Steam Web API...")
+                catalog = SteamCatalogClient(self.steam_web_api_key).fetch_full_catalog(
+                    include_games=True, include_software=True
+                )
+                game_id_list = [{'appid': int(appid), 'name': name} for appid, name in catalog.items()]
+                logger.info(f"Steam API: Fetched {len(game_id_list)} apps")
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Failed to fetch app list: {e}")
+                return existing_id_map, {'mapped': [], 'failed': []}
+        else:
+            logger.warning(
+                "No Steam Web API key provided: skipping catalog fetch. "
+                "App-ID existence checks and fuzzy title-matching will be skipped "
+                "(direct App ID entries in the title list still work)."
             )
-            response.raise_for_status()
-            data = response.json()
-            game_id_list = data.get('applist', {}).get('apps', [])
-            logger.info(f"Steam API: Fetched {len(game_id_list)} apps")
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Failed to fetch app list: {e}")
-            return existing_id_map, {'mapped': [], 'failed': []}
 
         # Check if title_list_path exists
         if not Path(title_list_path).exists():
@@ -233,19 +271,26 @@ class GameDataBuilder:
             # If appid was extracted, process as appid
             if app_id:
 
-                # Verify appid exists in Steam API
-                app_exists = any(app['appid'] == int(app_id) for app in game_id_list)
-                if not app_exists:
-                    failed.append(title)
-                    logger.warning(f"  ✗ App ID {app_id} not found in Steam API")
-                    continue
+                if not self.steam_web_api_key:
+                    # No catalog fetched: skip existence check, rely on the
+                    # downstream Steam appdetails fetch to fail loudly for a
+                    # genuinely-invalid appid. Use the title-list line's own
+                    # text as a placeholder name.
+                    match = {'appid': int(app_id), 'name': title}
+                else:
+                    # Verify appid exists in Steam API
+                    app_exists = any(app['appid'] == int(app_id) for app in game_id_list)
+                    if not app_exists:
+                        failed.append(title)
+                        logger.warning(f"  ✗ App ID {app_id} not found in Steam API")
+                        continue
 
-                # Get game name from Steam API
-                match = next((app for app in game_id_list if app['appid'] == int(app_id)), None)
-                if not match:
-                    failed.append(title)
-                    logger.warning(f"  ✗ Failed to get game name for App ID {app_id}")
-                    continue
+                    # Get game name from Steam API
+                    match = next((app for app in game_id_list if app['appid'] == int(app_id)), None)
+                    if not match:
+                        failed.append(title)
+                        logger.warning(f"  ✗ Failed to get game name for App ID {app_id}")
+                        continue
             else:
                 # Game title - use existing matching logic
                 # Find best match
@@ -330,6 +375,52 @@ class GameDataBuilder:
             'failed': failed,
             'skipped_existing': skipped_existing,
             'skipped_multiple': skipped_multiple
+        }
+
+    def build_id_map_from_appids(self, app_ids, existing_id_map=None):
+        """Build id-map directly from a list of already-verified Steam App IDs
+
+        Unlike build_id_map_from_titles, this skips the full-catalog re-fetch
+        and fuzzy title-matching entirely, since the caller (the new-game
+        discovery pipeline) already has verified numeric App IDs sourced
+        directly from Steam's own catalog API.
+
+        Args:
+            app_ids: List of Steam App ID strings
+            existing_id_map: Existing id-map (list format), e.g. from KVHelper.get_id_map()
+
+        Returns:
+            tuple: (updated id_map, mapping result) — same shape as
+                build_id_map_from_titles's return value, so it can be passed
+                directly into _process_normal_mode/_process_batch_mode.
+        """
+        if existing_id_map is None:
+            existing_id_map = []
+
+        existing_ids = {item['id'] for item in existing_id_map}
+        mapped = []
+
+        for app_id in app_ids:
+            if app_id in existing_ids:
+                continue
+
+            itad_id = None
+            if self.itad_client:
+                itad_id = self.itad_client.get_itad_id_from_steam_appid(app_id)
+
+            new_entry = {'id': app_id}
+            if itad_id:
+                new_entry['itadId'] = itad_id
+            existing_id_map.append(new_entry)
+            existing_ids.add(app_id)
+
+            mapped.append({'appid': app_id, 'itadId': itad_id})
+
+        return existing_id_map, {
+            'mapped': mapped,
+            'failed': [],
+            'skipped_existing': [],
+            'skipped_multiple': []
         }
 
     def _build_game_data_from_steam(self, app_id, steam_data, itad_id=None, itad_deal=None, tags=None):
@@ -869,7 +960,7 @@ class GameDataBuilder:
             from constants import ALLOWED_REVIEW_SCORES
             review_score = new_game.get('reviewScore', '')
             if review_score not in ALLOWED_REVIEW_SCORES:
-                excluded_games.append({'app_id': app_id, 'title': new_game.get('title', 'Unknown'), 'reviewScore': review_score})
+                excluded_games.append({'app_id': app_id, 'title': new_game.get('title', 'Unknown'), 'reviewScore': review_score, 'game_data': new_game})
                 logger.info(f"  ✗ Excluded (reviewScore: {review_score}, App ID: {app_id}, Title: {new_game.get('title', 'Unknown')})")
                 continue
 
@@ -1161,7 +1252,7 @@ class GameDataBuilder:
             from constants import ALLOWED_REVIEW_SCORES
             review_score = new_game.get('reviewScore', '')
             if review_score not in ALLOWED_REVIEW_SCORES:
-                excluded_games.append({'app_id': app_id, 'title': new_game.get('title', 'Unknown'), 'reviewScore': review_score})
+                excluded_games.append({'app_id': app_id, 'title': new_game.get('title', 'Unknown'), 'reviewScore': review_score, 'game_data': new_game})
                 logger.info(f"  ✗ Excluded (reviewScore: {review_score}, App ID: {app_id}, Title: {new_game.get('title', 'Unknown')})")
                 continue
 

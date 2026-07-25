@@ -1,0 +1,72 @@
+name: Discover New Games
+
+on:
+  schedule:
+    # Daily, 1 hour after kv-updater.yml's 17:10 UTC, to avoid both jobs
+    # hitting Steam/ITAD APIs at the same time
+    - cron: '0 18 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write       # direct push of snapshot/pending-review files, and PR branch creation
+  pull-requests: write  # create-pull-request
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r updater/requirements.txt
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Run discovery
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          KV_NAMESPACE_ID: ${{ secrets.KV_NAMESPACE_ID }}
+          ITAD_API_KEY: ${{ secrets.ITAD_API_KEY }}
+          STEAM_WEB_API_KEY: ${{ secrets.STEAM_WEB_API_KEY }}
+        run: |
+          python updater/main.py "$ITAD_API_KEY" --discover "$STEAM_WEB_API_KEY"
+
+      # Bookkeeping files (the catalog snapshot and the pending-review retry
+      # list) are committed directly to main -- NOT via the PR below. They
+      # require no human judgment ("here is today's Steam catalog"), and the
+      # whole point of always persisting them is so a title is never
+      # re-flagged as new, and pending candidates always get retried
+      # tomorrow, regardless of how long the candidates PR below sits
+      # unmerged. Bundling them into the PR would defeat that: they'd only
+      # land on main once a human merges, and every day until then would
+      # keep re-diffing against a stale snapshot.
+      - name: Commit snapshot and pending-review list directly to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add updater/data/refs/steam_applist_snapshot.json updater/data/refs/pending_review_candidates.json
+          git diff --cached --quiet || git commit -m "chore: update Steam catalog snapshot and pending-review list"
+          git push
+
+      - name: Open PR with new candidates (if any)
+        if: success()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "discover: new game candidates"
+          branch: discovery/new-games-${{ github.run_number }}
+          title: "New game candidates for review — run ${{ github.run_id }}"
+          body-path: updater/data/pending_new_games/pr_summary.md
+          add-paths: |
+            updater/data/pending_new_games/candidates.json
+            updater/data/pending_new_games/pr_summary.md
+          labels: new-game-review

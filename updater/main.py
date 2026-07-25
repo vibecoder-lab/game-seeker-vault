@@ -38,6 +38,19 @@ Options:
     - Deduplicates by game id (keeps first occurrence)
     - Updates meta.record_count and trims details to match
     - Creates timestamped backup before overwriting
+  --discover: Automated new-game discovery (Stage 1). Diffs the full Steam
+    catalog against the last saved snapshot, pre-filters obvious demo/
+    soundtrack titles, fetches Steam+ITAD data for survivors, and writes a
+    PR-reviewable candidates file. Never writes to KV.
+    Usage: python3 updater/main.py <ITAD_API_KEY> --discover <STEAM_WEB_API_KEY> [--regions JP,US,EU]
+    --seed-only: Only fetch the catalog and save the snapshot, then exit.
+      Run this once before enabling the daily discovery schedule.
+    --force-include <appid>: Add an App ID to the pending-review list so the
+      next --discover run fetches it fresh (used to rescue a wrongly-excluded
+      title). Does not require an ITAD key.
+  --apply-pending <path>: Apply an approved candidates_*.json file (Stage 2)
+    to KV. Invoked by the PR-merge-triggered workflow. Does not require ITAD/
+    Steam Web API keys.
 
 Environment detection:
   - Github Actions environment: Automatically uses KV
@@ -58,6 +71,8 @@ from game_data_builder import GameDataBuilder
 from kv_helper import KVHelper
 from constants import DEFAULT_REGIONS, BATCH_LOCK_FILE
 from extract_games import extract_command, GameExtractor
+from discover_new_games import discover_command, force_include_command
+from apply_pending_games import apply_command
 
 # Log configuration (overwrite mode to rebuild.log)
 script_dir = Path(__file__).parent
@@ -757,6 +772,11 @@ def main():
     refetch_mode = False
     refetch_targets = None
     dedupe_mode = False
+    discover_mode = False
+    steam_web_api_key = None
+    seed_only = False
+    force_include_appid = None
+    apply_pending_path = None
     regions = DEFAULT_REGIONS.copy()
     limit = None
 
@@ -775,6 +795,30 @@ def main():
             extract_mode = True
         elif arg == '--dedupe':
             dedupe_mode = True
+        elif arg == '--discover':
+            discover_mode = True
+            if i + 1 < len(sys.argv):
+                steam_web_api_key = sys.argv[i + 1]
+                i += 1
+            else:
+                logger.info("Error: --discover requires STEAM_WEB_API_KEY argument")
+                sys.exit(1)
+        elif arg == '--seed-only':
+            seed_only = True
+        elif arg == '--force-include':
+            if i + 1 < len(sys.argv):
+                force_include_appid = sys.argv[i + 1]
+                i += 1
+            else:
+                logger.info("Error: --force-include requires an appid argument")
+                sys.exit(1)
+        elif arg == '--apply-pending':
+            if i + 1 < len(sys.argv):
+                apply_pending_path = sys.argv[i + 1]
+                i += 1
+            else:
+                logger.info("Error: --apply-pending requires a file path argument")
+                sys.exit(1)
         elif arg == '--refetch':
             refetch_mode = True
             if i + 1 < len(sys.argv):
@@ -802,6 +846,11 @@ def main():
     # If dedupe mode, execute and exit (local files only, no KV)
     if dedupe_mode:
         dedupe_command()
+        return
+
+    # If force-include mode, execute and exit (local file only, no KV, no ITAD key needed)
+    if force_include_appid:
+        force_include_command(force_include_appid)
         return
 
     # If extract mode, execute and exit
@@ -836,6 +885,48 @@ def main():
 
     # Initialize KVHelper
     kv_helper = KVHelper(use_kv=use_kv)
+
+    # If discover mode, execute and exit (Stage 1: no KV writes, PR artifact only)
+    if discover_mode:
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        discover_log_file = log_dir / f'discover_{timestamp}.log'
+
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            handlers=[
+                logging.FileHandler(discover_log_file, mode='w', encoding='utf-8'),
+                logging.StreamHandler()
+            ]
+        )
+
+        logger.info(f"Discover mode: Logging to {discover_log_file}")
+        discover_command(itad_key, steam_web_api_key, regions, seed_only=seed_only)
+        return
+
+    # If apply-pending mode, execute and exit (Stage 2: KV write only, no fetching)
+    if apply_pending_path:
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        apply_log_file = log_dir / f'apply_pending_{timestamp}.log'
+
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            handlers=[
+                logging.FileHandler(apply_log_file, mode='w', encoding='utf-8'),
+                logging.StreamHandler()
+            ]
+        )
+
+        logger.info(f"Apply-pending mode: Logging to {apply_log_file}")
+        apply_command(apply_pending_path, kv_helper=kv_helper)
+        return
 
     # If refetch mode, execute and exit
     if refetch_mode:

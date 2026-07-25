@@ -1,0 +1,50 @@
+name: Apply Approved New Games
+
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - 'updater/data/pending_new_games/**'
+
+permissions:
+  contents: write  # push the clean-up commit back to main
+
+jobs:
+  apply:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r updater/requirements.txt
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Apply approved games to KV
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          KV_NAMESPACE_ID: ${{ secrets.KV_NAMESPACE_ID }}
+        run: |
+          python updater/main.py --apply-pending updater/data/pending_new_games/candidates.json
+
+      - name: Clean up applied candidates file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          rm -f updater/data/pending_new_games/candidates.json updater/data/pending_new_games/pr_summary.md
+          git add updater/data/pending_new_games/
+          git diff --cached --quiet || git commit -m "chore: clean up applied new-game candidates"
+          git push
