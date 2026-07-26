@@ -4,7 +4,7 @@ import { t, currentLocale, formatPrice, formatDate } from '../i18n/index.js';
 import { normalizeGenres, formatReleaseDate, checkJapaneseSupport, cleanLanguageText, translateReviewScore, yen } from '../utils/format.js';
 import { steamCapsuleUrl, linkFor } from '../utils/steam.js';
 
-function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale, currentRegion, folders, onAddToFolder, onSaveUIState, forceDetailOpen }) {
+function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale, currentRegion, folders, onAddToFolder, onSaveUIState, forceDetailOpen, onCloseForceDetail }) {
   const [isHovered, setIsHovered] = React.useState(false);
   const [shiftPressed, setShiftPressed] = React.useState(false);
   const [starButtonHovered, setStarButtonHovered] = React.useState(false);
@@ -420,6 +420,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                onMouseLeave={() => {
                  setIsHovered(false);
                  setShiftPressed(false);
+                 onCloseForceDetail?.();
                }}
                onTouchStart={handleTouchStart}
                onTouchEnd={handleTouchEnd}

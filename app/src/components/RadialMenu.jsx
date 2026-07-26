@@ -20,8 +20,8 @@ const SEGMENTS = [
   { start: 240, end: 300, action: 'openCollection', row: 'upper', labelKey: 'radialMenu.openCollection' },
   { start: 300, end: 360, action: 'changeFolderTarget', row: 'upper', labelKey: 'radialMenu.changeFolderTarget' },
   { start: 120, end: 180, action: 'showDetail', row: 'lower', labelKey: 'radialMenu.showDetail' },
-  { start: 60, end: 120, action: 'addToCollection', row: 'lower', labelKey: 'radialMenu.addToCollection' },
-  { start: 0, end: 60, action: 'playTrailer', row: 'lower', labelKey: 'radialMenu.playTrailer' },
+  { start: 60, end: 120, action: 'playTrailer', row: 'lower', labelKey: 'radialMenu.playTrailer' },
+  { start: 0, end: 60, action: 'addToCollection', row: 'lower', labelKey: 'radialMenu.addToCollection' },
 ];
 
 function polarToCartesian(cx, cy, r, angleDeg) {
@@ -69,6 +69,7 @@ export function RadialMenu({
   onShowDetail,
   onAddToCollection,
   onPlayTrailer,
+  isGameFavorited,
 }) {
   const menuRef = React.useRef(null); // { anchor: {x,y}, targetGameId, hoverAction } | null
   const [, forceRender] = React.useReducer((x) => x + 1, 0);
@@ -134,7 +135,7 @@ export function RadialMenu({
           switch (seg.action) {
             case 'scrollTop': cb.onScrollTop(); break;
             case 'openCollection': cb.onOpenCollection(); break;
-            case 'changeFolderTarget': cb.onChangeFolderTarget(m.anchor.x, m.anchor.y); break;
+            case 'changeFolderTarget': cb.onChangeFolderTarget(e.clientX, e.clientY); break;
             case 'showDetail': cb.onShowDetail(m.targetGameId); break;
             case 'addToCollection': cb.onAddToCollection(m.targetGameId); break;
             case 'playTrailer': cb.onPlayTrailer(m.targetGameId); break;
@@ -185,6 +186,8 @@ export function RadialMenu({
           const isHover = hoverAction === seg.action && !disabled;
           const mid = (seg.start + seg.end) / 2;
           const labelPos = polarToCartesian(CENTER, CENTER, (INNER_RADIUS + OUTER_RADIUS) / 2, mid);
+          const isFavorited = seg.action === 'addToCollection' && targetGameId != null && isGameFavorited?.(targetGameId);
+          const labelKey = isFavorited ? 'radialMenu.removeFromCollection' : seg.labelKey;
           return (
             <g key={seg.action} opacity={disabled ? 0.35 : 1}>
               <path
@@ -203,7 +206,7 @@ export function RadialMenu({
                 fontWeight={500}
                 style={{ userSelect: 'none' }}
               >
-                {t(seg.labelKey, currentLocale)}
+                {t(labelKey, currentLocale)}
               </text>
             </g>
           );

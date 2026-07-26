@@ -91,16 +91,6 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
                 {t('languageRegion.english', currentLocale)}
               </button>
               <button
-                onClick={() => handleLanguageChange('ja')}
-                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
-                  currentLocale === 'ja'
-                    ? 'bg-blue-600 text-white'
-                    : `${theme.buttonBg} ${theme.text} hover:opacity-80`
-                }`}
-              >
-                {t('languageRegion.japanese', currentLocale)}
-              </button>
-              <button
                 onClick={() => handleLanguageChange('de')}
                 className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
                   currentLocale === 'de'
@@ -120,6 +110,16 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
               >
                 {t('languageRegion.french', currentLocale)}
               </button>
+              <button
+                onClick={() => handleLanguageChange('ja')}
+                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
+                  currentLocale === 'ja'
+                    ? 'bg-blue-600 text-white'
+                    : `${theme.buttonBg} ${theme.text} hover:opacity-80`
+                }`}
+              >
+                {t('languageRegion.japanese', currentLocale)}
+              </button>
             </div>
           </div>
 
@@ -138,16 +138,6 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
                 {t('languageRegion.usd', currentLocale)}
               </button>
               <button
-                onClick={() => handleRegionChange('JPY')}
-                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
-                  currentRegion === 'JPY'
-                    ? 'bg-blue-600 text-white'
-                    : `${theme.buttonBg} ${theme.text} hover:opacity-80`
-                }`}
-              >
-                {t('languageRegion.jpy', currentLocale)}
-              </button>
-              <button
                 onClick={() => handleRegionChange('EUR')}
                 className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
                   currentRegion === 'EUR'
@@ -156,6 +146,16 @@ export function LanguageRegionModal({ theme, currentRegion, setCurrentRegion, se
                 }`}
               >
                 {t('languageRegion.eur', currentLocale)}
+              </button>
+              <button
+                onClick={() => handleRegionChange('JPY')}
+                className={`py-2 px-4 rounded-lg text-sm transition-all w-full ${
+                  currentRegion === 'JPY'
+                    ? 'bg-blue-600 text-white'
+                    : `${theme.buttonBg} ${theme.text} hover:opacity-80`
+                }`}
+              >
+                {t('languageRegion.jpy', currentLocale)}
               </button>
             </div>
           </div>

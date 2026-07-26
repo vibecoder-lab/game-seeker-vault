@@ -1462,6 +1462,10 @@ function SteamPriceFilter({ initialData = null }) {
             const game = games.find((g) => String(g.id) === String(gameId));
             if (game) handleShowVideoModal(game);
           }}
+          isGameFavorited={(gameId) => {
+            const data = collectionMap[gameId];
+            return !!(data && !data.deleted);
+          }}
         />
 
         <div className="max-w-7xl mx-auto px-6 md:pt-14 pb-8 space-y-6">
@@ -2540,6 +2544,7 @@ function SteamPriceFilter({ initialData = null }) {
                             onAddToFolder={handleAddToFolder}
                             onSaveUIState={saveCurrentUIState}
                             forceDetailOpen={radialDetailGameId != null && String(radialDetailGameId) === String(g.id)}
+                            onCloseForceDetail={() => setRadialDetailGameId(null)}
                           />
                         );
                       })}
