@@ -34,7 +34,7 @@ import {
   STEAM_TAGS_TO_EXCLUDE,
 } from "./constants/index.js";
 import { GENRE_MAPPING } from "./constants/genres.js";
-import { REVIEW_SCORE_MAPPING } from "./constants/reviews.js";
+import { REVIEW_SCORE_MAPPING, ALLOWED_REVIEW_SCORES } from "./constants/reviews.js";
 
 // Import utilities
 import {
@@ -63,6 +63,27 @@ import { SettingsModal } from "./components/modals/SettingsModal.jsx";
 import { LanguageRegionModal } from "./components/modals/LanguageRegionModal.jsx";
 import { MobileUnifiedModal } from "./components/modals/MobileUnifiedModal.jsx";
 import { Header } from "./components/Header.jsx";
+
+// Shared by availableReviewScores (curated listing) and
+// allReviewScoresForCollection (unfiltered, for the Collection modal).
+function computeAvailableReviewScores(gameList) {
+  // Filter out falsy values, "-", and values not in REVIEW_SCORE_MAPPING
+  const scoresInData = unique(
+    gameList
+      .map(g => g.reviewScore)
+      .filter(score => score && score !== '-' && score !== 'None' && REVIEW_SCORE_MAPPING.hasOwnProperty(score))
+  );
+  const scoreOrder = Object.keys(REVIEW_SCORE_MAPPING);
+  return scoresInData.sort((a, b) => {
+    const indexA = scoreOrder.indexOf(a);
+    const indexB = scoreOrder.indexOf(b);
+    // Put unmapped scores at the end
+    if (indexA === -1 && indexB === -1) return 0;
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
+}
 
 function SteamPriceFilter({ initialData = null }) {
   const [rawGames, setRawGames] = React.useState(initialData ?? []);
@@ -879,10 +900,19 @@ function SteamPriceFilter({ initialData = null }) {
     [rawGames, currentRegion],
   );
 
+  // Listing/search surfaces only ever show games meeting the site's curation
+  // bar (Very Positive or better). The Collection feature is intentionally
+  // exempt from this (see allReviewScoresForCollection / games={games} below)
+  // since a game could only ever be added while it still qualified.
+  const curatedGames = React.useMemo(
+    () => games.filter((g) => ALLOWED_REVIEW_SCORES.includes(g.reviewScore)),
+    [games],
+  );
+
   const allGenres = React.useMemo(() => {
     // Count genre occurrences
     const genreCounts = {};
-    games.forEach((g) => {
+    curatedGames.forEach((g) => {
       (g.genres || []).forEach((genre) => {
         genreCounts[genre] = (genreCounts[genre] || 0) + 1;
       });
@@ -913,12 +943,12 @@ function SteamPriceFilter({ initialData = null }) {
       .map(([tag]) => tag);
 
     return { genres: sortedGenres, otherTags: sortedOtherTags };
-  }, [games]);
+  }, [curatedGames]);
 
   const allTags = React.useMemo(() => {
     // Count tag occurrences
     const tagCounts = {};
-    games.forEach((g) => {
+    curatedGames.forEach((g) => {
       (g.tags || []).forEach((tag) => {
         tagCounts[tag] = (tagCounts[tag] || 0) + 1;
       });
@@ -936,10 +966,10 @@ function SteamPriceFilter({ initialData = null }) {
 
     // Return top 50 tags unless showAllTags is enabled
     return settings?.showAllTags ? sortedTags : sortedTags.slice(0, 50);
-  }, [games, settings?.showAllTags]);
+  }, [curatedGames, settings?.showAllTags]);
 
   const allYears = React.useMemo(() => {
-    const years = games
+    const years = curatedGames
       .map((g) => {
         if (!g.releaseDate) return null;
         // For YYYY-MM-DD format
@@ -952,29 +982,23 @@ function SteamPriceFilter({ initialData = null }) {
       })
       .filter((y) => y !== null && y !== "" && !isNaN(y));
     return unique(years).sort((a, b) => b - a);
-  }, [games]);
+  }, [curatedGames]);
 
-  const availableReviewScores = React.useMemo(() => {
-    // Filter out falsy values, "-", and values not in REVIEW_SCORE_MAPPING
-    const scoresInData = unique(
-      games
-        .map(g => g.reviewScore)
-        .filter(score => score && score !== '-' && score !== 'None' && REVIEW_SCORE_MAPPING.hasOwnProperty(score))
-    );
-    const scoreOrder = Object.keys(REVIEW_SCORE_MAPPING);
-    return scoresInData.sort((a, b) => {
-      const indexA = scoreOrder.indexOf(a);
-      const indexB = scoreOrder.indexOf(b);
-      // Put unmapped scores at the end
-      if (indexA === -1 && indexB === -1) return 0;
-      if (indexA === -1) return 1;
-      if (indexB === -1) return -1;
-      return indexA - indexB;
-    });
-  }, [games]);
+  const availableReviewScores = React.useMemo(
+    () => computeAvailableReviewScores(curatedGames),
+    [curatedGames],
+  );
+
+  // Collection modal is exempt from the curation filter (a game could only
+  // ever be saved while it still qualified), so its own review-score filter
+  // checkboxes are computed from the unfiltered games list.
+  const allReviewScoresForCollection = React.useMemo(
+    () => computeAvailableReviewScores(games),
+    [games],
+  );
 
   const filtered = React.useMemo(() => {
-    return games.filter((g) => {
+    return curatedGames.filter((g) => {
       const matchesJP = onlyJP
         ? checkJapaneseSupport(g.supportedLanguages) ===
           t("language.supported", currentLocale)
@@ -1076,7 +1100,7 @@ function SteamPriceFilter({ initialData = null }) {
       );
     });
   }, [
-    games,
+    curatedGames,
     onlyJP,
     onlySale,
     selectedReviewScores,
@@ -2511,7 +2535,7 @@ function SteamPriceFilter({ initialData = null }) {
             onSaveUIState={saveCurrentUIState}
             scrollTop={collectionModalScrollTop}
             onScrollTopChange={setCollectionModalScrollTop}
-            availableReviewScores={availableReviewScores}
+            availableReviewScores={allReviewScoresForCollection}
           />
         )}
 

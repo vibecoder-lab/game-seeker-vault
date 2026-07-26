@@ -11,3 +11,9 @@ export const REVIEW_SCORE_MAPPING = {
   'Overwhelmingly Negative': '圧倒的に不評',
   'No user reviews': 'ユーザーレビューなし'
 };
+
+// Scores allowed on general listing/browsing surfaces (site curation policy).
+// Mirrors the backend's ALLOWED_REVIEW_SCORES in updater/constants.py.
+// The Collection feature is intentionally exempt (see main.jsx) since a game
+// could only ever be added while it still qualified.
+export const ALLOWED_REVIEW_SCORES = ['Very Positive', 'Overwhelmingly Positive'];
