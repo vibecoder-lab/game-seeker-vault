@@ -65,7 +65,7 @@ export function Header({
               {t('header.title', currentLocale)}
             </h1>
           </div>
-          <span className={`text-xs ${theme.subText} lg:self-end lg:mb-0.5`}>Only Very Positive and Overwhelmingly Positive Steam titles.</span>
+          <span className={`text-xs ${theme.subText} lg:self-end lg:mb-0.5`}>Instant search for highly rated Steam games.</span>
         </div>
 
         <div className="hidden md:flex items-center gap-3">
