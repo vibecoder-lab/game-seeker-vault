@@ -280,7 +280,26 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
             />
           )}
           <div key={g.id} className="relative group" data-game-id={g.id}>
-            <div className="absolute top-0 right-0 z-20 hidden md:block">
+            {/* Hover band (PC only): both buttons live on top of this band so a
+                click that misses either one lands on the (inert) band instead
+                of the underlying card link, preventing accidental navigation
+                to the Steam store page. Visibility is driven by the pure-CSS
+                `group-hover` pseudo-class (matching how the buttons' own
+                opacity already worked), NOT by the `isHovered` React state --
+                using `isHovered` here caused a feedback loop: the band (a
+                sibling of the `<a>`, stacked on top of it) would intercept
+                the pointer as soon as it became interactive, which the
+                browser reads as "left the `<a>`", flipping `isHovered` back
+                off, which removed the band again, letting the `<a>` reclaim
+                the pointer and flip `isHovered` back on -- an infinite loop
+                visible as rapid cursor/hover flicker. `group-hover` doesn't
+                have this problem because it's evaluated against the `.group`
+                ancestor, which stays hovered regardless of which of its
+                descendants is the actual pointer target. */}
+            <div className="absolute top-0 right-0 h-full w-20 z-20 hidden md:flex
+                              pointer-events-none group-hover:pointer-events-auto
+                              flex-col items-center justify-between py-2">
+            <div className="relative">
               <button
                 ref={starButtonRef}
                 onClick={handleStarClick}
@@ -349,9 +368,9 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
               ))}
             </div>
 
-            {/* Play Button (Bottom-Right, Hover Only) */}
+            {/* Play Button (bottom of hover band) */}
             {g.movies && g.movies.length > 0 && (
-              <div className="absolute bottom-0 right-0 z-20 hidden md:block">
+              <div>
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -397,6 +416,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                 </button>
               </div>
             )}
+            </div>
 
             <a href={linkFor(g, settings.navigateToReviews)}
                target={settings.useInPageNavigation ? undefined : "_blank"}
