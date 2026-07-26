@@ -4,7 +4,7 @@ import { t, currentLocale, formatPrice, formatDate } from '../i18n/index.js';
 import { normalizeGenres, formatReleaseDate, checkJapaneseSupport, cleanLanguageText, translateReviewScore, yen } from '../utils/format.js';
 import { steamCapsuleUrl, linkFor } from '../utils/steam.js';
 
-function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale, currentRegion, folders, onAddToFolder, onSaveUIState }) {
+function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavorite, onShowVideoModal, settings, locale, currentRegion, folders, onAddToFolder, onSaveUIState, forceDetailOpen }) {
   const [isHovered, setIsHovered] = React.useState(false);
   const [shiftPressed, setShiftPressed] = React.useState(false);
   const [starButtonHovered, setStarButtonHovered] = React.useState(false);
@@ -279,7 +279,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
               style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
             />
           )}
-          <div key={g.id} className="relative group">
+          <div key={g.id} className="relative group" data-game-id={g.id}>
             <div className="absolute top-0 right-0 z-20 hidden md:block">
               <button
                 ref={starButtonRef}
@@ -447,7 +447,7 @@ function GameCardComponent({ g, theme, priceMode, collectionData, onToggleFavori
                 />
                 <div ref={detailRef} className={`absolute inset-0 ${theme.cardBg} ${theme.text} p-4 overflow-y-auto z-20 transition-transform duration-300 ease-in-out`}
                      style={{
-                       transform: (isHovered && shiftPressed) || showDetailModal ? 'translateX(0)' : 'translateX(calc(-100% - 2px))',
+                       transform: (isHovered && shiftPressed) || showDetailModal || forceDetailOpen ? 'translateX(0)' : 'translateX(calc(-100% - 2px))',
                        touchAction: showDetailModal ? 'pan-y' : 'auto'
                      }}
                      onTouchStart={(e) => {

@@ -63,6 +63,7 @@ import { SettingsModal } from "./components/modals/SettingsModal.jsx";
 import { LanguageRegionModal } from "./components/modals/LanguageRegionModal.jsx";
 import { MobileUnifiedModal } from "./components/modals/MobileUnifiedModal.jsx";
 import { Header } from "./components/Header.jsx";
+import { RadialMenu } from "./components/RadialMenu.jsx";
 
 // Shared by availableReviewScores (curated listing) and
 // allReviewScoresForCollection (unfiltered, for the Collection modal).
@@ -151,6 +152,21 @@ function SteamPriceFilter({ initialData = null }) {
   const [showVideoModal, setShowVideoModal] = React.useState(false);
   const [videoModalClosing, setVideoModalClosing] = React.useState(false);
   const [selectedGameForVideo, setSelectedGameForVideo] = React.useState(null);
+
+  // Card whose detail overlay was force-opened via the radial menu's
+  // "show details" action (bypasses GameCard's own hover+Shift/long-press
+  // triggers). Cleared on scroll or on the next mousedown elsewhere.
+  const [radialDetailGameId, setRadialDetailGameId] = React.useState(null);
+  React.useEffect(() => {
+    if (radialDetailGameId == null) return undefined;
+    const clear = () => setRadialDetailGameId(null);
+    window.addEventListener('scroll', clear, { passive: true });
+    window.addEventListener('mousedown', clear);
+    return () => {
+      window.removeEventListener('scroll', clear);
+      window.removeEventListener('mousedown', clear);
+    };
+  }, [radialDetailGameId]);
 
   const theme = THEMES[currentTheme];
 
@@ -1414,6 +1430,40 @@ function SteamPriceFilter({ initialData = null }) {
           setSettings={setSettings}
         />
 
+        <RadialMenu
+          currentTheme={currentTheme}
+          currentLocale={currentLocale}
+          enabled={!settings?.useLegacyRightClick}
+          suppressed={
+            showCollectionModal || showVideoModal || showHelpModal || showSettingsModal ||
+            showLanguageRegionModal || showImportExportModal || showMobileUnifiedModal || showAppIdSearch
+          }
+          onScrollTop={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onOpenCollection={() => {
+            setShowHelpModal(false);
+            setShowSettingsModal(false);
+            setShowLanguageRegionModal(false);
+            setShowImportExportModal(false);
+            setShowMobileUnifiedModal(false);
+            setShowGlobalFolderDropdown(false);
+            setShowFolderDropdown(false);
+            setShowCollectionModal(true);
+          }}
+          onChangeFolderTarget={(clientX, clientY) => {
+            setGlobalDropdownPosition({ x: clientX - 80, y: clientY - 20 });
+            setShowGlobalFolderDropdown(true);
+          }}
+          onShowDetail={(gameId) => setRadialDetailGameId(gameId)}
+          onAddToCollection={(gameId) => {
+            const game = games.find((g) => String(g.id) === String(gameId));
+            if (game) handleToggleFavorite(game);
+          }}
+          onPlayTrailer={(gameId) => {
+            const game = games.find((g) => String(g.id) === String(gameId));
+            if (game) handleShowVideoModal(game);
+          }}
+        />
+
         <div className="max-w-7xl mx-auto px-6 md:pt-14 pb-8 space-y-6">
           {/* Mobile: Title Search and Filters */}
           <div className="md:hidden space-y-4">
@@ -2489,6 +2539,7 @@ function SteamPriceFilter({ initialData = null }) {
                             folders={folders}
                             onAddToFolder={handleAddToFolder}
                             onSaveUIState={saveCurrentUIState}
+                            forceDetailOpen={radialDetailGameId != null && String(radialDetailGameId) === String(g.id)}
                           />
                         );
                       })}

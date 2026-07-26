@@ -333,6 +333,29 @@ export function SettingsModal({ theme, currentTheme, settings, setSettings, onCl
             </div>
           )}
 
+          {/* Legacy Right-Click Menu (PC only) */}
+          {!isMobile && (
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex-1">
+                <div className="text-sm font-medium">{t('settings.useLegacyRightClick', currentLocale)}</div>
+                <div className={`text-xs ${theme.subText}`}>{t('settings.useLegacyRightClickDesc', currentLocale)}</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input
+                  type="checkbox"
+                  checked={settings.useLegacyRightClick}
+                  onChange={async (e) => {
+                    const newSettings = { ...settings, useLegacyRightClick: e.target.checked };
+                    setSettings(newSettings);
+                    await dbHelper.saveSettings(newSettings);
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          )}
+
           {/* Danger Zone */}
           {!isMobile && (
             <div className={`border-t ${theme.border} pt-3 mt-1`}>

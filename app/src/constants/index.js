@@ -17,6 +17,7 @@ export const DEFAULT_SETTINGS = {
   enableQuickRegister: false,      // Enable quick folder registration on star click
   locale: 'en',                    // Preferred locale
   region: 'USD',                   // Preferred region (USD, JPY, EUR, GBP)
+  useLegacyRightClick: false,      // Disable radial context menu, restore native right-click
   settingsVersion: 1
 };
 
