@@ -376,5 +376,815 @@
     "first_seen": "2026-07-26",
     "last_checked": "2026-07-26T19:14:08+00:00",
     "next_check_due": "2026-07-29"
+  },
+  "1966200": {
+    "name": "Monster Therapy",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:35:49+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "2240830": {
+    "name": "Worderia",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:35:51+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "2422040": {
+    "name": "808cc",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:35:52+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "3185110": {
+    "name": "Hidden Snails",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:35:54+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "3564600": {
+    "name": "Amber: By Your Side",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:35:55+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "3626620": {
+    "name": "Over Easy",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:35:57+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "3627020": {
+    "name": "Death Not Guaranteed",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:35:58+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4027400": {
+    "name": "Anthracite",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:00+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4112840": {
+    "name": "Demon General Kristen",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:01+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4251330": {
+    "name": "Blind Rage",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:03+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4339210": {
+    "name": "Dreamsend: Wintersong",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:04+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4437750": {
+    "name": "Worst Airline Ever",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:06+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4486770": {
+    "name": "Crimson Frontier: Youth",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:07+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4487770": {
+    "name": "Konomondo",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:08+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4493240": {
+    "name": "The Leaderboard",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:09+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4532070": {
+    "name": "Meow Pow Pow",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:11+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4614490": {
+    "name": "AI VS ARTISTS",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:12+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4614610": {
+    "name": "Fox7: The Real Workout Simulator",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:14+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4665860": {
+    "name": "Crown Of Bones",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:15+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4698040": {
+    "name": "Who Killed Arthur?",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:16+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4707670": {
+    "name": "规则杀",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:18+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4709550": {
+    "name": "Behind the corner",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:19+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4721090": {
+    "name": "ScagJPT",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:20+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4761060": {
+    "name": "Until It Lasts",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:22+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4762640": {
+    "name": "ZOMBIE Disaster Drill",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:23+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4762690": {
+    "name": "Siege Demolishers",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:24+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4810260": {
+    "name": "Dungeon Crafter",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:26+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4823810": {
+    "name": "Build a Cat Tower to reach the Fish",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:27+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4828680": {
+    "name": "Where Evil Sleeps",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:29+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4838780": {
+    "name": "智探",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:30+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4839570": {
+    "name": "100 Fairyland Cats",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:31+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4839580": {
+    "name": "100 Songkran Cats",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:33+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4839590": {
+    "name": "100 Calavera Cats",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:34+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4839600": {
+    "name": "100 Petopia Cats",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:35+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4839610": {
+    "name": "100 Oktoberfest Cats",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:36+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4848360": {
+    "name": "Zoto's Garden",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:38+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4851490": {
+    "name": "MirrorBullet",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:39+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4855510": {
+    "name": "代号：和平岛",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:41+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4865910": {
+    "name": "She Hunts",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:42+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4874310": {
+    "name": "Oreship Stellar Frontier",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:44+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4878780": {
+    "name": "Fungi Guards",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:45+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4882810": {
+    "name": "BoxParty!",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:46+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4885970": {
+    "name": "Little Boy : Small Steps, Big Changes",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:47+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4887210": {
+    "name": "AntiCetus: Undersea Battle",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:49+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4889640": {
+    "name": "救救我，勇者大人！",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:50+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4899050": {
+    "name": "Pokremental",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:51+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4901590": {
+    "name": "Chicken_Run",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:53+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4913010": {
+    "name": "Game Frame",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:54+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4926310": {
+    "name": "Berserk Heroes Online",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:56+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4929880": {
+    "name": "Shochimiki: The Eater's House",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:57+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4932360": {
+    "name": "Gloom",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:36:58+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4933690": {
+    "name": "Rescue Team: Phantom Crisis",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:00+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4933700": {
+    "name": "Wasteland Gunsmith Simulator",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:01+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4937970": {
+    "name": "Peppermint",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:03+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4939290": {
+    "name": "Shopenkraft's Quantum Curiosities",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:04+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4939410": {
+    "name": "Mineiac",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:06+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4941230": {
+    "name": "Jackpot Poker Destruction",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:07+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4946470": {
+    "name": "Curling Stars",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:08+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4950870": {
+    "name": "KEPT",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:10+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4951620": {
+    "name": "カラクリ電池：Clockwork Battery",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:11+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4953840": {
+    "name": "Qwick",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:12+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4959740": {
+    "name": "War Doctor",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:14+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4960370": {
+    "name": "Somnia",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:16+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4960680": {
+    "name": "Morpheus",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:17+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4961150": {
+    "name": "Station 5:21",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:18+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4963470": {
+    "name": "Hexgarden",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:20+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4963970": {
+    "name": "Dead Broke",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:21+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4964620": {
+    "name": "The Yard: Escape from Prison",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:22+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4966440": {
+    "name": "Rogue Link Loop",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:24+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4967500": {
+    "name": "Tidy Mart",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:25+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4969040": {
+    "name": "Wall Street Broker",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:27+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4971790": {
+    "name": "ARC-9",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:28+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4973250": {
+    "name": "PIO: A Robot’s Story",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:29+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4973650": {
+    "name": "SoulForge Legends",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:31+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4977670": {
+    "name": "Industrial Garbage",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:32+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4978130": {
+    "name": "Group Commander",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:33+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4978200": {
+    "name": "Idle Times",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:35+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4978580": {
+    "name": "Unwaking",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:36+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4980350": {
+    "name": "Everdeep Idle",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:38+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4984060": {
+    "name": "Absolute Infinity",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:39+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4986860": {
+    "name": "Words Of Power",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:40+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4988690": {
+    "name": "名画、ヤらせて！",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:42+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4989110": {
+    "name": "TCG Shop Life",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:43+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4990520": {
+    "name": "NOODS Maker",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:45+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4992440": {
+    "name": "One Gun Army",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:46+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4992810": {
+    "name": "Winds of Valor",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:47+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4993130": {
+    "name": "Ashen Banners",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:49+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4993410": {
+    "name": "Victory's Grave: Airborne",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:50+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4996950": {
+    "name": "Deadline",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:52+00:00",
+    "next_check_due": "2026-07-30"
+  },
+  "4998550": {
+    "name": "海の果てと最後の夏 -Monochrome Iris-",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-27",
+    "last_checked": "2026-07-27T19:37:53+00:00",
+    "next_check_due": "2026-07-30"
   }
 }
