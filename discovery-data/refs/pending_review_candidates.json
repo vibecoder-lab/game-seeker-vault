@@ -1,12 +1,1673 @@
 {
+  "2025390": {
+    "name": "Raysing!",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:26:57+00:00",
+    "next_check_due": null
+  },
+  "2348960": {
+    "name": "One Planet",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:26:58+00:00",
+    "next_check_due": null
+  },
+  "2733000": {
+    "name": "Club Chairman",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:00+00:00",
+    "next_check_due": null
+  },
+  "2739510": {
+    "name": "沧浪行卷",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:01+00:00",
+    "next_check_due": null
+  },
+  "3144810": {
+    "name": "Forbidden brew",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:02+00:00",
+    "next_check_due": null
+  },
+  "3502450": {
+    "name": "Project MISPLACE",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:04+00:00",
+    "next_check_due": null
+  },
+  "3509670": {
+    "name": "Backyard Paintball",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:06+00:00",
+    "next_check_due": null
+  },
+  "3822980": {
+    "name": "Crown of Petals",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:07+00:00",
+    "next_check_due": null
+  },
+  "3837820": {
+    "name": "SnowJob",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:08+00:00",
+    "next_check_due": null
+  },
+  "3858030": {
+    "name": "Immortal Coil",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:10+00:00",
+    "next_check_due": null
+  },
+  "4028820": {
+    "name": "Citizen Vigilante",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:11+00:00",
+    "next_check_due": null
+  },
+  "4048540": {
+    "name": "Victor Space Program",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:13+00:00",
+    "next_check_due": null
+  },
+  "4219460": {
+    "name": "Grimwar",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:14+00:00",
+    "next_check_due": null
+  },
+  "4324420": {
+    "name": "Maxwell's Odyssey",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:15+00:00",
+    "next_check_due": null
+  },
+  "4353470": {
+    "name": "SkySims: Drone Pilot",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:17+00:00",
+    "next_check_due": null
+  },
+  "4390650": {
+    "name": "Chance King",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:18+00:00",
+    "next_check_due": null
+  },
+  "4414260": {
+    "name": "Violent Sky",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:20+00:00",
+    "next_check_due": null
+  },
+  "4501680": {
+    "name": "一把菜刀打天下",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:21+00:00",
+    "next_check_due": null
+  },
+  "4518270": {
+    "name": "Mad Ever After",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:23+00:00",
+    "next_check_due": null
+  },
+  "4521000": {
+    "name": "Madjack Vs Magic",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:24+00:00",
+    "next_check_due": null
+  },
+  "4546220": {
+    "name": "BattleBricks",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:25+00:00",
+    "next_check_due": null
+  },
+  "4601370": {
+    "name": "Yashi - Sand Driver",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:27+00:00",
+    "next_check_due": null
+  },
+  "4609870": {
+    "name": "Overbuffed",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:29+00:00",
+    "next_check_due": null
+  },
+  "4636810": {
+    "name": "What Was Lost",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:30+00:00",
+    "next_check_due": null
+  },
+  "4658110": {
+    "name": "ArtificialOverthrow",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:31+00:00",
+    "next_check_due": null
+  },
+  "4664490": {
+    "name": "Burger Smash",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:32+00:00",
+    "next_check_due": null
+  },
+  "4676120": {
+    "name": "Vestalborne",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:34+00:00",
+    "next_check_due": null
+  },
+  "4698730": {
+    "name": "墨痕",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:35+00:00",
+    "next_check_due": null
+  },
+  "4703920": {
+    "name": "Red Wire",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:37+00:00",
+    "next_check_due": null
+  },
+  "4724080": {
+    "name": "Running Late",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:38+00:00",
+    "next_check_due": null
+  },
+  "4727700": {
+    "name": "I Hate Polygons",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:39+00:00",
+    "next_check_due": null
+  },
+  "4735540": {
+    "name": "Zona Eleitoral",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:41+00:00",
+    "next_check_due": null
+  },
+  "4756050": {
+    "name": "WHIPLASH",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:42+00:00",
+    "next_check_due": null
+  },
+  "4757770": {
+    "name": "OVERSIGHT: Anomaly",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:43+00:00",
+    "next_check_due": null
+  },
+  "4769820": {
+    "name": "Pinly: A Plinko Roguelike",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:45+00:00",
+    "next_check_due": null
+  },
+  "4776880": {
+    "name": "Mega Golf",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:46+00:00",
+    "next_check_due": null
+  },
+  "4778600": {
+    "name": "Wobble Bros",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:48+00:00",
+    "next_check_due": null
+  },
+  "4782980": {
+    "name": "Time Flow",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:49+00:00",
+    "next_check_due": null
+  },
+  "4786960": {
+    "name": "Pizza Revolution",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:50+00:00",
+    "next_check_due": null
+  },
+  "4789730": {
+    "name": "三国掷：崛起",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:52+00:00",
+    "next_check_due": null
+  },
+  "4800900": {
+    "name": "ChocoPhobia",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:53+00:00",
+    "next_check_due": null
+  },
+  "4813750": {
+    "name": "Speed Weaver",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:55+00:00",
+    "next_check_due": null
+  },
+  "4814330": {
+    "name": "隐藏条款",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:56+00:00",
+    "next_check_due": null
+  },
+  "4818090": {
+    "name": "Chronoform",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:57+00:00",
+    "next_check_due": null
+  },
+  "4822160": {
+    "name": "Gallop Diva",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:27:58+00:00",
+    "next_check_due": null
+  },
+  "4822740": {
+    "name": "Tiny Conquests",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:00+00:00",
+    "next_check_due": null
+  },
+  "4832860": {
+    "name": "Wortgewandt",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:01+00:00",
+    "next_check_due": null
+  },
+  "4838300": {
+    "name": "水泊梁山",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:03+00:00",
+    "next_check_due": null
+  },
+  "4860120": {
+    "name": "诸天领主",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:04+00:00",
+    "next_check_due": null
+  },
+  "4861120": {
+    "name": "Trust me, Officer",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:06+00:00",
+    "next_check_due": null
+  },
+  "4862790": {
+    "name": "Craftoon",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:07+00:00",
+    "next_check_due": null
+  },
+  "4881820": {
+    "name": "告白完就逃跑",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:09+00:00",
+    "next_check_due": null
+  },
+  "4885500": {
+    "name": "CYBERSPIDER VS. HUMANITY",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:10+00:00",
+    "next_check_due": null
+  },
+  "4885580": {
+    "name": "Heya! Sumo Manager",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:12+00:00",
+    "next_check_due": null
+  },
+  "4889280": {
+    "name": "The No Jumpscare Show",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:13+00:00",
+    "next_check_due": null
+  },
+  "4889910": {
+    "name": "Immune Response",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:14+00:00",
+    "next_check_due": null
+  },
+  "4892010": {
+    "name": "Bomb Farm",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:16+00:00",
+    "next_check_due": null
+  },
+  "4895540": {
+    "name": "Digital Waste",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:17+00:00",
+    "next_check_due": null
+  },
+  "4896470": {
+    "name": "Grim & Bear It",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:19+00:00",
+    "next_check_due": null
+  },
+  "4897710": {
+    "name": "Protocol: Assimilation",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:20+00:00",
+    "next_check_due": null
+  },
+  "4898220": {
+    "name": "TD End of War",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:22+00:00",
+    "next_check_due": null
+  },
+  "4905090": {
+    "name": "Homia",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:23+00:00",
+    "next_check_due": null
+  },
+  "4906710": {
+    "name": "General please break through",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:25+00:00",
+    "next_check_due": null
+  },
+  "4913770": {
+    "name": "Corsair Fleet: Tides of Plunder",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:26+00:00",
+    "next_check_due": null
+  },
+  "4915070": {
+    "name": "Rustfront Guardians",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:28+00:00",
+    "next_check_due": null
+  },
+  "4919980": {
+    "name": "ACE Football",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:29+00:00",
+    "next_check_due": null
+  },
+  "4922880": {
+    "name": "Looper Survivors",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:30+00:00",
+    "next_check_due": null
+  },
+  "4922900": {
+    "name": "Beast Market",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:32+00:00",
+    "next_check_due": null
+  },
+  "4923300": {
+    "name": "Sands of Time",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:33+00:00",
+    "next_check_due": null
+  },
+  "4928440": {
+    "name": "Little Ghost",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:35+00:00",
+    "next_check_due": null
+  },
+  "4930650": {
+    "name": "11 pm",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:36+00:00",
+    "next_check_due": null
+  },
+  "4933300": {
+    "name": "Blotch",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:38+00:00",
+    "next_check_due": null
+  },
+  "4934020": {
+    "name": "Wurst & Glory",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:39+00:00",
+    "next_check_due": null
+  },
+  "4934080": {
+    "name": "方块骑士Square Knight",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:41+00:00",
+    "next_check_due": null
+  },
+  "4934860": {
+    "name": "The Machine God",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:42+00:00",
+    "next_check_due": null
+  },
+  "4936130": {
+    "name": "Yuhtzee",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:44+00:00",
+    "next_check_due": null
+  },
+  "4936160": {
+    "name": "1 Thousand Deaths",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:45+00:00",
+    "next_check_due": null
+  },
+  "4939490": {
+    "name": "God Save Wrist",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:47+00:00",
+    "next_check_due": null
+  },
+  "4941160": {
+    "name": "A Sector Darkly",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:48+00:00",
+    "next_check_due": null
+  },
+  "4941480": {
+    "name": "Luminara",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:50+00:00",
+    "next_check_due": null
+  },
+  "4943700": {
+    "name": "Fungi Simulator",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:51+00:00",
+    "next_check_due": null
+  },
+  "4943800": {
+    "name": "Project Into the Void",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:52+00:00",
+    "next_check_due": null
+  },
+  "4945150": {
+    "name": "Evolutionary Antinomy",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:54+00:00",
+    "next_check_due": null
+  },
+  "4945340": {
+    "name": "Juicy World",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:55+00:00",
+    "next_check_due": null
+  },
+  "4945670": {
+    "name": "The Crossroads",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:56+00:00",
+    "next_check_due": null
+  },
+  "4947230": {
+    "name": "Jack's Last Show",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:58+00:00",
+    "next_check_due": null
+  },
+  "4949830": {
+    "name": "101 Cats in Czech Republic",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:28:59+00:00",
+    "next_check_due": null
+  },
+  "4950510": {
+    "name": "Cozy Drone",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:00+00:00",
+    "next_check_due": null
+  },
+  "4951840": {
+    "name": "Infi-Knight",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:02+00:00",
+    "next_check_due": null
+  },
+  "4952120": {
+    "name": "Deeds were Done 2: Project Ascend",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:04+00:00",
+    "next_check_due": null
+  },
+  "4954430": {
+    "name": "REV Trzynasty Apostoł",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:05+00:00",
+    "next_check_due": null
+  },
+  "4955800": {
+    "name": "Tile & Tiny",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:06+00:00",
+    "next_check_due": null
+  },
+  "4956490": {
+    "name": "Desktop Gankai",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:08+00:00",
+    "next_check_due": null
+  },
+  "4956830": {
+    "name": "Gulugulu",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:09+00:00",
+    "next_check_due": null
+  },
+  "4957260": {
+    "name": "A Volta Dos Que Não Foram",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:10+00:00",
+    "next_check_due": null
+  },
+  "4958190": {
+    "name": "The Three Fingers of Fate",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:12+00:00",
+    "next_check_due": null
+  },
+  "4958590": {
+    "name": "AIR EMPIRE: 1950 Airline Tycoon",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:13+00:00",
+    "next_check_due": null
+  },
+  "4958640": {
+    "name": "Ruthless Returns",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:15+00:00",
+    "next_check_due": null
+  },
+  "4959040": {
+    "name": "How To Get A Goth GF: 101",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:16+00:00",
+    "next_check_due": null
+  },
+  "4959700": {
+    "name": "Idle Deathworks",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:18+00:00",
+    "next_check_due": null
+  },
+  "4961420": {
+    "name": "Elemental Bomb",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:19+00:00",
+    "next_check_due": null
+  },
+  "4962310": {
+    "name": "Caribbean Prospector",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:20+00:00",
+    "next_check_due": null
+  },
+  "4962770": {
+    "name": "Lobotomy",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:22+00:00",
+    "next_check_due": null
+  },
+  "4965510": {
+    "name": "Escape Sequence",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:23+00:00",
+    "next_check_due": null
+  },
+  "4965790": {
+    "name": "Jelly Sprint",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:25+00:00",
+    "next_check_due": null
+  },
+  "4965940": {
+    "name": "TUSSLE WORKS",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:26+00:00",
+    "next_check_due": null
+  },
+  "4966880": {
+    "name": "Octavia’s Alienzzle",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:27+00:00",
+    "next_check_due": null
+  },
+  "4967160": {
+    "name": "Graveyard Drift",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:29+00:00",
+    "next_check_due": null
+  },
+  "4967260": {
+    "name": "Lin Ling",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:30+00:00",
+    "next_check_due": null
+  },
+  "4967670": {
+    "name": "Lean Into The Swarm",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:32+00:00",
+    "next_check_due": null
+  },
+  "4967690": {
+    "name": "Above the Haze",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:33+00:00",
+    "next_check_due": null
+  },
+  "4969240": {
+    "name": "Hexed",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:35+00:00",
+    "next_check_due": null
+  },
+  "4969570": {
+    "name": "The Watch Post",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:36+00:00",
+    "next_check_due": null
+  },
+  "4969750": {
+    "name": "Space Circle",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:38+00:00",
+    "next_check_due": null
+  },
+  "4970110": {
+    "name": "BROKEN OATH",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:39+00:00",
+    "next_check_due": null
+  },
+  "4970780": {
+    "name": "Aparadores de Abacaxis Anônimos (AAA)",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:41+00:00",
+    "next_check_due": null
+  },
+  "4971170": {
+    "name": "钟馗幸存者",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:42+00:00",
+    "next_check_due": null
+  },
+  "4972250": {
+    "name": "MASSFALL",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:44+00:00",
+    "next_check_due": null
+  },
+  "4972530": {
+    "name": "WIND CAT SOLITAIRE",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:45+00:00",
+    "next_check_due": null
+  },
+  "4973630": {
+    "name": "Void Descent",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:47+00:00",
+    "next_check_due": null
+  },
+  "4975530": {
+    "name": "Hyper Trigger",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:48+00:00",
+    "next_check_due": null
+  },
+  "4976100": {
+    "name": "Reaching for The Star",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:50+00:00",
+    "next_check_due": null
+  },
+  "4976370": {
+    "name": "Flak Duty",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:51+00:00",
+    "next_check_due": null
+  },
+  "4976890": {
+    "name": "Jeff Quest",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:52+00:00",
+    "next_check_due": null
+  },
+  "4977910": {
+    "name": "Cosmic Crossover",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:54+00:00",
+    "next_check_due": null
+  },
+  "4978370": {
+    "name": "Big Fishin World: Ocean Voyager",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:55+00:00",
+    "next_check_due": null
+  },
+  "4979700": {
+    "name": "Triple Dice Monsters",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:56+00:00",
+    "next_check_due": null
+  },
+  "4982840": {
+    "name": "Tidy Wizard: A Place For Every Plate",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:58+00:00",
+    "next_check_due": null
+  },
+  "4984140": {
+    "name": "Pleiades Zero",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:29:59+00:00",
+    "next_check_due": null
+  },
+  "4984870": {
+    "name": "Selkie's Salvage&Co.",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:01+00:00",
+    "next_check_due": null
+  },
+  "4985080": {
+    "name": "First Light",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:02+00:00",
+    "next_check_due": null
+  },
+  "4985310": {
+    "name": "Sara The Sexy Thief Censored!",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:03+00:00",
+    "next_check_due": null
+  },
+  "4986120": {
+    "name": "像素单词农场",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:05+00:00",
+    "next_check_due": null
+  },
+  "4988100": {
+    "name": "Carajito",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:06+00:00",
+    "next_check_due": null
+  },
+  "4989150": {
+    "name": "Merge Co.",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:08+00:00",
+    "next_check_due": null
+  },
+  "4989850": {
+    "name": "不一样的合成：生生不息 Genesis: From Water to Stars",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:09+00:00",
+    "next_check_due": null
+  },
+  "4990390": {
+    "name": "Toll",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:11+00:00",
+    "next_check_due": null
+  },
+  "4991490": {
+    "name": "Hentai World Travel",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:12+00:00",
+    "next_check_due": null
+  },
+  "4991770": {
+    "name": "Furry Flurry",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:13+00:00",
+    "next_check_due": null
+  },
+  "4992060": {
+    "name": "Pickpocket",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:15+00:00",
+    "next_check_due": null
+  },
+  "4992750": {
+    "name": "The Deep Calls",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:16+00:00",
+    "next_check_due": null
+  },
+  "4992940": {
+    "name": "Rogue Belt",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:18+00:00",
+    "next_check_due": null
+  },
+  "4993210": {
+    "name": "Red Tanks vs Lizard",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:19+00:00",
+    "next_check_due": null
+  },
+  "4993610": {
+    "name": "Imperionis",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:21+00:00",
+    "next_check_due": null
+  },
+  "4993790": {
+    "name": "Lonely Dung Beetle",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:22+00:00",
+    "next_check_due": null
+  },
+  "4993800": {
+    "name": "Out Of Order - A Vending Machine Roguelike",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:24+00:00",
+    "next_check_due": null
+  },
+  "4995700": {
+    "name": "Grave Engine",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:25+00:00",
+    "next_check_due": null
+  },
+  "4996220": {
+    "name": "Dunjin",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:26+00:00",
+    "next_check_due": null
+  },
+  "4996270": {
+    "name": "Legend of Aether",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:28+00:00",
+    "next_check_due": null
+  },
+  "4996340": {
+    "name": "Depths of Providence",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:29+00:00",
+    "next_check_due": null
+  },
+  "4996380": {
+    "name": "Freeze, Dummy!",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:31+00:00",
+    "next_check_due": null
+  },
+  "4997100": {
+    "name": "Aircraft Tycoon",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:32+00:00",
+    "next_check_due": null
+  },
+  "4997630": {
+    "name": "IPTV Smart Cast",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:34+00:00",
+    "next_check_due": null
+  },
+  "4998060": {
+    "name": "此世纪最大之梦",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:35+00:00",
+    "next_check_due": null
+  },
+  "4998160": {
+    "name": "Lost Land",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:37+00:00",
+    "next_check_due": null
+  },
+  "4998690": {
+    "name": "Stray Light",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:38+00:00",
+    "next_check_due": null
+  },
+  "5000210": {
+    "name": "JOVA",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:40+00:00",
+    "next_check_due": null
+  },
+  "5000680": {
+    "name": "Lv Down RPG",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:41+00:00",
+    "next_check_due": null
+  },
+  "5001120": {
+    "name": "Bull Run Clicker",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:42+00:00",
+    "next_check_due": null
+  },
+  "5001220": {
+    "name": "Duck Duck Gone",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:43+00:00",
+    "next_check_due": null
+  },
+  "5001270": {
+    "name": "Impact Zero Project",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:45+00:00",
+    "next_check_due": null
+  },
+  "5001460": {
+    "name": "Moros",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:46+00:00",
+    "next_check_due": null
+  },
+  "5001750": {
+    "name": "Finnish Fishing Simulator",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:48+00:00",
+    "next_check_due": null
+  },
+  "5002430": {
+    "name": "CATENA - Chapter I",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:49+00:00",
+    "next_check_due": null
+  },
+  "5005050": {
+    "name": "UMAN",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:51+00:00",
+    "next_check_due": null
+  },
+  "5005640": {
+    "name": "WESTERN SHOP SIMULATOR",
+    "reviewScore": "No user reviews",
+    "totalReviews": 0,
+    "game_data": null,
+    "first_seen": "2026-07-28",
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:52+00:00",
+    "next_check_due": null
+  },
   "3002750": {
     "name": "Nibelung",
     "reviewScore": "No user reviews",
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-25",
-    "last_checked": "2026-07-25T23:41:03+00:00",
-    "next_check_due": "2026-07-28"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:53+00:00",
+    "next_check_due": null
   },
   "4523340": {
     "name": "C.U.B.E",
@@ -14,8 +1675,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-25",
-    "last_checked": "2026-07-25T23:41:04+00:00",
-    "next_check_due": "2026-07-28"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:54+00:00",
+    "next_check_due": null
   },
   "4594160": {
     "name": "The Mofu Game",
@@ -23,8 +1685,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-25",
-    "last_checked": "2026-07-25T23:41:06+00:00",
-    "next_check_due": "2026-07-28"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:56+00:00",
+    "next_check_due": null
   },
   "4875370": {
     "name": "Mukmil",
@@ -32,8 +1695,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-25",
-    "last_checked": "2026-07-25T23:41:07+00:00",
-    "next_check_due": "2026-07-28"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:58+00:00",
+    "next_check_due": null
   },
   "4878100": {
     "name": "Snail's Pace",
@@ -41,8 +1705,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-25",
-    "last_checked": "2026-07-25T23:41:08+00:00",
-    "next_check_due": "2026-07-28"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:30:59+00:00",
+    "next_check_due": null
   },
   "4957880": {
     "name": "They Came From Above",
@@ -50,8 +1715,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-25",
-    "last_checked": "2026-07-25T23:41:10+00:00",
-    "next_check_due": "2026-07-28"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:00+00:00",
+    "next_check_due": null
   },
   "4965530": {
     "name": "Astral Outpost",
@@ -59,8 +1725,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-25",
-    "last_checked": "2026-07-25T23:41:11+00:00",
-    "next_check_due": "2026-07-28"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:02+00:00",
+    "next_check_due": null
   },
   "4969560": {
     "name": "Ludus Manager: Gladiator Tycoon",
@@ -68,8 +1735,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-25",
-    "last_checked": "2026-07-25T23:41:12+00:00",
-    "next_check_due": "2026-07-28"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:03+00:00",
+    "next_check_due": null
   },
   "4984230": {
     "name": "The Car Dimension",
@@ -77,8 +1745,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-25",
-    "last_checked": "2026-07-25T23:41:14+00:00",
-    "next_check_due": "2026-07-28"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:04+00:00",
+    "next_check_due": null
   },
   "4987060": {
     "name": "Attrition Line",
@@ -86,8 +1755,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-25",
-    "last_checked": "2026-07-25T23:41:15+00:00",
-    "next_check_due": "2026-07-28"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:06+00:00",
+    "next_check_due": null
   },
   "4195620": {
     "name": "Draco Disease",
@@ -95,8 +1765,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:24+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:07+00:00",
+    "next_check_due": null
   },
   "4312110": {
     "name": "7on7 Football",
@@ -104,8 +1775,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:26+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:08+00:00",
+    "next_check_due": null
   },
   "4469080": {
     "name": "Monk & The Misfit Monsters",
@@ -113,8 +1785,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:27+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:10+00:00",
+    "next_check_due": null
   },
   "4542500": {
     "name": "zunda8",
@@ -122,8 +1795,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:28+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:11+00:00",
+    "next_check_due": null
   },
   "4564510": {
     "name": "23 Days",
@@ -131,8 +1805,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:30+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:13+00:00",
+    "next_check_due": null
   },
   "4616920": {
     "name": "Time to Crate",
@@ -140,8 +1815,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:31+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:14+00:00",
+    "next_check_due": null
   },
   "4625160": {
     "name": "Mission: Clear Space",
@@ -149,8 +1825,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:33+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:16+00:00",
+    "next_check_due": null
   },
   "4625810": {
     "name": "インターネットサバイバーサバイバーズ",
@@ -158,8 +1835,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:34+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:17+00:00",
+    "next_check_due": null
   },
   "4774980": {
     "name": "摆烂生物有限公司",
@@ -167,8 +1845,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:36+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:18+00:00",
+    "next_check_due": null
   },
   "4794000": {
     "name": "Witch Touch Life",
@@ -176,8 +1855,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:37+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:20+00:00",
+    "next_check_due": null
   },
   "4798440": {
     "name": "少女善恶代行",
@@ -185,8 +1865,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:39+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:21+00:00",
+    "next_check_due": null
   },
   "4828060": {
     "name": "Fall, Fall, Fall for you",
@@ -194,8 +1875,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:40+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:23+00:00",
+    "next_check_due": null
   },
   "4835080": {
     "name": "UJO Invasion",
@@ -203,8 +1885,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:42+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:24+00:00",
+    "next_check_due": null
   },
   "4852490": {
     "name": "Tower of Insolence",
@@ -212,8 +1895,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:43+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:26+00:00",
+    "next_check_due": null
   },
   "4866800": {
     "name": "BRODUCE",
@@ -221,8 +1905,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:44+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:27+00:00",
+    "next_check_due": null
   },
   "4878460": {
     "name": "The Tower Of The Mad Wizard",
@@ -230,8 +1915,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:46+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:29+00:00",
+    "next_check_due": null
   },
   "4902580": {
     "name": "Jay and Silent Bob's Joint Venture",
@@ -239,8 +1925,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:47+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:30+00:00",
+    "next_check_due": null
   },
   "4914980": {
     "name": "只开宝箱",
@@ -248,8 +1935,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:49+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:32+00:00",
+    "next_check_due": null
   },
   "4928760": {
     "name": "Scrapman Simulator",
@@ -257,8 +1945,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:50+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:33+00:00",
+    "next_check_due": null
   },
   "4950440": {
     "name": "Bowls Above",
@@ -266,8 +1955,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:51+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:35+00:00",
+    "next_check_due": null
   },
   "4952150": {
     "name": "魔女游戏：命运之轮 The Witch's Game:Wheel of Fortune",
@@ -275,8 +1965,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:53+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:36+00:00",
+    "next_check_due": null
   },
   "4954740": {
     "name": "Ironwake",
@@ -284,8 +1975,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:54+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:37+00:00",
+    "next_check_due": null
   },
   "4955770": {
     "name": "Succubi of Byzantion",
@@ -293,8 +1985,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:55+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:39+00:00",
+    "next_check_due": null
   },
   "4970050": {
     "name": "Thekku Island: Blood Dawn",
@@ -302,8 +1995,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:57+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:40+00:00",
+    "next_check_due": null
   },
   "4972930": {
     "name": "Phonophobia",
@@ -311,8 +2005,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:58+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:42+00:00",
+    "next_check_due": null
   },
   "4976010": {
     "name": "MineMergeMatic",
@@ -320,8 +2015,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:13:59+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:43+00:00",
+    "next_check_due": null
   },
   "4980530": {
     "name": "Lord Wars",
@@ -329,8 +2025,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:14:01+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:45+00:00",
+    "next_check_due": null
   },
   "4983930": {
     "name": "Fleeting Requests: Freya and Ray",
@@ -338,8 +2035,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:14:02+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:46+00:00",
+    "next_check_due": null
   },
   "4986300": {
     "name": "Apparatus Inspector",
@@ -347,8 +2045,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:14:03+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:47+00:00",
+    "next_check_due": null
   },
   "4992320": {
     "name": "God of creation",
@@ -356,8 +2055,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:14:05+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:49+00:00",
+    "next_check_due": null
   },
   "4992600": {
     "name": "Elandrake",
@@ -365,8 +2065,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:14:06+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:50+00:00",
+    "next_check_due": null
   },
   "4993940": {
     "name": "Dodge All the Things",
@@ -374,8 +2075,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-26",
-    "last_checked": "2026-07-26T19:14:08+00:00",
-    "next_check_due": "2026-07-29"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:52+00:00",
+    "next_check_due": null
   },
   "1966200": {
     "name": "Monster Therapy",
@@ -383,8 +2085,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:35:49+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:53+00:00",
+    "next_check_due": null
   },
   "2240830": {
     "name": "Worderia",
@@ -392,8 +2095,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:35:51+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:54+00:00",
+    "next_check_due": null
   },
   "2422040": {
     "name": "808cc",
@@ -401,8 +2105,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:35:52+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:56+00:00",
+    "next_check_due": null
   },
   "3185110": {
     "name": "Hidden Snails",
@@ -410,8 +2115,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:35:54+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:57+00:00",
+    "next_check_due": null
   },
   "3564600": {
     "name": "Amber: By Your Side",
@@ -419,8 +2125,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:35:55+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:31:58+00:00",
+    "next_check_due": null
   },
   "3626620": {
     "name": "Over Easy",
@@ -428,8 +2135,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:35:57+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:00+00:00",
+    "next_check_due": null
   },
   "3627020": {
     "name": "Death Not Guaranteed",
@@ -437,8 +2145,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:35:58+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:01+00:00",
+    "next_check_due": null
   },
   "4027400": {
     "name": "Anthracite",
@@ -446,8 +2155,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:00+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:03+00:00",
+    "next_check_due": null
   },
   "4112840": {
     "name": "Demon General Kristen",
@@ -455,8 +2165,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:01+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:04+00:00",
+    "next_check_due": null
   },
   "4251330": {
     "name": "Blind Rage",
@@ -464,8 +2175,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:03+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:06+00:00",
+    "next_check_due": null
   },
   "4339210": {
     "name": "Dreamsend: Wintersong",
@@ -473,8 +2185,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:04+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:07+00:00",
+    "next_check_due": null
   },
   "4437750": {
     "name": "Worst Airline Ever",
@@ -482,8 +2195,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:06+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:09+00:00",
+    "next_check_due": null
   },
   "4486770": {
     "name": "Crimson Frontier: Youth",
@@ -491,8 +2205,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:07+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:10+00:00",
+    "next_check_due": null
   },
   "4487770": {
     "name": "Konomondo",
@@ -500,8 +2215,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:08+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:11+00:00",
+    "next_check_due": null
   },
   "4493240": {
     "name": "The Leaderboard",
@@ -509,8 +2225,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:09+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:13+00:00",
+    "next_check_due": null
   },
   "4532070": {
     "name": "Meow Pow Pow",
@@ -518,8 +2235,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:11+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:14+00:00",
+    "next_check_due": null
   },
   "4614490": {
     "name": "AI VS ARTISTS",
@@ -527,8 +2245,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:12+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:16+00:00",
+    "next_check_due": null
   },
   "4614610": {
     "name": "Fox7: The Real Workout Simulator",
@@ -536,8 +2255,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:14+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:17+00:00",
+    "next_check_due": null
   },
   "4665860": {
     "name": "Crown Of Bones",
@@ -545,8 +2265,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:15+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:18+00:00",
+    "next_check_due": null
   },
   "4698040": {
     "name": "Who Killed Arthur?",
@@ -554,8 +2275,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:16+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:20+00:00",
+    "next_check_due": null
   },
   "4707670": {
     "name": "规则杀",
@@ -563,8 +2285,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:18+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:21+00:00",
+    "next_check_due": null
   },
   "4709550": {
     "name": "Behind the corner",
@@ -572,8 +2295,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:19+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:23+00:00",
+    "next_check_due": null
   },
   "4721090": {
     "name": "ScagJPT",
@@ -581,8 +2305,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:20+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:24+00:00",
+    "next_check_due": null
   },
   "4761060": {
     "name": "Until It Lasts",
@@ -590,8 +2315,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:22+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:25+00:00",
+    "next_check_due": null
   },
   "4762640": {
     "name": "ZOMBIE Disaster Drill",
@@ -599,8 +2325,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:23+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:26+00:00",
+    "next_check_due": null
   },
   "4762690": {
     "name": "Siege Demolishers",
@@ -608,8 +2335,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:24+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:28+00:00",
+    "next_check_due": null
   },
   "4810260": {
     "name": "Dungeon Crafter",
@@ -617,8 +2345,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:26+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:29+00:00",
+    "next_check_due": null
   },
   "4823810": {
     "name": "Build a Cat Tower to reach the Fish",
@@ -626,8 +2355,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:27+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:31+00:00",
+    "next_check_due": null
   },
   "4828680": {
     "name": "Where Evil Sleeps",
@@ -635,8 +2365,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:29+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:32+00:00",
+    "next_check_due": null
   },
   "4838780": {
     "name": "智探",
@@ -644,8 +2375,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:30+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:33+00:00",
+    "next_check_due": null
   },
   "4839570": {
     "name": "100 Fairyland Cats",
@@ -653,8 +2385,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:31+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:35+00:00",
+    "next_check_due": null
   },
   "4839580": {
     "name": "100 Songkran Cats",
@@ -662,8 +2395,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:33+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:36+00:00",
+    "next_check_due": null
   },
   "4839590": {
     "name": "100 Calavera Cats",
@@ -671,8 +2405,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:34+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:37+00:00",
+    "next_check_due": null
   },
   "4839600": {
     "name": "100 Petopia Cats",
@@ -680,8 +2415,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:35+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:39+00:00",
+    "next_check_due": null
   },
   "4839610": {
     "name": "100 Oktoberfest Cats",
@@ -689,8 +2425,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:36+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:40+00:00",
+    "next_check_due": null
   },
   "4848360": {
     "name": "Zoto's Garden",
@@ -698,8 +2435,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:38+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:42+00:00",
+    "next_check_due": null
   },
   "4851490": {
     "name": "MirrorBullet",
@@ -707,8 +2445,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:39+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:43+00:00",
+    "next_check_due": null
   },
   "4855510": {
     "name": "代号：和平岛",
@@ -716,8 +2455,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:41+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:44+00:00",
+    "next_check_due": null
   },
   "4865910": {
     "name": "She Hunts",
@@ -725,8 +2465,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:42+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:45+00:00",
+    "next_check_due": null
   },
   "4874310": {
     "name": "Oreship Stellar Frontier",
@@ -734,8 +2475,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:44+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:47+00:00",
+    "next_check_due": null
   },
   "4878780": {
     "name": "Fungi Guards",
@@ -743,8 +2485,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:45+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:48+00:00",
+    "next_check_due": null
   },
   "4882810": {
     "name": "BoxParty!",
@@ -752,8 +2495,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:46+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:50+00:00",
+    "next_check_due": null
   },
   "4885970": {
     "name": "Little Boy : Small Steps, Big Changes",
@@ -761,8 +2505,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:47+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:51+00:00",
+    "next_check_due": null
   },
   "4887210": {
     "name": "AntiCetus: Undersea Battle",
@@ -770,8 +2515,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:49+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:52+00:00",
+    "next_check_due": null
   },
   "4889640": {
     "name": "救救我，勇者大人！",
@@ -779,8 +2525,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:50+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:54+00:00",
+    "next_check_due": null
   },
   "4899050": {
     "name": "Pokremental",
@@ -788,8 +2535,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:51+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:55+00:00",
+    "next_check_due": null
   },
   "4901590": {
     "name": "Chicken_Run",
@@ -797,8 +2545,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:53+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:57+00:00",
+    "next_check_due": null
   },
   "4913010": {
     "name": "Game Frame",
@@ -806,8 +2555,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:54+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:32:58+00:00",
+    "next_check_due": null
   },
   "4926310": {
     "name": "Berserk Heroes Online",
@@ -815,8 +2565,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:56+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:00+00:00",
+    "next_check_due": null
   },
   "4929880": {
     "name": "Shochimiki: The Eater's House",
@@ -824,8 +2575,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:57+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:01+00:00",
+    "next_check_due": null
   },
   "4932360": {
     "name": "Gloom",
@@ -833,8 +2585,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:36:58+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:02+00:00",
+    "next_check_due": null
   },
   "4933690": {
     "name": "Rescue Team: Phantom Crisis",
@@ -842,8 +2595,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:00+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:04+00:00",
+    "next_check_due": null
   },
   "4933700": {
     "name": "Wasteland Gunsmith Simulator",
@@ -851,8 +2605,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:01+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:05+00:00",
+    "next_check_due": null
   },
   "4937970": {
     "name": "Peppermint",
@@ -860,8 +2615,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:03+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:07+00:00",
+    "next_check_due": null
   },
   "4939290": {
     "name": "Shopenkraft's Quantum Curiosities",
@@ -869,8 +2625,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:04+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:08+00:00",
+    "next_check_due": null
   },
   "4939410": {
     "name": "Mineiac",
@@ -878,8 +2635,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:06+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:10+00:00",
+    "next_check_due": null
   },
   "4941230": {
     "name": "Jackpot Poker Destruction",
@@ -887,8 +2645,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:07+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:11+00:00",
+    "next_check_due": null
   },
   "4946470": {
     "name": "Curling Stars",
@@ -896,8 +2655,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:08+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:12+00:00",
+    "next_check_due": null
   },
   "4950870": {
     "name": "KEPT",
@@ -905,8 +2665,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:10+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:14+00:00",
+    "next_check_due": null
   },
   "4951620": {
     "name": "カラクリ電池：Clockwork Battery",
@@ -914,8 +2675,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:11+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:15+00:00",
+    "next_check_due": null
   },
   "4953840": {
     "name": "Qwick",
@@ -923,8 +2685,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:12+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:17+00:00",
+    "next_check_due": null
   },
   "4959740": {
     "name": "War Doctor",
@@ -932,8 +2695,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:14+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:18+00:00",
+    "next_check_due": null
   },
   "4960370": {
     "name": "Somnia",
@@ -941,8 +2705,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:16+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:20+00:00",
+    "next_check_due": null
   },
   "4960680": {
     "name": "Morpheus",
@@ -950,8 +2715,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:17+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:21+00:00",
+    "next_check_due": null
   },
   "4961150": {
     "name": "Station 5:21",
@@ -959,8 +2725,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:18+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:23+00:00",
+    "next_check_due": null
   },
   "4963470": {
     "name": "Hexgarden",
@@ -968,8 +2735,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:20+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:24+00:00",
+    "next_check_due": null
   },
   "4963970": {
     "name": "Dead Broke",
@@ -977,8 +2745,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:21+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:25+00:00",
+    "next_check_due": null
   },
   "4964620": {
     "name": "The Yard: Escape from Prison",
@@ -986,8 +2755,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:22+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:27+00:00",
+    "next_check_due": null
   },
   "4966440": {
     "name": "Rogue Link Loop",
@@ -995,8 +2765,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:24+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:28+00:00",
+    "next_check_due": null
   },
   "4967500": {
     "name": "Tidy Mart",
@@ -1004,8 +2775,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:25+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:29+00:00",
+    "next_check_due": null
   },
   "4969040": {
     "name": "Wall Street Broker",
@@ -1013,8 +2785,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:27+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:30+00:00",
+    "next_check_due": null
   },
   "4971790": {
     "name": "ARC-9",
@@ -1022,8 +2795,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:28+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:32+00:00",
+    "next_check_due": null
   },
   "4973250": {
     "name": "PIO: A Robot’s Story",
@@ -1031,8 +2805,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:29+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:33+00:00",
+    "next_check_due": null
   },
   "4973650": {
     "name": "SoulForge Legends",
@@ -1040,8 +2815,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:31+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:35+00:00",
+    "next_check_due": null
   },
   "4977670": {
     "name": "Industrial Garbage",
@@ -1049,8 +2825,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:32+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:36+00:00",
+    "next_check_due": null
   },
   "4978130": {
     "name": "Group Commander",
@@ -1058,8 +2835,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:33+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:38+00:00",
+    "next_check_due": null
   },
   "4978200": {
     "name": "Idle Times",
@@ -1067,8 +2845,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:35+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:39+00:00",
+    "next_check_due": null
   },
   "4978580": {
     "name": "Unwaking",
@@ -1076,8 +2855,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:36+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:40+00:00",
+    "next_check_due": null
   },
   "4980350": {
     "name": "Everdeep Idle",
@@ -1085,8 +2865,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:38+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:42+00:00",
+    "next_check_due": null
   },
   "4984060": {
     "name": "Absolute Infinity",
@@ -1094,8 +2875,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:39+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:43+00:00",
+    "next_check_due": null
   },
   "4986860": {
     "name": "Words Of Power",
@@ -1103,8 +2885,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:40+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:44+00:00",
+    "next_check_due": null
   },
   "4988690": {
     "name": "名画、ヤらせて！",
@@ -1112,8 +2895,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:42+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:46+00:00",
+    "next_check_due": null
   },
   "4989110": {
     "name": "TCG Shop Life",
@@ -1121,8 +2905,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:43+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:47+00:00",
+    "next_check_due": null
   },
   "4990520": {
     "name": "NOODS Maker",
@@ -1130,8 +2915,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:45+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:49+00:00",
+    "next_check_due": null
   },
   "4992440": {
     "name": "One Gun Army",
@@ -1139,8 +2925,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:46+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:50+00:00",
+    "next_check_due": null
   },
   "4992810": {
     "name": "Winds of Valor",
@@ -1148,8 +2935,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:47+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:51+00:00",
+    "next_check_due": null
   },
   "4993130": {
     "name": "Ashen Banners",
@@ -1157,8 +2945,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:49+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:53+00:00",
+    "next_check_due": null
   },
   "4993410": {
     "name": "Victory's Grave: Airborne",
@@ -1166,8 +2955,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:50+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:54+00:00",
+    "next_check_due": null
   },
   "4996950": {
     "name": "Deadline",
@@ -1175,8 +2965,9 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:52+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:56+00:00",
+    "next_check_due": null
   },
   "4998550": {
     "name": "海の果てと最後の夏 -Monochrome Iris-",
@@ -1184,7 +2975,8 @@
     "totalReviews": 0,
     "game_data": null,
     "first_seen": "2026-07-27",
-    "last_checked": "2026-07-27T19:37:53+00:00",
-    "next_check_due": "2026-07-30"
+    "first_review_seen": null,
+    "last_checked": "2026-07-28T19:33:57+00:00",
+    "next_check_due": null
   }
 }
