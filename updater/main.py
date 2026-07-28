@@ -48,6 +48,19 @@ Options:
     --force-include <appid>: Add an App ID to the pending-review list so the
       next --discover run fetches it fresh (used to rescue a wrongly-excluded
       title). Does not require an ITAD key.
+  --backfill-awaiting-release: One-time, manually-run catch-up for App IDs
+    that were already present in the catalog snapshot before --discover
+    started tracking them (diff_new_appids never flags these as "new",
+    regardless of release status). Cheaply review-gate-checks every
+    App ID not yet tracked anywhere (games data/pending/exhausted/rejected)
+    and classifies it into the pending-review list, same as a normal
+    discovery would. Does NOT do the full Steam+ITAD fetch or write to
+    KV -- that's left to the next regular --discover run. Deliberately not
+    part of the daily schedule (at snapshot scale this can take on the
+    order of days); safe to interrupt and re-run to resume. Does not
+    require an ITAD key. Local-file mode by default like every other
+    command (checks against the local games-basic.json etc.); add --kv to
+    check against live KV instead.
   --apply-pending <path>: Apply an approved candidates_*.json file (Stage 2)
     to KV. Invoked by the PR-merge-triggered workflow. Does not require ITAD/
     Steam Web API keys.
@@ -71,7 +84,7 @@ from game_data_builder import GameDataBuilder
 from kv_helper import KVHelper
 from constants import DEFAULT_REGIONS, BATCH_LOCK_FILE
 from extract_games import extract_command, GameExtractor
-from discover_new_games import discover_command, force_include_command
+from discover_new_games import discover_command, force_include_command, backfill_awaiting_release_command
 from apply_pending_games import apply_command
 
 # Log configuration (overwrite mode to rebuild.log)
@@ -776,6 +789,7 @@ def main():
     steam_web_api_key = None
     seed_only = False
     force_include_appid = None
+    backfill_awaiting_release = False
     apply_pending_path = None
     regions = DEFAULT_REGIONS.copy()
     limit = None
@@ -812,6 +826,8 @@ def main():
             else:
                 logger.info("Error: --force-include requires an appid argument")
                 sys.exit(1)
+        elif arg == '--backfill-awaiting-release':
+            backfill_awaiting_release = True
         elif arg == '--apply-pending':
             if i + 1 < len(sys.argv):
                 apply_pending_path = sys.argv[i + 1]
@@ -885,6 +901,14 @@ def main():
 
     # Initialize KVHelper
     kv_helper = KVHelper(use_kv=use_kv)
+
+    # If backfill-awaiting-release mode, execute and exit (cheap review-gate
+    # checks + pending-list writes only, no ITAD key, no full Steam+ITAD
+    # fetch or KV write). Local-file mode by default, like every other
+    # command here -- pass --kv explicitly to check against live KV instead.
+    if backfill_awaiting_release:
+        backfill_awaiting_release_command(use_kv=use_kv)
+        return
 
     # If discover mode, execute and exit (Stage 1: no KV writes, PR artifact only)
     if discover_mode:

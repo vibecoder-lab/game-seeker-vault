@@ -94,6 +94,14 @@ PENDING_REVIEW_CANDIDATES_FILE = 'discovery-data/refs/pending_review_candidates.
 EXHAUSTED_REVIEW_CANDIDATES_FILE = 'discovery-data/refs/exhausted_review_candidates.json'
 REJECTED_APPIDS_FILE = 'discovery-data/refs/rejected_appids.txt'
 
+# Append-only history of every review-gate check (JSON Lines, one record per
+# line). pending_review_candidates.json's own `last_checked` is overwritten
+# each time, so it can't answer "how many times / over what span was this
+# title checked" -- this log can. Also the basis for eventually calibrating
+# DISCOVERY_AWAITING_RELEASE_DAILY_BUDGET from real observed inflow instead
+# of the initial guessed constant (see below).
+REVIEW_GATE_CHECK_LOG_FILE = 'discovery-data/refs/review_gate_check_log.jsonl'
+
 # Discovery review gate: minimum total review count required, in addition to
 # ALLOWED_REVIEW_SCORES, before a candidate proceeds to the full Steam+ITAD
 # fetch. Matches the threshold the manual process (extract_games.py) used to
@@ -102,15 +110,52 @@ REJECTED_APPIDS_FILE = 'discovery-data/refs/rejected_appids.txt'
 # the free appreviews summary endpoint, before the expensive per-app fetch.
 DISCOVERY_MIN_REVIEWS = 100
 
-# Milestone-based re-check schedule for pending candidates, in days since
-# first discovered. Rather than hitting the review-gate endpoint every single
-# day forever (unbounded cost, and mostly wasted since review counts barely
-# move day to day), a pending candidate is only re-checked when it crosses
-# one of these milestones. After the last milestone, it is no longer
-# automatically re-checked (consistent with this pipeline's scope: it
-# watches new releases going forward, it does not try to guarantee 100%
-# eventual coverage of every long-tail case).
+# Milestone-based re-check schedule for pending candidates that have started
+# accumulating reviews (i.e. first_review_seen is set -- see
+# discover_new_games.py), in days since first_review_seen. Rather than
+# hitting the review-gate endpoint every single day forever (unbounded cost,
+# and mostly wasted since review counts barely move day to day), a pending
+# candidate is only re-checked when it crosses one of these milestones.
+# After the last milestone, it is no longer automatically re-checked
+# (consistent with this pipeline's scope: it watches new releases going
+# forward, it does not try to guarantee 100% eventual coverage of every
+# long-tail case).
+#
+# Note: first_seen (App ID registration date, from the catalog snapshot
+# diff) is NOT the same as release date -- many App IDs sit in "coming
+# soon"/unreleased status for months after registration, sometimes longer.
+# A candidate stays in a separate "awaiting release" phase (see
+# DISCOVERY_AWAITING_RELEASE_DAILY_BUDGET) with zero reviews until the first
+# review is actually observed, which is what sets first_review_seen and
+# starts this milestone schedule for real.
 DISCOVERY_REVIEW_CHECK_MILESTONES_DAYS = [3, 7, 30, 180]
+
+# Daily processing cap for the "awaiting release" phase (candidates with
+# first_review_seen still unset, i.e. zero reviews observed so far --
+# typically still "coming soon" on Steam). Unlike the milestone schedule
+# above, there's no defensible fixed re-check interval here: the actual
+# registration-to-release gap varies wildly and isn't known in advance, so
+# any fixed interval (daily, weekly, or an escalating schedule) either
+# wastes API calls checking titles that clearly haven't released yet, or
+# -- more importantly -- has its DAILY cost scale with the ever-growing
+# accumulated backlog rather than with the (much slower-growing) actual
+# daily discovery rate, which eventually becomes unsustainable regardless
+# of which fixed interval is chosen.
+#
+# Instead, candidates in this phase are processed oldest-`last_checked`-first,
+# capped at this many per run -- bounding daily cost to a fixed number
+# regardless of how large the backlog grows (the trade-off is a longer
+# average wait between checks for any given title as the backlog grows,
+# which is an acceptable, gracefully-degrading outcome, not a runaway cost).
+#
+# This initial value is a placeholder, not derived from real inflow data:
+# chosen only from processing-time reasonableness (at the empirically
+# observed ~1.52s/check from production Actions logs, 500 checks/day adds
+# ~760s/12.7min to the daily batch run). Once REVIEW_GATE_CHECK_LOG_FILE has
+# accumulated enough real history (e.g. several months), this should be
+# recalibrated from the actual observed daily inflow rate instead of left as
+# a fixed guess -- see the "future work" note in the discovery-batch plan.
+DISCOVERY_AWAITING_RELEASE_DAILY_BUDGET = 500
 
 # Discovery pre-filter: suffix/bracket-anchored exclusion (separate from
 # EXCLUDE_KEYWORDS, which is unanchored substring matching used only by the

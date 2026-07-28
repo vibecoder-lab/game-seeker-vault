@@ -54,7 +54,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          for f in discovery-data/refs/steam_applist_snapshot.json discovery-data/refs/pending_review_candidates.json discovery-data/refs/exhausted_review_candidates.json; do
+          for f in discovery-data/refs/steam_applist_snapshot.json discovery-data/refs/pending_review_candidates.json discovery-data/refs/exhausted_review_candidates.json discovery-data/refs/review_gate_check_log.jsonl; do
             [ -f "$f" ] && git add "$f"
           done
           git diff --cached --quiet || git commit -m "chore: update Steam catalog snapshot and pending-review list"

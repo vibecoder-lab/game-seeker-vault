@@ -25,9 +25,11 @@ from constants import (
     PENDING_REVIEW_CANDIDATES_FILE,
     EXHAUSTED_REVIEW_CANDIDATES_FILE,
     REJECTED_APPIDS_FILE,
+    REVIEW_GATE_CHECK_LOG_FILE,
     PENDING_NEW_GAMES_DIR,
     DISCOVERY_MIN_REVIEWS,
     DISCOVERY_REVIEW_CHECK_MILESTONES_DAYS,
+    DISCOVERY_AWAITING_RELEASE_DAILY_BUDGET,
     ALLOWED_REVIEW_SCORES,
     USER_AGENT_STEAM,
 )
@@ -103,6 +105,7 @@ def force_include_command(app_id):
         'totalReviews': None,
         'game_data': None,
         'first_seen': None,
+        'first_review_seen': None,
         'last_checked': None,
         'next_check_due': None,  # absent/None = due immediately on next run
     }
@@ -141,6 +144,38 @@ def _compute_next_check_due(first_seen_date, today, milestones=DISCOVERY_REVIEW_
         if days_elapsed < m:
             return (first_seen_date + timedelta(days=m)).isoformat()
     return 'exhausted'
+
+
+def _is_awaiting_release_expired(first_seen_date, today, milestones=DISCOVERY_REVIEW_CHECK_MILESTONES_DAYS):
+    """Has a still-awaiting-release candidate (zero reviews ever observed)
+    reached the same final cutoff (180 days) used for post-release
+    tracking? This is independent of the budget-based rotation below --
+    a candidate gives up at this point regardless of how many times the
+    rotation actually got around to checking it."""
+    return (today - first_seen_date).days >= milestones[-1]
+
+
+def _log_review_gate_check(app_id, name, phase, total_reviews, review_score, passed_gate, path=REVIEW_GATE_CHECK_LOG_FILE):
+    """Append one record to the review-gate check history (JSON Lines,
+    append-only, never read back by the pipeline itself). Unlike
+    pending_review_candidates.json's `last_checked` (overwritten each time),
+    this preserves the full history of every check for later analysis --
+    e.g. identifying titles never detected as released long after the fact,
+    or calibrating DISCOVERY_AWAITING_RELEASE_DAILY_BUDGET from real
+    observed inflow instead of the initial guessed constant."""
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    record = {
+        'timestamp': _now_iso(),
+        'app_id': app_id,
+        'name': name,
+        'phase': phase,
+        'total_reviews': total_reviews,
+        'review_score': review_score,
+        'passed_gate': passed_gate,
+    }
+    with open(p, 'a', encoding='utf-8') as f:
+        f.write(json.dumps(record, ensure_ascii=False) + '\n')
 
 
 def check_review_gate(app_id, session, min_reviews=DISCOVERY_MIN_REVIEWS, max_retries=3):
@@ -201,6 +236,27 @@ def _now_iso():
     return datetime.now(timezone.utc).isoformat(timespec='seconds')
 
 
+def _sweep_exhausted(new_pending):
+    """Move any entry marked 'exhausted' (next_check_due == 'exhausted') out
+    of the pending dict and into the separate exhausted archive, so the
+    pending list only ever contains candidates still being actively
+    monitored. Must run on every code path that can produce a pending dict
+    -- not just the one that runs the review-gate loop -- since an
+    awaiting-release candidate can now be marked exhausted purely from
+    calendar time (see _is_awaiting_release_expired) without ever being
+    checked this run, which can happen even when nothing else is due
+    (dedup_ids empty)."""
+    newly_exhausted = {aid: entry for aid, entry in new_pending.items() if entry.get('next_check_due') == 'exhausted'}
+    if not newly_exhausted:
+        return new_pending
+    new_pending = {aid: entry for aid, entry in new_pending.items() if aid not in newly_exhausted}
+    exhausted = load_exhausted_review_candidates()
+    exhausted.update(newly_exhausted)
+    save_exhausted_review_candidates(exhausted)
+    logger.info(f"{len(newly_exhausted)} candidates exhausted their milestone schedule and moved to the exhausted archive")
+    return new_pending
+
+
 def discover_command(itad_api_key, steam_web_api_key, regions, seed_only=False):
     """Run Stage 1: discover, pre-filter, review-gate, fetch, and write the PR artifact
 
@@ -254,23 +310,66 @@ def discover_command(itad_api_key, steam_web_api_key, regions, seed_only=False):
     pending = load_pending_review_candidates()
     today = datetime.now(timezone.utc).date()
 
-    # Split existing pending entries: only ones due for a milestone re-check
-    # today get an API call; the rest are carried over untouched. This is
-    # what bounds the total cost -- a pending candidate is checked at most a
-    # handful of times (DISCOVERY_REVIEW_CHECK_MILESTONES_DAYS), not once
-    # per day forever.
+    # Split existing pending entries into two independent phases:
+    #
+    # - Post-release (first_review_seen is set): unchanged date-based
+    #   milestone schedule (DISCOVERY_REVIEW_CHECK_MILESTONES_DAYS via
+    #   next_check_due/_is_due) -- bounded because review counts barely
+    #   move day to day, so checking on a spaced-out schedule is enough.
+    #
+    # - Awaiting-release (first_review_seen still unset, i.e. zero reviews
+    #   ever observed -- typically still "coming soon" on Steam): no
+    #   defensible fixed re-check interval exists here (the actual
+    #   registration-to-release gap is unknown and highly variable), so
+    #   instead these are processed oldest-`last_checked`-first, capped at
+    #   DISCOVERY_AWAITING_RELEASE_DAILY_BUDGET per run. This bounds daily
+    #   cost to a fixed number regardless of how large the backlog grows
+    #   (unlike any fixed per-entry interval, whose daily cost scales with
+    #   the ever-growing backlog). Entries that reach the same final
+    #   180-day cutoff without ever seeing a single review are given up on
+    #   (moved to exhausted) independent of the rotation.
     pending_due = {}
     pending_not_due = {}
+    awaiting_candidates = {}
     for aid, entry in pending.items():
         if aid in rejected_ids or aid in candidates:
             continue  # blocklisted, or superseded by a fresh discovery this run
-        if _is_due(entry, today):
-            pending_due[aid] = entry
-        else:
-            pending_not_due[aid] = entry
 
+        if entry.get('first_review_seen'):
+            if _is_due(entry, today):
+                pending_due[aid] = entry
+            else:
+                pending_not_due[aid] = entry
+            continue
+
+        # Awaiting-release phase.
+        first_seen_str = entry.get('first_seen')
+        first_seen_date = date.fromisoformat(first_seen_str) if first_seen_str else today
+        if _is_awaiting_release_expired(first_seen_date, today):
+            # Never saw a single review within the full window -- give up,
+            # regardless of how many times the rotation actually reached it.
+            pending_not_due[aid] = {**entry, 'next_check_due': 'exhausted'}
+        else:
+            awaiting_candidates[aid] = entry
+
+    # Bound the awaiting-release phase's daily cost to a fixed budget,
+    # oldest-checked-first so every entry eventually gets its turn.
+    sorted_awaiting = sorted(
+        awaiting_candidates.items(),
+        key=lambda kv: kv[1].get('last_checked') or '',
+    )
+    for aid, entry in sorted_awaiting[:DISCOVERY_AWAITING_RELEASE_DAILY_BUDGET]:
+        pending_due[aid] = entry
+    for aid, entry in sorted_awaiting[DISCOVERY_AWAITING_RELEASE_DAILY_BUDGET:]:
+        pending_not_due[aid] = entry
+
+    if awaiting_candidates:
+        logger.info(
+            f"{len(awaiting_candidates)} awaiting-release candidates in backlog; "
+            f"{min(len(awaiting_candidates), DISCOVERY_AWAITING_RELEASE_DAILY_BUDGET)} selected for this run's budget"
+        )
     if pending_due:
-        logger.info(f"{len(pending_due)} pending candidates are due for a milestone re-check today")
+        logger.info(f"{len(pending_due)} pending candidates are due for a re-check today")
     if pending_not_due:
         logger.info(f"{len(pending_not_due)} pending candidates not yet due for re-check, carried over untouched (no API call)")
 
@@ -296,7 +395,10 @@ def discover_command(itad_api_key, steam_web_api_key, regions, seed_only=False):
         # Nothing due for a check this run. Persist pending_not_due as-is
         # (drops anything that got rejected or was superseded) and leave the
         # PR artifact untouched -- see the no-PR-noise reasoning below.
-        new_pending = dict(pending_not_due)
+        # Still needs the exhaustion sweep: an awaiting-release candidate
+        # can hit its 180-day cutoff purely from calendar time, with nothing
+        # else due this run.
+        new_pending = _sweep_exhausted(dict(pending_not_due))
         save_pending_review_candidates(new_pending)
         logger.info(f"No candidates due for review-gate check this run; {len(new_pending)} still pending, PR artifact left untouched")
         return {'passed': 0, 'pending': len(new_pending), 'pre_filter_excluded': len(pre_filter_excluded)}
@@ -314,20 +416,41 @@ def discover_command(itad_api_key, steam_web_api_key, regions, seed_only=False):
     for idx, aid in enumerate(dedup_ids, 1):
         passes, score, total_reviews = check_review_gate(aid, session)
         logger.info(f"[{idx}/{len(dedup_ids)}] Review gate for App ID {aid}: score={score}, reviews={total_reviews}, passes={passes}")
+
+        existing_entry = pending.get(aid, {})
+        first_seen_str = existing_entry.get('first_seen')
+        first_seen_date = date.fromisoformat(first_seen_str) if first_seen_str else today
+
+        # First time any reviews at all are observed -- this is the real
+        # release signal (App ID registration date is NOT release date), so
+        # the milestone clock starts here, not at registration.
+        first_review_seen_str = existing_entry.get('first_review_seen')
+        if not first_review_seen_str and total_reviews > 0:
+            first_review_seen_str = today.isoformat()
+
+        _log_review_gate_check(
+            aid, target_names.get(aid, ''),
+            phase='awaiting_release' if not first_review_seen_str else 'post_release',
+            total_reviews=total_reviews, review_score=score, passed_gate=passes,
+        )
+
         if passes:
             review_ready_ids.append(aid)
         else:
-            existing_entry = pending.get(aid, {})
-            first_seen_str = existing_entry.get('first_seen')
-            first_seen_date = date.fromisoformat(first_seen_str) if first_seen_str else today
+            if first_review_seen_str:
+                anchor_date = date.fromisoformat(first_review_seen_str)
+                next_check_due = _compute_next_check_due(anchor_date, today)
+            else:
+                next_check_due = None  # awaiting-release: budget rotation, not date-based
             review_gate_pending[aid] = {
                 'name': target_names.get(aid, ''),
                 'reviewScore': score,
                 'totalReviews': total_reviews,
                 'game_data': existing_entry.get('game_data'),
                 'first_seen': first_seen_date.isoformat(),
+                'first_review_seen': first_review_seen_str,
                 'last_checked': _now_iso(),
-                'next_check_due': _compute_next_check_due(first_seen_date, today),
+                'next_check_due': next_check_due,
             }
         if idx < len(dedup_ids):
             time.sleep(random.uniform(1.0, 1.5))
@@ -368,30 +491,26 @@ def discover_command(itad_api_key, steam_web_api_key, regions, seed_only=False):
         existing_entry = pending.get(aid, {})
         first_seen_str = existing_entry.get('first_seen')
         first_seen_date = date.fromisoformat(first_seen_str) if first_seen_str else today
+        # Reached the full-fetch stage, so it already cleared the
+        # >=100-review gate -- definitely has reviews, so the milestone
+        # clock is (or already was) running.
+        first_review_seen_str = existing_entry.get('first_review_seen') or today.isoformat()
+        anchor_date = date.fromisoformat(first_review_seen_str)
         new_pending[aid] = {
             'name': item.get('title', target_names.get(aid, '')),
             'reviewScore': item.get('reviewScore'),
             'totalReviews': None,
             'game_data': item.get('game_data'),
             'first_seen': first_seen_date.isoformat(),
+            'first_review_seen': first_review_seen_str,
             'last_checked': _now_iso(),
-            'next_check_due': _compute_next_check_due(first_seen_date, today),
+            'next_check_due': _compute_next_check_due(anchor_date, today),
         }
     for aid, entry in pending.items():
         if aid not in new_pending and aid not in rejected_ids and aid not in passed_ids:
             new_pending[aid] = entry
 
-    # Move anything that just hit 'exhausted' (failed its final, 180-day
-    # milestone check) out of the pending list and into the separate
-    # exhausted archive -- the pending list should only ever contain
-    # candidates still being actively monitored.
-    newly_exhausted = {aid: entry for aid, entry in new_pending.items() if entry.get('next_check_due') == 'exhausted'}
-    if newly_exhausted:
-        new_pending = {aid: entry for aid, entry in new_pending.items() if aid not in newly_exhausted}
-        exhausted = load_exhausted_review_candidates()
-        exhausted.update(newly_exhausted)
-        save_exhausted_review_candidates(exhausted)
-        logger.info(f"{len(newly_exhausted)} candidates exhausted their milestone schedule and moved to the exhausted archive")
+    new_pending = _sweep_exhausted(new_pending)
 
     # pending_review_candidates.json is committed directly to main every run
     # regardless (see discover-new-games.yml) -- this is deliberate bookkeeping
@@ -454,14 +573,16 @@ def _write_pr_summary(passed_games, pending_entries, pre_filter_excluded, summar
         lines.append("_None this run._")
     lines.append("")
 
-    lines.append("### Pending — review score/count not yet sufficient (re-checked on a milestone schedule, NOT added)\n")
+    lines.append("### Pending — review score/count not yet sufficient (re-checked automatically, NOT added)\n")
     if pending_entries:
-        lines.append("| Title | Review Score | Total Reviews | Next Check |")
-        lines.append("|---|---|---|---|")
+        lines.append("| Title | Review Score | Total Reviews | Status | Next Check |")
+        lines.append("|---|---|---|---|---|")
         for item in pending_entries:
             reviews = item.get('totalReviews')
-            next_check = item.get('next_check_due', '-')
-            lines.append(f"| {item.get('name', '-')} | {item.get('reviewScore', '-')} | {reviews if reviews is not None else '-'} | {next_check or '-'} |")
+            first_review_seen = item.get('first_review_seen')
+            status = f"Tracking since {first_review_seen}" if first_review_seen else "Awaiting release"
+            next_check = item.get('next_check_due') or '-'
+            lines.append(f"| {item.get('name', '-')} | {item.get('reviewScore', '-')} | {reviews if reviews is not None else '-'} | {status} | {next_check} |")
     else:
         lines.append("_None this run._")
     lines.append("")
@@ -490,3 +611,107 @@ def _write_pr_summary(passed_games, pending_entries, pre_filter_excluded, summar
 
     with open(summary_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))
+
+
+def backfill_awaiting_release_command(use_kv=False, save_every=500):
+    """One-time (resumable), manually-run backfill for the existing catalog
+    snapshot's structural blind spot: diff_new_appids() only ever flags an
+    App ID as "new" the first time it appears in ANY saved snapshot -- an
+    App ID already present in an earlier snapshot (e.g. the entire initial
+    seed, ~178k entries) is permanently invisible to the daily --discover
+    diff afterward, regardless of whether it has since released. Some
+    unknown portion of that backlog is still-unreleased ("coming soon")
+    titles that will never otherwise enter tracking.
+
+    Deliberately NOT part of the daily --discover flow or its
+    DISCOVERY_AWAITING_RELEASE_DAILY_BUDGET cap: piling the ~166k-entry
+    backlog onto that budget would stretch the check interval for the
+    small, already-active pending list from days to ~334 days. Run this
+    manually instead, taking as long as it takes (~1.5s/check at the
+    scale involved is on the order of days) -- only performs the cheap
+    review-gate check and classifies into pending_review_candidates.json,
+    exactly as a normal discovery would; the full Steam+ITAD fetch and any
+    eventual KV write are left entirely to the regular --discover flow on
+    its next natural pass. No API keys needed.
+
+    use_kv: False by default (local-file mode, matching this project's
+    normal workflow of always working through local files, never editing
+    KV directly) -- reads the "already added" games list from the local
+    games-basic.json/games-details.json/games-movies.json files, same as
+    every other command here without --kv. Pass True (--kv) to instead
+    check against live KV directly.
+
+    Resumable with no dedicated checkpoint state: the "still needs
+    processing" set is recomputed fresh from the current
+    pending_review_candidates.json/exhausted/rejected/existing-games state
+    on every invocation, so anything already classified (by a previous,
+    possibly interrupted run of this same command) is automatically
+    excluded next time -- just re-run the same command to continue.
+    """
+    snapshot = load_snapshot()
+    rejected_ids = load_rejected_appids()
+    pending = load_pending_review_candidates()
+    exhausted = load_exhausted_review_candidates()
+
+    kv_helper = KVHelper(use_kv=use_kv)
+    existing_ids = {g['id'] for g in kv_helper.get_games_data()}
+
+    to_process = [
+        (aid, name) for aid, name in snapshot.items()
+        if aid not in rejected_ids and aid not in pending
+        and aid not in exhausted and aid not in existing_ids
+    ]
+    logger.info(
+        f"Backfill: {len(to_process)} App IDs not yet tracked anywhere "
+        f"(of {len(snapshot)} total in snapshot)"
+    )
+
+    if not to_process:
+        logger.info("Nothing left to backfill.")
+        return {'processed': 0, 'remaining': 0}
+
+    session = requests.Session()
+    session.headers.update({'User-Agent': USER_AGENT_STEAM})
+
+    processed = 0
+    try:
+        for idx, (aid, name) in enumerate(to_process, 1):
+            today = datetime.now(timezone.utc).date()
+            passes, score, total_reviews = check_review_gate(aid, session)
+            _log_review_gate_check(
+                aid, name, phase='backfill',
+                total_reviews=total_reviews, review_score=score, passed_gate=passes,
+            )
+
+            if total_reviews > 0:
+                first_review_seen_str = today.isoformat()
+                next_check_due = _compute_next_check_due(today, today)
+            else:
+                first_review_seen_str = None
+                next_check_due = None
+
+            pending[aid] = {
+                'name': name,
+                'reviewScore': score,
+                'totalReviews': total_reviews,
+                'game_data': None,
+                'first_seen': today.isoformat(),
+                'first_review_seen': first_review_seen_str,
+                'last_checked': _now_iso(),
+                'next_check_due': next_check_due,
+            }
+            processed += 1
+
+            if idx % save_every == 0 or idx == len(to_process):
+                save_pending_review_candidates(pending)
+                logger.info(f"[{idx}/{len(to_process)}] Backfill progress saved ({processed} processed this run)")
+
+            if idx < len(to_process):
+                time.sleep(random.uniform(1.0, 1.5))
+    except KeyboardInterrupt:
+        save_pending_review_candidates(pending)
+        logger.info(f"Interrupted after {processed} App IDs -- progress saved. Re-run the same command to resume.")
+        return {'processed': processed, 'remaining': len(to_process) - processed}
+
+    logger.info(f"Backfill complete for this run: {processed} App IDs processed and saved to pending list")
+    return {'processed': processed, 'remaining': 0}
