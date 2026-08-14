@@ -1,0 +1,61 @@
+[
+  {
+    "id": "2523770",
+    "itadId": "019ff18d-9e53-7286-aed7-6e46e1ebc4fe",
+    "title": "The Lord of the Rings: War in the North™ - Legacy Edition",
+    "storeUrl": "https://store.steampowered.com/app/2523770/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2523770/827d4b30805c9c6615647f6b6624945d27e6a8c6/capsule_616x353.jpg?t=1786466870",
+    "movies": [
+      {
+        "id": 257301852,
+        "name": "The Lord of the Rings: War in the North - Legacy Edition Launch Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257301852/bf377ff58160b3c2ce4b7eda663f154bca92f85a/movie_600x337.jpg?t=1786463788",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/2523770/73899489/5e0aeeb68a99434a0b895daef45844408c032a57/1784486175/hls_264_master.m3u8?t=1786463788",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/2523770/73899489/5e0aeeb68a99434a0b895daef45844408c032a57/1784486175/dash_h264.mpd?t=1786463788"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 2070,
+        "regular": 2300,
+        "cut": 10,
+        "storeLow": 2070
+      },
+      "US": {
+        "price": 17.99,
+        "regular": 19.99,
+        "cut": 10,
+        "storeLow": 17.99
+      },
+      "EU": {
+        "price": 17.55,
+        "regular": 19.5,
+        "cut": 10,
+        "storeLow": 17.55
+      }
+    },
+    "genres": [
+      "Action",
+      "RPG"
+    ],
+    "tags": [
+      "Action",
+      "RPG",
+      "Hack and Slash"
+    ],
+    "releaseDate": "2026-08-11",
+    "developers": [
+      "Aspyr Media"
+    ],
+    "publishers": [
+      "Aspyr Media"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English<strong>*</strong>, French<strong>*</strong>, Italian<strong>*</strong>, Spanish - Spain<strong>*</strong>, Polish, Portuguese - Brazil, Russian, Simplified Chinese, German<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  }
+]
