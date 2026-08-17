@@ -1,0 +1,61 @@
+[
+  {
+    "id": "4992070",
+    "itadId": "019fad88-5a4e-7176-88c1-1e915c3ec17c",
+    "title": "Sort Them Ducks",
+    "storeUrl": "https://store.steampowered.com/app/4992070/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4992070/c70f83f61cb358d26bf559f42e93925dda9183c4/capsule_616x353.jpg?t=1786629601",
+    "movies": [
+      {
+        "id": 257398199,
+        "name": "Sort Them Ducks Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257398199/a6b675aab29b2d7a4b04f84697c28bb95ecfd772/movie_600x337.jpg?t=1786629269",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4992070/1539188594/8d91de1d2dc72379aaa384b0323b04935f073656/1786627646/hls_264_master.m3u8?t=1786629269",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4992070/1539188594/8d91de1d2dc72379aaa384b0323b04935f073656/1786627646/dash_h264.mpd?t=1786629269"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 711,
+        "regular": 790,
+        "cut": 10,
+        "storeLow": 711
+      },
+      "US": {
+        "price": 5.39,
+        "regular": 5.99,
+        "cut": 10,
+        "storeLow": 5.39
+      },
+      "EU": {
+        "price": 5.53,
+        "regular": 6.15,
+        "cut": 10,
+        "storeLow": 5.53
+      }
+    },
+    "genres": [
+      "Casual",
+      "Simulation"
+    ],
+    "tags": [
+      "Simulation",
+      "Casual",
+      "incremental"
+    ],
+    "releaseDate": "2026-08-13",
+    "developers": [
+      "Mr.Duck"
+    ],
+    "publishers": [
+      "Mr.Duck"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, Italian, German, Spanish - Spain, Arabic, Bulgarian, Dutch, Indonesian, Japanese, Korean, Polish, Portuguese - Portugal, Russian, Simplified Chinese, Turkish, Portuguese - Brazil"
+  }
+]
