@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1816880",
+    "itadId": "018d937f-6482-701b-ac01-362eeb71913c",
+    "title": "EXIT 2",
+    "storeUrl": "https://store.steampowered.com/app/1816880/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1816880/6d4a1e604c706421815e0b95a4bb5ce004bad542/capsule_616x353.jpg?t=1787076127",
+    "movies": [],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      },
+      "US": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      }
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Indie",
+      "Free To Play"
+    ],
+    "tags": [
+      "Multiplayer",
+      "Free to Play",
+      "Horror"
+    ],
+    "releaseDate": "2021-12-07",
+    "developers": [
+      "Enreeper",
+      "Marvin. H",
+      "Flant"
+    ],
+    "publishers": [
+      "Enreeper"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  }
+]
