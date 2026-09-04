@@ -1,0 +1,63 @@
+[
+  {
+    "id": "4721090",
+    "itadId": "019fa432-c557-7136-80c9-7c84e5425f20",
+    "title": "ScagJPT",
+    "storeUrl": "https://store.steampowered.com/app/4721090/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4721090/ac4f443fa6d8b5fddc935852e92e3eff17e2bec9/capsule_616x353.jpg?t=1787338870",
+    "movies": [
+      {
+        "id": 257392600,
+        "name": "ScagJPT Trailer 1",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257392600/495114010684f7d1192f06e3972fe832f43117cc/movie_600x337.jpg?t=1785968685",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4721090/1635529956/3c0ba94389a6783c094c9893ff1c85e06bca358e/1785968113/hls_264_master.m3u8?t=1785968685",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4721090/1635529956/3c0ba94389a6783c094c9893ff1c85e06bca358e/1785968113/dash_h264.mpd?t=1785968685"
+      }
+    ],
+    "reviewScore": "Overwhelmingly Positive",
+    "deal": {
+      "JP": {
+        "price": 655,
+        "regular": 655,
+        "cut": 0,
+        "storeLow": 655
+      },
+      "US": {
+        "price": 4.99,
+        "regular": 4.99,
+        "cut": 0,
+        "storeLow": 4.99
+      },
+      "EU": {
+        "price": 5.19,
+        "regular": 5.19,
+        "cut": 0,
+        "storeLow": 5.19
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation",
+      "Utilities"
+    ],
+    "tags": [
+      "Casual",
+      "Utilities",
+      "Indie"
+    ],
+    "releaseDate": "2026-08-21",
+    "developers": [
+      "The Axolotl Sun"
+    ],
+    "publishers": [
+      "The Axolotl Sun"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": true
+    },
+    "supportedLanguages": "English<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  }
+]
