@@ -1,0 +1,62 @@
+[
+  {
+    "id": "4830660",
+    "itadId": "019fef68-5778-738c-8cd3-6bc6f580a32c",
+    "title": "Tsugunohi -The Thread That Beckons to Heaven-",
+    "storeUrl": "https://store.steampowered.com/app/4830660/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4830660/9864e0066d9d16a9026cc3e562239509aaa0c480/capsule_616x353.jpg?t=1787797706",
+    "movies": [
+      {
+        "id": 257374231,
+        "name": "Tsugunohi -The Thread That Beckons to Heaven-_PV.JPN",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257374231/6e559190469d8473d035b0bf8447f66ea4a524b8/movie_600x337.jpg?t=1786427673",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4830660/931071263/94f10f45d99a64442df1f0347ce559f4bd17f107/1786420762/hls_264_master.m3u8?t=1786427673",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4830660/931071263/94f10f45d99a64442df1f0347ce559f4bd17f107/1786420762/dash_h264.mpd?t=1786427673"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 580,
+        "regular": 580,
+        "cut": 0,
+        "storeLow": 493
+      },
+      "US": {
+        "price": 3.99,
+        "regular": 3.99,
+        "cut": 0,
+        "storeLow": 3.39
+      },
+      "EU": {
+        "price": 4.15,
+        "regular": 4.15,
+        "cut": 0,
+        "storeLow": 3.52
+      }
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "tags": [
+      "Adventure",
+      "Horror",
+      "Psychological Horror"
+    ],
+    "releaseDate": "2026-08-24",
+    "developers": [
+      "ImCyan"
+    ],
+    "publishers": [
+      "Vaka Game Magazine"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Japanese, English, Simplified Chinese"
+  }
+]
