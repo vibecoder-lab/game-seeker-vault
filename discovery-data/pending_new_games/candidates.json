@@ -1,0 +1,245 @@
+[
+  {
+    "id": "5097840",
+    "itadId": "01a035ae-73b5-719a-a357-e5b28c11c55a",
+    "title": "Spellbound & Shelved",
+    "storeUrl": "https://store.steampowered.com/app/5097840/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5097840/a294402a6b8f676cea8a61252fe45dab67b68426/capsule_616x353.jpg?t=1788764787",
+    "movies": [
+      {
+        "id": 257398679,
+        "name": "Official Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257398679/0e2dbf93fb480504d92da8db3e3510c5551f46a3/movie_600x337.jpg?t=1787606508",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5097840/1546123235/85e96002c292c4f6d4d55d1fefc5461a6e1a7758/1786659806/hls_264_master.m3u8?t=1787606508",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5097840/1546123235/85e96002c292c4f6d4d55d1fefc5461a6e1a7758/1786659806/dash_h264.mpd?t=1787606508"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Free To Play"
+    ],
+    "tags": [
+      "Casual",
+      "Arcade",
+      "Idler"
+    ],
+    "releaseDate": "2026-09-07",
+    "developers": [
+      "needmoar.games"
+    ],
+    "publishers": [
+      "needmoar.games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": true,
+      "linux": true
+    },
+    "supportedLanguages": "English, French, German, Spanish - Spain"
+  },
+  {
+    "id": "5044770",
+    "itadId": "01a0095f-29d0-7267-9ebf-8903ab2f352c",
+    "title": "The Death Game Report",
+    "storeUrl": "https://store.steampowered.com/app/5044770/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5044770/13c0715aacce396db3067eb293fb66f9a42adae9/capsule_616x353.jpg?t=1788253217",
+    "movies": [
+      {
+        "id": 257394784,
+        "name": "Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257394784/18f0bf760431210c067f4da40ab744800da138f7/movie_600x337.jpg?t=1786863347",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5044770/1500343369/a3da437b24e312d95829c7cb1c3ea032823f9659/1786250629/hls_264_master.m3u8?t=1786863347",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5044770/1500343369/a3da437b24e312d95829c7cb1c3ea032823f9659/1786250629/dash_h264.mpd?t=1786863347"
+      }
+    ],
+    "reviewScore": "Overwhelmingly Positive",
+    "deal": {
+      "JP": {
+        "price": 500,
+        "regular": 500,
+        "cut": 0,
+        "storeLow": 500
+      },
+      "US": {
+        "price": 3.99,
+        "regular": 3.99,
+        "cut": 0,
+        "storeLow": 3.99
+      },
+      "EU": {
+        "price": 4.15,
+        "regular": 4.15,
+        "cut": 0,
+        "storeLow": 4.15
+      }
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "tags": [
+      "Adventure",
+      "Mystery",
+      "Casual"
+    ],
+    "releaseDate": "2026-09-01",
+    "developers": [
+      "shu3"
+    ],
+    "publishers": [
+      "shu3"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Japanese"
+  },
+  {
+    "id": "5084260",
+    "itadId": "01a00ad1-d3a4-73d6-9e59-03f5deccac76",
+    "title": "Fireboy & Watergirl 1: The Forest Temple",
+    "storeUrl": "https://store.steampowered.com/app/5084260/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5084260/88e4bf5134a09a41c589ca084bcd719ff0f0ca31/capsule_616x353.jpg?t=1788252658",
+    "movies": [
+      {
+        "id": 257394902,
+        "name": "Fireboy & Watergirl 1: The Forest Temple",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257394902/a06843a38fb4dcb7e50030895f85afb16817129f/movie_600x337.jpg?t=1786887357",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5084260/385944442/7ca4975f22c785ca9c726b5008bfe608f38faa96/1786274659/hls_264_master.m3u8?t=1786887357",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5084260/385944442/7ca4975f22c785ca9c726b5008bfe608f38faa96/1786274659/dash_h264.mpd?t=1786887357"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 135,
+        "regular": 135,
+        "cut": 0,
+        "storeLow": 135
+      },
+      "US": {
+        "price": 0.99,
+        "regular": 0.99,
+        "cut": 0,
+        "storeLow": 0.99
+      },
+      "EU": {
+        "price": 1.09,
+        "regular": 1.09,
+        "cut": 0,
+        "storeLow": 1.09
+      }
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Indie"
+    ],
+    "tags": [
+      "Action",
+      "Adventure",
+      "Arcade"
+    ],
+    "releaseDate": "2026-09-01",
+    "developers": [
+      "Oslo Albet"
+    ],
+    "publishers": [
+      "Oslo Albet"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, Italian, German, Spanish - Spain, Dutch, Russian"
+  },
+  {
+    "id": "5027520",
+    "itadId": "019fdd6f-ea1e-712f-8f1d-9144277f6ef3",
+    "title": "Megastore: Tidy Up Together",
+    "storeUrl": "https://store.steampowered.com/app/5027520/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5027520/a76437456c55706635ee7ae461b841cf9d0d038b/capsule_616x353.jpg?t=1788577375",
+    "movies": [
+      {
+        "id": 257393961,
+        "name": "Gameplay Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257393961/0fcdcd8931362d343390019288449eef55e1151b/movie_600x337.jpg?t=1788577374",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5027520/1329693232/f4fb78a851b5695a88cdc96652c2a9beb2ab8f8e/1788576578/hls_264_master.m3u8?t=1788577374",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5027520/1329693232/f4fb78a851b5695a88cdc96652c2a9beb2ab8f8e/1788576578/dash_h264.mpd?t=1788577374"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 671,
+        "regular": 790,
+        "cut": 15,
+        "storeLow": 671
+      },
+      "US": {
+        "price": 5.09,
+        "regular": 5.99,
+        "cut": 15,
+        "storeLow": 5.09
+      },
+      "EU": {
+        "price": 5.22,
+        "regular": 6.15,
+        "cut": 15,
+        "storeLow": 5.22
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "tags": [
+      "Simulation",
+      "Casual",
+      "Puzzle"
+    ],
+    "releaseDate": "2026-09-02",
+    "developers": [
+      "Yolo Games Studio"
+    ],
+    "publishers": [
+      "Yolo Games Studio"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, Italian, German, Arabic, Czech, Danish, Dutch, Finnish, Hungarian, Indonesian, Japanese, Korean, Norwegian, Polish, Romanian, Russian, Simplified Chinese, Swedish, Traditional Chinese, Turkish"
+  }
+]
