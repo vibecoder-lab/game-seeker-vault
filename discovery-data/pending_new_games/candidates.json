@@ -1,0 +1,61 @@
+[
+  {
+    "id": "5020310",
+    "itadId": "019ff9de-48fe-71a1-9959-a82194db3163",
+    "title": "Dub Together",
+    "storeUrl": "https://store.steampowered.com/app/5020310/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5020310/86c99237c2a476587b0a229186a211c4673741d8/capsule_616x353.jpg?t=1788973368",
+    "movies": [
+      {
+        "id": 257408026,
+        "name": "Dub Together Gameplay Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257408026/5845e86367ef4224059510bec4d71d017932e9df/movie_600x337.jpg?t=1787658090",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5020310/1929316456/68a601cb1fbb95beebfee8e7e583ecb44e10085c/1787655078/hls_264_master.m3u8?t=1787658090",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5020310/1929316456/68a601cb1fbb95beebfee8e7e583ecb44e10085c/1787655078/dash_h264.mpd?t=1787658090"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 655,
+        "regular": 655,
+        "cut": 0,
+        "storeLow": 655
+      },
+      "US": {
+        "price": 4.99,
+        "regular": 4.99,
+        "cut": 0,
+        "storeLow": 4.99
+      },
+      "EU": {
+        "price": 4.99,
+        "regular": 4.99,
+        "cut": 0,
+        "storeLow": 4.99
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie"
+    ],
+    "tags": [
+      "Party Game",
+      "Multiplayer",
+      "Casual"
+    ],
+    "releaseDate": "2026-09-01",
+    "developers": [
+      "BNNI Games"
+    ],
+    "publishers": [
+      "BNNI Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, German, French, Italian, Spanish - Spain, Portuguese - Brazil"
+  }
+]
