@@ -1,0 +1,64 @@
+[
+  {
+    "id": "3982450",
+    "itadId": "01a00d05-31ff-71e4-8bfc-b1f2d751c59d",
+    "title": "HITLER WAIFU 2",
+    "storeUrl": "https://store.steampowered.com/app/3982450/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3982450/f3a5e5240fb405fb92322c0da306259de50353df/capsule_616x353.jpg?t=1788293261",
+    "movies": [
+      {
+        "id": 257400604,
+        "name": "Trailer Hitler Waifu 2",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257400604/e02e97c37f1a7a703714e203200fb76740d3661b/movie_600x337.jpg?t=1786924208",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/3982450/846279193/e120a329f481bf025182691f40ab0fef69901c97/1786872780/hls_264_master.m3u8?t=1786924208",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/3982450/846279193/e120a329f481bf025182691f40ab0fef69901c97/1786872780/dash_h264.mpd?t=1786924208"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 72,
+        "regular": 120,
+        "cut": 40,
+        "storeLow": 72
+      },
+      "US": {
+        "price": 0.59,
+        "regular": 0.99,
+        "cut": 40,
+        "storeLow": 0.59
+      },
+      "EU": {
+        "price": 0.59,
+        "regular": 0.99,
+        "cut": 40,
+        "storeLow": 0.59
+      }
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Casual",
+      "Indie",
+      "Early Access"
+    ],
+    "tags": [
+      "Arena Shooter",
+      "Wargame",
+      "Third-Person Shooter"
+    ],
+    "releaseDate": "2026-09-01",
+    "developers": [
+      "Who We Are Games"
+    ],
+    "publishers": [
+      "Who We Are Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English<strong>*</strong>, Simplified Chinese, Russian, Ukrainian<br><strong>*</strong>languages with full audio support"
+  }
+]
