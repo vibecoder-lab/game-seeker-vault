@@ -1,0 +1,63 @@
+[
+  {
+    "id": "5028390",
+    "itadId": "019ff2d7-6f77-7367-9a85-ac37f680ca9d",
+    "title": "Too Many Toys!",
+    "storeUrl": "https://store.steampowered.com/app/5028390/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5028390/1d749ab2c014faf0a8415233a1fa0567b4fbe407/capsule_616x353.jpg?t=1787951032",
+    "movies": [
+      {
+        "id": 257411581,
+        "name": "Release Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257411581/b96b1836ceb644f6593b246082071b440750c157/movie_600x337.jpg?t=1787947697",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5028390/889404665/6382646f5daf7ee095a75fb21197c5a7d569a5cd/1787946445/hls_264_master.m3u8?t=1787947697",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5028390/889404665/6382646f5daf7ee095a75fb21197c5a7d569a5cd/1787946445/dash_h264.mpd?t=1787947697"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 790,
+        "regular": 790,
+        "cut": 0,
+        "storeLow": 671
+      },
+      "US": {
+        "price": 5.99,
+        "regular": 5.99,
+        "cut": 0,
+        "storeLow": 5.09
+      },
+      "EU": {
+        "price": 6.15,
+        "regular": 6.15,
+        "cut": 0,
+        "storeLow": 5.22
+      }
+    },
+    "genres": [
+      "Casual",
+      "Simulation"
+    ],
+    "tags": [
+      "Relaxing",
+      "Organizing",
+      "Simulation"
+    ],
+    "releaseDate": "2026-08-28",
+    "developers": [
+      "4ydam",
+      "Jakub T"
+    ],
+    "publishers": [
+      "4ydam",
+      "Jakub T"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English<strong>*</strong>, German, Spanish - Spain, Japanese, Korean, Polish, Portuguese - Portugal, Russian, Simplified Chinese, French<br><strong>*</strong>languages with full audio support"
+  }
+]
