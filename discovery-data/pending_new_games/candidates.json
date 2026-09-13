@@ -1,0 +1,129 @@
+[
+  {
+    "id": "5035220",
+    "itadId": "019fe14c-98a8-71f0-818a-15fffbaccf76",
+    "title": "For the Fatherland: Chronicle of Park Chung-hee",
+    "storeUrl": "https://store.steampowered.com/app/5035220/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5035220/fd6cdc3b796b0df22aa359b4d1dc94e180a8e60c/capsule_616x353.jpg?t=1789181341",
+    "movies": [
+      {
+        "id": 257394409,
+        "name": "For the Fatherland: Chronicle of Park Chung-hee Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257394409/e4df4f607296f3f4d0d0ec2ad5162cf41606a997/movie_600x337.jpg?t=1786191229",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5035220/1077966192/7db34e71885ff6556243cadfa2e2cbb1a34e5e78/1786184598/hls_264_master.m3u8?t=1786191229",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5035220/1077966192/7db34e71885ff6556243cadfa2e2cbb1a34e5e78/1786184598/dash_h264.mpd?t=1786191229"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 1900,
+        "regular": 1900,
+        "cut": 0,
+        "storeLow": 1710
+      },
+      "US": {
+        "price": 14.99,
+        "regular": 14.99,
+        "cut": 0,
+        "storeLow": 13.49
+      },
+      "EU": {
+        "price": 15.49,
+        "regular": 15.49,
+        "cut": 0,
+        "storeLow": 13.94
+      }
+    },
+    "genres": [
+      "Indie",
+      "Simulation",
+      "Strategy"
+    ],
+    "tags": [
+      "Grand Strategy",
+      "Economy",
+      "Historical"
+    ],
+    "releaseDate": "2026-09-03",
+    "developers": [
+      "KMS STUDIO"
+    ],
+    "publishers": [
+      "KMS STUDIO"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, Korean, Japanese, Simplified Chinese"
+  },
+  {
+    "id": "4412320",
+    "itadId": "01a01a29-848a-7005-862d-8b5a32e97677",
+    "title": "Dumb Ways to Build",
+    "storeUrl": "https://store.steampowered.com/app/4412320/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4412320/6d30c15b320f2d53ba2cc009cdd385049357783b/capsule_616x353.jpg?t=1789053992",
+    "movies": [
+      {
+        "id": 257419009,
+        "name": "DWTB - Launch Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257419009/35c4fb7b2b92a5bc6934f89292df4dec76934517/movie_600x337.jpg?t=1789048726",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4412320/744850851/427e1e3b68f76685b82af8cbca88664a85ecc02d/1788784092/hls_264_master.m3u8?t=1789048726",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4412320/744850851/427e1e3b68f76685b82af8cbca88664a85ecc02d/1788784092/dash_h264.mpd?t=1789048726"
+      },
+      {
+        "id": 257401073,
+        "name": "DWTB - Announcement Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257401073/70df8a8e6728a249e48ff186c31d1c32b9963a67/movie_600x337.jpg?t=1787144419",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4412320/13976087/b69325abea60164d273466237f5d982df0d36078/1786927802/hls_264_master.m3u8?t=1787144419",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4412320/13976087/b69325abea60164d273466237f5d982df0d36078/1786927802/dash_h264.mpd?t=1787144419"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 921,
+        "regular": 921,
+        "cut": 0,
+        "storeLow": 921
+      },
+      "US": {
+        "price": 7.99,
+        "regular": 7.99,
+        "cut": 0,
+        "storeLow": 7.99
+      },
+      "EU": {
+        "price": 7.99,
+        "regular": 7.99,
+        "cut": 0,
+        "storeLow": 7.99
+      }
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Casual"
+    ],
+    "tags": [
+      "Action",
+      "Online Co-Op",
+      "Physics"
+    ],
+    "releaseDate": "2026-09-10",
+    "developers": [
+      "Dumb Ways to Die"
+    ],
+    "publishers": [
+      "Dumb Ways to Die"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, Italian, German, Spanish - Spain, Japanese, Korean, Polish, Portuguese - Brazil, Russian, Simplified Chinese, Spanish - Latin America, Traditional Chinese, Turkish, Ukrainian"
+  }
+]
