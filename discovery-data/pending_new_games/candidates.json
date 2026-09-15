@@ -1,0 +1,245 @@
+[
+  {
+    "id": "3639590",
+    "itadId": "019fda37-c313-739d-9436-3e1b49a6c558",
+    "title": "Phantom PHANTOM OF INFERNO NITRO ARCHIVE",
+    "storeUrl": "https://store.steampowered.com/app/3639590/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3639590/a2a8a005aaa7401eba61defb30951b5627159322/capsule_616x353.jpg?t=1788753884",
+    "movies": [
+      {
+        "id": 257315059,
+        "name": "PromotionMovie",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257315059/f0b477b7d3696d72f56c85245a2d9447954f7628/movie_600x337.jpg?t=1786072375",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/3639590/589668119/2158a8b5955f9576e0e888590d2446d42d03dcda/1775456838/hls_264_master.m3u8?t=1786072375",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/3639590/589668119/2158a8b5955f9576e0e888590d2446d42d03dcda/1775456838/dash_h264.mpd?t=1786072375"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 2450,
+        "regular": 3500,
+        "cut": 30,
+        "storeLow": 2450
+      },
+      "US": {
+        "price": 20.99,
+        "regular": 29.99,
+        "cut": 30,
+        "storeLow": 20.99
+      },
+      "EU": {
+        "price": 20.29,
+        "regular": 28.99,
+        "cut": 30,
+        "storeLow": 20.29
+      }
+    },
+    "genres": [
+      "Adventure"
+    ],
+    "tags": [
+      "Adventure",
+      "Visual Novel",
+      "Choose Your Own Adventure"
+    ],
+    "releaseDate": "2026-09-03",
+    "developers": [
+      "NITRO PLUS",
+      "NITRO ORIGIN"
+    ],
+    "publishers": [
+      "NITRO PLUS"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, Simplified Chinese, Japanese<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  },
+  {
+    "id": "5070160",
+    "itadId": "01a01743-fd78-702e-9689-7311542a4f86",
+    "title": "Wuwei Cultivation",
+    "storeUrl": "https://store.steampowered.com/app/5070160/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5070160/45af99fdde05339608e637687187f75142a4b033/capsule_616x353.jpg?t=1788759234",
+    "movies": [
+      {
+        "id": 257414402,
+        "name": "无为修仙传 玩法展示",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257414402/2833c6f984437d41319ea9914fe34850d26a15e6/movie_600x337.jpg?t=1788235393",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5070160/1231206119/9c85b9a94fe7f985a582ee1b71158518ddc3641e/1788233849/hls_264_master.m3u8?t=1788235393",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5070160/1231206119/9c85b9a94fe7f985a582ee1b71158518ddc3641e/1788233849/dash_h264.mpd?t=1788235393"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 265.0,
+        "regular": 265.0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 1.5,
+        "regular": 1.5,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 2.09,
+        "regular": 2.09,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "RPG"
+    ],
+    "tags": [
+      "Casual",
+      "Idler",
+      "RPG"
+    ],
+    "releaseDate": "2026-09-01",
+    "developers": [
+      "程序员小灰"
+    ],
+    "publishers": [
+      "程序员小灰"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Simplified Chinese"
+  },
+  {
+    "id": "5075020",
+    "itadId": "01a01f34-81b9-704b-baa3-75c3b66d4461",
+    "title": "Little LUMI Model",
+    "storeUrl": "https://store.steampowered.com/app/5075020/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5075020/8ea8f28c4a201da176b20ab9b35621ec115b8118/capsule_616x353.jpg?t=1789103556",
+    "movies": [
+      {
+        "id": 257399334,
+        "name": "Little LUMI Model",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257399334/6a3dcff5166783538810d5aececb6799e7eb29ae/movie_600x337.jpg?t=1788247405",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5075020/6675038/7bbbb7eb4947544d63079a7df61638681641e2ee/1788242939/hls_264_master.m3u8?t=1788247405",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5075020/6675038/7bbbb7eb4947544d63079a7df61638681641e2ee/1788242939/dash_h264.mpd?t=1788247405"
+      }
+    ],
+    "reviewScore": "Overwhelmingly Positive",
+    "deal": {
+      "JP": {
+        "price": 424,
+        "regular": 530,
+        "cut": 20,
+        "storeLow": 424
+      },
+      "US": {
+        "price": 3.19,
+        "regular": 3.99,
+        "cut": 20,
+        "storeLow": 3.19
+      },
+      "EU": {
+        "price": 3.32,
+        "regular": 4.15,
+        "cut": 20,
+        "storeLow": 3.32
+      }
+    },
+    "genres": [
+      "Casual",
+      "Animation & Modeling",
+      "Utilities"
+    ],
+    "tags": [
+      "Utilities",
+      "Casual",
+      "Animation & Modeling"
+    ],
+    "releaseDate": "2026-09-03",
+    "developers": [
+      "Studio LUMI"
+    ],
+    "publishers": [
+      "Studio LUMI"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, Japanese, Korean, Simplified Chinese, Traditional Chinese"
+  },
+  {
+    "id": "4821420",
+    "itadId": "019ffa15-2f9d-722d-905b-11bcafab16f2",
+    "title": "King of Jade: Stone Tycoon",
+    "storeUrl": "https://store.steampowered.com/app/4821420/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4821420/799b2c7a69813e46bd8c2f61d27625da7b3550b0/capsule_616x353.jpg?t=1789129438",
+    "movies": [
+      {
+        "id": 257374372,
+        "name": "宣传",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257374372/0419d4da45fa19e5582185f13a6075313775226f/movie_600x337.jpg?t=1788860365",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4821420/724785732/3646740c7be7fe10789d278fa802a60f44373d48/1788859179/hls_264_master.m3u8?t=1788860365",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4821420/724785732/3646740c7be7fe10789d278fa802a60f44373d48/1788859179/dash_h264.mpd?t=1788860365"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 945,
+        "regular": 1050,
+        "cut": 10,
+        "storeLow": 945
+      },
+      "US": {
+        "price": 7.19,
+        "regular": 7.99,
+        "cut": 10,
+        "storeLow": 7.19
+      },
+      "EU": {
+        "price": 7.33,
+        "regular": 8.15,
+        "cut": 10,
+        "storeLow": 7.33
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation",
+      "Strategy"
+    ],
+    "tags": [
+      "Casual",
+      "Simulation",
+      "Life Sim"
+    ],
+    "releaseDate": "2026-09-11",
+    "developers": [
+      "909Game"
+    ],
+    "publishers": [
+      "lvlv"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Simplified Chinese, English, Traditional Chinese"
+  }
+]
