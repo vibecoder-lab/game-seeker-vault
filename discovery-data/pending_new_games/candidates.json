@@ -1,0 +1,135 @@
+[
+  {
+    "id": "4782460",
+    "itadId": "01a01aa5-0f3e-72ce-a277-18e2322cebbf",
+    "title": "Flower Fairy Survivor",
+    "storeUrl": "https://store.steampowered.com/app/4782460/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4782460/17457dd9892f7839003b1909998e77c3fa6c476c/header.jpg?t=1789061982",
+    "movies": [
+      {
+        "id": 257417183,
+        "name": "GamePlay",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257417183/30881c8b4ddac68f186ad4822970817c18232c2d/movie_600x337.jpg?t=1788526535",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4782460/1051460613/4ba375b870d06734c399c7ec720ba318c1ada5cd/1788519335/hls_264_master.m3u8?t=1788526535",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4782460/1051460613/4ba375b870d06734c399c7ec720ba318c1ada5cd/1788519335/dash_h264.mpd?t=1788526535"
+      },
+      {
+        "id": 257403165,
+        "name": "GameShow",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257403165/c7733f9ebb0986ac97cf2103587f36fc3d1542ad/movie_600x337.jpg?t=1787160489",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4782460/1947570182/9e26e902ac6bb0451c5efafcc2fe7f82b26db3ff/1788431013/hls_264_master.m3u8?t=1787160489",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4782460/1947570182/9e26e902ac6bb0451c5efafcc2fe7f82b26db3ff/1788431013/dash_h264.mpd?t=1787160489"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 1215.0,
+        "regular": 1350.0,
+        "cut": 10,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 8.99,
+        "regular": 9.99,
+        "cut": 10,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "RPG",
+      "Strategy"
+    ],
+    "tags": [
+      "Nudity",
+      "Sexual Content",
+      "Hentai"
+    ],
+    "releaseDate": "2026-09-09",
+    "developers": [
+      "Survival Strategy ！"
+    ],
+    "publishers": [
+      "Survival Strategy ！"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, Simplified Chinese, Traditional Chinese, Japanese"
+  },
+  {
+    "id": "4859270",
+    "itadId": "019f5a46-df05-73aa-a5ca-b6f8ad73dd23",
+    "title": "Dark Bone Prison",
+    "storeUrl": "https://store.steampowered.com/app/4859270/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4859270/4e9867902904644d28f48eacd7a967cc9b7863fc/capsule_616x353.jpg?t=1789442279",
+    "movies": [
+      {
+        "id": 257361721,
+        "name": "战斗精彩片段",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257361721/ad24db0145eb005a0a7d7f002a5755dca3516c5c/movie_600x337.jpg?t=1787107049",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4859270/93430016/a7cc86713ee2d81e08d17d265881c7393496cf44/1787105975/hls_264_master.m3u8?t=1787107049",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4859270/93430016/a7cc86713ee2d81e08d17d265881c7393496cf44/1787105975/dash_h264.mpd?t=1787107049"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 553,
+        "regular": 790,
+        "cut": 30,
+        "storeLow": 553
+      },
+      "US": {
+        "price": 4.19,
+        "regular": 5.99,
+        "cut": 30,
+        "storeLow": 4.19
+      },
+      "EU": {
+        "price": 4.3,
+        "regular": 6.15,
+        "cut": 30,
+        "storeLow": 4.3
+      }
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie",
+      "RPG",
+      "Strategy"
+    ],
+    "tags": [
+      "Singleplayer",
+      "Strategy",
+      "Action Roguelike"
+    ],
+    "releaseDate": "2026-09-07",
+    "developers": [
+      "Bunny Moon Shady"
+    ],
+    "publishers": [
+      "Bunny Moon Shady"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English<strong>*</strong>, Simplified Chinese<strong>*</strong>, French<strong>*</strong>, Japanese<strong>*</strong>, Traditional Chinese<strong>*</strong>, Vietnamese<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  }
+]
