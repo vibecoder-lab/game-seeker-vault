@@ -1,0 +1,184 @@
+[
+  {
+    "id": "4796160",
+    "itadId": "019fdc94-1947-71ae-b1d1-f5014fcc4675",
+    "title": "Print I Love U",
+    "storeUrl": "https://store.steampowered.com/app/4796160/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4796160/d8844d39e6acde262964ec27d56cdbe2a2ed77ed/capsule_616x353.jpg?t=1788902511",
+    "movies": [
+      {
+        "id": 257393765,
+        "name": "Gameplay Trailer EN",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257393765/f6b3d13d22e04693eb979a4118015bbc5b590d8b/movie_600x337.jpg?t=1786112899",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4796160/1210062068/cdece02df5e81ec3e4fea1e1284ffc8b3f663d20/1786112476/hls_264_master.m3u8?t=1786112899",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4796160/1210062068/cdece02df5e81ec3e4fea1e1284ffc8b3f663d20/1786112476/dash_h264.mpd?t=1786112899"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 198,
+        "regular": 198,
+        "cut": 0,
+        "storeLow": 198
+      },
+      "US": {
+        "price": 1.49,
+        "regular": 1.49,
+        "cut": 0,
+        "storeLow": 1.49
+      },
+      "EU": {
+        "price": 1.57,
+        "regular": 1.57,
+        "cut": 0,
+        "storeLow": 1.57
+      }
+    },
+    "genres": [
+      "Indie"
+    ],
+    "tags": [
+      "Visual Novel",
+      "Psychological Horror",
+      "Horror"
+    ],
+    "releaseDate": "2026-08-21",
+    "developers": [
+      "Unknown"
+    ],
+    "publishers": [
+      "Claudio Moltedo",
+      "Red Hog Studio"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English<strong>*</strong>, French<strong>*</strong>, Italian<strong>*</strong>, German<strong>*</strong>, Spanish - Spain<strong>*</strong>, Japanese<strong>*</strong>, Russian<strong>*</strong>, Simplified Chinese<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  },
+  {
+    "id": "4924840",
+    "itadId": "01a06f90-4ef4-717b-a239-8788e9240bdb",
+    "title": "Touhou Koumakyou: Classic - the Embodiment of Scarlet Devil",
+    "storeUrl": "https://store.steampowered.com/app/4924840/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4924840/a9b4bfee0e15f1167ddcb893e085aaf2def47cf4/capsule_616x353.jpg?t=1788964945",
+    "movies": [
+      {
+        "id": 257403803,
+        "name": "screenshot",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257403803/6afbce450cf685d791d37cb300dd374dc8e043fb/movie_600x337.jpg?t=1788577325",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4924840/1261663542/0906146b9c1340f6a34a5959aac77992cbf58bc0/1787211307/hls_264_master.m3u8?t=1788577325",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4924840/1261663542/0906146b9c1340f6a34a5959aac77992cbf58bc0/1787211307/dash_h264.mpd?t=1788577325"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": null,
+        "regular": null,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": null,
+        "regular": null,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": null,
+        "regular": null,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Action"
+    ],
+    "tags": [
+      "Action",
+      "Shooter",
+      "Shoot 'Em Up"
+    ],
+    "releaseDate": "2026-09-09",
+    "developers": [
+      "上海アリス幻樂団",
+      "上海アリスReprise"
+    ],
+    "publishers": [
+      "Alliance Arts"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Japanese"
+  },
+  {
+    "id": "5099430",
+    "itadId": "01a06f67-2733-7139-85f0-2b07e662cdb8",
+    "title": "The Rhapsody of Zephyr Remastered",
+    "storeUrl": "https://store.steampowered.com/app/5099430/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5099430/7a5869a069f802402719dfd4808f94ae8db2513c/capsule_616x353.jpg?t=1789899195",
+    "movies": [
+      {
+        "id": 257417353,
+        "name": "전투 영상",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257417353/c27918817e820865670a5ef99316c50989d4fb1e/movie_600x337.jpg?t=1788575130",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5099430/2093135793/795901f9d9e66b690435db5aa647434386a0cf3b/1788535955/hls_264_master.m3u8?t=1788575130",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5099430/2093135793/795901f9d9e66b690435db5aa647434386a0cf3b/1788535955/dash_h264.mpd?t=1788575130"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 6600.0,
+        "regular": 6600.0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 39.99,
+        "regular": 39.99,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 40.99,
+        "regular": 40.99,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "RPG"
+    ],
+    "tags": [
+      "RPG",
+      "JRPG",
+      "Strategy RPG"
+    ],
+    "releaseDate": "2026-09-18",
+    "developers": [
+      "Nine Circles Corporation"
+    ],
+    "publishers": [
+      "Nine Circles Corporation"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Korean<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  }
+]
