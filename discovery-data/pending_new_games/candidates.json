@@ -1,0 +1,69 @@
+[
+  {
+    "id": "4739660",
+    "itadId": "019fb4b8-e374-7252-8980-8a5db792c9f0",
+    "title": "Drag'n Wash",
+    "storeUrl": "https://store.steampowered.com/app/4739660/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4739660/e837f81aebb36b458512fa562a322c218dde1f7c/header.jpg?t=1789341978",
+    "movies": [
+      {
+        "id": 257344386,
+        "name": "Drag'n Wash Announce Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257344386/640b07f60b0641170adb21233b42cf1426726f72/movie_600x337.jpg?t=1788840560",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4739660/2053448107/055ed50032306f3d6deaf5d6b6f76e0287b9624c/1785367348/hls_264_master.m3u8?t=1788840560",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4739660/2053448107/055ed50032306f3d6deaf5d6b6f76e0287b9624c/1785367348/dash_h264.mpd?t=1788840560"
+      },
+      {
+        "id": 257419516,
+        "name": "Drag'n Wash Gameplay Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257419516/c79a4f24444c9e01888701d2dc147e4c5b1834c7/movie_600x337.jpg?t=1788840562",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4739660/1851471188/00f945fc3eb74d18237722ba12c3d8c3eb36e4ec/1788839169/hls_264_master.m3u8?t=1788840562",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4739660/1851471188/00f945fc3eb74d18237722ba12c3d8c3eb36e4ec/1788839169/dash_h264.mpd?t=1788840562"
+      }
+    ],
+    "reviewScore": "Overwhelmingly Positive",
+    "deal": {
+      "JP": {
+        "price": 1900,
+        "regular": 1900,
+        "cut": 0,
+        "storeLow": 1710
+      },
+      "US": {
+        "price": 14.99,
+        "regular": 14.99,
+        "cut": 0,
+        "storeLow": 13.49
+      },
+      "EU": {
+        "price": 15.49,
+        "regular": 15.49,
+        "cut": 0,
+        "storeLow": 13.94
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "tags": [
+      "Sexual Content",
+      "Dragons",
+      "Nudity"
+    ],
+    "releaseDate": "2026-09-10",
+    "developers": [
+      "Gator Dragon Games"
+    ],
+    "publishers": [
+      "Gator Dragon Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": true,
+      "linux": true
+    },
+    "supportedLanguages": "English"
+  }
+]
