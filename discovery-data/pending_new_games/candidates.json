@@ -1,0 +1,126 @@
+[
+  {
+    "id": "5134970",
+    "itadId": "01a0724c-c47b-7390-93b8-e3897bd29991",
+    "title": "Foole's World",
+    "storeUrl": "https://store.steampowered.com/app/5134970/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5134970/d608b0dee915e070e92ec72873e075d7f497a80b/capsule_616x353.jpg?t=1790179034",
+    "movies": [
+      {
+        "id": 257414344,
+        "name": "Hello World",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257414344/866a54e20189d155a287c5e72392f87105eabdbb/movie_600x337.jpg?t=1789834503",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5134970/1743313260/004cde5779529deeed0199a2fad90d9222bda7bb/1789834377/hls_264_master.m3u8?t=1789834503",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5134970/1743313260/004cde5779529deeed0199a2fad90d9222bda7bb/1789834377/dash_h264.mpd?t=1789834503"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Free To Play"
+    ],
+    "tags": [
+      "Visual Novel",
+      "Casual",
+      "Point & Click"
+    ],
+    "releaseDate": "2026-09-23",
+    "developers": [
+      "Kae Kolormore"
+    ],
+    "publishers": [
+      "Psykik Creations"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English"
+  },
+  {
+    "id": "4705510",
+    "itadId": "01a07c2b-78fe-717c-9df8-f9e827b7bf5e",
+    "title": "Happy Wheels",
+    "storeUrl": "https://store.steampowered.com/app/4705510/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4705510/a8561b95320fbf49e1c9c045f7acbd55f0513038/capsule_616x353.jpg?t=1790335934",
+    "movies": [
+      {
+        "id": 257400170,
+        "name": "gameplay trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257400170/d1c9c067f997361bc95b33ac5091d1948843372b/movie_600x337.jpg?t=1789884930",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4705510/1477379027/3a26777c7aaf5007ada6ca4227d4795967ba3367/1789884088/hls_264_master.m3u8?t=1789884930",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4705510/1477379027/3a26777c7aaf5007ada6ca4227d4795967ba3367/1789884088/dash_h264.mpd?t=1789884930"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 655,
+        "regular": 655,
+        "cut": 0,
+        "storeLow": 655
+      },
+      "US": {
+        "price": 4.99,
+        "regular": 4.99,
+        "cut": 0,
+        "storeLow": 4.99
+      },
+      "EU": {
+        "price": 4.99,
+        "regular": 4.99,
+        "cut": 0,
+        "storeLow": 4.99
+      }
+    },
+    "genres": [
+      "Action",
+      "Casual",
+      "Indie",
+      "Racing"
+    ],
+    "tags": [
+      "Gore",
+      "Sandbox",
+      "Physics"
+    ],
+    "releaseDate": "2026-09-21",
+    "developers": [
+      "Jim Bonacci"
+    ],
+    "publishers": [
+      "Fancy Force"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": true
+    },
+    "supportedLanguages": "English<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  }
+]
