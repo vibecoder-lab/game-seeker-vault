@@ -1,0 +1,63 @@
+[
+  {
+    "id": "5120650",
+    "itadId": "01a03396-fd5c-7308-a1f5-aa6657964e4a",
+    "title": "Paver: Tidy Up Together",
+    "storeUrl": "https://store.steampowered.com/app/5120650/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5120650/97cd5c6ad4d4a8d6869849c7dc97e59e774961b4/capsule_616x353.jpg?t=1789743649",
+    "movies": [
+      {
+        "id": 257400609,
+        "name": "Trailer - Paver: Tidy Up Together",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257400609/d6435ee0c26b23f7943c54111c8686dfaa0cde1b/movie_600x337.jpg?t=1787571279",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5120650/470113662/0136d4874f383219e9e886f5e94c9b8d8c7370ac/1786873650/hls_264_master.m3u8?t=1787571279",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5120650/470113662/0136d4874f383219e9e886f5e94c9b8d8c7370ac/1786873650/dash_h264.mpd?t=1787571279"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 589,
+        "regular": 655,
+        "cut": 10,
+        "storeLow": 589
+      },
+      "US": {
+        "price": 4.49,
+        "regular": 4.99,
+        "cut": 10,
+        "storeLow": 4.49
+      },
+      "EU": {
+        "price": 4.67,
+        "regular": 5.19,
+        "cut": 10,
+        "storeLow": 4.67
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "tags": [
+      "Casual",
+      "Simulation",
+      "Organizing"
+    ],
+    "releaseDate": "2026-09-18",
+    "developers": [
+      "Games Together"
+    ],
+    "publishers": [
+      "Games Together",
+      "Gamersky Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, Italian, German, Spanish - Spain, Czech, Japanese, Korean, Polish, Portuguese - Brazil, Portuguese - Portugal, Russian, Simplified Chinese, Spanish - Latin America, Thai, Traditional Chinese, Turkish, Ukrainian"
+  }
+]
