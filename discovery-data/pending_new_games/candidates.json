@@ -1,0 +1,187 @@
+[
+  {
+    "id": "5019920",
+    "itadId": "01a02bcf-a38d-71ce-a7b4-39055be9f8c5",
+    "title": "Tasty Chef",
+    "storeUrl": "https://store.steampowered.com/app/5019920/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5019920/ccc2ca5f2a19fe65058bb68aed82258b085c05ba/capsule_616x353.jpg?t=1790587817",
+    "movies": [
+      {
+        "id": 257406706,
+        "name": "Tasty Chef EA Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257406706/2ed8a6f93c2c4e09e36d5b6c1928c9211fd98d93/movie_600x337.jpg?t=1790202169",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5019920/943314039/e658e1701442e8149e5b34a025ee8d447fa8ae36/1790199904/hls_264_master.m3u8?t=1790202169",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5019920/943314039/e658e1701442e8149e5b34a025ee8d447fa8ae36/1790199904/dash_h264.mpd?t=1790202169"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 1139,
+        "regular": 1700,
+        "cut": 33,
+        "storeLow": 1139
+      },
+      "US": {
+        "price": 8.7,
+        "regular": 12.99,
+        "cut": 33,
+        "storeLow": 8.7
+      },
+      "EU": {
+        "price": 9.03,
+        "regular": 13.49,
+        "cut": 33,
+        "storeLow": 9.03
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "tags": [
+      "Cooking",
+      "Simulation",
+      "Crafting"
+    ],
+    "releaseDate": "2026-09-23",
+    "developers": [
+      "Xpercent Games"
+    ],
+    "publishers": [
+      "Xpercent Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": true,
+      "linux": false
+    },
+    "supportedLanguages": "English, Simplified Chinese, French, Italian, German, Indonesian, Japanese, Korean, Russian, Traditional Chinese, Vietnamese, Portuguese - Brazil"
+  },
+  {
+    "id": "5001630",
+    "itadId": "019fcd21-2595-72c7-a443-53cdb2bb3ae9",
+    "title": "Jiahao",
+    "storeUrl": "https://store.steampowered.com/app/5001630/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5001630/143c9be539c1b0a177ac6b0506a13ce46316cc79/capsule_616x353.jpg?t=1790434273",
+    "movies": [
+      {
+        "id": 257406254,
+        "name": "jiahao trailer 1",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257406254/3cda5db69f0ed6cfce109da4135611ea996827f0/movie_600x337.jpg?t=1789536093",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5001630/843238001/323f66a138966f507175027d867353d79c38f1fb/1789535721/hls_264_master.m3u8?t=1789536093",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5001630/843238001/323f66a138966f507175027d867353d79c38f1fb/1789535721/dash_h264.mpd?t=1789536093"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 395.0,
+        "regular": 395.0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 2.99,
+        "regular": 2.99,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 3.15,
+        "regular": 3.15,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "tags": [
+      "Time Management",
+      "incremental",
+      "Idler"
+    ],
+    "releaseDate": "2026-09-09",
+    "developers": [
+      "豪意有限公司",
+      "OddLemon"
+    ],
+    "publishers": [
+      "豪格集团",
+      "MiniSurge"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": true,
+      "linux": false
+    },
+    "supportedLanguages": "English<strong>*</strong>, French, Italian, German, Spanish - Spain, Ukrainian, Russian, Turkish, Japanese<strong>*</strong>, Polish, Thai, Simplified Chinese<strong>*</strong>, Traditional Chinese<strong>*</strong>, Dutch, Portuguese - Brazil, Portuguese - Portugal, Spanish - Latin America, Korean<br><strong>*</strong>languages with full audio support"
+  },
+  {
+    "id": "4404610",
+    "itadId": "01a038e6-6965-705d-b5ec-a62e64028545",
+    "title": "DR Dominoes",
+    "storeUrl": "https://store.steampowered.com/app/4404610/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4404610/8e790e8edb9eeba293392f8c0312de555427f1ae/capsule_616x353.jpg?t=1790308587",
+    "movies": [
+      {
+        "id": 257415312,
+        "name": "Gameplay Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257415312/499368db78464f861ea5118e438d48b1fdf7c5ba/movie_600x337.jpg?t=1788318408",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4404610/2115444070/e6080cf32f574925e53987b880d1acbb81fd0e23/1788313801/hls_264_master.m3u8?t=1788318408",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4404610/2115444070/e6080cf32f574925e53987b880d1acbb81fd0e23/1788313801/dash_h264.mpd?t=1788318408"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 553,
+        "regular": 790,
+        "cut": 30,
+        "storeLow": 553
+      },
+      "US": {
+        "price": 4.19,
+        "regular": 5.99,
+        "cut": 30,
+        "storeLow": 4.19
+      },
+      "EU": {
+        "price": 4.3,
+        "regular": 6.15,
+        "cut": 30,
+        "storeLow": 4.3
+      }
+    },
+    "genres": [
+      "Casual",
+      "Simulation",
+      "Sports"
+    ],
+    "tags": [
+      "Casual",
+      "Simulation",
+      "Sports"
+    ],
+    "releaseDate": "2026-09-15",
+    "developers": [
+      "Gammes"
+    ],
+    "publishers": [
+      "Gammes"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": true,
+      "linux": true
+    },
+    "supportedLanguages": "English, Spanish - Latin America, French, Simplified Chinese, Portuguese - Portugal, Spanish - Spain, German, Portuguese - Brazil, Korean"
+  }
+]
