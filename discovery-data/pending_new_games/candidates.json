@@ -1,0 +1,61 @@
+[
+  {
+    "id": "4753760",
+    "itadId": "019e768e-9b6c-7021-9328-c8e0f4db7b94",
+    "title": "Your Fiancée",
+    "storeUrl": "https://store.steampowered.com/app/4753760/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4753760/f0136eabc7d861b892e858dd1b5b1e319d8dbdda/capsule_616x353.jpg?t=1790701668",
+    "movies": [
+      {
+        "id": 257379791,
+        "name": "NSZ_Trailer_C",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257379791/d8e09d6f23b99bd0f28eafb19df6743ce563f620/movie_600x337.jpg?t=1790701667",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4753760/1643147573/b46bf98e8fc7b194058ac18a6c87b0ce2cb8f72d/1790613827/hls_264_master.m3u8?t=1790701667",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4753760/1643147573/b46bf98e8fc7b194058ac18a6c87b0ce2cb8f72d/1790613827/dash_h264.mpd?t=1790701667"
+      }
+    ],
+    "reviewScore": "Overwhelmingly Positive",
+    "deal": {
+      "JP": {
+        "price": 479,
+        "regular": 599,
+        "cut": 20,
+        "storeLow": 479
+      },
+      "US": {
+        "price": 2.39,
+        "regular": 2.99,
+        "cut": 20,
+        "storeLow": 2.39
+      },
+      "EU": {
+        "price": 2.39,
+        "regular": 2.99,
+        "cut": 20,
+        "storeLow": 2.39
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie"
+    ],
+    "tags": [
+      "Sexual Content",
+      "Casual",
+      "Nudity"
+    ],
+    "releaseDate": "2026-09-17",
+    "developers": [
+      "DigitalDream"
+    ],
+    "publishers": [
+      "DigitalDream"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, Italian, German, Spanish - Spain, Danish, Ukrainian, Russian, Bulgarian, Hungarian, Indonesian, Turkish, Greek, Norwegian, Czech, Japanese, Polish, Thai, Swedish, Simplified Chinese, Traditional Chinese, Romanian, Finnish, Dutch, Portuguese - Brazil, Portuguese - Portugal, Spanish - Latin America, Vietnamese, Arabic, Korean"
+  }
+]
