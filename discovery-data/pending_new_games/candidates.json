@@ -1,0 +1,64 @@
+[
+  {
+    "id": "5063480",
+    "itadId": "01a02845-59d1-7102-adab-d845ba1e2f70",
+    "title": "Heavenward",
+    "storeUrl": "https://store.steampowered.com/app/5063480/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5063480/b5748ae4096b238f4ddace40d2f5021cdd5343b9/capsule_616x353.jpg?t=1789733274",
+    "movies": [
+      {
+        "id": 257396792,
+        "name": "PV",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257396792/16594670910fb2e5f0134bf65268386d6847a473/movie_600x337.jpg?t=1787381435",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5063480/253428220/9a2e9feda94e8ea9c528763fe53e110a152258e1/1786480644/hls_264_master.m3u8?t=1787381435",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5063480/253428220/9a2e9feda94e8ea9c528763fe53e110a152258e1/1786480644/dash_h264.mpd?t=1787381435"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      },
+      "US": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      }
+    },
+    "genres": [
+      "Adventure",
+      "Massively Multiplayer",
+      "RPG",
+      "Free To Play"
+    ],
+    "tags": [
+      "Choose Your Own Adventure",
+      "JRPG",
+      "Romance"
+    ],
+    "releaseDate": "2026-09-18",
+    "developers": [
+      "TY‌studio‌"
+    ],
+    "publishers": [
+      "TY‌studio‌"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Simplified Chinese<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  }
+]
