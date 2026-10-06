@@ -1,0 +1,61 @@
+[
+  {
+    "id": "4964580",
+    "itadId": "01a02062-94a9-73b2-bf81-e00b219aa8b4",
+    "title": "Museologist: Tidy Up the Museum!",
+    "storeUrl": "https://store.steampowered.com/app/4964580/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4964580/763056d0c22eb9a46d8c5784d75c07bf1fb7bdf3/capsule_616x353.jpg?t=1790447613",
+    "movies": [
+      {
+        "id": 257400592,
+        "name": "Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257400592/dacd4179c9d60ec5253b2b34be180a1fed2fe5a6/movie_600x337.jpg?t=1787249228",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4964580/367217487/64cea322dd1550fcc63f25398d0dbf75aa9fdf2d/1786990772/hls_264_master.m3u8?t=1787249228",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4964580/367217487/64cea322dd1550fcc63f25398d0dbf75aa9fdf2d/1786990772/dash_h264.mpd?t=1787249228"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 711,
+        "regular": 790,
+        "cut": 10,
+        "storeLow": 711
+      },
+      "US": {
+        "price": 5.39,
+        "regular": 5.99,
+        "cut": 10,
+        "storeLow": 5.39
+      },
+      "EU": {
+        "price": 5.53,
+        "regular": 6.15,
+        "cut": 10,
+        "storeLow": 5.53
+      }
+    },
+    "genres": [
+      "Casual",
+      "Simulation"
+    ],
+    "tags": [
+      "Relaxing",
+      "Casual",
+      "Organizing"
+    ],
+    "releaseDate": "2026-09-25",
+    "developers": [
+      "Tobo Games"
+    ],
+    "publishers": [
+      "Tobo Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, Italian, German, Spanish - Spain, Simplified Chinese, Portuguese - Brazil, Japanese, Korean, Russian, Turkish"
+  }
+]
