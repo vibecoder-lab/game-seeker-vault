@@ -1,0 +1,137 @@
+[
+  {
+    "id": "4341400",
+    "itadId": "019e8389-fe90-730e-a39b-80f7fbb79e77",
+    "title": "TUNG",
+    "storeUrl": "https://store.steampowered.com/app/4341400/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4341400/30d6fc41788b12e2fc63febc48b177d6460c7e1a/capsule_616x353.jpg?t=1791221221",
+    "movies": [
+      {
+        "id": 257330923,
+        "name": "Official TUNG Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257330923/b6b507d25cfed4642a18439008811fcae04469b0/movie_600x337.jpg?t=1780323235",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4341400/122044424/21a7661fb3c11a579aef92ee74d3b696cb31625a/1777832914/hls_264_master.m3u8?t=1780323235",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4341400/122044424/21a7661fb3c11a579aef92ee74d3b696cb31625a/1777832914/dash_h264.mpd?t=1780323235"
+      },
+      {
+        "id": 257399616,
+        "name": "TUNG CONTENT TRAILER",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257399616/38906c56681b96afdab2a2e85c538bb07898cb0c/movie_600x337.jpg?t=1786731968",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4341400/1900312110/2bce9873178f333b27244675eed3d6aaf6fb1bcf/1786731208/hls_264_master.m3u8?t=1786731968",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4341400/1900312110/2bce9873178f333b27244675eed3d6aaf6fb1bcf/1786731208/dash_h264.mpd?t=1786731968"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      },
+      "US": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      }
+    },
+    "genres": [
+      "Action",
+      "Indie",
+      "Free To Play",
+      "Early Access"
+    ],
+    "tags": [
+      "Hentai",
+      "Sexual Content",
+      "Nudity"
+    ],
+    "releaseDate": "2026-08-11",
+    "developers": [
+      "Niche Games"
+    ],
+    "publishers": [
+      "Niche Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  },
+  {
+    "id": "4810070",
+    "itadId": "01a01fb0-1089-72eb-8142-45bc01ef3a80",
+    "title": "CONCRETE BURIAL",
+    "storeUrl": "https://store.steampowered.com/app/4810070/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4810070/72c0b2fa823d8188976dcebffb0b535977b3d787/capsule_616x353.jpg?t=1790272989",
+    "movies": [
+      {
+        "id": 257426637,
+        "name": "Concrete Burial | Out Now Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257426637/4cb87b7b0dfeb3ff29a7d622a40488de6d2dc157/movie_600x337.jpg?t=1789656712",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4810070/1917893604/a251c100962d62a116e798e1cf16cce48915ef8a/1789571812/hls_264_master.m3u8?t=1789656712",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4810070/1917893604/a251c100962d62a116e798e1cf16cce48915ef8a/1789571812/dash_h264.mpd?t=1789656712"
+      },
+      {
+        "id": 257404188,
+        "name": "Concrete Burial | Announcement Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257404188/3fff8ab8d788dd43463fe94d93de50fd48407a9c/movie_600x337.jpg?t=1787242079",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4810070/647132961/9f827d4eb4a4c3a6df45354b166b13e488de806e/1787241368/hls_264_master.m3u8?t=1787242079",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4810070/647132961/9f827d4eb4a4c3a6df45354b166b13e488de806e/1787241368/dash_h264.mpd?t=1787242079"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 405,
+        "regular": 405,
+        "cut": 0,
+        "storeLow": 324
+      },
+      "US": {
+        "price": 3.99,
+        "regular": 3.99,
+        "cut": 0,
+        "storeLow": 3.19
+      },
+      "EU": {
+        "price": 2.85,
+        "regular": 2.85,
+        "cut": 0,
+        "storeLow": 2.28
+      }
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Indie"
+    ],
+    "tags": [
+      "Short",
+      "First-Person",
+      "Horror"
+    ],
+    "releaseDate": "2026-09-17",
+    "developers": [
+      "Games From The Abyss"
+    ],
+    "publishers": [
+      "DreadXP"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, Portuguese - Brazil"
+  }
+]
