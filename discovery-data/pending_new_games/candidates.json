@@ -1,0 +1,126 @@
+[
+  {
+    "id": "4951590",
+    "itadId": "019fb104-f1cc-71f2-9cc1-cf25f9fa9c9f",
+    "title": "Ball Scratch Simulator",
+    "storeUrl": "https://store.steampowered.com/app/4951590/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4951590/04e4b574c97d9e100d543922d17c1109c68f66f8/capsule_616x353.jpg?t=1790895806",
+    "movies": [
+      {
+        "id": 257394893,
+        "name": "Game Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257394893/a08418eced3375a812a2a8b9348a42e022aacef3/movie_600x337.jpg?t=1789053306",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4951590/1777166312/6b9268d4e146dccc62117c753455198179bc2cd6/1789049413/hls_264_master.m3u8?t=1789053306",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4951590/1777166312/6b9268d4e146dccc62117c753455198179bc2cd6/1789049413/dash_h264.mpd?t=1789053306"
+      },
+      {
+        "id": 257398177,
+        "name": "Multiplayer Scratching",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257398177/9c5d981d2e860b2078ffed881fd49edde6ea42b1/movie_600x337.jpg?t=1788060039",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4951590/627857854/bc10bbfb9e14a181e9c2c82487d53b5f7320c2bd/1786625335/hls_264_master.m3u8?t=1788060039",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4951590/627857854/bc10bbfb9e14a181e9c2c82487d53b5f7320c2bd/1786625335/dash_h264.mpd?t=1788060039"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 499,
+        "regular": 499,
+        "cut": 0,
+        "storeLow": 424
+      },
+      "US": {
+        "price": 3.99,
+        "regular": 3.99,
+        "cut": 0,
+        "storeLow": 3.39
+      },
+      "EU": {
+        "price": 3.49,
+        "regular": 3.49,
+        "cut": 0,
+        "storeLow": 2.96
+      }
+    },
+    "genres": [
+      "Simulation"
+    ],
+    "tags": [
+      "Comedy",
+      "Stealth",
+      "Score Attack"
+    ],
+    "releaseDate": "2026-09-10",
+    "developers": [
+      "10ft Games"
+    ],
+    "publishers": [
+      "10ft Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, Italian, German, Spanish - Spain, Japanese, Korean, Portuguese - Brazil, Russian, Simplified Chinese, Turkish, Thai, Traditional Chinese, Ukrainian, Catalan"
+  },
+  {
+    "id": "5086560",
+    "itadId": "01a01d1c-d671-71d0-9144-d355656db1fb",
+    "title": "Tank Battle Classic",
+    "storeUrl": "https://store.steampowered.com/app/5086560/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5086560/2ca1cfa3a706cc824bea274ba64613cf320a02b3/capsule_616x353.jpg?t=1790335309",
+    "movies": [
+      {
+        "id": 257398970,
+        "name": "Gameplay Trailer 01",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257398970/eb2c0e247ad8ad63c8eda92b6ebf67c348bb95f9/movie_600x337.jpg?t=1790335309",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5086560/1224173738/73ffcb90a400a4110215dff52a9f8daec4fa7005/1790327886/hls_264_master.m3u8?t=1790335309",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5086560/1224173738/73ffcb90a400a4110215dff52a9f8daec4fa7005/1790327886/dash_h264.mpd?t=1790335309"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 945,
+        "regular": 1350,
+        "cut": 30,
+        "storeLow": 945
+      },
+      "US": {
+        "price": 6.99,
+        "regular": 9.99,
+        "cut": 30,
+        "storeLow": 6.99
+      },
+      "EU": {
+        "price": 6.99,
+        "regular": 9.99,
+        "cut": 30,
+        "storeLow": 6.99
+      }
+    },
+    "genres": [
+      "Action",
+      "Simulation"
+    ],
+    "tags": [
+      "Wargame",
+      "Military",
+      "Tanks"
+    ],
+    "releaseDate": "2026-09-24",
+    "developers": [
+      "Chobi Softwear"
+    ],
+    "publishers": [
+      "Chobi Softwear"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, Japanese"
+  }
+]
