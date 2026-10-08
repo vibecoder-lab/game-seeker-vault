@@ -1,0 +1,120 @@
+[
+  {
+    "id": "5186690",
+    "itadId": "01a0b403-9120-705c-a794-84cc87a654fa",
+    "title": "Game Keeper: Somebody Messed Up My Shop!",
+    "storeUrl": "https://store.steampowered.com/app/5186690/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5186690/4d80a538f741151ad9cb5a9a065d53127d08fbd4/capsule_616x353.jpg?t=1790960450",
+    "movies": [
+      {
+        "id": 257428240,
+        "name": "Game Keeper: Somebody Messed Up My Shop! - Official Announcement Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257428240/6e6dafa8d956e61062f7095b0233bff91c368e0c/movie_600x337.jpg?t=1789725966",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5186690/589287874/ef3c22abd6454927c5ed37a1238457e2462fd2c5/1789720645/hls_264_master.m3u8?t=1789725966",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5186690/589287874/ef3c22abd6454927c5ed37a1238457e2462fd2c5/1789720645/dash_h264.mpd?t=1789725966"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 899,
+        "regular": 999,
+        "cut": 10,
+        "storeLow": 899
+      },
+      "US": {
+        "price": 7.19,
+        "regular": 7.99,
+        "cut": 10,
+        "storeLow": 7.19
+      },
+      "EU": {
+        "price": 7.19,
+        "regular": 7.99,
+        "cut": 10,
+        "storeLow": 7.19
+      }
+    },
+    "genres": [
+      "Casual"
+    ],
+    "tags": [
+      "Immersive Sim",
+      "Collectathon",
+      "incremental"
+    ],
+    "releaseDate": "2026-10-02",
+    "developers": [
+      "VeinStudios"
+    ],
+    "publishers": [
+      "VeinStudios"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, Polish, French, German, Spanish - Spain, Traditional Chinese, Simplified Chinese, Russian, Italian, Bulgarian, Czech, Danish, Finnish, Greek, Spanish - Latin America, Dutch, Indonesian, Japanese, Korean, Norwegian, Portuguese - Portugal, Portuguese - Brazil, Romanian, Swedish, Turkish, Ukrainian, Hungarian"
+  },
+  {
+    "id": "5204830",
+    "itadId": "01a0ac2e-724e-7167-ac97-620f84d496e2",
+    "title": "Deleted Wiki: Clean Up the Lost Files",
+    "storeUrl": "https://store.steampowered.com/app/5204830/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5204830/796e7ba17105b5fa639f3bed7ad417bbe9f2c33b/capsule_616x353.jpg?t=1790798785",
+    "movies": [
+      {
+        "id": 257418680,
+        "name": "Gameplay Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257418680/7b4696b847c51ee953adfe2ec20e06be2be7ce3f/movie_600x337.jpg?t=1789594267",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5204830/611151262/3180556efe174d134f75bde59dc80bac8de51a49/1789436449/hls_264_master.m3u8?t=1789594267",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5204830/611151262/3180556efe174d134f75bde59dc80bac8de51a49/1789436449/dash_h264.mpd?t=1789594267"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 530,
+        "regular": 530,
+        "cut": 0,
+        "storeLow": 477
+      },
+      "US": {
+        "price": 3.99,
+        "regular": 3.99,
+        "cut": 0,
+        "storeLow": 3.59
+      },
+      "EU": {
+        "price": 4.15,
+        "regular": 4.15,
+        "cut": 0,
+        "storeLow": 3.73
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie"
+    ],
+    "tags": [
+      "Casual",
+      "Cozy",
+      "Relaxing"
+    ],
+    "releaseDate": "2026-09-30",
+    "developers": [
+      "Clique Games"
+    ],
+    "publishers": [
+      "Clique Games",
+      "Shared Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": true,
+      "linux": false
+    },
+    "supportedLanguages": "English"
+  }
+]
