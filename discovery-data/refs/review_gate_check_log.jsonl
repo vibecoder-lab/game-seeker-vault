@@ -54711,3 +54711,744 @@
 {"timestamp": "2026-10-13T00:37:10+00:00", "app_id": "5249440", "name": "IdolPet Caretaker", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
 {"timestamp": "2026-10-13T00:37:11+00:00", "app_id": "5250780", "name": "Hold the door!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
 {"timestamp": "2026-10-13T00:37:13+00:00", "app_id": "5251030", "name": "TaskBarStudio", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:34+00:00", "app_id": "1138080", "name": "斗地主少女 Landlord Girls", "phase": "post_release", "total_reviews": 2008, "review_score": "Mostly Positive", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:35+00:00", "app_id": "1349120", "name": "球球少女/Pinball Girls", "phase": "post_release", "total_reviews": 978, "review_score": "Very Positive", "passed_gate": true}
+{"timestamp": "2026-10-13T22:23:37+00:00", "app_id": "1808780", "name": "祖玛少女/Zuma Girls", "phase": "post_release", "total_reviews": 703, "review_score": "Very Positive", "passed_gate": true}
+{"timestamp": "2026-10-13T22:23:38+00:00", "app_id": "1936110", "name": "Quantum Go", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:39+00:00", "app_id": "2511220", "name": "The Hallways", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:41+00:00", "app_id": "2565680", "name": "Very Human Climbing", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:42+00:00", "app_id": "2671960", "name": "Mark Of The Ram™", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:44+00:00", "app_id": "2905910", "name": "Hold The Levee", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:45+00:00", "app_id": "3236080", "name": "老虎机少女 Slot Girls", "phase": "post_release", "total_reviews": 102, "review_score": "Very Positive", "passed_gate": true}
+{"timestamp": "2026-10-13T22:23:46+00:00", "app_id": "3259670", "name": "Age of Medieval", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:48+00:00", "app_id": "3451360", "name": "Untitled 2D Isometric RPG", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:50+00:00", "app_id": "3558830", "name": "Grave Benders", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:51+00:00", "app_id": "3726510", "name": "The Fish", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:53+00:00", "app_id": "3737580", "name": "I NEED GUAN GUAN", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:54+00:00", "app_id": "4083460", "name": "Memories Of Tacticians", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:56+00:00", "app_id": "4120640", "name": "A Burning Star", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:57+00:00", "app_id": "4140680", "name": "Myths from the Maw", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:23:58+00:00", "app_id": "4265980", "name": "Garden of Giants", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:00+00:00", "app_id": "4295820", "name": "Death To The Deathless", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:01+00:00", "app_id": "4402360", "name": "Mech Support", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:02+00:00", "app_id": "4463580", "name": "Red Booth", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:04+00:00", "app_id": "4489610", "name": "We Don't Exist", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:05+00:00", "app_id": "4499720", "name": "Last Ages", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:06+00:00", "app_id": "4528930", "name": "Force Typhoon", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:08+00:00", "app_id": "4533230", "name": "Farmed & Dangerous", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:09+00:00", "app_id": "4621040", "name": "Welcome to the Show", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:10+00:00", "app_id": "4633640", "name": "Skydrifter", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:12+00:00", "app_id": "4688430", "name": "Critical Strike", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:13+00:00", "app_id": "4712080", "name": "Road to Stellar Colonies", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:14+00:00", "app_id": "4741810", "name": "Pool Freak Out", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:16+00:00", "app_id": "4786300", "name": "Subjects of Cthullius", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:17+00:00", "app_id": "4812730", "name": "Homelessness isn't an option", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:19+00:00", "app_id": "4816780", "name": "Barobellum", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:20+00:00", "app_id": "4894730", "name": "山海世代", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:21+00:00", "app_id": "4897260", "name": "ネコルポス ～巨大猫の観察日記～", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:23+00:00", "app_id": "4917710", "name": "Hall of Minds", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:25+00:00", "app_id": "4928420", "name": "Endless Estate", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:26+00:00", "app_id": "4929450", "name": "Slay the King", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:27+00:00", "app_id": "4931770", "name": "吾之半身乃纯白恶魔", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:29+00:00", "app_id": "4933770", "name": "Genesis: Rise of Life", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:30+00:00", "app_id": "4935600", "name": "Plight", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:32+00:00", "app_id": "4938370", "name": "Dyping Working: 作業監視ゲーム", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:33+00:00", "app_id": "4976400", "name": "Phantom Fumes", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:35+00:00", "app_id": "4991880", "name": "The winding future reflected", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:36+00:00", "app_id": "5019910", "name": "Scale A Building", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:37+00:00", "app_id": "5023180", "name": "Fary-Clary!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:39+00:00", "app_id": "5035100", "name": "弃神遗境", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:40+00:00", "app_id": "5060050", "name": "Onmal", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:42+00:00", "app_id": "5094230", "name": "Army Factory", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:43+00:00", "app_id": "5097060", "name": "WispBorne", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:45+00:00", "app_id": "5111680", "name": "Arcane Scattering", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:46+00:00", "app_id": "5116360", "name": "Circora: Part 1", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:48+00:00", "app_id": "5131130", "name": "Deadrise", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:49+00:00", "app_id": "5134310", "name": "Giants", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:50+00:00", "app_id": "5141830", "name": "Christmas Tree Simulator", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:52+00:00", "app_id": "5141980", "name": "Trial by Mana", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:53+00:00", "app_id": "5142490", "name": "Delvers' Guild", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:54+00:00", "app_id": "5150690", "name": "Ripe for the Picking☆ Summer Beach", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:56+00:00", "app_id": "5169760", "name": "Pandora's Lantern", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:57+00:00", "app_id": "5169810", "name": "Strich Gauntlet", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:24:59+00:00", "app_id": "5171750", "name": "Stack Zombie Land", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:00+00:00", "app_id": "5175130", "name": "烈火皇城", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:02+00:00", "app_id": "5188270", "name": "VOCABLUFF", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:03+00:00", "app_id": "5199120", "name": "解呈尋", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:04+00:00", "app_id": "5204090", "name": "Cozy Castle", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:06+00:00", "app_id": "5212100", "name": "Sprite Garden", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:07+00:00", "app_id": "5214080", "name": "Constellations: Space Company Simulator", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:09+00:00", "app_id": "5218080", "name": "Mad Ancients", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:10+00:00", "app_id": "5225610", "name": "GACHA TACTICS", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:11+00:00", "app_id": "5228690", "name": "Potion Pantry: Sort the Apothecary", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:13+00:00", "app_id": "5231690", "name": "Losers Club", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:14+00:00", "app_id": "5234940", "name": "Yoshimi", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:16+00:00", "app_id": "5236280", "name": "Fight Fire with Friends", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:17+00:00", "app_id": "5236640", "name": "DedRep", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:18+00:00", "app_id": "5237060", "name": "遮天：帝路争锋", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:20+00:00", "app_id": "5259190", "name": "Lucky Clover: 1 in 500,000", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:21+00:00", "app_id": "5263800", "name": "GobliWin", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:22+00:00", "app_id": "5269270", "name": "RUNGEON: Auto Roguelike", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:24+00:00", "app_id": "5273530", "name": "Spellspill: Magic Destruction Sandbox", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:25+00:00", "app_id": "5282750", "name": "We'll Meet Again", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:27+00:00", "app_id": "5282970", "name": "AI 位面旅者：无限世界", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:29+00:00", "app_id": "5285600", "name": "FiND ME", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:30+00:00", "app_id": "5285780", "name": "Undertow", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:31+00:00", "app_id": "5287130", "name": "House of 21", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:33+00:00", "app_id": "5288740", "name": "Lumi: A Cat in the Mist", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:35+00:00", "app_id": "5293040", "name": "囚笼游戏", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:36+00:00", "app_id": "5294340", "name": "Su Nomine: Sassari 1349", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:37+00:00", "app_id": "5294500", "name": "Special Sauce. Horny Restaurant", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:39+00:00", "app_id": "5295370", "name": "Baukiste", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:40+00:00", "app_id": "5300840", "name": "Final Depth", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:42+00:00", "app_id": "5303450", "name": "Weathard", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:43+00:00", "app_id": "5303490", "name": "Pantania:wedge of time", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:45+00:00", "app_id": "5304720", "name": "Clicker, Clicks Something", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:46+00:00", "app_id": "5307510", "name": "Gravity Chain", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:47+00:00", "app_id": "5307900", "name": "Furry Fury", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:49+00:00", "app_id": "5310640", "name": "PoseDoll", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:51+00:00", "app_id": "5311510", "name": "崩老头模拟器", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:55+00:00", "app_id": "5312860", "name": "Volleyball", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:57+00:00", "app_id": "5314330", "name": "Mandela Invasion: Alternates", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:25:58+00:00", "app_id": "5319840", "name": "The Golden Bull", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:00+00:00", "app_id": "5320960", "name": "Quantum Arbitrage", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:01+00:00", "app_id": "5324680", "name": "Sisyphus Upgraded", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:02+00:00", "app_id": "5326690", "name": "Cindervale", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:04+00:00", "app_id": "5328170", "name": "Cucked By My Girlfriend : Part 1", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:05+00:00", "app_id": "5329800", "name": "Hide No More", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:06+00:00", "app_id": "5330130", "name": "Homeland Reclaim", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:08+00:00", "app_id": "5331970", "name": "Last Chance Hurling", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:09+00:00", "app_id": "5334780", "name": "Pelican Point 1997", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:10+00:00", "app_id": "5336700", "name": "Temple of Causality: Reincarnation", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:12+00:00", "app_id": "5337990", "name": "Abyss", "phase": "awaiting_release", "total_reviews": 0, "review_score": null, "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:14+00:00", "app_id": "5339700", "name": "Song Song: EXile-Lê Đại Long", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:15+00:00", "app_id": "5341180", "name": "Padel", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:18+00:00", "app_id": "5341640", "name": "Roll for AGI  掷骰到AGI", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:20+00:00", "app_id": "5342150", "name": "Mazehold", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:21+00:00", "app_id": "5349080", "name": "Surveillance Unit 7", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:23+00:00", "app_id": "5352600", "name": "Kaylotia: Dungeon Expedition", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:24+00:00", "app_id": "5352990", "name": "My Octopus Friend", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:25+00:00", "app_id": "5354100", "name": "我在宗门寻长生", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:27+00:00", "app_id": "5354350", "name": "Cozymancer: Wizard Tower Restoration", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:28+00:00", "app_id": "5354420", "name": "Milk Powder Universe", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:30+00:00", "app_id": "5356850", "name": "Arauto", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:31+00:00", "app_id": "5357510", "name": "Stellar Ascendancy", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:33+00:00", "app_id": "5360930", "name": "A Game About Breaking a Wall", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:34+00:00", "app_id": "5361570", "name": "Heidentor", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:36+00:00", "app_id": "5362900", "name": "LIVE RIP", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:38+00:00", "app_id": "5363530", "name": "Cinder Divide", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:39+00:00", "app_id": "5364950", "name": "Death Lies East", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:40+00:00", "app_id": "5365300", "name": "yoruneko - Living Soundscape", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:41+00:00", "app_id": "5365340", "name": "Hentai Academy: After Class", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:43+00:00", "app_id": "5366200", "name": "Hentai Femboy Redhead", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:44+00:00", "app_id": "5366210", "name": "Hentai Femboy Ginger", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:46+00:00", "app_id": "5367510", "name": "RETROPULSE Halloween", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:47+00:00", "app_id": "5367570", "name": "Pipsquad", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:48+00:00", "app_id": "5367980", "name": "Fieldworks", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:49+00:00", "app_id": "5368200", "name": "Mozza Rush", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:51+00:00", "app_id": "5368880", "name": "Visual Novel: Before the Dawn", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:52+00:00", "app_id": "5370880", "name": "Aquamorta", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:54+00:00", "app_id": "5371900", "name": "Stay a Little", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:55+00:00", "app_id": "5372120", "name": "Photoncytosis", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:56+00:00", "app_id": "5373050", "name": "Atomic Playground", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:58+00:00", "app_id": "5373100", "name": "Makoto Maze", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:26:59+00:00", "app_id": "5373140", "name": "SENTAI MECHA: LAST LINE", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:00+00:00", "app_id": "5373290", "name": "Grenade Junky", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:02+00:00", "app_id": "5374730", "name": "Deep Drift Fishing", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:03+00:00", "app_id": "5374930", "name": "Fruitless Campaign", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:05+00:00", "app_id": "5375410", "name": "Link Loop", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:06+00:00", "app_id": "5375470", "name": "Go Together", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:08+00:00", "app_id": "5375500", "name": "Hell Looks Back", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:09+00:00", "app_id": "5376100", "name": "Jinjja World: The Korean Learning MMO", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:11+00:00", "app_id": "5376170", "name": "Rota do Grão", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:12+00:00", "app_id": "5376520", "name": "Tiny Shaders", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:13+00:00", "app_id": "5376590", "name": "Another World: Guild Master I", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:15+00:00", "app_id": "5377010", "name": "OUTVOTE - Steam Version", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:16+00:00", "app_id": "5377530", "name": "GRAVE SHIFT", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:17+00:00", "app_id": "5378190", "name": "Trench League", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:19+00:00", "app_id": "5378500", "name": "Vestige", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:20+00:00", "app_id": "5379260", "name": "REC:REWIND", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:22+00:00", "app_id": "5379970", "name": "Board Kingdom", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:23+00:00", "app_id": "5380480", "name": "L A C U N A", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:24+00:00", "app_id": "5380770", "name": "PASS THE CURSE", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:26+00:00", "app_id": "5381270", "name": "Eggest", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:27+00:00", "app_id": "5381380", "name": "Chad Billionaire", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:29+00:00", "app_id": "5381400", "name": "Spectral Divide", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:30+00:00", "app_id": "5382440", "name": "Void Chain", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:32+00:00", "app_id": "5383000", "name": "RCSIM - Radio Control & Sim-Racing Bridge", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:33+00:00", "app_id": "5383430", "name": "Quantum Throttle", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:35+00:00", "app_id": "5383900", "name": "Curvelicious 2", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:36+00:00", "app_id": "5385080", "name": "Stalwart Flame", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:38+00:00", "app_id": "5386150", "name": "循线成规", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:39+00:00", "app_id": "5386360", "name": "Runaway Sleigh 84", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:41+00:00", "app_id": "5387970", "name": "Drop Dead Lucky", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:42+00:00", "app_id": "5388550", "name": "Everything Grows Here", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:43+00:00", "app_id": "5390030", "name": "Alien Insect Invasion", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:45+00:00", "app_id": "5391140", "name": "Cute Avatar Dress Up", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:47+00:00", "app_id": "5391660", "name": "N in One 怀旧小游戏合集", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:48+00:00", "app_id": "5391670", "name": "植到天明 Planted Till Sunrise", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:51+00:00", "app_id": "5392470", "name": "CatVac", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:53+00:00", "app_id": "5393000", "name": "Fish With Friends", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:55+00:00", "app_id": "5394280", "name": "Plunder Isles", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:57+00:00", "app_id": "5395930", "name": "Hello Triangle: Build a GPU", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:27:59+00:00", "app_id": "5395940", "name": "What Remains Inside", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:00+00:00", "app_id": "5396310", "name": "Minion's Revenge: Take Everything They Took", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:02+00:00", "app_id": "5396500", "name": "Realistic Football Career", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:03+00:00", "app_id": "5396580", "name": "Cthulhu Descends", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:04+00:00", "app_id": "5397070", "name": "Gembound", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:06+00:00", "app_id": "5397130", "name": "Next, Million Worlds", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:07+00:00", "app_id": "5398150", "name": "Battle SHIRYU", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:08+00:00", "app_id": "5398230", "name": "Pick! Idle Mining Game", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:10+00:00", "app_id": "5398740", "name": "Starwaste", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:11+00:00", "app_id": "5399160", "name": "67 hidden 67´s", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:13+00:00", "app_id": "5399250", "name": "Las Vegas Craps", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:14+00:00", "app_id": "5399910", "name": "A Little Higher", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:15+00:00", "app_id": "5400050", "name": "MEGAWATT", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:17+00:00", "app_id": "5400230", "name": "Shield-Bearer Ben", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:18+00:00", "app_id": "5400830", "name": "Animal Cubes: Tidy Up Dreams", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:19+00:00", "app_id": "5401120", "name": "SCRUBBED", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:21+00:00", "app_id": "5401230", "name": "Survivor Rat vs Zombies", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:22+00:00", "app_id": "5401430", "name": "Polybarius", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:23+00:00", "app_id": "5402990", "name": "Doomscrolling Life Simulator", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:25+00:00", "app_id": "5404610", "name": "DEEP FORTRESS", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:26+00:00", "app_id": "5405360", "name": "Wireburst: Vector Squadron", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:28+00:00", "app_id": "5405420", "name": "Dragon's Treasure Tidy Up", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:29+00:00", "app_id": "5405430", "name": "Carve!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:31+00:00", "app_id": "5405590", "name": "Lazy Cat - Mini Game Collection", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:32+00:00", "app_id": "5405790", "name": "Charon's Corner", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:33+00:00", "app_id": "5406060", "name": "Rise of Sectors", "phase": "awaiting_release", "total_reviews": 0, "review_score": null, "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:36+00:00", "app_id": "5406470", "name": "Project BOTNET", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:39+00:00", "app_id": "5406570", "name": "Fish Market Tidy Up!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:41+00:00", "app_id": "5406750", "name": "Fish Owns You", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:42+00:00", "app_id": "5408250", "name": "Seaside Scoops", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:44+00:00", "app_id": "5409200", "name": "PAYDIRT: Gold Mining Tycoon", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:45+00:00", "app_id": "5409320", "name": "Gweilo 1886", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:47+00:00", "app_id": "5410170", "name": "Unidentified Frying Objects: Idle Cafe Empire", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:48+00:00", "app_id": "5410180", "name": "Wardbreaker", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:50+00:00", "app_id": "5410560", "name": "MAKAI CITY CHI-BA", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:51+00:00", "app_id": "5410670", "name": "Sunkeeper", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:53+00:00", "app_id": "5410740", "name": "DIFFERENCE HOUSE", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:54+00:00", "app_id": "5410870", "name": "信息素留白", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:56+00:00", "app_id": "5411080", "name": "Antmates: Idle Ant Colony", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:57+00:00", "app_id": "5411100", "name": "NARI: Threads of Dawn", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:28:58+00:00", "app_id": "5411120", "name": "Nadir Trace", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:00+00:00", "app_id": "5411350", "name": "Overtime at Holiday's", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:01+00:00", "app_id": "5411420", "name": "Luma Orb", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:03+00:00", "app_id": "5412040", "name": "Distorid", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:04+00:00", "app_id": "5412090", "name": "Malsort", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:06+00:00", "app_id": "5412270", "name": "Peppero and The Toad City", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:07+00:00", "app_id": "5412460", "name": "RIVER OF DEAD", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:09+00:00", "app_id": "5412540", "name": "Dave: Leg it", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:10+00:00", "app_id": "5412710", "name": "Tetria's Tower", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:12+00:00", "app_id": "5412860", "name": "Farmer's Daily", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:13+00:00", "app_id": "5414120", "name": "Hollowmere", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:14+00:00", "app_id": "5414150", "name": "Via Libera: Italian Train Driver", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:16+00:00", "app_id": "5414650", "name": "Padel With Your Friends", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:17+00:00", "app_id": "5415010", "name": "Cobblekin", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:18+00:00", "app_id": "5415360", "name": "Rocks to Riches", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:20+00:00", "app_id": "5415470", "name": "The Widow's Shadow", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:21+00:00", "app_id": "5415560", "name": "Eat Everything in a Supermarket", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:23+00:00", "app_id": "5415830", "name": "ONE MORE DIVE", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:24+00:00", "app_id": "5416350", "name": "Pasture Zero", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:25+00:00", "app_id": "5417910", "name": "Ordinary Empires", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:27+00:00", "app_id": "5417950", "name": "The Wrong Village", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:28+00:00", "app_id": "5251070", "name": "Want a Bomb?", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:30+00:00", "app_id": "5251680", "name": "Banana Guy Running Hard", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:31+00:00", "app_id": "5253190", "name": "Mega Exile", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:32+00:00", "app_id": "5253470", "name": "CATGIRLS at WORK", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:34+00:00", "app_id": "5253800", "name": "The Planet Miner", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:35+00:00", "app_id": "5254020", "name": "The Coin Goblin", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:37+00:00", "app_id": "5255000", "name": "HypnoX: Steel Riders", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:38+00:00", "app_id": "5256420", "name": "Dummy Works", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:39+00:00", "app_id": "5258920", "name": "SoulMonsters Ariel, Queen of the Sea", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:41+00:00", "app_id": "5259710", "name": "传家", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:42+00:00", "app_id": "5262620", "name": "Your Life is Not Covered", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:44+00:00", "app_id": "5264930", "name": "归墟行：人界篇", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:45+00:00", "app_id": "5265330", "name": "Slender Island", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:46+00:00", "app_id": "5267490", "name": "Lantern Hollow", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:47+00:00", "app_id": "5268300", "name": "Cats Live Here", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:49+00:00", "app_id": "5268550", "name": "The Demon Lurking in Osaka Castle – Episode 1", "phase": "post_release", "total_reviews": 2, "review_score": "2 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:50+00:00", "app_id": "5268780", "name": "Gods Against the Invasion", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:52+00:00", "app_id": "5269140", "name": "Help, My Capybaras Escaped!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:53+00:00", "app_id": "5270220", "name": "Sound Bounded", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:55+00:00", "app_id": "5271310", "name": "Kingside Break", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:56+00:00", "app_id": "5272460", "name": "Asther", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:57+00:00", "app_id": "5272760", "name": "Taktiko Maxima", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:29:59+00:00", "app_id": "5275590", "name": "Dirt Town", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:00+00:00", "app_id": "5275930", "name": "Grave Company", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:02+00:00", "app_id": "5276600", "name": "猛鬼搬家公司", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:03+00:00", "app_id": "5276840", "name": "Doc, I Don't Want to Die! Slice the Infection", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:05+00:00", "app_id": "5276970", "name": "Last Delivery", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:06+00:00", "app_id": "5276980", "name": "OVERSTACK", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:08+00:00", "app_id": "5277560", "name": "Parkour Run Obstacle Adventure", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:09+00:00", "app_id": "5277890", "name": "Desperatea", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:11+00:00", "app_id": "5278650", "name": "Smash & Grab", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:12+00:00", "app_id": "5279010", "name": "Tide Pools", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:13+00:00", "app_id": "5279120", "name": "Ourself", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:15+00:00", "app_id": "5285050", "name": "Pyramids", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:16+00:00", "app_id": "4962620", "name": "Idle Misadventures", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:18+00:00", "app_id": "4965860", "name": "PROJECT ZIRCON", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:19+00:00", "app_id": "4970630", "name": "Beellionaire Idle", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:20+00:00", "app_id": "4976780", "name": "Square Seller!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:22+00:00", "app_id": "4984600", "name": "Aquavern", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:23+00:00", "app_id": "4986080", "name": "Egyptian Life", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:25+00:00", "app_id": "4986730", "name": "Bow Warfare: Multiplayer Combat", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:27+00:00", "app_id": "4994050", "name": "MotionAnchor 3D 晕动症缓解软件", "phase": "post_release", "total_reviews": 2, "review_score": "2 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:28+00:00", "app_id": "4994340", "name": "Free Time Puzzle", "phase": "post_release", "total_reviews": 5, "review_score": "5 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:30+00:00", "app_id": "4996050", "name": "Island Raiders", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:31+00:00", "app_id": "4996560", "name": "Mana Alchemy / マナアルケミー", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:32+00:00", "app_id": "4996830", "name": "CONQ: Crown of No Quarter", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:33+00:00", "app_id": "4996980", "name": "CAPTIVE LOVE♡MELTY HOLIC", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:35+00:00", "app_id": "4997220", "name": "Hollow Orbits 4x", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:36+00:00", "app_id": "4999560", "name": "Facetier", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:38+00:00", "app_id": "4999710", "name": "Train Party", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:39+00:00", "app_id": "5002180", "name": "Goddess Story", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:41+00:00", "app_id": "5004380", "name": "DelveWright", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:42+00:00", "app_id": "5007960", "name": "Dodgeball Bash", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:43+00:00", "app_id": "5008740", "name": "The Cursed Armor", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:45+00:00", "app_id": "5008960", "name": "Honest Work", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:46+00:00", "app_id": "5009660", "name": "Haunted Love", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:48+00:00", "app_id": "5014410", "name": "复苏王国", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:49+00:00", "app_id": "5016170", "name": "Eversurf", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:51+00:00", "app_id": "5021900", "name": "Cases from the Murder Wagon", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:52+00:00", "app_id": "5023930", "name": "Help! I Tried to Summon the Perfect Boyfriend and Messed Up so I Summoned a Demon Instead!?!?", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:54+00:00", "app_id": "5024810", "name": "VOID CLICKER: Infinite Prestige", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:55+00:00", "app_id": "5026000", "name": "Just get the flag", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:56+00:00", "app_id": "5028480", "name": "OnzeFoot", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:58+00:00", "app_id": "5029270", "name": "Anispo", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:30:59+00:00", "app_id": "5030380", "name": "Cardboard Gladiators", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:01+00:00", "app_id": "5031060", "name": "Humane Farm", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:02+00:00", "app_id": "5033050", "name": "Kamikaze Dolphin", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:03+00:00", "app_id": "5033470", "name": "Epoch Studio", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:05+00:00", "app_id": "5034340", "name": "You're Absolutely Right! Or: A lovehate game about technology", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:06+00:00", "app_id": "5040660", "name": "策马三国志", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:08+00:00", "app_id": "5041160", "name": "HELL IS FUEL", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:09+00:00", "app_id": "5042620", "name": "Roast and Toast", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:10+00:00", "app_id": "5045690", "name": "Catstanbul", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:12+00:00", "app_id": "5045820", "name": "Click Start", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:14+00:00", "app_id": "5048310", "name": "日落萍江", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:15+00:00", "app_id": "5051750", "name": "Mafia Pizza : Family Business", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:17+00:00", "app_id": "5052440", "name": "Vacation Adventures: Park Ranger Mega Bundle 1", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:18+00:00", "app_id": "5052640", "name": "Biodome Bastion", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:19+00:00", "app_id": "5053550", "name": "CCR - Cosmic Card Realm", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:21+00:00", "app_id": "5053640", "name": "Free Company", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:22+00:00", "app_id": "5056030", "name": "Monster Breeder Battler", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:24+00:00", "app_id": "5058470", "name": "PALM CITY", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:25+00:00", "app_id": "5060650", "name": "After Frame", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:27+00:00", "app_id": "5065840", "name": "Cosmic Karma", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:28+00:00", "app_id": "5066970", "name": "ARANEA, BREACH!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:30+00:00", "app_id": "5068310", "name": "Crie au loup", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:31+00:00", "app_id": "5069350", "name": "Rusty Rampage", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:32+00:00", "app_id": "5070510", "name": "Carom Crashers", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:34+00:00", "app_id": "5070860", "name": "DECKRYPT", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:35+00:00", "app_id": "5073690", "name": "The Bounty", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:37+00:00", "app_id": "5077310", "name": "Darrell 3D", "phase": "post_release", "total_reviews": 4, "review_score": "4 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:38+00:00", "app_id": "5077470", "name": "Gate Logic", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:39+00:00", "app_id": "5079130", "name": "レイナ ～姫騎士、穢れる～", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:41+00:00", "app_id": "5079950", "name": "Lurid Hysteria: Breakpoint", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:42+00:00", "app_id": "5082440", "name": "The Waiting Room", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:44+00:00", "app_id": "5083170", "name": "Outpost 616", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:45+00:00", "app_id": "5085270", "name": "Skyreach", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:46+00:00", "app_id": "5085810", "name": "Human Protocol", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:48+00:00", "app_id": "5088680", "name": "Wall World 3", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:49+00:00", "app_id": "5089300", "name": "Ichika: NTR NekoWife", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:50+00:00", "app_id": "5093440", "name": "Literally A Flying Brick : The Ship Building Shooter", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:52+00:00", "app_id": "5093980", "name": "I Love Dog", "phase": "post_release", "total_reviews": 5, "review_score": "5 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:53+00:00", "app_id": "5094290", "name": "Haunted House Hellshift", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:55+00:00", "app_id": "5095150", "name": "Roll them all", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:56+00:00", "app_id": "5097340", "name": "Aika Was Supposed to Die", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:57+00:00", "app_id": "5097670", "name": "HorseHair", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:31:59+00:00", "app_id": "5097990", "name": "The Burrow Takes Heaven", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:00+00:00", "app_id": "5099440", "name": "Lost Museum -Echoes of the Chromageists-", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:02+00:00", "app_id": "5100390", "name": "AURANTIUM", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:03+00:00", "app_id": "5103730", "name": "PitWal", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:05+00:00", "app_id": "5105480", "name": "Veridus The Walking Nightmare", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:06+00:00", "app_id": "5107940", "name": "骰御三军:三国", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:07+00:00", "app_id": "5108180", "name": "Bridge Of The Wild", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:09+00:00", "app_id": "5109720", "name": "Mix Painter", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:10+00:00", "app_id": "5110750", "name": "Coinfetti", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:11+00:00", "app_id": "5112180", "name": "神谕之窗.exe", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:13+00:00", "app_id": "5112950", "name": "Camedieo", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:14+00:00", "app_id": "5113430", "name": "BIG FEET: Football Chaos", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:16+00:00", "app_id": "5116800", "name": "Last Solace", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:17+00:00", "app_id": "5117770", "name": "ハートレジャー リカラーワールド", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:18+00:00", "app_id": "5118640", "name": "Aim Break", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:20+00:00", "app_id": "5119640", "name": "BDO", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:21+00:00", "app_id": "5124650", "name": "Ritual Disorder", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:22+00:00", "app_id": "5124780", "name": "Slime Glutton", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:23+00:00", "app_id": "5125050", "name": "Our Fleet Is In Orbit", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:25+00:00", "app_id": "5126120", "name": "Chick N' Gun", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:26+00:00", "app_id": "5126810", "name": "日本四季百景", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:27+00:00", "app_id": "5128440", "name": "The Phenomenon", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:29+00:00", "app_id": "5131430", "name": "Final Night Firefight", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:30+00:00", "app_id": "5131820", "name": "The Pilot", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:32+00:00", "app_id": "5132640", "name": "Cage & Seek", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:33+00:00", "app_id": "5133230", "name": "Can You Beat The AI God?", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:35+00:00", "app_id": "5133570", "name": "Straw Path", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:37+00:00", "app_id": "5133850", "name": "LARP With Your Friends", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:38+00:00", "app_id": "5134130", "name": "Late Checkout", "phase": "post_release", "total_reviews": 4, "review_score": "4 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:39+00:00", "app_id": "5138910", "name": "Cthulhu's Eldritch Kitchen", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:41+00:00", "app_id": "5144160", "name": "理论成立:友情破产 THEORY WORKS: YOUR FRIENDS DON’T", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:42+00:00", "app_id": "5146140", "name": "Horseball Manager", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:44+00:00", "app_id": "5146290", "name": "Tides of Caldmere", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:45+00:00", "app_id": "5147350", "name": "DESKPOP", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:47+00:00", "app_id": "5148870", "name": "Geeked-Out Basketball", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:48+00:00", "app_id": "5149730", "name": "Rallied", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:50+00:00", "app_id": "5149970", "name": "EREWHON", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:51+00:00", "app_id": "5151540", "name": "Scales: Exiled Girl", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:52+00:00", "app_id": "5151780", "name": "Grow That!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:54+00:00", "app_id": "5152030", "name": "Cargo Calling", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:55+00:00", "app_id": "5153100", "name": "Panchito Delivery: Project Elevator", "phase": "post_release", "total_reviews": 2, "review_score": "2 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:57+00:00", "app_id": "5156330", "name": "Iron Fury: Robot Boxing", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:58+00:00", "app_id": "5156530", "name": "Backlot: Hollywood Studio Tycoon", "phase": "post_release", "total_reviews": 2, "review_score": "2 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:32:59+00:00", "app_id": "5156550", "name": "The Inkspire", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:00+00:00", "app_id": "5157060", "name": "Hotdog Killer", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:02+00:00", "app_id": "5158320", "name": "Deer Hunting - The Season 2", "phase": "post_release", "total_reviews": 65, "review_score": "Very Positive", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:03+00:00", "app_id": "5159080", "name": "Destruction Snake", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:05+00:00", "app_id": "5159830", "name": "Pack It In!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:06+00:00", "app_id": "5159880", "name": "the chair across the table stayed empty", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:08+00:00", "app_id": "5160840", "name": "SpaceBuddies", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:09+00:00", "app_id": "5160850", "name": "Warden's Descent", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:10+00:00", "app_id": "5161610", "name": "Nabte", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:12+00:00", "app_id": "5161950", "name": "HauntedHouseNO14", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:13+00:00", "app_id": "5162430", "name": "メペキョンレーシング", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:15+00:00", "app_id": "5163220", "name": "Last Civilization: Inherited Flame", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:16+00:00", "app_id": "5163340", "name": "Clobbo", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:18+00:00", "app_id": "5163510", "name": "Bugs & Birdies", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:19+00:00", "app_id": "5164270", "name": "NUVRATE", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:20+00:00", "app_id": "5164610", "name": "MEANINGLESS", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:22+00:00", "app_id": "5164840", "name": "Kings Cross", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:23+00:00", "app_id": "5164970", "name": "Fury Drive", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:24+00:00", "app_id": "5165090", "name": "Tidy To The Max!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:26+00:00", "app_id": "5165370", "name": "Macrostate", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:27+00:00", "app_id": "5166030", "name": "Star Space", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:29+00:00", "app_id": "5167560", "name": "FireGrid", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:30+00:00", "app_id": "5167690", "name": "Zombie Wrap Simulator: Grill the Dead", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:31+00:00", "app_id": "5168430", "name": "4:12 AM", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:33+00:00", "app_id": "5169690", "name": "Dystopia", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:34+00:00", "app_id": "5169880", "name": "Blacklode", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:36+00:00", "app_id": "5170400", "name": "Platform Chess", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:37+00:00", "app_id": "5171110", "name": "Graven", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:39+00:00", "app_id": "5171290", "name": "SHLYAKH", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:40+00:00", "app_id": "5171970", "name": "Ghouls Grooves and Garlic", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:42+00:00", "app_id": "5173310", "name": "PLATFORM 13", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:43+00:00", "app_id": "5173320", "name": "Muscle Girl Lexy: My Personal Trainer", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:45+00:00", "app_id": "5173540", "name": "热血挂机", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:46+00:00", "app_id": "5175090", "name": "AMINA-MAL-GUM", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:48+00:00", "app_id": "5176210", "name": "Salvage of the Demetria", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:49+00:00", "app_id": "5177020", "name": "Tidy Up: Electronic Store Simulator", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:50+00:00", "app_id": "5177270", "name": "Shardkeep", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:52+00:00", "app_id": "5177280", "name": "Gray Company", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:53+00:00", "app_id": "5177390", "name": "EMBERDEEP", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:55+00:00", "app_id": "5177570", "name": "Blade Dodger", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:56+00:00", "app_id": "5177770", "name": "Something Really Evil Inc.", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:58+00:00", "app_id": "5177840", "name": "HEARTSLOT", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:33:59+00:00", "app_id": "5178000", "name": "Oath of Stigmata", "phase": "post_release", "total_reviews": 2, "review_score": "2 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:00+00:00", "app_id": "5179820", "name": "Goblins Gotta Go", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:02+00:00", "app_id": "5180730", "name": "Corner Store Simulator", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:03+00:00", "app_id": "5181080", "name": "Bebe Miner", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:05+00:00", "app_id": "5181280", "name": "Backrooms: Forget Me Not", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:06+00:00", "app_id": "5181790", "name": "SIRIUS BFM Coach", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:07+00:00", "app_id": "5182410", "name": "My Goth Roommate", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:09+00:00", "app_id": "5182790", "name": "Daedalia", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:11+00:00", "app_id": "5182870", "name": "Desktop Digger", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:12+00:00", "app_id": "5183160", "name": "Kyle Coral", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:13+00:00", "app_id": "5183740", "name": "Glims", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:15+00:00", "app_id": "5183890", "name": "Will it Stand?", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:16+00:00", "app_id": "5183930", "name": "Abductables", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:18+00:00", "app_id": "5184160", "name": "Geo Bobs", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:19+00:00", "app_id": "5184740", "name": "枪火幻想", "phase": "post_release", "total_reviews": 2, "review_score": "2 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:21+00:00", "app_id": "5184980", "name": "Escape From Argos 7", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:23+00:00", "app_id": "5186820", "name": "Sumi Archery", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:24+00:00", "app_id": "5187370", "name": "8D Creators", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:25+00:00", "app_id": "5187510", "name": "VALTERION: THE LOST EARTH", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:27+00:00", "app_id": "5188360", "name": "Sushi Gacha: Auto Battler", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:28+00:00", "app_id": "5188820", "name": "TOP CUT: Locals to Worlds", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:29+00:00", "app_id": "5188920", "name": "Dangerous Delivery", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:31+00:00", "app_id": "5188940", "name": "Century of Conquest", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:32+00:00", "app_id": "5188980", "name": "Cheat With Me, Not On Me", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:34+00:00", "app_id": "5189380", "name": "United Skies of America", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:35+00:00", "app_id": "5189870", "name": "Final Fist", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:37+00:00", "app_id": "5189920", "name": "Minya in the Sky", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:38+00:00", "app_id": "5190350", "name": "Automotive Empire", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:40+00:00", "app_id": "5190450", "name": "Da Capo", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:41+00:00", "app_id": "5190600", "name": "原律", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:43+00:00", "app_id": "5190920", "name": "Pixel Chess", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:44+00:00", "app_id": "5191000", "name": "Тройной след", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:45+00:00", "app_id": "5191130", "name": "Midnight Toybox", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:47+00:00", "app_id": "5191330", "name": "Take That Shot", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:48+00:00", "app_id": "5191410", "name": "Croissant Simulator", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:50+00:00", "app_id": "5191620", "name": "Stack & Spell", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:51+00:00", "app_id": "5192480", "name": "Core Panic!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:53+00:00", "app_id": "5192520", "name": "Diecast Car Restoration", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:54+00:00", "app_id": "5192690", "name": "Subgloom", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:55+00:00", "app_id": "5192760", "name": "Tinker's Nook", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:57+00:00", "app_id": "5194330", "name": "AFK - Army For Keyboard", "phase": "post_release", "total_reviews": 21, "review_score": "Mostly Positive", "passed_gate": false}
+{"timestamp": "2026-10-13T22:34:58+00:00", "app_id": "5194370", "name": "Byte Bistro", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:00+00:00", "app_id": "5194420", "name": "Hentai Arctic Beauty", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:01+00:00", "app_id": "5195330", "name": "Blind Person Simulator", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:02+00:00", "app_id": "5196110", "name": "NIRQALA", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:04+00:00", "app_id": "5196330", "name": "IT THINKS! - Build Your Own GPU", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:05+00:00", "app_id": "5196560", "name": "Trucazo!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:07+00:00", "app_id": "5198650", "name": "Stinky Tofu: Kitchen Survivor", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:08+00:00", "app_id": "4876590", "name": "Two Left Wings", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:10+00:00", "app_id": "4891230", "name": "Dead Stop - The Tenant", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:11+00:00", "app_id": "4892700", "name": "VOX Zero", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:12+00:00", "app_id": "4898400", "name": "Fitness Gym Bodybuilding Pump", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:13+00:00", "app_id": "4905690", "name": "Necromancer Park", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:15+00:00", "app_id": "4906460", "name": "The Cartoon Adventures", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:16+00:00", "app_id": "4909090", "name": "Rabengeist: The Tale of Lizzie Ulm", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:18+00:00", "app_id": "4909540", "name": "Ultimate Futsal Manager", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:19+00:00", "app_id": "4909690", "name": "Sea Star: The Diaries of Anne Bonny", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:21+00:00", "app_id": "4915740", "name": "鼠鼠的桌面环游", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:22+00:00", "app_id": "4920600", "name": "Unread", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:23+00:00", "app_id": "4937770", "name": "WitchTrial", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:24+00:00", "app_id": "4944410", "name": "High Roller Penny", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:25+00:00", "app_id": "4945690", "name": "Brave Vegetable: Kitchen Escape", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:27+00:00", "app_id": "4947890", "name": "Desktop Mochipal", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:29+00:00", "app_id": "4955730", "name": "Public Faucet Hunt", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:30+00:00", "app_id": "4956240", "name": "STAR BREW: OVEREXTRACT", "phase": "post_release", "total_reviews": 3, "review_score": "3 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:31+00:00", "app_id": "4956460", "name": "AMERICAN LIFE SIMULATOR", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:33+00:00", "app_id": "4957660", "name": "Experiment 73", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:35+00:00", "app_id": "4958850", "name": "Japanese Swordsmith", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:36+00:00", "app_id": "4959630", "name": "FAVOR", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:38+00:00", "app_id": "4962790", "name": "Raccoon Inc.", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:39+00:00", "app_id": "4965180", "name": "Marble Castle", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:40+00:00", "app_id": "4965240", "name": "DEEPWOOD", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:42+00:00", "app_id": "4966760", "name": "差评回复员", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:43+00:00", "app_id": "4970000", "name": "Taskbar Chickens", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:44+00:00", "app_id": "4971560", "name": "Tayke Me With You", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:46+00:00", "app_id": "4973920", "name": "Squircle", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:47+00:00", "app_id": "4977180", "name": "Whalefall", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:48+00:00", "app_id": "4977740", "name": "10 Minutes to Make a Million", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:50+00:00", "app_id": "4977890", "name": "Cargo Thieves", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:51+00:00", "app_id": "4978180", "name": "Curves and Cards: Excess Expansion", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:53+00:00", "app_id": "4981660", "name": "PARRUITS!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:54+00:00", "app_id": "4981910", "name": "TomoBuddy", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:55+00:00", "app_id": "4982380", "name": "STUFFED: Two Foot Hero", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:57+00:00", "app_id": "4983180", "name": "Chthonic", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:35:59+00:00", "app_id": "4987170", "name": "Shole Soccer", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:00+00:00", "app_id": "4988160", "name": "Brain/Split", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:01+00:00", "app_id": "4989900", "name": "DEVILS : THE BORUTA REVENGE", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:03+00:00", "app_id": "4990590", "name": "Split Second Volley", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:04+00:00", "app_id": "4991660", "name": "Ogre Stampede", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:05+00:00", "app_id": "4992020", "name": "FURKUP", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:06+00:00", "app_id": "4992150", "name": "Plink Void", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:08+00:00", "app_id": "4992240", "name": "Vorzain", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:09+00:00", "app_id": "4992340", "name": "Stack Factory", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:10+00:00", "app_id": "4994750", "name": "Nick vs the Brick of Ick from space", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:12+00:00", "app_id": "4995480", "name": "Desktop Pet Aquarium", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:13+00:00", "app_id": "4998980", "name": "Stellar Orbit", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:14+00:00", "app_id": "4998990", "name": "Monster Museum: Tidy Up the collection!", "phase": "post_release", "total_reviews": 32, "review_score": "Positive", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:16+00:00", "app_id": "4999860", "name": "Runehold", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:17+00:00", "app_id": "5002130", "name": "Cursor Survivors", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:19+00:00", "app_id": "5004310", "name": "Deck Beasts", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:20+00:00", "app_id": "5004590", "name": "Darcnia Monster", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:21+00:00", "app_id": "5005570", "name": "Dynamic Breach", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:23+00:00", "app_id": "5008850", "name": "異常監視", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:24+00:00", "app_id": "5013100", "name": "学習ローグ", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:25+00:00", "app_id": "5013410", "name": "TIDE OR HIDE", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:27+00:00", "app_id": "5013480", "name": "NextBot PANIC!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:28+00:00", "app_id": "5013940", "name": "Color Factory", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:29+00:00", "app_id": "5015420", "name": "RIA 26", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:31+00:00", "app_id": "5015940", "name": "Portality", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:32+00:00", "app_id": "5020230", "name": "Fancy's Monster Girl Beach Jigsaw Puzzle", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:33+00:00", "app_id": "5022250", "name": "Confidence Man", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:35+00:00", "app_id": "5023500", "name": "Squidlash", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:36+00:00", "app_id": "5023750", "name": "\"you should be depressed.\"", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:37+00:00", "app_id": "5023800", "name": "Pixel Chroma", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:39+00:00", "app_id": "5023980", "name": "The (Other)World Syndrome", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:40+00:00", "app_id": "5024380", "name": "三國撞撞樂", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:42+00:00", "app_id": "5024530", "name": "黄天逆途", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:43+00:00", "app_id": "5024660", "name": "Tales of Twin Souls", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:44+00:00", "app_id": "5025980", "name": "Cases of the Past: Episode 0 - The Mysterious Neighbor", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:46+00:00", "app_id": "5026300", "name": "Escape Together: Prison Break", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:47+00:00", "app_id": "5026410", "name": "Twelve Knots", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:48+00:00", "app_id": "5027680", "name": "RUSTCAN", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:49+00:00", "app_id": "5028190", "name": "WaveBorn", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:51+00:00", "app_id": "5029430", "name": "Empty House", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:52+00:00", "app_id": "5030580", "name": "Run Puppet Run", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:53+00:00", "app_id": "5030630", "name": "Carry Bros: Find It Together", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:55+00:00", "app_id": "5031130", "name": "Mind The Pothole", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:56+00:00", "app_id": "5031530", "name": "The Realm", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:57+00:00", "app_id": "5032180", "name": "NODEROID", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:36:59+00:00", "app_id": "5032300", "name": "Mosslight Meadow", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:00+00:00", "app_id": "5033200", "name": "Nightlatch", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:02+00:00", "app_id": "5033460", "name": "ChickenScratch: Cluck & Code", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:03+00:00", "app_id": "5035000", "name": "Replacement Heroes", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:04+00:00", "app_id": "5035410", "name": "AscendiA", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:06+00:00", "app_id": "5035740", "name": "Capp's Ascent", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:07+00:00", "app_id": "5035750", "name": "Belt Zero: The Long Drift", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:08+00:00", "app_id": "5036490", "name": "System Shock VR", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:10+00:00", "app_id": "5037700", "name": "Dubstep: Solar System", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:11+00:00", "app_id": "5038320", "name": "Cube Conquest", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:13+00:00", "app_id": "5040120", "name": "方舟天劫：幸存者", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:14+00:00", "app_id": "5040590", "name": "NULL FACTORY Survival Horror", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:16+00:00", "app_id": "5041210", "name": "Tile & Error", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:17+00:00", "app_id": "5041480", "name": "Crowns of Medieval Europe", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:19+00:00", "app_id": "5042370", "name": "Octbuster: Video Rental Store Cleanup", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:20+00:00", "app_id": "5042760", "name": "The Arab League of Misfits", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:22+00:00", "app_id": "5043080", "name": "Deep Digger", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:23+00:00", "app_id": "5044880", "name": "SPINDLEDRIFT", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:25+00:00", "app_id": "5045890", "name": "飞鸟的日记", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:26+00:00", "app_id": "5046040", "name": "Neon Highway", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:27+00:00", "app_id": "5048340", "name": "EXCISA", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:29+00:00", "app_id": "5049610", "name": "The Varitav", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:30+00:00", "app_id": "5049720", "name": "Anurak", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:31+00:00", "app_id": "5049810", "name": "Animal Mystery: 100 Hidden Cats", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:33+00:00", "app_id": "5049980", "name": "Banana Game", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:34+00:00", "app_id": "5050730", "name": "Seal & Sentence", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:36+00:00", "app_id": "5053270", "name": "Mithril", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:37+00:00", "app_id": "5053540", "name": "VIOLENCE DOLL バイオレンスドール", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:39+00:00", "app_id": "5054860", "name": "You Must Peg", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:40+00:00", "app_id": "5055190", "name": "Tiny Knight and the Corrupted Crystal", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:42+00:00", "app_id": "5056900", "name": "KISI: The Deja Vu", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:43+00:00", "app_id": "5057050", "name": "Rulebound", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:44+00:00", "app_id": "5058680", "name": "Piko Cafe", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:46+00:00", "app_id": "5058710", "name": "The Abyss’s Last Breath", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:47+00:00", "app_id": "5059890", "name": "Glowing Static", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:48+00:00", "app_id": "5060900", "name": "HORDELIGHT", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:50+00:00", "app_id": "5061040", "name": "Quartermark", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:51+00:00", "app_id": "5062430", "name": "Starwake", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:53+00:00", "app_id": "5063860", "name": "DeepCorp Rescue", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:54+00:00", "app_id": "5064460", "name": "Super Friendly Crosswords", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:56+00:00", "app_id": "5064470", "name": "SoulForged:Ashborn", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:57+00:00", "app_id": "5065150", "name": "LILITH", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:37:58+00:00", "app_id": "5065490", "name": "Stranding Echoes", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:00+00:00", "app_id": "5065690", "name": "catboy vs landlords", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:01+00:00", "app_id": "5066440", "name": "The Moth and the Moon", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:02+00:00", "app_id": "5066490", "name": "Skysunder", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:03+00:00", "app_id": "5066930", "name": "LoFi Long Distance", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:04+00:00", "app_id": "5067230", "name": "Adverse Action", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:06+00:00", "app_id": "5068320", "name": "EscortMission", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:07+00:00", "app_id": "5068860", "name": "SAMAKKHI", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:09+00:00", "app_id": "5068870", "name": "America Survival", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:10+00:00", "app_id": "5068970", "name": "NEXT OBJECTIVE", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:12+00:00", "app_id": "5069850", "name": "Metabolis", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:13+00:00", "app_id": "1523560", "name": "The Last Gaeltacht", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:14+00:00", "app_id": "1897660", "name": "The Main Menu", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:16+00:00", "app_id": "2127020", "name": "Riftswarm", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:17+00:00", "app_id": "2240510", "name": "Neon Nights", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:19+00:00", "app_id": "2451920", "name": "Cursed Kingdom", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:20+00:00", "app_id": "2640020", "name": "Monkey", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:22+00:00", "app_id": "2651390", "name": "Fallen Elf: Blacklight Tower", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:23+00:00", "app_id": "2907670", "name": "DR. MATBEN", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:25+00:00", "app_id": "3152340", "name": "Kyndykan", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:26+00:00", "app_id": "3194520", "name": "HALLELUJAH!", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:27+00:00", "app_id": "3320450", "name": "Mica King", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:29+00:00", "app_id": "3458020", "name": "Sushi Sushi", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:30+00:00", "app_id": "3687090", "name": "Dice Hoarder", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:31+00:00", "app_id": "3833860", "name": "CLAY-TIME® Master Beef", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:33+00:00", "app_id": "3855120", "name": "Okey", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:34+00:00", "app_id": "3882930", "name": "C.R.E.O.", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:36+00:00", "app_id": "4057350", "name": "Amanda Sparks in: Shade Forest 2", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:37+00:00", "app_id": "4083570", "name": "Da Rong", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:39+00:00", "app_id": "4146800", "name": "MAZIN", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:40+00:00", "app_id": "4171220", "name": "Descendants: The Last Dawn", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:42+00:00", "app_id": "4195340", "name": "Path of Idle Immortals", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:43+00:00", "app_id": "4262250", "name": "Skyscraper Security: Zombie Rain", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:44+00:00", "app_id": "4269640", "name": "Monkeys Don't Fear Hell", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:46+00:00", "app_id": "4274410", "name": "ApocalypseHQ", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:47+00:00", "app_id": "4291550", "name": "Pathways Lost: Reclaim", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:48+00:00", "app_id": "4300750", "name": "Planet Architect", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:49+00:00", "app_id": "4330500", "name": "Zone Idle", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:51+00:00", "app_id": "4359570", "name": "REM", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:52+00:00", "app_id": "4370340", "name": "Asa's Ascended", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:54+00:00", "app_id": "4387050", "name": "SCP Tower", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:55+00:00", "app_id": "4403620", "name": "Dinonid", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:56+00:00", "app_id": "4406710", "name": "Watatuyo ANOTHER", "phase": "post_release", "total_reviews": 2, "review_score": "2 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:57+00:00", "app_id": "4424050", "name": "Throw a Barrel Down a Hill", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:38:59+00:00", "app_id": "4448300", "name": "PROMOTER: The Fight Game", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:00+00:00", "app_id": "4484390", "name": "Aesthoria : Beyond The Realm", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:02+00:00", "app_id": "4489960", "name": "The Forge: Steel Frontier", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:03+00:00", "app_id": "4529640", "name": "A2K: Jet Strikers", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:04+00:00", "app_id": "4531360", "name": "Orcthal", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:06+00:00", "app_id": "4534230", "name": "MMA Sim King", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:07+00:00", "app_id": "4552590", "name": "Was Silence", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:08+00:00", "app_id": "4591740", "name": "Numpad Chef: Pizza Rush", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:10+00:00", "app_id": "4605230", "name": "Your Drunken Girl", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:11+00:00", "app_id": "4611590", "name": "Cozy Worlds", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:12+00:00", "app_id": "4615770", "name": "NUGU?NUGU!: A HIDE AND SEEK BATTLE ROYALE", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:14+00:00", "app_id": "4625620", "name": "Football on Paper", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:15+00:00", "app_id": "4650910", "name": "Bellfrost", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:17+00:00", "app_id": "4657790", "name": "All Who Wander", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:18+00:00", "app_id": "4691280", "name": "Echoes: Unforgotten", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:20+00:00", "app_id": "4716000", "name": "欢迎继续上班 (Welcome Back to Work)", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:21+00:00", "app_id": "4717780", "name": "Incremental Heist and Insurance Fraud", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:23+00:00", "app_id": "4727370", "name": "ZENITH", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:24+00:00", "app_id": "4731200", "name": "Nexus: Eternal Ruin", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:25+00:00", "app_id": "4731890", "name": "A Catalan Sword", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:27+00:00", "app_id": "4737540", "name": "21: Dead Man's Deck", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:28+00:00", "app_id": "4740260", "name": "Echo Ridge", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:30+00:00", "app_id": "4743040", "name": "Tiny Village", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:31+00:00", "app_id": "4751590", "name": "Tick Pig", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:33+00:00", "app_id": "4753740", "name": "Worldkampf '72", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:34+00:00", "app_id": "4779600", "name": "Bearly Surviving", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:35+00:00", "app_id": "4789230", "name": "Hanabi Craft", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:37+00:00", "app_id": "4794590", "name": "Gemfall", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:38+00:00", "app_id": "4802890", "name": "LIMINAL", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:40+00:00", "app_id": "4809030", "name": "Tatly", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:41+00:00", "app_id": "4837210", "name": "Lexicon", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:42+00:00", "app_id": "4838670", "name": "Heroll: IF", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:43+00:00", "app_id": "4840750", "name": "Oil Sheik: Dominion", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:45+00:00", "app_id": "4846360", "name": "Heatwarped", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:46+00:00", "app_id": "4861000", "name": "Confession of murder", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:48+00:00", "app_id": "4877580", "name": "Last Days of Tsufana", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:49+00:00", "app_id": "4877970", "name": "Exploding Delivery Service", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:51+00:00", "app_id": "4879350", "name": "Cardstock City", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:52+00:00", "app_id": "4884940", "name": "Feathered Citadel", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:53+00:00", "app_id": "4886900", "name": "The Override Protocol", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:54+00:00", "app_id": "4887370", "name": "Maria IV: A Cozy Botanical Sim", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:56+00:00", "app_id": "4893800", "name": "依林镇生活", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:57+00:00", "app_id": "4898410", "name": "Cointopia", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:39:59+00:00", "app_id": "4899160", "name": "On The Hook", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:00+00:00", "app_id": "4901550", "name": "MASK IT", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:02+00:00", "app_id": "4918070", "name": "HalfyHalfy", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:03+00:00", "app_id": "4922070", "name": "查无此人", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:04+00:00", "app_id": "4929960", "name": "Within The Experiments", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:06+00:00", "app_id": "4938490", "name": "Black Pyramid", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:07+00:00", "app_id": "4940320", "name": "Clock Mayhem", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:09+00:00", "app_id": "4943090", "name": "The Gullible Genius Elf's Naughty Ordeal", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:10+00:00", "app_id": "4944680", "name": "電脳防衛戦記", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:12+00:00", "app_id": "4947720", "name": "Parcel Point Simulator", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:13+00:00", "app_id": "4949450", "name": "UnderForged", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:15+00:00", "app_id": "4952340", "name": "Freewake", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:16+00:00", "app_id": "4966240", "name": "Sable of Y", "phase": "post_release", "total_reviews": 1, "review_score": "1 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:17+00:00", "app_id": "4968500", "name": "Jamaican Ludi", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:19+00:00", "app_id": "4968640", "name": "Japanese Ramen Simulator", "phase": "post_release", "total_reviews": 316, "review_score": "Very Positive", "passed_gate": true}
+{"timestamp": "2026-10-13T22:40:20+00:00", "app_id": "4973120", "name": "TETWORD", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:21+00:00", "app_id": "4981350", "name": "Buddington", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:23+00:00", "app_id": "4992820", "name": "ESCAPE: FALSE COLORS", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:24+00:00", "app_id": "4993000", "name": "S.A.C.K. - Survive and Choose Knowledge", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:26+00:00", "app_id": "4994080", "name": "Evertrail", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:27+00:00", "app_id": "4999750", "name": "What Have I Become?", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:29+00:00", "app_id": "5002190", "name": "Fly&Goal", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:30+00:00", "app_id": "5002440", "name": "Outerstellar Aura", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:31+00:00", "app_id": "5005820", "name": "裁员审核中", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:33+00:00", "app_id": "5006680", "name": "Project Athanor", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:34+00:00", "app_id": "5008780", "name": "SmallHero Maze 3D", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:35+00:00", "app_id": "5012490", "name": "Mantis Clicker", "phase": "post_release", "total_reviews": 2, "review_score": "2 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:36+00:00", "app_id": "5013570", "name": "The Last Shootout", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:38+00:00", "app_id": "5016070", "name": "Genetic Survivors", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:39+00:00", "app_id": "5017290", "name": "Food delivery: I’m the top dog, making two hundred a day", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:40+00:00", "app_id": "5018350", "name": "ur round", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:42+00:00", "app_id": "5021740", "name": "Starworks Inc.", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:43+00:00", "app_id": "5022160", "name": "Vesper Observatory", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:44+00:00", "app_id": "5029210", "name": "Havfun", "phase": "post_release", "total_reviews": 2, "review_score": "2 user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:46+00:00", "app_id": "5029480", "name": "LuminaFX", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:47+00:00", "app_id": "5029500", "name": "还不错的修仙搜打撤", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:48+00:00", "app_id": "5029600", "name": "XXL 猛漢町", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:50+00:00", "app_id": "1864940", "name": "TIDEBREAK", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:51+00:00", "app_id": "1869060", "name": "棋路地牢", "phase": "post_release", "total_reviews": 15, "review_score": "Positive", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:53+00:00", "app_id": "2174800", "name": "Nightmare Hunter Galaxy", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:54+00:00", "app_id": "2426390", "name": "Farmion", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:55+00:00", "app_id": "3423100", "name": "Coin Pusher Millionaire", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:57+00:00", "app_id": "3646330", "name": "Lords of Pain", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:40:58+00:00", "app_id": "3894800", "name": "Leafman", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:41:00+00:00", "app_id": "3957510", "name": "Chip Sweeper", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:41:01+00:00", "app_id": "3962980", "name": "Numeromantia", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:41:02+00:00", "app_id": "4138830", "name": "Astral 4X", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:41:04+00:00", "app_id": "4208920", "name": "Corrupted Veil", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:41:05+00:00", "app_id": "4211090", "name": "Bricken", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:41:07+00:00", "app_id": "4233500", "name": "Possums", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
+{"timestamp": "2026-10-13T22:41:08+00:00", "app_id": "4244260", "name": "what-if", "phase": "awaiting_release", "total_reviews": 0, "review_score": "No user reviews", "passed_gate": false}
