@@ -1,0 +1,185 @@
+[
+  {
+    "id": "4996190",
+    "itadId": "019faec4-2650-7155-9177-4171ff58d448",
+    "title": "Package chaos",
+    "storeUrl": "https://store.steampowered.com/app/4996190/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4996190/7e93cc80f476dd63eaa7f7c18a69d79f5543eb2f/capsule_616x353.jpg?t=1787925616",
+    "movies": [
+      {
+        "id": 257401356,
+        "name": "PackageChaos PV",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257401356/3d662dc77d69c90f8b89390789dc33b3a6e9fce4/movie_600x337.jpg?t=1786966482",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4996190/238137597/740ff9ab952b46a7bc8d8984493a0a66743ff148/1786965692/hls_264_master.m3u8?t=1786966482",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4996190/238137597/740ff9ab952b46a7bc8d8984493a0a66743ff148/1786965692/dash_h264.mpd?t=1786966482"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 655,
+        "regular": 655,
+        "cut": 0,
+        "storeLow": 524
+      },
+      "US": {
+        "price": 4.99,
+        "regular": 4.99,
+        "cut": 0,
+        "storeLow": 3.99
+      },
+      "EU": {
+        "price": 5.19,
+        "regular": 5.19,
+        "cut": 0,
+        "storeLow": 4.15
+      }
+    },
+    "genres": [
+      "Casual",
+      "Simulation"
+    ],
+    "tags": [
+      "Collectathon",
+      "Organizing",
+      "First-Person"
+    ],
+    "releaseDate": "2026-08-28",
+    "developers": [
+      "FunTap Games"
+    ],
+    "publishers": [
+      "FunTap Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": true,
+      "linux": false
+    },
+    "supportedLanguages": "English, Japanese, Simplified Chinese, Traditional Chinese, Korean, French, Italian, German, Spanish - Spain, Russian, Arabic"
+  },
+  {
+    "id": "5130480",
+    "itadId": "01a05a96-b257-70e4-bee0-1360bbcb4565",
+    "title": "Sort The Capybaras",
+    "storeUrl": "https://store.steampowered.com/app/5130480/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5130480/5c1e6c1bfb62603cc01fa72e05b0efa25922ad5a/capsule_616x353.jpg?t=1791639476",
+    "movies": [
+      {
+        "id": 257417106,
+        "name": "GamePlay",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257417106/f6c136e6844761bd4e465639cc14ccc2167dc38e/movie_600x337.jpg?t=1788513355",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5130480/1795435021/2767287d8c0873f42f2006798a3fc3afbcec8c77/1788512735/hls_264_master.m3u8?t=1788513355",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5130480/1795435021/2767287d8c0873f42f2006798a3fc3afbcec8c77/1788512735/dash_h264.mpd?t=1788513355"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 491,
+        "regular": 655,
+        "cut": 25,
+        "storeLow": 491
+      },
+      "US": {
+        "price": 3.74,
+        "regular": 4.99,
+        "cut": 25,
+        "storeLow": 3.74
+      },
+      "EU": {
+        "price": 3.89,
+        "regular": 5.19,
+        "cut": 25,
+        "storeLow": 3.89
+      }
+    },
+    "genres": [
+      "Casual",
+      "Simulation"
+    ],
+    "tags": [
+      "Organizing",
+      "Hidden Object",
+      "Collectathon"
+    ],
+    "releaseDate": "2026-10-08",
+    "developers": [
+      "Red Panda Studio"
+    ],
+    "publishers": [
+      "Red Panda Studio"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, Simplified Chinese, French, Italian, German, Spanish - Spain, Russian, Japanese, Traditional Chinese, Korean, Portuguese - Brazil, Danish"
+  },
+  {
+    "id": "4252340",
+    "itadId": "019ffbf5-d864-710b-9637-4bd425805be9",
+    "title": "CPM 2",
+    "storeUrl": "https://store.steampowered.com/app/4252340/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4252340/4fea8d6f120e8655a975f769807c40b11a77e3f1/capsule_616x353.jpg?t=1791484313",
+    "movies": [
+      {
+        "id": 257398386,
+        "name": "CPM2 Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257398386/12c0d83a735a900f6a1fe8ce4be53fcee8cbbc39/movie_600x337.jpg?t=1786638520",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4252340/92002421/0ec37aa74e70188d070b28acc51f823a1a870ded/1786637786/hls_264_master.m3u8?t=1786638520",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4252340/92002421/0ec37aa74e70188d070b28acc51f823a1a870ded/1786637786/dash_h264.mpd?t=1786638520"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      }
+    },
+    "genres": [
+      "Massively Multiplayer",
+      "Racing",
+      "Simulation",
+      "Sports",
+      "Free To Play",
+      "Early Access"
+    ],
+    "tags": [
+      "Simulation",
+      "Racing",
+      "Automobile Sim"
+    ],
+    "releaseDate": "2026-10-08",
+    "developers": [
+      "OGames"
+    ],
+    "publishers": [
+      "OGames"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, German, Spanish - Spain, Russian, Turkish, Japanese, Kazakh"
+  }
+]
