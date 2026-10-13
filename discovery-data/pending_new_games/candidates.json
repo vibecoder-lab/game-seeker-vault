@@ -1,0 +1,242 @@
+[
+  {
+    "id": "1349120",
+    "itadId": "018d970a-8010-7387-9abd-4cf13dd2dd72",
+    "title": "球球少女/Pinball Girls",
+    "storeUrl": "https://store.steampowered.com/app/1349120/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1349120/capsule_616x353.jpg?t=1791920145",
+    "movies": [],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 510.0,
+        "regular": 510.0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 2.99,
+        "regular": 2.99,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Casual"
+    ],
+    "tags": [
+      "Sexual Content",
+      "Visual Novel",
+      "Casual"
+    ],
+    "releaseDate": "2021-02-17",
+    "developers": [
+      "Goshujin Sama"
+    ],
+    "publishers": [
+      "Goshujin Sama"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Simplified Chinese<strong>*</strong>, English, Traditional Chinese<br><strong>*</strong>languages with full audio support"
+  },
+  {
+    "id": "1808780",
+    "itadId": "018d97a1-33e1-72e9-87c1-6caef0e9a083",
+    "title": "祖玛少女/Zuma Girls",
+    "storeUrl": "https://store.steampowered.com/app/1808780/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1808780/capsule_616x353.jpg?t=1791920099",
+    "movies": [
+      {
+        "id": 256909818,
+        "name": "视频",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256909818/movie.293x165.jpg?t=1665226021",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/1808780/503034/357fdc99aead054077ee7f3c5c428f271a022a18/1751033353/hls_264_master.m3u8?t=1665226021",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/1808780/503034/357fdc99aead054077ee7f3c5c428f271a022a18/1751033353/dash_h264.mpd?t=1665226021"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 310.0,
+        "regular": 310.0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 2.99,
+        "regular": 2.99,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Casual"
+    ],
+    "tags": [
+      "Casual",
+      "Sexual Content",
+      "2D"
+    ],
+    "releaseDate": "2022-05-01",
+    "developers": [
+      "Goshujin Sama"
+    ],
+    "publishers": [
+      "Goshujin Sama"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Simplified Chinese<strong>*</strong>, English, Traditional Chinese<br><strong>*</strong>languages with full audio support"
+  },
+  {
+    "id": "3236080",
+    "itadId": "01945b41-47f2-7129-8a84-c7d36ab7a438",
+    "title": "老虎机少女 Slot Girls",
+    "storeUrl": "https://store.steampowered.com/app/3236080/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3236080/9eb075aa38cd216dcc5f3cc576a443059bccb7a9/capsule_616x353.jpg?t=1791920074",
+    "movies": [
+      {
+        "id": 257076513,
+        "name": "Eden Fruit Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257076513/c23b76964382b2594b1fa1b47e5ad87eb050487b/movie_600x337.jpg?t=1732559923",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/3236080/790925/7a1d380dfc19fc5bd89a0a2888f93491721fa625/1751526924/hls_264_master.m3u8?t=1732559923",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/3236080/790925/7a1d380dfc19fc5bd89a0a2888f93491721fa625/1751526924/dash_h264.mpd?t=1732559923"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 350,
+        "regular": 350,
+        "cut": 0,
+        "storeLow": 175
+      },
+      "US": {
+        "price": 1.99,
+        "regular": 1.99,
+        "cut": 0,
+        "storeLow": 0.99
+      },
+      "EU": {
+        "price": 2.99,
+        "regular": 2.99,
+        "cut": 0,
+        "storeLow": 1.49
+      }
+    },
+    "genres": [
+      "Casual"
+    ],
+    "tags": [
+      "Hentai",
+      "Sexual Content",
+      "Casual"
+    ],
+    "releaseDate": "2025-01-27",
+    "developers": [
+      "Goshujin Sama"
+    ],
+    "publishers": [
+      "Goshujin Sama"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Simplified Chinese<strong>*</strong>, English<br><strong>*</strong>languages with full audio support"
+  },
+  {
+    "id": "4968640",
+    "itadId": "01a020c2-dc15-7156-b3ad-6852851ade34",
+    "title": "Japanese Ramen Simulator",
+    "storeUrl": "https://store.steampowered.com/app/4968640/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4968640/307166efa12d7b776a606c66440a989fae5be1c4/capsule_616x353.jpg?t=1791626249",
+    "movies": [
+      {
+        "id": 257452810,
+        "name": "Early Access Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257452810/28e148af1b08d962245e44fc8bef722a1234060b/movie_600x337.jpg?t=1791487523",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4968640/1771509590/bb3d43f308f397ca46b5f39f408c1a0b9f95da2f/1791481777/hls_264_master.m3u8?t=1791487523",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4968640/1771509590/bb3d43f308f397ca46b5f39f408c1a0b9f95da2f/1791481777/dash_h264.mpd?t=1791487523"
+      },
+      {
+        "id": 257400204,
+        "name": "Announce Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257400204/1ef54cac35c2e8ff4df1c6f97f20a474555f813d/movie_600x337.jpg?t=1790217812",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4968640/997358453/f428870899ad4f99aaac3debcbda60525daaadb6/1790217514/hls_264_master.m3u8?t=1790217812",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4968640/997358453/f428870899ad4f99aaac3debcbda60525daaadb6/1790217514/dash_h264.mpd?t=1790217812"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 1615,
+        "regular": 1900,
+        "cut": 15,
+        "storeLow": 1615
+      },
+      "US": {
+        "price": 12.74,
+        "regular": 14.99,
+        "cut": 15,
+        "storeLow": 12.74
+      },
+      "EU": {
+        "price": 13.16,
+        "regular": 15.49,
+        "cut": 15,
+        "storeLow": 13.16
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation",
+      "Early Access"
+    ],
+    "tags": [
+      "Simulation",
+      "Cooking",
+      "Online Co-Op"
+    ],
+    "releaseDate": "2026-10-09",
+    "developers": [
+      "Wild Dog"
+    ],
+    "publishers": [
+      "Wild Dog"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, Italian, German, Spanish - Spain, Portuguese - Brazil, Simplified Chinese, Traditional Chinese, Japanese, Korean"
+  }
+]
