@@ -1,0 +1,60 @@
+[
+  {
+    "id": "5130150",
+    "itadId": "01a04ab5-d95a-7335-8afc-e38e6f90b484",
+    "title": "Put Back Stuff",
+    "storeUrl": "https://store.steampowered.com/app/5130150/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5130150/c6213bbb489de7cd637f97539cd81c7146c9a198/capsule_616x353.jpg?t=1789365591",
+    "movies": [
+      {
+        "id": 257417664,
+        "name": "Pre-release Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257417664/dbe5b13b4dc0d40e39422513dcfedc42895c7b2c/movie_600x337.jpg?t=1788875122",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5130150/630225819/167d814812223a8fa0af5ca3e81868a87cec99d3/1788874839/hls_264_master.m3u8?t=1788875122",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5130150/630225819/167d814812223a8fa0af5ca3e81868a87cec99d3/1788874839/dash_h264.mpd?t=1788875122"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 940,
+        "regular": 940,
+        "cut": 0,
+        "storeLow": 752
+      },
+      "US": {
+        "price": 5.99,
+        "regular": 5.99,
+        "cut": 0,
+        "storeLow": 4.79
+      },
+      "EU": {
+        "price": 5.09,
+        "regular": 5.09,
+        "cut": 0,
+        "storeLow": 4.07
+      }
+    },
+    "genres": [
+      "Casual"
+    ],
+    "tags": [
+      "Casual",
+      "Simulation",
+      "Puzzle"
+    ],
+    "releaseDate": "2026-09-13",
+    "developers": [
+      "Shellbunny"
+    ],
+    "publishers": [
+      "Shellbunny"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English"
+  }
+]
