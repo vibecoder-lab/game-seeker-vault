@@ -1,0 +1,62 @@
+[
+  {
+    "id": "2122070",
+    "itadId": "018d937f-6c84-719b-bb7b-9c5755e2450f",
+    "title": "宝石少女/Girl & Gem Magic",
+    "storeUrl": "https://store.steampowered.com/app/2122070/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2122070/capsule_616x353.jpg?t=1792015264",
+    "movies": [
+      {
+        "id": 256938828,
+        "name": "new mov2",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256938828/movie.293x165.jpg?t=1680256262",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/2122070/553759/6dd6796db36eb2521b78601306209c6281d0b524/1751078989/hls_264_master.m3u8?t=1680256262",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/2122070/553759/6dd6796db36eb2521b78601306209c6281d0b524/1751078989/dash_h264.mpd?t=1680256262"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 140,
+        "regular": 140,
+        "cut": 0,
+        "storeLow": 70
+      },
+      "US": {
+        "price": 0.99,
+        "regular": 0.99,
+        "cut": 0,
+        "storeLow": 0.59
+      },
+      "EU": {
+        "price": 0.99,
+        "regular": 0.99,
+        "cut": 0,
+        "storeLow": 0.59
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Strategy"
+    ],
+    "tags": [
+      "Turn-Based Tactics",
+      "Casual",
+      "Puzzle"
+    ],
+    "releaseDate": "2023-03-30",
+    "developers": [
+      "Twilight Sonata Studio"
+    ],
+    "publishers": [
+      "Twilight Sonata Studio"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Simplified Chinese, English, Japanese"
+  }
+]
