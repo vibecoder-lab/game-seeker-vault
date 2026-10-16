@@ -1,0 +1,125 @@
+[
+  {
+    "id": "4981570",
+    "itadId": "019fbc8d-9101-70c3-90fb-09f715ff6833",
+    "title": "Wand & Order: Tidy up the magic shop!",
+    "storeUrl": "https://store.steampowered.com/app/4981570/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4981570/06aeab11af2ae6a8a95840ff9cf7d4cabd5e3b08/capsule_616x353.jpg?t=1790501148",
+    "movies": [
+      {
+        "id": 257417199,
+        "name": "Gameplay Footage",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257417199/8f7310b4b1471cda67b5120306b1fbeafc9024ab/movie_600x337.jpg?t=1790254913",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4981570/962751386/96bf7239b65792e20d48ee4f2566b80af4fc2688/1790243134/hls_264_master.m3u8?t=1790254913",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4981570/962751386/96bf7239b65792e20d48ee4f2566b80af4fc2688/1790243134/dash_h264.mpd?t=1790254913"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 790.0,
+        "regular": 790.0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 5.99,
+        "regular": 5.99,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 5.99,
+        "regular": 5.99,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "tags": [
+      "Relaxing",
+      "Organizing",
+      "Puzzle"
+    ],
+    "releaseDate": "2026-09-23",
+    "developers": [
+      "OnSkull Games"
+    ],
+    "publishers": [
+      "OnSkull Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English<strong>*</strong>, French<strong>*</strong>, Italian<strong>*</strong>, German<strong>*</strong>, Spanish - Spain<strong>*</strong>, Korean<strong>*</strong>, Portuguese - Brazil<strong>*</strong>, Russian<strong>*</strong>, Simplified Chinese<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  },
+  {
+    "id": "4112840",
+    "itadId": "01a114e5-2203-73ab-912c-e07455108cc5",
+    "title": "Demon General Kirsten",
+    "storeUrl": "https://store.steampowered.com/app/4112840/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4112840/73a82575ef362805c92e9018bd6c58cd6132863f/capsule_616x353.jpg?t=1791858952",
+    "movies": [
+      {
+        "id": 257403785,
+        "name": "EN",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257403785/77f7be5706a1cd6d31d72ee99410a64fccdc9e8a/movie_600x337.jpg?t=1787208947",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4112840/255813432/b9e8ce267eca2ee40370ba927e788b7b1500c310/1787208638/hls_264_master.m3u8?t=1787208947",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4112840/255813432/b9e8ce267eca2ee40370ba927e788b7b1500c310/1787208638/dash_h264.mpd?t=1787208947"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 1386,
+        "regular": 1540,
+        "cut": 10,
+        "storeLow": 1386
+      },
+      "US": {
+        "price": 9.89,
+        "regular": 10.99,
+        "cut": 10,
+        "storeLow": 9.89
+      },
+      "EU": {
+        "price": 10.12,
+        "regular": 11.25,
+        "cut": 10,
+        "storeLow": 10.12
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "RPG"
+    ],
+    "tags": [
+      "Sexual Content",
+      "Nudity",
+      "Hentai"
+    ],
+    "releaseDate": "2026-10-08",
+    "developers": [
+      "シコルスキー大佐"
+    ],
+    "publishers": [
+      "072 Project"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Traditional Chinese, English, Japanese, Simplified Chinese"
+  }
+]
