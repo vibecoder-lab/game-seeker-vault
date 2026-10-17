@@ -1,0 +1,69 @@
+[
+  {
+    "id": "5249210",
+    "itadId": "01a0c978-a19b-72eb-afc3-11e5419eca8d",
+    "title": "NekoTrak",
+    "storeUrl": "https://store.steampowered.com/app/5249210/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5249210/d4a3ee65b901561a19b571560cb3c02788ed7914/capsule_616x353.jpg?t=1791888839",
+    "movies": [
+      {
+        "id": 257455365,
+        "name": "NekoTrak PV1",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257455365/bbc026c3e889be936a32353ba810b72a0c3e1ee7/movie_600x337.jpg?t=1791609923",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5249210/778536157/36569425bf388390d7a04868ef3b35f573d5d926/1791608499/hls_264_master.m3u8?t=1791609923",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5249210/778536157/36569425bf388390d7a04868ef3b35f573d5d926/1791608499/dash_h264.mpd?t=1791609923"
+      },
+      {
+        "id": 257421671,
+        "name": "NekoTrak PV2",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257421671/a36671c98fbef1d50fcf0a35d0db2ad8f0e61655/movie_600x337.jpg?t=1791651007",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5249210/62102115/cbf8d9f7840adcc5dc6962ecfcdb406dc7ed111a/1791650051/hls_264_master.m3u8?t=1791651007",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5249210/62102115/cbf8d9f7840adcc5dc6962ecfcdb406dc7ed111a/1791650051/dash_h264.mpd?t=1791651007"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 424,
+        "regular": 530,
+        "cut": 20,
+        "storeLow": 424
+      },
+      "US": {
+        "price": 3.19,
+        "regular": 3.99,
+        "cut": 20,
+        "storeLow": 3.19
+      },
+      "EU": {
+        "price": 3.32,
+        "regular": 4.15,
+        "cut": 20,
+        "storeLow": 3.32
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "tags": [
+      "Utilities",
+      "Desktop Companion",
+      "Idler"
+    ],
+    "releaseDate": "2026-10-10",
+    "developers": [
+      "Bocchi The Dev"
+    ],
+    "publishers": [
+      "Bocchi The Dev"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English<strong>*</strong>, French<strong>*</strong>, German<strong>*</strong>, Spanish - Spain<strong>*</strong>, Russian<strong>*</strong>, Turkish<strong>*</strong>, Japanese<strong>*</strong>, Polish<strong>*</strong>, Simplified Chinese<strong>*</strong>, Traditional Chinese<strong>*</strong>, Portuguese - Brazil<strong>*</strong>, Korean<strong>*</strong><br><strong>*</strong>languages with full audio support"
+  }
+]
