@@ -1,0 +1,127 @@
+[
+  {
+    "id": "5067360",
+    "itadId": "01a06d41-e168-72ca-bcab-56b5f4a600bd",
+    "title": "Thank You Bus Driver",
+    "storeUrl": "https://store.steampowered.com/app/5067360/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5067360/dbcea2b7534b2687293a25c79bbb7142efaf1f1c/capsule_616x353.jpg?t=1791982808",
+    "movies": [
+      {
+        "id": 257455035,
+        "name": "Launch Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257455035/0366dbab091786430951617c6847bc82ea1434ec/movie_600x337.jpg?t=1791891235",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5067360/360020604/b95ac98bace4d37d04c170e93cfc150f1ec5e0bf/1791588169/hls_264_master.m3u8?t=1791891235",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5067360/360020604/b95ac98bace4d37d04c170e93cfc150f1ec5e0bf/1791588169/dash_h264.mpd?t=1791891235"
+      },
+      {
+        "id": 257413653,
+        "name": "Announce Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257413653/9e662a9363f0c2f34f9a4f2a7fe10837f813ad3c/movie_600x337.jpg?t=1791891236",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5067360/555684441/144daabeec687b7b46089abd14d380543c415071/1788186838/hls_264_master.m3u8?t=1791891236",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5067360/555684441/144daabeec687b7b46089abd14d380543c415071/1788186838/dash_h264.mpd?t=1791891236"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 695,
+        "regular": 695,
+        "cut": 0,
+        "storeLow": 695
+      },
+      "US": {
+        "price": 4.99,
+        "regular": 4.99,
+        "cut": 0,
+        "storeLow": 4.99
+      },
+      "EU": {
+        "price": 4.99,
+        "regular": 4.99,
+        "cut": 0,
+        "storeLow": 4.99
+      }
+    },
+    "genres": [
+      "Indie"
+    ],
+    "tags": [
+      "Transportation",
+      "Job Simulator",
+      "Arcade"
+    ],
+    "releaseDate": "2026-10-14",
+    "developers": [
+      "Double Fine Productions"
+    ],
+    "publishers": [
+      "Double Fine Action Labs"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English"
+  },
+  {
+    "id": "5064340",
+    "itadId": "01a000ae-5a07-73bf-bfce-abddb29c9b3b",
+    "title": "DinoBones: Tidy Up the Museum",
+    "storeUrl": "https://store.steampowered.com/app/5064340/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5064340/9f18babb9c24813b3431076faaf7d2938ea14347/capsule_616x353.jpg?t=1792101390",
+    "movies": [
+      {
+        "id": 257426543,
+        "name": "DinoBones - Launch Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257426543/5d4c586c5e1385ca47f5cb5ed572cc2e44e12dbb/movie_600x337.jpg?t=1790241900",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5064340/260610679/b155164ac6fdf25b86e706cf978a080a4864b267/1789748785/hls_264_master.m3u8?t=1790241900",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5064340/260610679/b155164ac6fdf25b86e706cf978a080a4864b267/1789748785/dash_h264.mpd?t=1790241900"
+      }
+    ],
+    "reviewScore": "Overwhelmingly Positive",
+    "deal": {
+      "JP": {
+        "price": 790,
+        "regular": 790,
+        "cut": 0,
+        "storeLow": 711
+      },
+      "US": {
+        "price": 5.99,
+        "regular": 5.99,
+        "cut": 0,
+        "storeLow": 5.39
+      },
+      "EU": {
+        "price": 6.15,
+        "regular": 6.15,
+        "cut": 0,
+        "storeLow": 5.53
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "tags": [
+      "Relaxing",
+      "Casual",
+      "Organizing"
+    ],
+    "releaseDate": "2026-09-25",
+    "developers": [
+      "Indie Souls Studio"
+    ],
+    "publishers": [
+      "Indie Souls Studio"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": true,
+      "linux": true
+    },
+    "supportedLanguages": "English, French, Italian, German, Spanish - Spain, Japanese, Korean, Portuguese - Brazil, Turkish, Russian, Simplified Chinese"
+  }
+]
