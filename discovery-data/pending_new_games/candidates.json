@@ -1,0 +1,61 @@
+[
+  {
+    "id": "5023770",
+    "itadId": "019fd47a-5f73-73fa-9d61-0fbd68c6c838",
+    "title": "Let's Tidy Up! : Treasure",
+    "storeUrl": "https://store.steampowered.com/app/5023770/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5023770/2642ba3ce850d48dda37ee56368e5a913c1f36a5/capsule_616x353.jpg?t=1791337056",
+    "movies": [
+      {
+        "id": 257416980,
+        "name": "Gameplay",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257416980/eebc17776aa07852af6da5e41d9b8f0583f6e214/movie_600x337.jpg?t=1788496433",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5023770/1191399364/95b95332b4c4e52a7f14f4924fb56ee62f62693a/1788496114/hls_264_master.m3u8?t=1788496433",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5023770/1191399364/95b95332b4c4e52a7f14f4924fb56ee62f62693a/1788496114/dash_h264.mpd?t=1788496433"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 655,
+        "regular": 655,
+        "cut": 0,
+        "storeLow": 589
+      },
+      "US": {
+        "price": 4.99,
+        "regular": 4.99,
+        "cut": 0,
+        "storeLow": 4.49
+      },
+      "EU": {
+        "price": 5.19,
+        "regular": 5.19,
+        "cut": 0,
+        "storeLow": 4.67
+      }
+    },
+    "genres": [
+      "Simulation"
+    ],
+    "tags": [
+      "Simulation",
+      "Relaxing",
+      "Organizing"
+    ],
+    "releaseDate": "2026-10-02",
+    "developers": [
+      "Tidy Up Team",
+      "Lowkey GameDev"
+    ],
+    "publishers": [
+      "Tidy Up Team"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, Japanese, Simplified Chinese, Traditional Chinese, French, Italian, German, Spanish - Spain, Russian"
+  }
+]
