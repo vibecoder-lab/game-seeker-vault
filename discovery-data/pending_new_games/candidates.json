@@ -1,0 +1,62 @@
+[
+  {
+    "id": "5101080",
+    "itadId": "01a016c8-667e-7247-96b5-8b1ce12b0151",
+    "title": "BOYKISSER IS COMING",
+    "storeUrl": "https://store.steampowered.com/app/5101080/",
+    "imageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/5101080/396110e894bacd82cb66a1d27ecc3e1995dd7b24/capsule_616x353.jpg?t=1791547473",
+    "movies": [
+      {
+        "id": 257407665,
+        "name": "BOYKISSER IS COMING - Gameplay",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257407665/1693e33d7a2aa4442a3744a44e3f4455754b092b/movie_600x337.jpg?t=1787612491",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5101080/1543436962/84c01dd79afd2db4bdae724282e9bcf8d5828105/1787611608/hls_264_master.m3u8?t=1787612491",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5101080/1543436962/84c01dd79afd2db4bdae724282e9bcf8d5828105/1787611608/dash_h264.mpd?t=1787612491"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 420,
+        "regular": 420,
+        "cut": 0,
+        "storeLow": 335
+      },
+      "US": {
+        "price": 2.99,
+        "regular": 2.99,
+        "cut": 0,
+        "storeLow": 2.54
+      },
+      "EU": {
+        "price": 2.89,
+        "regular": 2.89,
+        "cut": 0,
+        "storeLow": 2.67
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Strategy"
+    ],
+    "tags": [
+      "Casual",
+      "Strategy",
+      "Tower Defense"
+    ],
+    "releaseDate": "2026-09-03",
+    "developers": [
+      "akhsotoen"
+    ],
+    "publishers": [
+      "akhsotoen"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, Italian, German, Spanish - Spain, Simplified Chinese, Korean, Portuguese - Brazil, Russian, Japanese"
+  }
+]
