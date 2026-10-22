@@ -1,0 +1,255 @@
+[
+  {
+    "id": "4270850",
+    "itadId": "01a069d2-d4a3-73de-8ac8-a628774b33c3",
+    "title": "SCREENSIDE FISHER",
+    "storeUrl": "https://store.steampowered.com/app/4270850/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4270850/5c50f8d430a07e9ba377233f7dbef7467144eb46/capsule_616x353.jpg?t=1790482562",
+    "movies": [
+      {
+        "id": 257411352,
+        "name": "trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257411352/77e0fde71b64bce6bf2bcaad60e54603adf248fe/movie_600x337.jpg?t=1788481402",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4270850/634357161/773b5fd8eb59ea5a2dc0eceab6bbd2dfe3b5d2aa/1787934204/hls_264_master.m3u8?t=1788481402",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4270850/634357161/773b5fd8eb59ea5a2dc0eceab6bbd2dfe3b5d2aa/1787934204/dash_h264.mpd?t=1788481402"
+      },
+      {
+        "id": 257419450,
+        "name": "스팀용",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257419450/d2085c489dcc7c5395a947f0774acb9452958a8b/movie_600x337.jpg?t=1788830811",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4270850/61705040/587c672d7dcfbf0c507161d1fc0015deaadc97d4/1788830678/hls_264_master.m3u8?t=1788830811",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4270850/61705040/587c672d7dcfbf0c507161d1fc0015deaadc97d4/1788830678/dash_h264.mpd?t=1788830811"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Free To Play"
+    ],
+    "tags": [
+      "Desktop Companion",
+      "Casual",
+      "Fishing"
+    ],
+    "releaseDate": "2026-09-21",
+    "developers": [
+      "032"
+    ],
+    "publishers": [
+      "032"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Korean, English, Japanese, Simplified Chinese"
+  },
+  {
+    "id": "4947900",
+    "itadId": "01a06cc6-254c-7028-8508-738a26d6e216",
+    "title": "Augmented Yut",
+    "storeUrl": "https://store.steampowered.com/app/4947900/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4947900/fcfec0b95095b0c273c3110a19312645232a41e0/capsule_616x353.jpg?t=1792488637",
+    "movies": [
+      {
+        "id": 257417378,
+        "name": "증강 윷놀이 티저",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257417378/e7032db73f62fbf77243940aaf60d4ed3d948238/movie_600x337.jpg?t=1788537683",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4947900/2102888976/16ea8609e47030bb61d051461e873befdd32788c/1788537365/hls_264_master.m3u8?t=1788537683",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4947900/2102888976/16ea8609e47030bb61d051461e873befdd32788c/1788537365/dash_h264.mpd?t=1788537683"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 420,
+        "regular": 420,
+        "cut": 0,
+        "storeLow": 212
+      },
+      "US": {
+        "price": 2.99,
+        "regular": 2.99,
+        "cut": 0,
+        "storeLow": 1.59
+      },
+      "EU": {
+        "price": 2.89,
+        "regular": 2.89,
+        "cut": 0,
+        "storeLow": 1.67
+      }
+    },
+    "genres": [
+      "Casual"
+    ],
+    "tags": [
+      "Casual",
+      "Board Game",
+      "Multiplayer"
+    ],
+    "releaseDate": "2026-09-18",
+    "developers": [
+      "Ausuruk Games"
+    ],
+    "publishers": [
+      "Ausuruk Games"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "Korean, English"
+  },
+  {
+    "id": "4890770",
+    "itadId": "01a08188-e45a-7165-97cb-cf30c113c797",
+    "title": "Intravenous 3: Borderline",
+    "storeUrl": "https://store.steampowered.com/app/4890770/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4890770/64ce6acfa749be9598e63485f4e0071caf30fe7f/capsule_616x353.jpg?t=1790953223",
+    "movies": [
+      {
+        "id": 257387708,
+        "name": "IV3Announce",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257387708/0b4424d8b61ab682d24c18357c13049a99430fb0/movie_600x337.jpg?t=1788879008",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/4890770/1806669467/b0934509e47d2c964700214cdfb2e941c0a399da/1785333748/hls_264_master.m3u8?t=1788879008",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/4890770/1806669467/b0934509e47d2c964700214cdfb2e941c0a399da/1785333748/dash_h264.mpd?t=1788879008"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "US": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-",
+        "noItadData": true
+      }
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Simulation",
+      "Strategy",
+      "Free To Play"
+    ],
+    "tags": [
+      "Action",
+      "Violent",
+      "Tactical"
+    ],
+    "releaseDate": "2026-10-02",
+    "developers": [
+      "Explosive Squat Games"
+    ],
+    "publishers": [
+      "HypeTrain Digital"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": false,
+      "linux": false
+    },
+    "supportedLanguages": "English, French, German, Japanese, Korean, Polish, Portuguese - Brazil, Russian, Simplified Chinese, Spanish - Latin America, Traditional Chinese, Turkish"
+  },
+  {
+    "id": "5257930",
+    "itadId": "01a0e98c-ef7f-73d6-ba69-1fb6b0edf92b",
+    "title": "Heartfall — A Tale in Three Lives",
+    "storeUrl": "https://store.steampowered.com/app/5257930/",
+    "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5257930/1cd4e6709adf5c99e93945d869b95200fb763f25/capsule_616x353.jpg?t=1792633458",
+    "movies": [
+      {
+        "id": 257427799,
+        "name": "Teaser Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257427799/3ac5a44516eb9dc9b98825a6a83306c1d6e90c07/movie_600x337.jpg?t=1790624486",
+        "webm": "https://video.akamai.steamstatic.com/store_trailers/5257930/1306231199/13f5fdb15d602d1ab513deca15dcd2bfb6dcecb7/1790624267/hls_264_master.m3u8?t=1790624486",
+        "mp4": "https://video.akamai.steamstatic.com/store_trailers/5257930/1306231199/13f5fdb15d602d1ab513deca15dcd2bfb6dcecb7/1790624267/dash_h264.mpd?t=1790624486"
+      }
+    ],
+    "reviewScore": "Very Positive",
+    "deal": {
+      "JP": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      },
+      "US": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      },
+      "EU": {
+        "price": 0,
+        "regular": 0,
+        "cut": 0,
+        "storeLow": "-"
+      }
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "RPG",
+      "Free To Play"
+    ],
+    "tags": [
+      "Visual Novel",
+      "RPG",
+      "Story Rich"
+    ],
+    "releaseDate": "2026-10-15",
+    "developers": [
+      "Kazehita"
+    ],
+    "publishers": [
+      "Kazehita"
+    ],
+    "platforms": {
+      "windows": true,
+      "mac": true,
+      "linux": true
+    },
+    "supportedLanguages": "English"
+  }
+]
